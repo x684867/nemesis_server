@@ -10,11 +10,53 @@
 	echo "Expected $0 [base,broker,cipher,keys]."
 	exit 1
 }
+init_profile(){
+	[ -f /etc/profile.d/nemesis.profile ] && rm /etc/profile.d/nemesis.profile
+	ln -s /srv/nemesis/etc/nemesis.profile /etc/profile.d/nemesis.profile
+	. /etc/profile
+}
+
+configure_network(){
+
+	echo " "
+	[ "$(getYesNo 'Configure networking?')" == "y" ] && {
+		if [ "$(getYesNo 'Set a static IP address?')" == "y" ]; then
+			ADDRESS="$(getIP 'Enter IP Address')"
+			NETMASK="$(getMask 'Enter Subnet Mask')"
+			GATEWAY="$(getIP 'Enter Gateway')"
+			DNS="$(getIP 'Enter DNS IP')"
+			if [ "$(getYesNo 'Are these settings correct?')" == "y" ]; then
+				echo "Setting the following parameters:"
+				echo "    proto:   static"
+				echo "    address: $ADDRESS"
+				echo "    netmask: $NETMASK"
+				echo "    gateway: $GATEWAY"
+				echo "    dns:     $DNS"
+				echo " "
+				sed -i -e 's/dhcp/static/' /etc/network/interfaces
+				echo "address $ADDRESS" >> /etc/network/interfaces
+				echo "netmask $NETMASK" >> /etc/network/interfaces
+				echo "gateway $GATEWAY" >> /etc/network/interfaces
+				echo "dns-nameservers $DNS" >> /etc/network/interfaces
+			else
+				echo " "
+				echo "Not applying the changes"
+				echo " "	
+			fi
+		else
+			echo "Configuring for DHCP"
+			sed -i -e 's/static/dhcp/' /etc/network/interfaces
+		fi
+		echo "restarting networking."
+		/etc/init.d/networking restart
+	}
+}
 
 echo "Starting install ( $1 )..."
 case "$1" in 
 	base)
 		echo "set tabstop=4" > /root/.vimrc
+		init_profile
 		echo "Updating the clock..."
 		time ntpdate 0.pool.ntp.org && \
 		echo "installing software packages" && \
@@ -30,6 +72,7 @@ case "$1" in
 		ln -s /srv/nemesis/etc/nginx/sites-available/$2 /etc/nginx/sites-enabled/$2 && \
 		[ -f /etc/init/$2 ] && rm /etc/init/$2
 		ln -s /srv/nemesis/etc/init/$2 /etc/init/$2 && \
+		configure_network && \
 		echo "Base installation complete for $2" && \
 		exit 0			
 	;;
