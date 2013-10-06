@@ -11,17 +11,21 @@
 	exit 1
 }
 
+echo "Starting install ( $1 )..."
 case "$1" in 
 	base)
 		echo "set tabstop=4" > /root/.vimrc
-		ntpdate 0.pool.ntp.org
+		echo "Updating the clock..."
+		time ntpdate 0.pool.ntp.org && \
+		echo "installing software packages" && \
 		apt-get install vim -y && \
 		apt-get install openssh-server openssh-client -y && \
 		apt-get install nginx-full -y && \
 		apt-get install nodejs -y && \
 		apt-get install npm -y && \
+		echo "software is now installed...configuring system." && \
 		rm -f /etc/nginx/sites-enabled/* && \
-		rm -f /etc/nginx/sites-available && \
+		rm -rf /etc/nginx/sites-available && \
 		ln -s /srv/nemesis/etc/nginx/sites-available /etc/nginx/sites-available && \
 		ln -s /srv/nemesis/etc/nginx/sites-enabled/$2 /etc/nginx/sites-enabled/$2 && \
 		ln -s /srv/nemesis/etc/init/$2 /etc/init/$2 && \
