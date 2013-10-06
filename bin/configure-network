@@ -40,7 +40,9 @@ restart_networking(){
 
 echo " "
 [ "$(getYesNo 'Configure networking?')" != "Y" ] && {
+	echo " "
 	echo "You said 'No' (N/n)...terminating."
+	echo " "
 	exit 0
 }
 echo " "
