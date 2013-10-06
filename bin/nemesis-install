@@ -4,6 +4,7 @@
 # (c) 2013 Sam caldwell.  All Rights Reserved.
 #
 set -e
+export PATH=$PATH:/srv/nemesis/bin/
 
 export DEBUG=1
 [ $DEBUG -eq 1 ] && set -x
@@ -13,10 +14,8 @@ configure_installer(){
 }
 
 init_profile(){
-	[ -f /root/.vimrc ] && rm /root/.vimrc
-	[ -f /etc/profile.d/nemesis.profile ] && rm /etc/profile.d/nemesis.profile
-	ln -s /srv/nemesis/etc/vimrc /root/.vimrc
-	ln -s /srv/nemesis/etc/nemesis.profile /etc/profile.d/nemesis.profile
+	ln -sf /srv/nemesis/etc/vimrc /root/.vimrc
+	ln -sf /srv/nemesis/etc/nemesis.profile /etc/profile.d/nemesis.sh
 	. /etc/profile
 }
 
