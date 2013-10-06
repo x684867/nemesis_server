@@ -24,7 +24,12 @@ add_static_ip(){
 	echo "gateway $3" >> /etc/network/interfaces
 	echo "dns-nameservers $4" >> /etc/network/interfaces
 }
-
+restart_networking(){
+	echo "Restarting network..."
+	/etc/init.d/networking restart &> /dev/null
+	[ "$?" != "0" ] && echo "Network failed to restart" && exit 1
+	echo "...Network restarted"
+}
 
 [ "$(whoami)" != "root" ] && echo "This script must run as root." && exit 1
 [ "$(grep DISTRIB_ID /etc/lsb-release | awk -F \= '{print $2}')" != "Ubuntu" ] && {
@@ -43,7 +48,7 @@ echo " "
 		echo "Configuring for DHCP"
 		create_default_config
 		echo "restarting network"
-		/etc/init.d/networking restart
+		restart_networking
 		exit 0
 }
 
@@ -66,5 +71,5 @@ echo "    dns:     $DNS"
 echo " "
 create_default_config
 add_static_ip $ADDRESS $NETMASK $GATEWAY $DNS
-echo "restarting network"
-/etc/init.d/networking restart
+restart_networking
+
