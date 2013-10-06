@@ -18,7 +18,6 @@ base_install(){
 	#base installation
 	#
 	echo "performing Server installation for SERVER_TYPE ($SERVER_TYPE)"
-	env SERVER_TYPE="$1"
 	exit 1
 	#
 	init_profile && \
@@ -49,31 +48,32 @@ base_install(){
 }
 [ "$(whoami)" != "root" ] && echo "$0 must be run as root." && exit 1
 [ -z "$1" ] && echo "Missing argument." && exit 1
+export SERVER_TYPE=$(echo "$1" | tr -dc a-z)
 
-
-echo "Starting install ( $1 )..."
+echo "Starting install ( $SERVER_TYPE )..."
 configure_installer
-case "$1" in 
+
+case "$SERVER_TYPE" in 
 	audit)
-		base_install $1
+		base_install $SERVER_TYPE
 		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
 		#add more steps here
 		exit 0
 	;;
 	cipher)
-		base_install $1
+		base_install $SERVER_TYPE
 		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
 		#add more steps here
 		exit 0
 	;;
 	broker)
-		base_install $1
+		base_install $SERVER_TYPE
 		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
 		#add more steps here
 		exit 0
 	;;
 	keys)
-		base_install $1
+		base_install $SERVER_TYPE
 		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
 		#add more steps here
 		exit 0
