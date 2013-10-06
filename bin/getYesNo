@@ -1,0 +1,11 @@
+#!/bin/bash
+# (c) 2013 Sam Caldwell.  All Rights Reserved.
+# getYesNo
+
+Y=""
+while [ -z "$Y" ]; do
+	read -n 1 -p "$1" Y
+	Y="$(echo $Y | tr -s A-Z a-z | tr -dc YN)"
+done
+echo "$Y"
+
