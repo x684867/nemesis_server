@@ -38,14 +38,11 @@ base_install(){
 	configure_network && \
 	echo "Base installation complete for ${SERVER_TYPE}" && \
 	return 0
+	return 1
 }
 [ "$(whoami)" != "root" ] && echo "$0 must be run as root." && exit 1
-[ -z "$1" ] && {
-	echo "Missing argument."
-	echo " "
-	echo "Expected $0 [base,broker,cipher,keys]."
-	exit 1
-}
+[ -z "$1" ] && echo "Missing argument." && exit 1
+
 
 echo "Starting install ( $1 )..."
 configure_installer
@@ -61,7 +58,7 @@ case "$1" in
 		exit 0
 	;;
 	broker)
-		base_install $2 && ||{echo "One or more errors occurred." && exit 1}
+		base_install $2 ||{echo "One or more errors occurred." && exit 1}
 		#add more steps here
 		exit 0
 	;;
@@ -71,7 +68,7 @@ case "$1" in
 		exit 0
 	;;
 	*)
-		echo "USAGE: $0 [base,broker,cipher,keys]"
+		echo "USAGE: $0 [broker,cipher,keys]"
 		exit 1
 	;;
 esac
