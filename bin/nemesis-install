@@ -35,7 +35,7 @@ base_install(){
 	ln -s /srv/nemesis/etc/nginx/sites-available/$3 /etc/nginx/sites-enabled/$3 && \
 	[ -f /etc/init/${SERVER_TYPE} ] && rm /etc/init/${SERVER_TYPE}
 	ln -s /srv/nemesis/etc/init/${SERVER_TYPE} /etc/init/${SERVER_TYPE} && \
-	configure_network && \
+	configure-network && \
 	echo "Base installation complete for ${SERVER_TYPE}" && \
 	return 0
 	return 1
