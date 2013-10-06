@@ -1,0 +1,72 @@
+#!/bin/bash
+#
+# /etc/init.d/nemesis-keys
+# © 2013 Sam Caldwell.  All Rights Reserved.
+#
+### BEGIN INIT INFO
+# Provides:               nemesis-keys
+# Required-Start:       $syslog $remote_fs
+# Required-Stop:       $syslog $remote_fs
+# Should-Start:         $local_fs
+# Should-Stop:          $local_fs
+# Default-Start:        2 3 4 5
+# Default-Stop:        0 1 6
+# Short-Description:    Nemesis Keys
+# Description:          Nemesis Keys Web Services
+### END INIT INFO
+
+THIS_SERVICE="keys"
+
+. /lib/lsb/init-functions
+
+PIDFILE=/var/run/nemesis-${THIS_SERVICE}
+LOGFILE=/var/log/nemesis/$THIS_SERVICE
+[ ! -d $LOGFILE ] && mkdir -p $LOGFILE
+
+start() {
+    /srv/nemesis/bin/nemesis-launch $THIS_SERVICE & \
+    RETVAL=$?
+}
+
+stop() {
+        /srv/nemesis/bin/nemesis-kill $THIS_SERVICE & \
+        RETVAL=$?
+}
+
+restart() {
+    echo "Restarting $NAME"
+    stop
+    echo "Pausing for a moment…"
+    for i in $(seq 1 1 5); do 
+          echo -n "$i "
+    done
+     echo " "
+    start
+}
+
+status() {
+     echo "Status not implemented for $THIS_SERVICE"
+}
+
+case "$1" in
+
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status
+        ;;
+    restart)
+        restart
+        ;;
+    *)
+        echo "Usage: {start|stop|status|restart}"
+
+        exit 1
+
+        ;;
+esac
+exit $RETVAL
