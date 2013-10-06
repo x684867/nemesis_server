@@ -17,9 +17,6 @@ base_install(){
 	#
 	#base installation
 	#
-	echo "performing Server installation for SERVER_TYPE ($SERVER_TYPE)"
-	exit 1
-	#
 	init_profile && \
 	echo "Updating the clock..." && \
 	time ntpdate $TIME_SERVER && \
