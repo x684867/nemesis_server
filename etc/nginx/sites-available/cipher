@@ -1,0 +1,74 @@
+
+# /etc/nginx/sites-available/cipher
+#
+# Nemesis NGINX Cipher Front-end Server Configuration
+# © 2013 Sam Caldwell.  All Rights Reserved.
+#
+# NGINX acts as a front-end load balancer for the
+# Nemesis Cipher Web Service.
+#
+# Functions:
+#     -Listens on tcp/80 (HTTP) and tcp/443 (HTTPS)
+#     -Redirects tcp/80 to tcp/443.
+#     -Load balances tcp/443 across node.js upstream processes.
+#      based on least connections.
+#
+
+upstream node {
+  # Load Balancing Strategy:
+  #          Direct tcp/443 traffic to http://node:100xx based on least connections
+  #          and fails any server for 20 seconds on bad response.
+  #
+  least_conn;
+  server 127.0.0.1:10080 fail_timeout=20s;
+  server 127.0.0.1:10081 fail_timeout=20s;
+  server 127.0.0.1:10082 fail_timeout=20s;
+  server 127.0.0.1:10083 fail_timeout=20s;
+  server 127.0.0.1:10084 fail_timeout=20s;
+  server 127.0.0.1:10085 fail_timeout=20s;
+  #We can also cross the load balancing between servers
+  #on the local network using HTTPS.
+}
+
+server {
+
+  #Listen on tcp/80 and tcp/443
+  listen 80;
+  listen 443 ssl;
+
+  #Redirect tcp/80 to tcp/443
+  if ($ssl_protocol = "") {
+    rewrite ^ https://$host$request_uri? permanent;
+  }
+
+  # Self-signed certificate.
+  ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
+  ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
+
+  # Certificate chained with a certificate authority bundle.
+  # ssl_certificate /etc/ssl/certs/example.com.chained.crt;
+  # ssl_certificate_key /etc/ssl/private/example.com.key;
+
+  location /api {
+    proxy_pass http://node;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade websocket;
+    proxy_set_header Connection upgrade;
+  }
+
+
+ location /stats {
+     root /srv/nemesis/stats/
+     index index.html;
+  }
+
+  location /store {
+       root /srv/nemesis/store
+       index index.html;
+  }
+
+  location / {
+     root /srv/nemesis/static/
+     index index.html;
+  }
+}
