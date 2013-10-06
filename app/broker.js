@@ -18,11 +18,16 @@
 			ipAddress
 			ipPort
 */
-config={};
-config.ipAddress='127.0.2.1';
-config.ipPort=80;
-config.proto='http';
-	
+config={
+	ipAddress:'127.0.0.1';
+	ipPort:1337;
+	proto:'http';
+};
+
+process.argv.forEach(function (val, index, array) {
+  console.log(index + ': ' + val);
+});
+
 var http = require('http');
 http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/plain'});
