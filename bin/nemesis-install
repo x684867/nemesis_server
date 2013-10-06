@@ -48,22 +48,26 @@ echo "Starting install ( $1 )..."
 configure_installer
 case "$1" in 
 	audit)
-		base_install $2 || { echo "One or more errors occurred." && exit 1 }
+		base_install $2
+		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
 		#add more steps here
 		exit 0
 	;;
 	cipher)
-		base_install $2 || { echo "One or more errors occurred." && exit 1 }
+		base_install $2
+		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
 		#add more steps here
 		exit 0
 	;;
 	broker)
-		base_install $2 || { echo "One or more errors occurred." && exit 1 }
+		base_install $2
+		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
 		#add more steps here
 		exit 0
 	;;
 	keys)
-		base_install $2 || { echo "One or more errors occurred." && exit 1 }
+		base_install $2
+		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
 		#add more steps here
 		exit 0
 	;;
