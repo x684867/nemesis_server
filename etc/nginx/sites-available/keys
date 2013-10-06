@@ -39,18 +39,14 @@ server {
     proxy_set_header Upgrade websocket;
     proxy_set_header Connection upgrade;
   }
-
-
  location /stats {
      root /srv/nemesis/web/keys/stats/;
      index index.html;
   }
-
   location /store {
        root /srv/nemesis/store/keys/;
        index index.html;
   }
-
   location / {
      root /srv/nemesis/web/keys/static/;
      index index.html;
