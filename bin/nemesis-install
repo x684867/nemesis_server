@@ -18,41 +18,7 @@ init_profile(){
 	. /etc/profile
 }
 
-configure_network(){
 
-	echo " "
-	[ "$(getYesNo 'Configure networking?')" == "Y" ] && {
-		if [ "$(getYesNo 'Set a static IP address?')" == "Y" ]; then
-			ADDRESS="$(getIP 'Enter IP Address')"
-			NETMASK="$(getMask 'Enter Subnet Mask')"
-			GATEWAY="$(getIP 'Enter Gateway')"
-			DNS="$(getIP 'Enter DNS IP')"
-			if [ "$(getYesNo 'Are these settings correct?')" == "Y" ]; then
-				echo "Setting the following parameters:"
-				echo "    proto:   static"
-				echo "    address: $ADDRESS"
-				echo "    netmask: $NETMASK"
-				echo "    gateway: $GATEWAY"
-				echo "    dns:     $DNS"
-				echo " "
-				sed -i -e 's/dhcp/static/' /etc/network/interfaces
-				echo "address $ADDRESS" >> /etc/network/interfaces
-				echo "netmask $NETMASK" >> /etc/network/interfaces
-				echo "gateway $GATEWAY" >> /etc/network/interfaces
-				echo "dns-nameservers $DNS" >> /etc/network/interfaces
-			else
-				echo " "
-				echo "Not applying the changes"
-				echo " "	
-			fi
-		else
-			echo "Configuring for DHCP"
-			sed -i -e 's/static/dhcp/' /etc/network/interfaces
-		fi
-		echo "restarting networking."
-		/etc/init.d/networking restart
-	}
-}
 
 echo "Starting install ( $1 )..."
 case "$1" in 

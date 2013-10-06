@@ -1,0 +1,70 @@
+#!/bin/bash
+#
+# configure-network
+# (c) 2013 Sam caldwell.  All Rights Reserved.
+#
+[ "$(whoami)" != "root" ] && {
+	echo "This script must run as root."
+	exit 1
+}
+[ "$(grep DISTRIB_ID /etc/lsb-release | awk -F \= '{print $2}')" != "Ubuntu" ] && {
+	echo "This script will only work with Ubuntu."
+	echo "It would probably work with Debian, but it hasn't been tested."
+	exit 1
+}
+create_default_config(){
+cat > /etc/network/interfaces << EOF_CONFIG
+#/etc/network/interfaces
+#  mail@samcaldwell.net
+#
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+#END OF /etc/network/interfaces#
+EOF_CONFIG
+}
+
+add_static_ip(){
+	sed -i -e 's/dhcp/static/' /etc/network/interfaces
+	echo "address $1" >> /etc/network/interfaces
+	echo "netmask $2" >> /etc/network/interfaces
+	echo "gateway $3" >> /etc/network/interfaces
+	echo "dns-nameservers $4" >> /etc/network/interfaces
+}
+
+echo " "
+[ "$(getYesNo 'Configure networking?')" != "Y" ] && {
+	echo "You said 'No' (N/n)...terminating."
+	exit 0
+}
+[ "$(getYesNo 'Set a static IP address?')" != "Y" ] && {
+		echo "Configuring for DHCP"
+		create_default_config
+		echo "restarting network"
+		/etc/init.d/networking restart
+		exit 0
+}
+
+ADDRESS="$(getIP 'Enter IP Address')"
+NETMASK="$(getMask 'Enter Subnet Mask')"
+GATEWAY="$(getIP 'Enter Gateway')"
+DNS="$(getIP 'Enter DNS IP')"
+
+[ "$(getYesNo 'Are these settings correct?')" != "Y" ] && {
+	echo " "
+	echo "Not applying the changes"
+	echo " "
+}
+echo "Setting the following parameters:"
+echo "    proto:   static"
+echo "    address: $ADDRESS"
+echo "    netmask: $NETMASK"
+echo "    gateway: $GATEWAY"
+echo "    dns:     $DNS"
+echo " "
+create_default_config
+add_static_ip $ADDRESS $NETMASK $GATEWAY $DNS
+echo "restarting network"
+/etc/init.d/networking restart
