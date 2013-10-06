@@ -33,7 +33,6 @@ case "$1" in
 	;;
 esac
 
-
 KEY_SIZE=2048
 DOMAIN="nemesiscloud.com"
 FQDN="${SERVER_TYPE}.${DOMAIN}"
