@@ -22,7 +22,7 @@ upstream node {
 	# Include the pool servers with the next line.  This allows us to flexibly
 	# control the size of the pool programmatically:
 	#
-	include /srv/nemesis/etc/nginx/upstream/keys.*.conf
+	include /srv/nemesis/etc/nginx/upstream/keys.*.conf;
 	#
 }
 
