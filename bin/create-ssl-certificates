@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# /srv/nemesis/bin/create-ssl-certificates
+# (c) 2013 Sam Caldwell.  All Rights Reserved.
+#
+[ "$(whoami)" != "root" ] && echo "This script must be run as root." && exit 1
+[ -z "$1" ] && echo "Missing argument.  Use -h or --help for assistance." && exit 1
+[ "$1" == "--help" ] || [ "$1" == "-h" ] && {
+	echo " "
+	echo "USAGE:"
+	echo "      $0 <SERVER_TYPE>"
+	echo " "
+	echo "      SERVER_TYPE={audit,broker,cipher,keys}"
+	echo " "
+	exit 1
+}
+case "$1" in 
+	audit)
+		SERVER_TYPE="$1"
+	;;
+	broker)
+		SERVER_TYPE="$1"
+	;;
+	cipher)
+		SERVER_TYPE="$1"
+	;;
+	keys)
+		SERVER_TYPE="$1"
+	;;
+	*)
+		echo "Unrecognized SERVER_TYPE.  Use -h or --help for assistance."
+		exit 1
+	;;
+esac
+
+KEY_SIZE=2048
+PRIVATE_KEY=/etc/ssl/private/${SERVER_TYPE}.key
+CSR=/root/${SERVER_TYPE}.csr
+CRT=/etc/ssl/certs/${SERVER_TYPE}.crt
+
+openssl genrsa -out $PRIVATE_KEY $KEY_SIZE && \
+openssl req -new -key $PRIVATE_KEY -out $CSR && \
+openssl x509 -req -days 3650 -in $CSR -signkey $PRIVATE_KEY -out $CRT
+[ "$?" == "0" ] && {
+	echo " "
+	echo "Generated certificate for $SERVER_TYPE"
+	echo " "
+	echo "PRIVATE KEY: $PRIVATE_KEY"
+	echo "CSR FILE:    $CSR"
+	echo "CERTIFICATE: $CRT"
+	echo " "
+	exit 0
+}
+echo "An error occurred.  This operation failed ($0)"
+exit 1 
