@@ -3,7 +3,7 @@
 # nemesis-install.sh
 # (c) 2013 Sam caldwell.  All Rights Reserved.
 #
-configure installer(){
+configure_installer(){
 	export TIME_SERVER="0.pool.ntp.org"
 }
 init_profile(){
