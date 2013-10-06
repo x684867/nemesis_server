@@ -1,18 +1,18 @@
 #!upstart
 #
-# /etc/init/keys
+# /etc/init/audit
 # © 2013 Sam Caldwell.  All Rights Reserved.
-# Keys web service upstart script
+# Audit web service upstart script
 #
-env THIS_SERVICE="keys"
+env THIS_SERVICE="audit"
 
-description "Nemesis Keys Node.JS Application Server"
+description "Nemesis Audit Node.JS Application Server"
 
 start on startup
 stop on shutdown
 
 # Upstart is going to launch a wrapper script which will fork its process
-# to start the Nemesis Keys service.  The following line tells upstart
+# to start the Nemesis Audit service.  The following line tells upstart
 # to report the pid of the forked node.js application rather than the wrapper:
 expect fork
 
