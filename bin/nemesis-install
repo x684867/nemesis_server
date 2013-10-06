@@ -18,7 +18,7 @@ base_install(){
 	#base installation
 	#
 	echo "performing Server installation for SERVER_TYPE ($SERVER_TYPE)"
-	SERVER_TYPE="$1"
+	env SERVER_TYPE="$1"
 	exit 1
 	#
 	init_profile && \
