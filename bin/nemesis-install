@@ -28,11 +28,11 @@ base_install(){
 	echo "Updating the clock..." && \
 	time ntpdate $TIME_SERVER && \
 	echo "installing software packages" && \
-	apt-get install vim -y && \
-	apt-get install openssh-server openssh-client -y && \
-	apt-get install nginx-full -y && \
-	apt-get install nodejs -y && \
-	apt-get install npm -y && \
+	time apt-get install vim -y && \
+	time apt-get install openssh-server openssh-client -y && \
+	time apt-get install nginx-full -y && \
+	time apt-get install nodejs -y && \
+	time apt-get install npm -y && \
 	echo "software is now installed...configuring system." && \
 	rm -f /etc/nginx/sites-enabled/* && \
 	rm -rf /etc/nginx/sites-available && \
@@ -41,10 +41,9 @@ base_install(){
 	[ -f /etc/init/${SERVER_TYPE} ] && rm /etc/init/${SERVER_TYPE}
 	ln -sf /srv/nemesis/etc/init/${SERVER_TYPE} /etc/init/${SERVER_TYPE} && \
 	ln -sf /srv/nemesis/etc/init.d/nemesis-${SERVER_TYPE} /etc/init.d/nemesis-${SERVER_TYPE} && \ 
-	/srv/nemesis/bin/configure-network && \
-	echo "Base installation complete for ${SERVER_TYPE}" && \
-	return 0
-	return 1
+	echo "Base installation complete for ${SERVER_TYPE}" return 0
+	# Fall through if a failure occurs.
+	echo "base_install() failed for ${SERVER_TYPE}}" && return 1
 }
 [ "$(whoami)" != "root" ] && echo "$0 must be run as root." && exit 1
 [ -z "$1" ] && echo "Missing argument." && exit 1
@@ -57,24 +56,28 @@ case "$SERVER_TYPE" in
 	audit)
 		base_install $SERVER_TYPE
 		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
+		configure-network
 		#add more steps here
 		exit 0
 	;;
 	cipher)
 		base_install $SERVER_TYPE
 		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
+		configure-network
 		#add more steps here
 		exit 0
 	;;
 	broker)
 		base_install $SERVER_TYPE
 		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
+		configure-network
 		#add more steps here
 		exit 0
 	;;
 	keys)
 		base_install $SERVER_TYPE
 		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
+		configure-network
 		#add more steps here
 		exit 0
 	;;
