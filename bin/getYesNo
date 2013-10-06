@@ -5,7 +5,7 @@
 Y=""
 while [ -z "$Y" ]; do
 	read -n 1 -p "$1" Y
-	Y="$(echo $Y | tr -s A-Z a-z | tr -dc YN)"
+	Y="$(echo $Y | tr -s a-z A-Z | tr -dc YN)"
 done
 echo "$Y"
 
