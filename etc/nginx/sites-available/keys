@@ -12,19 +12,11 @@
 #     -Load balances tcp/443 across node.js upstream processes.
 #      based on least connections.
 #
-upstream node {
-	# *Load Balancing Strategy:
-	#	Direct tcp/443 traffic to http://node:100xx based on least connections
-	#	and fails any server for 20 seconds on bad response.
-	#
-	least_conn;
-	#
-	# Include the pool servers with the next line.  This allows us to flexibly
-	# control the size of the pool programmatically:
-	#
-	include /srv/nemesis/etc/nginx/upstream/keys.*.conf;
-	#
-}
+# *Load Balancing Strategy:
+#	Direct tcp/443 traffic to http://node:100xx based on least connections
+#	and fails any server for 20 seconds on bad response.
+#
+include /srv/nemesis/etc/nginx/upstream/audit.upstream.conf;
 
 server {
 
