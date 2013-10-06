@@ -1,23 +1,51 @@
- #/srv/nemesis/etc/nginx/upstream/README
- #(c) 2013 Sam Caldwell.  All Rights Reserved
- #
- # The NGINX configuration creates a load balancing
- # pool (upstream) that includes a pool of servers
- # identified in this directory by the SERVER_TYPE,
- # IP ADDRESS and TCP PORT.
- #
- # Presumably these IP ADDRESSes are in the 127/8 
- # CIDR Range (see RFC3330, Special-Use IPv4 Addresses)
- # with the following expectation:
- #
- #	AUDIT:	127.0.1.0/16
- #	BROKER:	127.0.2.0/16
- #	CIPHER: 127.0.3.0/16
- #	KEYS:	127.0.4.0/16
- #
- # NOTE: The use of localhost is presumed.  However for
- # scaling purposes, there is no restriction on the use
- # of non-local IPv4 addressess.
- #
- # NOTE: IPv6 is not supported at this time.
- #
+#/srv/nemesis/etc/nginx/upstream/README
+#(c) 2013 Sam Caldwell.  All Rights Reserved
+#
+# The NGINX configuration creates a load balancing
+# pool (upstream) that includes a pool of servers
+# identified in this directory by the SERVER_TYPE,
+# IP ADDRESS and TCP PORT.
+#
+# Presumably these IP ADDRESSes are in the 127/8 
+# CIDR Range (see RFC3330, Special-Use IPv4 Addresses)
+# with the following expectation:
+#
+#	AUDIT:	127.0.1.0/16
+#	BROKER:	127.0.2.0/16
+#	CIPHER: 127.0.3.0/16
+#	KEYS:	127.0.4.0/16
+#
+# NOTE: The use of localhost is presumed.  However for
+# scaling purposes, there is no restriction on the use
+# of non-local IPv4 addressess.
+#
+# NOTE: IPv6 is not supported at this time.
+#
+# INSTRUCTIONS:
+#
+#	*Execute: /srv/nemesis/bin/nemesis-add-pool-server
+#
+#		nemesis-add-pool-server SERVER_TYPE IP_ADDR PORT
+#
+#	*To add a server to the pool:
+#
+#		The following line should be added to a "pool configuration file":
+#
+#			server 127.0.1.1:80 fail_timeout=20s;
+#
+#		The file should be named SERVER_TYPE.IP_ADDRESS.PORT.conf, for 
+#		example:
+#
+#			/broker.127.0.2.1.80.conf 
+#
+#		where the files are located in--
+#
+#			/srv/nemesis/etc/nginx/upstream/
+#
+#	*Supported SERVER_TYPE values are--
+#
+#		audit
+#		broker
+#		cipher
+#		keys
+#
