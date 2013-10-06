@@ -3,12 +3,8 @@
 # nemesis-install.sh
 # (c) 2013 Sam caldwell.  All Rights Reserved.
 #
-[ "$(whoami)" != "root" ] && echo "$0 must be run as root." && exit 1
-[ -z "$1" ] && {
-	echo "Missing argument."
-	echo " "
-	echo "Expected $0 [base,broker,cipher,keys]."
-	exit 1
+configure installer(){
+	export TIME_SERVER="0.pool.ntp.org"
 }
 init_profile(){
 	[ -f /root/.vimrc ] && rm /root/.vimrc
@@ -17,46 +13,61 @@ init_profile(){
 	ln -s /srv/nemesis/etc/nemesis.profile /etc/profile.d/nemesis.profile
 	. /etc/profile
 }
-
-
+base_install(){
+	#
+	#base installation
+	#
+	SERVER_TYPE="$1"
+	#
+	init_profile && \
+	echo "Updating the clock..." && \
+	time ntpdate $TIME_SERVER && \
+	echo "installing software packages" && \
+	apt-get install vim -y && \
+	apt-get install openssh-server openssh-client -y && \
+	apt-get install nginx-full -y && \
+	apt-get install nodejs -y && \
+	apt-get install npm -y && \
+	echo "software is now installed...configuring system." && \
+	rm -f /etc/nginx/sites-enabled/* && \
+	rm -rf /etc/nginx/sites-available && \
+	ln -s /srv/nemesis/etc/nginx/sites-available /etc/nginx/sites-available && \
+	ln -s /srv/nemesis/etc/nginx/sites-available/$3 /etc/nginx/sites-enabled/$3 && \
+	[ -f /etc/init/${SERVER_TYPE} ] && rm /etc/init/${SERVER_TYPE}
+	ln -s /srv/nemesis/etc/init/${SERVER_TYPE} /etc/init/${SERVER_TYPE} && \
+	configure_network && \
+	echo "Base installation complete for ${SERVER_TYPE}" && \
+	return 0
+}
+[ "$(whoami)" != "root" ] && echo "$0 must be run as root." && exit 1
+[ -z "$1" ] && {
+	echo "Missing argument."
+	echo " "
+	echo "Expected $0 [base,broker,cipher,keys]."
+	exit 1
+}
 
 echo "Starting install ( $1 )..."
+configure_installer
 case "$1" in 
-	base)
-		init_profile
-		echo "Updating the clock..."
-		time ntpdate 0.pool.ntp.org && \
-		echo "installing software packages" && \
-		apt-get install vim -y && \
-		apt-get install openssh-server openssh-client -y && \
-		apt-get install nginx-full -y && \
-		apt-get install nodejs -y && \
-		apt-get install npm -y && \
-		echo "software is now installed...configuring system." && \
-		rm -f /etc/nginx/sites-enabled/* && \
-		rm -rf /etc/nginx/sites-available && \
-		ln -s /srv/nemesis/etc/nginx/sites-available /etc/nginx/sites-available && \
-		ln -s /srv/nemesis/etc/nginx/sites-available/$2 /etc/nginx/sites-enabled/$2 && \
-		[ -f /etc/init/$2 ] && rm /etc/init/$2
-		ln -s /srv/nemesis/etc/init/$2 /etc/init/$2 && \
-		configure_network && \
-		echo "Base installation complete for $2" && \
-		exit 0			
-	;;
 	audit)
-		$0 base $1 && \
-		exit 0 
+		base_install $2 || {echo "One or more errors occurred." && exit 1}
+		#add more steps here
+		exit 0
 	;;
 	cipher)
-		$0 base $1 && \
+		base_install $2 || {echo "One or more errors occurred." && exit 1}
+		#add more steps here
 		exit 0
 	;;
 	broker)
-		$0 base $1 && \
+		base_install $2 && ||{echo "One or more errors occurred." && exit 1}
+		#add more steps here
 		exit 0
 	;;
 	keys)
-		$0 base $1 && \
+		base_install $2 && || {echo "One or more errors occurred." && exit 1}
+		#add more steps here
 		exit 0
 	;;
 	*)
