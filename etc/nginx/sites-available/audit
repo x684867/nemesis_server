@@ -29,13 +29,9 @@ server {
   if ($ssl_protocol = "") {
     rewrite ^ https://$host$request_uri? permanent;
   }
-  # Self-signed certificate.
-  ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
-  ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
-
-  # Certificate chained with a certificate authority bundle.
-  # ssl_certificate /etc/ssl/certs/example.com.chained.crt;
-  # ssl_certificate_key /etc/ssl/private/example.com.key;
+  # SSL Certificates
+  ssl_certificate /etc/ssl/certs/audit.crt;
+  ssl_certificate_key /etc/ssl/private/audit.key;
 
   location /api {
     proxy_pass http://node;
