@@ -1,0 +1,25 @@
+#!upstart
+#
+# /etc/init/broker
+# © 2013 Sam Caldwell.  All Rights Reserved.
+# Broker web service upstart script
+#
+env THIS_SERVICE="broker"
+
+description "Nemesis Broker Node.JS Application Server"
+
+start on startup
+stop on shutdown
+
+# Upstart is going to launch a wrapper script which will fork its process
+# to start the Nemesis Broker service.  The following line tells upstart
+# to report the pid of the forked node.js application rather than the wrapper:
+expect fork
+
+script
+    exec /srv/nemesis/bin/nemesis-launch $THIS_SERVICE 
+end script
+
+pre-stop script
+     exec /srv/nemesis/bin/nemesis-kill $THIS_SERVICE
+end script
