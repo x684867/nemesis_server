@@ -21,31 +21,3 @@
 #
 # NOTE: IPv6 is not supported at this time.
 #
-# INSTRUCTIONS:
-#
-#	*Execute: /srv/nemesis/bin/nemesis-add-pool-server
-#
-#		nemesis-add-pool-server SERVER_TYPE IP_ADDR PORT
-#
-#	*To add a server to the pool:
-#
-#		The following line should be added to a "pool configuration file":
-#
-#			server 127.0.1.1:80 fail_timeout=20s;
-#
-#		The file should be named SERVER_TYPE.IP_ADDRESS.PORT.conf, for 
-#		example:
-#
-#			/broker.127.0.2.1.80.conf 
-#
-#		where the files are located in--
-#
-#			/srv/nemesis/etc/nginx/upstream/
-#
-#	*Supported SERVER_TYPE values are--
-#
-#		audit
-#		broker
-#		cipher
-#		keys
-#

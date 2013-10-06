@@ -7,7 +7,7 @@
 # found at /srv/nemesis/etc/nginx/upstream/${SERVER_TYPE}.${IPADDR}.${PORT}.conf
 #
 
-POOL_FILE="/srv/nemesis/etc/nginx/upstream/"
+POOL_FILE_DIR="/srv/nemesis/etc/nginx/upstream/"
 
 [ -z "$3" ] && echo "Missing argument" && exit 1
 [ -z "$2" ] && echo "Missing argument" && exit 1
@@ -40,4 +40,18 @@ IPADDR="$(echo $2 | tr -dc 0-9\. | egrep -o ^\([0-2]\{0,1\}[0-9]\{1,2\}\.\)\{3\}
 PORT="$(echo $3 | tr -dc 0-9 | egrep -o ^[0-6]\{0,1\}[0-9]\{1,4\}$)
 [ -z "$PORT" ] && echo "Badly formatted tcp port (argument 3)" && exit 1
 
-echo "server ${IPADDR}:${PORT} fail_timeout=20s;" > $POOL_FILE/${SERVER_TYPE}.${IPADDR}.${PORT}.conf
+FILENAME=$POOL_FILE/${SERVER_TYPE}.upstream.conf
+rm $FILENAME.bak
+mv $FILENAME $FILENAME.bak
+
+echo "#Created by $0 on $(date)" > $FILENAME
+echo "upstream node {" >> $FILENAME
+echo "    least_conn;" >> $FILENAME
+grep server $FILENAME.bak >> $FILENAME
+echo "server $IP_ADDR:$PORT fail_timeout=20s;" >> $FILENAME
+echo "}" >> $FILENAME
+
+echo "Added $FILENAME content:"
+cat $FILENAME
+echo " "
+exit 0
