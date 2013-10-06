@@ -41,7 +41,7 @@ base_install(){
 	[ -f /etc/init/${SERVER_TYPE} ] && rm /etc/init/${SERVER_TYPE}
 	ln -sf /srv/nemesis/etc/init/${SERVER_TYPE} /etc/init/${SERVER_TYPE} && \
 	ln -sf /srv/nemesis/etc/init.d/nemesis-${SERVER_TYPE} /etc/init.d/nemesis-${SERVER_TYPE} && \ 
-	configure-network && \
+	/srv/nemesis/bin/configure-network && \
 	echo "Base installation complete for ${SERVER_TYPE}" && \
 	return 0
 	return 1
