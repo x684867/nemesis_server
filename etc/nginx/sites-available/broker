@@ -40,7 +40,7 @@ server {
     proxy_set_header Connection upgrade;
   }
   location /stats {
-     root /srv/nemesis/web/broker/stats/;
+     root /srv/nemesis/web/broker/stats;
      index index.html;
   }
   location /store {
