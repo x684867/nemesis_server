@@ -21,14 +21,13 @@ include /srv/nemesis/etc/nginx/upstream/audit.upstream.conf;
 server {
 
   #Listen on tcp/80 and tcp/443
-  listen 80;
-  listen 443 ssl;
+  listen broker.nemesiscloud.com:80;
+  listen broker.nemesiscloud.com:443 ssl;
 
   #Redirect tcp/80 to tcp/443  
   if ($ssl_protocol = "") {
     rewrite ^ https://$host$request_uri? permanent;
   }
-
   # SSL Certificates
   ssl_certificate /etc/ssl/certs/broker.crt;
   ssl_certificate_key /etc/ssl/private/broker.key;

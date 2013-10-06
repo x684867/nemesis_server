@@ -18,12 +18,11 @@
 #
 include /srv/nemesis/etc/nginx/upstream/audit.upstream.conf;
 
-
 server {
 
   #Listen on tcp/80 and tcp/443
-  listen 80;
-  listen 443 ssl;
+  listen audit.nemesiscloud.com:80;
+  listen audit.nemesiscloud.com:443 ssl;
 
   #Redirect tcp/80 to tcp/443
   if ($ssl_protocol = "") {
