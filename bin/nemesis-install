@@ -19,13 +19,13 @@ init_profile(){
 configure_network(){
 
 	echo " "
-	[ "$(getYesNo 'Configure networking?')" == "y" ] && {
-		if [ "$(getYesNo 'Set a static IP address?')" == "y" ]; then
+	[ "$(getYesNo 'Configure networking?')" == "Y" ] && {
+		if [ "$(getYesNo 'Set a static IP address?')" == "Y" ]; then
 			ADDRESS="$(getIP 'Enter IP Address')"
 			NETMASK="$(getMask 'Enter Subnet Mask')"
 			GATEWAY="$(getIP 'Enter Gateway')"
 			DNS="$(getIP 'Enter DNS IP')"
-			if [ "$(getYesNo 'Are these settings correct?')" == "y" ]; then
+			if [ "$(getYesNo 'Are these settings correct?')" == "Y" ]; then
 				echo "Setting the following parameters:"
 				echo "    proto:   static"
 				echo "    address: $ADDRESS"
