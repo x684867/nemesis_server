@@ -5,7 +5,7 @@
 
 IP=""
 while [ -z "$IP" ]; do
-    read -n 15 -p "$1" IP
+    read -n 15 -p "$1: " IP
 	IP="$(echo $IP | tr -dc \.0-9 | egrep -o \([0-2]\{0,1\}[0-9]\{1,2\}\.\)\{3\}[0-9]\{1,3\} | grep -v 255)"
 done
 echo "$IP"

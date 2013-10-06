@@ -51,11 +51,15 @@ echo " "
 		restart_networking
 		exit 0
 }
-
+echo " " 
 ADDRESS="$(getIP 'Enter IP Address')"
+echo " "
 NETMASK="$(getMask 'Enter Subnet Mask')"
+echo " "
 GATEWAY="$(getIP 'Enter Gateway')"
+echo " "
 DNS="$(getIP 'Enter DNS IP')"
+echo " "
 
 [ "$(getYesNo 'Are these settings correct?')" != "Y" ] && {
 	echo " "
