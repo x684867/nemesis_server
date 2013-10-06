@@ -63,7 +63,7 @@ case "$1" in
 		exit 0
 	;;
 	keys)
-		base_install $2 && || {echo "One or more errors occurred." && exit 1}
+		base_install $2 || {echo "One or more errors occurred." && exit 1}
 		#add more steps here
 		exit 0
 	;;
