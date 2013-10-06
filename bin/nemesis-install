@@ -7,7 +7,7 @@
 [ -z "$1" ] && {
 	echo "Missing argument."
 	echo " "
-	echo "Expected $0 [base,broker,cipher,keys."
+	echo "Expected $0 [base,broker,cipher,keys]."
 	exit 1
 }
 
@@ -28,6 +28,7 @@ case "$1" in
 		rm -rf /etc/nginx/sites-available && \
 		ln -s /srv/nemesis/etc/nginx/sites-available /etc/nginx/sites-available && \
 		ln -s /srv/nemesis/etc/nginx/sites-available/$2 /etc/nginx/sites-enabled/$2 && \
+		[ -f /etc/init/$2 ] && rm /etc/init/$2
 		ln -s /srv/nemesis/etc/init/$2 /etc/init/$2 && \
 		echo "Base installation complete for $2" && \
 		exit 0			
