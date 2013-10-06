@@ -52,7 +52,7 @@ case "$1" in
 		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
 		#add more steps here
 		exit 0
-
+	;;
 	cipher)
 		base_install $2
 		[ $? -ne 0 ] && echo "One or more errors occurred." && exit 1
