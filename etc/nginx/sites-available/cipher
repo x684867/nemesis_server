@@ -19,12 +19,12 @@ upstream node {
   #          and fails any server for 20 seconds on bad response.
   #
   least_conn;
-  server 127.0.0.1:10080 fail_timeout=20s;
-  server 127.0.0.1:10081 fail_timeout=20s;
-  server 127.0.0.1:10082 fail_timeout=20s;
-  server 127.0.0.1:10083 fail_timeout=20s;
-  server 127.0.0.1:10084 fail_timeout=20s;
-  server 127.0.0.1:10085 fail_timeout=20s;
+  server 127.0.3.1:80 fail_timeout=20s;
+  server 127.0.3.2:80 fail_timeout=20s;
+  server 127.0.3.3:80 fail_timeout=20s;
+  server 127.0.3.4:80 fail_timeout=20s;
+  server 127.0.3.5:80 fail_timeout=20s;
+  server 127.0.3.6:80 fail_timeout=20s;
   #We can also cross the load balancing between servers
   #on the local network using HTTPS.
 }

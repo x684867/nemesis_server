@@ -19,15 +19,14 @@ upstream node {
   #          Direct tcp/443 traffic to http://node:100xx based on least connections
   #          and fails any server for 20 seconds on bad response.
   #
-  least_conn;
-  server 127.0.0.1:10080 fail_timeout=20s;
-  server 127.0.0.1:10081 fail_timeout=20s;
-  server 127.0.0.1:10082 fail_timeout=20s;
-  server 127.0.0.1:10083 fail_timeout=20s;
-  server 127.0.0.1:10084 fail_timeout=20s;
-  server 127.0.0.1:10085 fail_timeout=20s;
+  least_conn;	
+  include /srv/nemesis/etc/nginx/upstream/broker.*.conf
+  #
+  #server 127.0.1.1:80 fail_timeout=20s;
+  #
   #We can also cross the load balancing between servers
   #on the local network using HTTPS.
+  #
 }
 
 server {
