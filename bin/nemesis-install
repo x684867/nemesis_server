@@ -11,7 +11,9 @@
 	exit 1
 }
 init_profile(){
+	[ -f /root/.vimrc ] && rm /root/.vimrc
 	[ -f /etc/profile.d/nemesis.profile ] && rm /etc/profile.d/nemesis.profile
+	ln -s /srv/nemesis/etc/vimrc /root/.vimrc
 	ln -s /srv/nemesis/etc/nemesis.profile /etc/profile.d/nemesis.profile
 	. /etc/profile
 }
@@ -55,7 +57,6 @@ configure_network(){
 echo "Starting install ( $1 )..."
 case "$1" in 
 	base)
-		echo "set tabstop=4" > /root/.vimrc
 		init_profile
 		echo "Updating the clock..."
 		time ntpdate 0.pool.ntp.org && \

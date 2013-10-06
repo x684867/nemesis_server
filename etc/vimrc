@@ -1,0 +1,17 @@
+set tabstop=4
+syntax on
+set nobackup
+set nowb
+set noswapfile
+set ai
+set si
+set laststatus=2
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ \ Col:\ %c
+
+function! HasPaste()
+    if &paste
+		return 'PASTE MODE  '
+	en
+	return ''
+endfunction
+
