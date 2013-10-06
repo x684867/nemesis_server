@@ -20,19 +20,29 @@ case "$1" in
 		apt-get install nginx-full -y && \
 		apt-get install nodejs -y && \
 		apt-get install npm -y && \
-		echo "Base install completed."
+		rm -f /etc/nginx/sites-enabled/* && \
+		rm -f /etc/nginx/sites-available && \
+		ln -s /srv/nemesis/etc/nginx/sites-available /etc/nginx/sites-available && \
+		ln -s /srv/nemesis/etc/nginx/sites-enabled/$2 /etc/nginx/sites-enabled/$2 && \
+		ln -s /srv/nemesis/etc/init/$2 /etc/init/$2 && \
+		echo "Base installation complete for $2" && \
+		exit 0			
+	;;
+	audit)
+		$0 base $1 && \
+		exit 0 
 	;;
 	cipher)
-		$0 base
-		echo "cipher not implemented"
+		$0 base $1 && \
+		exit 0
 	;;
-	broker) 
-		$0 base
-		echo "broker not implemented"
+	broker)
+		$0 base $1 && \
+		exit 0
 	;;
 	keys)
-		$0 base
-		echo "keys not implemented"
+		$0 base $1 && \
+		exit 0
 	;;
 	*)
 		echo "USAGE: $0 [base,broker,cipher,keys]"
