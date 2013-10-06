@@ -44,7 +44,7 @@ server {
      index index.html;
   }
   location / {
-     root /srv/nemesis/static/;
+     root /srv/nemesis/web/audit/static/;
      index index.html;
   }
 }

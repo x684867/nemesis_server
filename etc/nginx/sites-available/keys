@@ -52,7 +52,7 @@ server {
   }
 
   location / {
-     root /srv/nemesis/static/;
+     root /srv/nemesis/web/keys/static/;
      index index.html;
   }
 }
