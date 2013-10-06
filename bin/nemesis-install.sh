@@ -27,7 +27,7 @@ case "$1" in
 		rm -f /etc/nginx/sites-enabled/* && \
 		rm -rf /etc/nginx/sites-available && \
 		ln -s /srv/nemesis/etc/nginx/sites-available /etc/nginx/sites-available && \
-		ln -s /srv/nemesis/etc/nginx/sites-enabled/$2 /etc/nginx/sites-enabled/$2 && \
+		ln -s /srv/nemesis/etc/nginx/sites-available/$2 /etc/nginx/sites-enabled/$2 && \
 		ln -s /srv/nemesis/etc/init/$2 /etc/init/$2 && \
 		echo "Base installation complete for $2" && \
 		exit 0			
