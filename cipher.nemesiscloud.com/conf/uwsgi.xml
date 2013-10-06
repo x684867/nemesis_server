@@ -1,0 +1,22 @@
+<uwsgi>
+    <plugin>python</plugin>
+    <socket>/run/uwsgi/app/cipher.nemesiscloud.com/socket</socket>
+    <pythonpath>/var/www/cipher.nemesiscloud.com/uwsgi/</pythonpath>
+    <uid>33</uid>
+    <gid>33</gid>
+    <module>run</module>
+    <chmod-socket>660</chmod-socket>
+    <chdir>/var/www/cipher.nemesiscloud.com/uwsgi</chdir>
+    <callable>app</callable>
+    <app mountpoint="/">
+        <script>app</script>
+    </app>
+    <processes>4</processes>
+    <stats>/var/www/cipher.nemesiscloud.com/stats.socket</stats>
+    <max-requests>2000</max-requests>
+    <limit-as>512</limit-as>
+    <reload-on-as>256</reload-on-as>
+    <reload-on-rss>192</reload-on-rss>
+    <no-orphans/>
+    <vacuum/>
+</uwsgi>
