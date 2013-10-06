@@ -49,7 +49,7 @@ server {
      alias /srv/nemesis/web/broker/stats/;
   }
   location /store {
-       alias /srv/nemesis/store/broker/;
+       root /srv/nemesis/store/broker/;
   }
   location / {
      root /srv/nemesis/web/broker/static/;
