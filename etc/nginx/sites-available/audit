@@ -44,11 +44,11 @@ server {
     proxy_set_header Connection upgrade;
   }
  location /stats {
-     root /srv/nemesis/stats/
+     root /srv/nemesis/stats/;
      index index.html;
   }
   location / {
-     root /srv/nemesis/static/
+     root /srv/nemesis/static/;
      index index.html;
   }
 }

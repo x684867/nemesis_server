@@ -46,17 +46,17 @@ server {
 
 
  location /stats {
-     root /srv/nemesis/stats/
+     root /srv/nemesis/stats/;
      index index.html;
   }
 
   location /store {
-       root /srv/nemesis/store/cipher
+       root /srv/nemesis/store/cipher/;
        index index.html;
   }
 
   location / {
-     root /srv/nemesis/static/
+     root /srv/nemesis/static/;
      index index.html;
   }
 }
