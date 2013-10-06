@@ -44,7 +44,6 @@ server {
   }
   location /store {
        root /srv/nemesis/store/objects;
-       index index.html;
   }
   location / {
      root /srv/nemesis/web/broker/static/;
