@@ -3,15 +3,6 @@
 # configure-network
 # (c) 2013 Sam caldwell.  All Rights Reserved.
 #
-[ "$(whoami)" != "root" ] && {
-	echo "This script must run as root."
-	exit 1
-}
-[ "$(grep DISTRIB_ID /etc/lsb-release | awk -F \= '{print $2}')" != "Ubuntu" ] && {
-	echo "This script will only work with Ubuntu."
-	echo "It would probably work with Debian, but it hasn't been tested."
-	exit 1
-}
 create_default_config(){
 cat > /etc/network/interfaces << EOF_CONFIG
 #/etc/network/interfaces
@@ -34,11 +25,20 @@ add_static_ip(){
 	echo "dns-nameservers $4" >> /etc/network/interfaces
 }
 
+
+[ "$(whoami)" != "root" ] && echo "This script must run as root." && exit 1
+[ "$(grep DISTRIB_ID /etc/lsb-release | awk -F \= '{print $2}')" != "Ubuntu" ] && {
+	echo "This script will only work with Ubuntu."
+	echo "It would probably work with Debian, but it hasn't been tested."
+	exit 1
+}
+
 echo " "
 [ "$(getYesNo 'Configure networking?')" != "Y" ] && {
 	echo "You said 'No' (N/n)...terminating."
 	exit 0
 }
+echo " "
 [ "$(getYesNo 'Set a static IP address?')" != "Y" ] && {
 		echo "Configuring for DHCP"
 		create_default_config
