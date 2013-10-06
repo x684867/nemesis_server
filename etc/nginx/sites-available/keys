@@ -42,7 +42,7 @@ server {
 
 
  location /stats {
-     root /srv/nemesis/stats/;
+     root /srv/nemesis/web/keys/stats/;
      index index.html;
   }
 
