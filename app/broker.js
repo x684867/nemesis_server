@@ -19,9 +19,9 @@
 			ipPort
 */
 config={
-	ipAddress:'127.0.0.1';
-	ipPort:1337;
-	proto:'http';
+	ipAddress:'127.0.0.1',
+	ipPort:1337,
+	proto:'http'
 };
 
 process.argv.forEach(function (val, index, array) {
