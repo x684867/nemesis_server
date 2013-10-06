@@ -39,9 +39,8 @@ server {
     proxy_set_header Upgrade websocket;
     proxy_set_header Connection upgrade;
   }
-  location /stats {
-     root /srv/nemesis/web/broker/stats;
-     index index.html;
+  location /stats/ {
+     alias /srv/nemesis/web/broker/stats/;
   }
   location /store {
        root /srv/nemesis/store/objects;
