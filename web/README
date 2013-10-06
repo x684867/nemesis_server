@@ -1,0 +1,28 @@
+#/srv/nemesis/web/README
+#
+#(c) 2013 Sam Caldwell.  All Rights Reserved.
+#
+# The /srv/nemesis/web/ subtree contains static web content (HTML).
+# This content includes the static pages for each server as well as
+# statistics data.
+#
+# Static content may include HTML redirects and JavaScript-based pages.
+#
+# Statistics data includes HTML files created by server cron jobs, etc.
+# in order to report each server's state.
+#
+# ---TREE---
+#
+# 	/srv
+#	  |
+#	  +--->/nemesis
+#			   |
+#              +---->/web
+#					   |
+#				       +--->/SERVER_TYPE
+#								|
+#								+--->/static
+#								|
+#								+--->/stats
+#
+#
