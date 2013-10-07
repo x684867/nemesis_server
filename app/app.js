@@ -11,10 +11,14 @@
 		*objects are encrypted and decrypted.
 */
 console.log("app.js starting as master process.");
-var fs = require('fs');
+
+var config=Object();		/*This is the worker configuration.*/
+var worker=Array();				/*This array will store the workers.*/
+
 var file = process.argv[2];
-var config=Object();
+
 console.log("    ...loading config file: "+file);
+var fs = require('fs');
 fs.readFile(file, 'utf8', function (err, data) {
  	if (err) {
   		console.log('Error: ' + err);
@@ -24,13 +28,13 @@ fs.readFile(file, 'utf8', function (err, data) {
   		console.log("    ...configuration loaded.");
   		workerPath=__dirname+"/"+config.serverType+".js"
   		console.log("    ...workerName: "+workerPath)
-  		worker=Array();
+  		
 		config.workers.forEach(function(data,index,array){
 			console.log("        ...spawning worker ["+index+"]");
 			console.log("           c   = "+JSON.stringify(data));
 			console.log("           type= "+typeof(data));
 			/*instantiate the new worker object with its parameters.*/
-			workerClass=require(workerPath);
+			worker[index]=require(workerPath);
 			currentWorker=new workerClass(index,data);
 			
 			/*launch the new worker with the main() method*/
