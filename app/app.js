@@ -1,14 +1,20 @@
 /*
-	/srv/nemesis/app/broker.js
+	/srv/nemesis/app/app.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	
-	This is the broker web service.  The broker acts as the
-	front-end web service for Nemesis API and NemesisFS Agent
-	access by user application servers.  On the back-end, the 
-	broker acts as the point where--
-	
-		*policy is stored/enforced
-		*objects are encrypted and decrypted.
+	This is the master process (app.js) for the Nemesis web services.
+	Each of the four (4) web services (audit,broker,cipher,keys) are 
+	launched using this app.js script, passing in a path and filename
+	to the specific web service's configuration file.  These config 
+	files contain a general description of the environment to be 
+	established for the web service(s) and the configuration data for
+	each service's workers.
+
+	This process is the command and control for all processes spawned
+	as workers for the given web service.  The mission of this app.js
+	script is to launch the required threads and then to monitor them
+	in real time and respawn any worker process which may die or become
+	unresponsive.	
 */
 console.log("app.js starting as master process.");
 
@@ -30,25 +36,27 @@ fs.readFile(file, 'utf8', function (err, data) {
   		console.log("    ...workerName: "+workerPath)
   		
 		config.workers.forEach(function(data,index,array){
-			console.log("        ...spawning worker ["+index+"]");
+			console.log("        ...spawning worker ["+index+"] process.");
 			console.log("           config = "+JSON.stringify(data));
 			console.log(" ");
-			/*instantiate the new worker object with its parameters.*/
-			workerClass=require(workerPath);
-			worker[index]=new workerClass(index,data);
 			
-			switch(worker[index].status){
-				case 0: console.log("           spawned successfully."); break;
-				case 1: console.log("           error(1)(recoverable)"); break;
-				case 2: console.log("           error(2)(recoverable)"); break;
-				case 3: console.log("           error(3)(recoverable)"); break;
-				case 10: throw new Error("           error(10)(fatal)"); break;
-				default:
-						throw new Error("           failed to spawn and returned an\n"
-									   +"           unknown or unhandled error.\n");
-						break;
+			worker_params=[
+							'/srv/nemesis/app/worker.js',
+							index,
+							data
+			];
 			
-			}
+			worker_process=require('child_process')
+			worker[index]=worker_process.spawn('/usr/bin/nodejs',worker_params);
+			
+			worker[index].on('close',function(code,signal){
+				console.log('worker process #'+index+' terminated.');
+			});
+			
+			worker[index].on('error'),function(code,signal){
+				console.log('worker process #'+index+' has thrown an error.');
+				worker[index].kill('SIGHUP');
+			});
   		});
  		console.log("    ...All workers have been spawned.");
 	}
