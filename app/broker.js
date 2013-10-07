@@ -10,6 +10,7 @@
 		*policy is stored/enforced
 		*objects are encrypted and decrypted.
 */
+/*
 if(process==undefined) console.log("Process is undefined, dummy!");
 
 if(process.argv[2]==undefined){
@@ -17,6 +18,7 @@ if(process.argv[2]==undefined){
 }else{
 	config_file=process.argv[2];
 }
+*/
 
 var fs=require('fs');
 fs.readFile(config_file,function(err,data){
