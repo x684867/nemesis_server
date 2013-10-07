@@ -32,7 +32,11 @@ fs.readFile(file, 'utf8', function (err, data) {
 				worker[index].id=index;
 				worker[index].config=data;
 				/*launch the new worker with the main() method*/
-				worker[index].main();
+				if(worker[index].main()){
+					console.log("worker["+index+]" returned error.");
+				}else{
+					console.log("worker["+index+]" spawned successfully.");
+				}
 				/*Move on to the next worker*/
 	  		});
 	  		console.log("    ...All workers have been spawned.");
