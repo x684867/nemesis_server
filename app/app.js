@@ -29,10 +29,10 @@ fs.readFile(file, 'utf8', function (err, data) {
 				console.log("        ...spawning worker ["+index+"]");
 				/*instantiate the new worker object with its parameters.*/
 				worker[index]=require(workerPath);
-				worker.id=index;
-				worker.config=data;
+				worker[index].id=index;
+				worker[index].config=data;
 				/*launch the new worker with the main() method*/
-				worker.main();
+				worker[index].main();
 				/*Move on to the next worker*/
 	  		});
 	  		console.log("    ...All workers have been spawned.");
