@@ -1,4 +1,4 @@
-config={
+{
 	'server_type':'broker',
 	'workers':[
 				{
