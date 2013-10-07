@@ -1,19 +1,19 @@
 /*
 	broker worker
 */
+module.export=Broker;
 
-var config='';
-var id=0;
-
-module.exports.main=function(){
-	if((config=='') || (id==0)){
-		if(config=='') console.log("Error.  No Configuration set.");
-		if(id==0) console.log("Error.  No id parameter set.");
-		return 1; /*Non-Zero returns indicate error.*/
-	}else {
-		console.log("configuration and id are set.");
-		console.log("Need payload code.");
-		return 0; /*Zero returns indicate success*/
-	}
+function Broker(index,data){
+	var id=index;
+	var config=data;
 	
+	if(data==undefined) throw new Error('config is not defined.');
+	if(index==undefined) throw new Error('index is not defined.');
+	if(typeof(this.config)!='object') throw new Error('config is not an object.');
+	if(typeof(this.id)!='number') throw new Error('id must be a number.');
+}
+Broker.prototype.main=function(){
+	console("running main.");
+	return 0;/*successful spawn.*/
+	return 1;/*failed spawn.*/
 }

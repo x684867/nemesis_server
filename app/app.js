@@ -16,31 +16,28 @@ var file = process.argv[2];
 var config=Object();
 console.log("    ...loading config file: "+file);
 fs.readFile(file, 'utf8', function (err, data) {
-	  	if (err) {
-	  		console.log('Error: ' + err);
-	  		return;
-	  	}else{
-	  		config=JSON.parse(data);
-	  		console.log("    ...configuration loaded.");
-	  		workerPath=__dirname+"/"+config.serverType+".js"
-	  		console.log("    ...workerName: "+workerPath)
-	  		worker=Array();
-			config.workers.forEach(function(data,index,array){
-				console.log("        ...spawning worker ["+index+"]");
-				/*instantiate the new worker object with its parameters.*/
-				worker[index]=require(workerPath);
-				worker[index].id=index;
-				worker[index].config=data;
-				/*launch the new worker with the main() method*/
-				if(worker[index].main()){
-					console.log("worker["+index+"] returned error.");
-					exit(1);
-				}else{
-					console.log("worker["+index+"] spawned successfully.");
-				}
-				/*Move on to the next worker*/
-	  		});
-	  		console.log("    ...All workers have been spawned.");
-	  	}
+ 	if (err) {
+  		console.log('Error: ' + err);
+  		return;
+  	}else{
+  		config=JSON.parse(data);
+  		console.log("    ...configuration loaded.");
+  		workerPath=__dirname+"/"+config.serverType+".js"
+  		console.log("    ...workerName: "+workerPath)
+  		worker=Array();
+		config.workers.forEach(function(data,index,array){
+			console.log("        ...spawning worker ["+index+"]");
+			/*instantiate the new worker object with its parameters.*/
+			workerClass=require(workerPath);
+			worker[index]=new workerClass(index,data);
+			
+			/*launch the new worker with the main() method*/
+			if(worker[index].main()==0){
+				console.log("worker["+index+"] spawned successfully.");
+			}else{
+				throw new Error("worker["+index+"] failed to spawn and returned error.");
+			}
+  		});
+ 		console.log("    ...All workers have been spawned.");
 	}
-);
+});
