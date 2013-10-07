@@ -19,6 +19,8 @@
 const NODE_JS_BINARY='/usr/bin/nodejs';
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
 
+var worker=Array();
+
 console.log("app.js starting as master process.");
 
 var config=Object();		/*This is the worker configuration.*/
@@ -45,10 +47,10 @@ fs.readFile(file, 'utf8', function (err, data) {
 			console.log(" ");
 			
 			/*instantiate the new worker object with its parameters.*/
-			workerClass=require(workerPath);
-			worker=new workerClass(index,data);
+			serverFactory=require(workerPath);
+			server=new serverFactory(index,data);
 			
-			switch(worker.status){
+			switch(server.status){
 				case 0: console.log("           created successfully."); break;
 				case 1: console.log("           error(1)(recoverable)"); break;
 				case 2: console.log("           error(2)(recoverable)"); break;
@@ -62,8 +64,10 @@ fs.readFile(file, 'utf8', function (err, data) {
 			}
 			
 			/*Now we need to fork a process for this worker.*/
+			console.log("        ...spawning child process with wrapper.js.");
 			var process=require('child_process');
-			child=process.spawn(NODE_JS_BINARY,[CHILD_PROCESS_WRAPPER]);
+			worker[index]=process.spawn(NODE_JS_BINARY,[CHILD_PROCESS_WRAPPER]);
+			console.log("           done.  pid="+worker[index].pid)
 			
 			
 			
