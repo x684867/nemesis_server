@@ -33,9 +33,9 @@ fs.readFile(file, 'utf8', function (err, data) {
 				worker[index].config=data;
 				/*launch the new worker with the main() method*/
 				if(worker[index].main()){
-					console.log("worker["+index+]" returned error.");
+					console.log("worker["+index+"] returned error.");
 				}else{
-					console.log("worker["+index+]" spawned successfully.");
+					console.log("worker["+index+"] spawned successfully.");
 				}
 				/*Move on to the next worker*/
 	  		});
