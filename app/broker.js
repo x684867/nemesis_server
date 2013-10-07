@@ -6,7 +6,7 @@ function worker(){
 	var id=None;
 	var config=None;
 	
-	main=function(){
+	var main=function(){
 		console.log("Firing broker.main()");
 	}
 }
