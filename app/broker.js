@@ -11,27 +11,36 @@
 		*objects are encrypted and decrypted.
 */
 
-/*
-	Arguments are passed in when the script is executed.
-	This includes:
-	
-			ipAddress
-			ipPort
-*/
-config={
-	ipAddress:'127.0.0.1',
-	ipPort:1337,
-	proto:'http'
-};
+if(process.argv[2]==undefined){
+	throw new Exception('Missing argument: configuration_path');
+}else{
+	config_file=process.argv[2];
+}
 
-process.argv.forEach(function (val, index, array) {
-  console.log(index + ': ' + val);
-});
-
-var http = require('http');
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World\n');
-}).listen(config.ipPort, config.ipAddress);
-
-console.log('Server running at '+config.proto+'://'+config.ipAddress+':'+config.ipPort+'/');
+var fs=require('fs');
+fs.readFile(config_file,function(err,data){
+	if(err){
+		console.log("Error reading configuration file.");
+		console.log("  config_file:"+config_file);
+		console.log("        error:"+err);
+		throw new Exception();
+	}else{
+		/*Read the configuration file.*/
+		config=JSON.parse(data);	
+		/*Iterate through the configuration and spawn enough workers.*/
+		if(config.workers==undefined){
+			console.log("No workers defined in config_file");
+			console.log("check config_file ("+config_file+")");
+			console.log(" ")
+			throw new Exception();
+		}else{
+			config.workers.forEach(function(worker_data,index,array){
+				
+				/*Spawn the web worker.*/
+				console.log("worker_data:");
+				console.log("   "+worker);
+				
+			});
+		}
+	}
+}

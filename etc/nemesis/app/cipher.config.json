@@ -1,0 +1,25 @@
+config={
+	'server_type':'cipher',
+	'workers':[
+				{
+					workerId:'21',
+					ipAddress:'127.0.3.1',
+					ipPort:80,
+				},
+				{
+					workerId:'22',
+					ipAddress:'127.0.3.2',
+					ipPort:80
+				},
+				{
+					workerId:'23',
+					ipAddress:'127.0.3.3',
+					ipPort:80
+				},
+				{
+					workerId:'24',
+					ipAddress:'127.0.3.4',
+					ipPort:80
+				},					
+	]
+}

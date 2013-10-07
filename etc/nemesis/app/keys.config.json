@@ -1,0 +1,25 @@
+config={
+	'server_type':'keys',
+	'workers':[
+				{
+					workerId:'21',
+					ipAddress:'127.0.4.1',
+					ipPort:80,
+				},
+				{
+					workerId:'22',
+					ipAddress:'127.0.4.2',
+					ipPort:80
+				},
+				{
+					workerId:'23',
+					ipAddress:'127.0.4.3',
+					ipPort:80
+				},
+				{
+					workerId:'24',
+					ipAddress:'127.0.4.4',
+					ipPort:80
+				},					
+	]
+}
