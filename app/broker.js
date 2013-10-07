@@ -11,6 +11,11 @@
 		*objects are encrypted and decrypted.
 */
 console.log("Starting /srv/nemesis/app/broker.js...");
+console.log(" ");
+process.argv.forEach(function(data,index,array){
+	console.log("    arg["+index+"]: "+data)
+});
+console.log(" ");
 config_file=process.argv[2];
 console.log("  config_file: "+config_file);
 /*
