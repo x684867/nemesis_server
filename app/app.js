@@ -41,9 +41,10 @@ fs.readFile(file, 'utf8', function (err, data) {
 			worker_response=worker[index].main();
 			switch(worker_response){
 				case 0: console.log("           spawned successfully."); break;
-				case 1: console.log("           error(1)");
-				case 2: console.log("           error(2)");
-				case 3: console.log("           error(3)");
+				case 1: console.log("           error(1)(recoverable)"); break;
+				case 2: console.log("           error(2)(recoverable)"); break;
+				case 3: console.log("           error(3)(recoverable)"); break;
+				case 10: throw new Error("           error(10)(fatal)"); break;
 				default:
 						throw new Error("           failed to spawn and returned an\n"
 									   +"           unknown or unhandled error.\n");
