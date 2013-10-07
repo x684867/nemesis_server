@@ -2,7 +2,7 @@
 	broker worker
 */
 
-function broker(myId, myConfig){
+function worker(myId, myConfig){
 	var id=myId;
 	var config=myConfig;
 	
@@ -11,4 +11,4 @@ function broker(myId, myConfig){
 	}
 }
 
-module.exports.worker=broker;
+module.exports.worker=worker;
