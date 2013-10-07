@@ -1,9 +1,9 @@
 /*
 	broker worker
 */
-module.export=Broker;
+module.export=workerClass;
 
-function Broker(index,data){
+function workerClass(index,data){
 	var id=index;
 	var config=data;
 	
