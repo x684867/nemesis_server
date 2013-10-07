@@ -1,6 +1,6 @@
 {
-	"server_type":'broker',
-	"workers":[
+	'serverType':'broker',
+	'workers':[
 				{
 					workerId:'21',
 					ipAddress:'127.0.2.1',
