@@ -10,17 +10,16 @@
 		*policy is stored/enforced
 		*objects are encrypted and decrypted.
 */
-config_file=process.argv[2];
-console.log("Starting /srv/nemesis/app/broker.js...");
-console.log(" ");
-console.log("    config_file: "+config_file);
-console.log(" ");
-console.log("read config_file");
-config_data=require(config_file);
-if(config_data) console.log("exists.");
-
-console.log("parse config_file: data="+config_data);
-config=JSON.parse(config_data);
-console.log("done.");
-console.log(config_data);
-
+var fs = require('fs');
+var file = '/srv/nemesis/etc/nemesis/app/broker.config.json';
+ 
+fs.readFile(file, 'utf8', function (err, data) {
+  if (err) {
+    console.log('Error: ' + err);
+    return;
+  }
+ 
+  data = JSON.parse(data);
+ 
+  console.log(data);
+});
