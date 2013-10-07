@@ -22,9 +22,18 @@ fs.readFile(file, 'utf8', function (err, data) {
 	  	}else{
 	  		config=JSON.parse(data);
 	  		console.log("    ...configuration loaded.");
-	  		workerName=__dirname+"/"+config.serverType+".js"
-	  		console.log("    ...workerName: "+workerName)
-	  		worker=require(workerName);
+	  		workerPath=__dirname+"/"+config.serverType+".js"
+	  		console.log("    ...workerName: "+workerPath)
+	  		worker=require(workerPath);
+			config.workers.forEach(function(data,index,array){
+				console.log("        ...spawning worker ["+index+"]");
+				/*instantiate the new worker object with its parameters.*/
+				w_instance=new worker(index,data);
+				/*launch the new worker with the main() method*/
+				w_instance.main();
+				/*Move on to the next worker*/
+	  		});
+	  		console.log("    ...All workers have been spawned.");
 	  	}
 	}
 );
