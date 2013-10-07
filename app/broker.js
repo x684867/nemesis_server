@@ -11,16 +11,16 @@
 		*objects are encrypted and decrypted.
 */
 var fs = require('fs');
-var file = '/srv/nemesis/etc/nemesis/app/broker.config.json';
+var file = process.argv[2];
 var config=Object();
 fs.readFile(file, 'utf8', function (err, data) {
 	  	if (err) {
 	  		console.log('Error: ' + err);
 	  		return;
 	  	}else{
-	  		console.log('parsing configuration data');
-	  		
 	  		config=JSON.parse(data);
+	  		/*worker=require('./*/
+	  		console.log("configuration loaded.");
 	  	}
 	}
 );
