@@ -23,14 +23,12 @@ Broker.prototype.main=function(){
 		var http = require('http');
 		http.createServer(function (req, res) {
 		  res.writeHead(200, {'Content-Type': 'text/plain'});
-		  res.end('Hello World.  I am "+this.config.workerId+"\n');
+		  res.end('Hello World.  I am '+this.config.workerId+'\n');
 		}).listen(this.config.ipPort, this.config.ipAddress);
 	}catch(e){
 		console.log('           Broker failed to open http listener');
 		return 10;/*Fatal error.*/
 	}
-	
-	console.log('           Broker listening (http://127.0.0.1:1337/)');
 	return 0;/*successful spawn.  Return non-zero for error codes.*/
 	
 }
