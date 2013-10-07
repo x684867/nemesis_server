@@ -3,6 +3,7 @@
 */
 
 function worker(){
+	console("   worker (broker) constructor firing");
 	var id=None;
 	var config=None;
 	
