@@ -4,8 +4,8 @@
 module.exports=Broker;
 
 function Broker(index,data){
-	var id=index;
-	var config=data;
+	this.id=index;
+	this.config=data;
 	
 	if(data==undefined) throw new Error('config is not defined.');
 	if(index==undefined) throw new Error('index is not defined.');
