@@ -10,41 +10,13 @@
 		*policy is stored/enforced
 		*objects are encrypted and decrypted.
 */
+config_file=process.argv[2];
 console.log("Starting /srv/nemesis/app/broker.js...");
 console.log(" ");
-process.argv.forEach(function(data,index,array){
-	console.log("    arg["+index+"]: "+data)
-});
-console.log(" ");
-config_file=process.argv[2];
 console.log("    config_file: "+config_file);
 
-var fs=require('fs');
-fs.readFile(config_file,'utf8',function(err,data){
-	if(err){
-		console.log("Error reading configuration file.");
-		throw new Exception();
-	}else{
-		if(JSON==undefined) console.log("JSON is undefined.");
-		config=JSON.parse(data);
-		if(config==undefined){
-			console.log("config is undefined or invalid JSON");
-		}else{	
-			if(config.workers==undefined){
-				console.log("No workers defined in config_file");
-				console.log("check config_file ("+config_file+")");
-				console.log(" ")
-				throw new Exception();
-			}else{
-				config.workers.forEach(function(worker_data,index,array){
-					
-					/*Spawn the web worker.*/
-					console.log("worker_data:");
-					console.log("   "+worker);
-					
-			
-				});
-			}
-		}
-	}
-});
+config_data=require(config_file);
+config=JSON.parse(config_data);
+
+console.log(config_data);
+
