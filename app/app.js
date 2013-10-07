@@ -27,9 +27,10 @@ fs.readFile(file, 'utf8', function (err, data) {
   		worker=Array();
 		config.workers.forEach(function(data,index,array){
 			console.log("        ...spawning worker ["+index+"]");
+			console.log("           c="+JSON.stringify(config.workers[index]));
 			/*instantiate the new worker object with its parameters.*/
 			workerClass=require(workerPath);
-			currentWorker=new workerClass(index,config.workers[index]);
+			currentWorker=new workerClass(index,data);
 			
 			/*launch the new worker with the main() method*/
 			if(worker[index].main()==0){
