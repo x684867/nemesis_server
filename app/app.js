@@ -31,17 +31,24 @@ fs.readFile(file, 'utf8', function (err, data) {
   		
 		config.workers.forEach(function(data,index,array){
 			console.log("        ...spawning worker ["+index+"]");
-			console.log("           c   = "+JSON.stringify(data));
-			console.log("           type= "+typeof(data));
+			console.log("           config = "+JSON.stringify(data));
+			console.log(" ");
 			/*instantiate the new worker object with its parameters.*/
 			workerClass=require(workerPath);
 			worker[index]=new workerClass(index,data);
 			
 			/*launch the new worker with the main() method*/
-			if(worker[index].main()==0){
-				console.log("worker["+index+"] spawned successfully.");
-			}else{
-				throw new Error("worker["+index+"] failed to spawn and returned error.");
+			worker_response=worker[index].main();
+			switch(worker_response){
+				case 0: console.log("           spawned successfully.");
+				case 1: console.log("           error(1)");
+				case 2: console.log("           error(2)");
+				case 3: console.log("           error(3)");
+				case else:
+						throw new Error("           failed to spawn and returned an\n"
+									   +"           unknown or unhandled error.\n");
+						break;
+			
 			}
   		});
  		console.log("    ...All workers have been spawned.");
