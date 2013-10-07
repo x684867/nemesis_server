@@ -9,8 +9,8 @@ function workerClass(index,data){
 	
 	if(data==undefined) throw new Error('config is not defined.');
 	if(index==undefined) throw new Error('index is not defined.');
-	if(typeof(this.data)!='object') throw new Error('config is not an object.  type:'+typeof(this.data));
-	if(typeof(this.id)!='number') throw new Error('id must be a number.');
+	if(typeof(data)!='object') throw new Error('config is not an object.  type:'+typeof(data));
+	if(typeof(index)!='number') throw new Error('id must be a number.');
 }
 workerClass.prototype.main=function(){
 	console("running main.");
