@@ -11,13 +11,18 @@
 		*objects are encrypted and decrypted.
 */
 console.log("starting /srv/nemesis/app/broker.js...");
-if(process.argv[2]==undefined){
+process.argv.forEach(function(data,index,array){
+	console.log("    ARG["+index+"]: "+data)
+})
+/*
+if(process.argv[1]==undefined){
 	console.log("Missing argument: configuration_path");
 	throw new Exception();
 }else{
 	config_file=process.argv[2];
 }
 
+*/
 
 var fs=require('fs');
 fs.readFile(config_file,function(err,data){
