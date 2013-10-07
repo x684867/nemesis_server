@@ -10,6 +10,7 @@
 		*policy is stored/enforced
 		*objects are encrypted and decrypted.
 */
+if(process==undefined) console.log("Process is undefined, dummy!");
 
 if(process.argv[2]==undefined){
 	throw new Exception('Missing argument: configuration_path');
