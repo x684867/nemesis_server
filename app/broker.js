@@ -13,8 +13,8 @@ function Broker(id,config){
 	if(typeof(id)!='number') throw new Error('id must be a number.');
 	
 	console.log("           running Broker.main().");
-	console.log("                ipAddress:"+this.config.ipAddress);
-	console.log("                ipPort:   "+this.config.ipPort);
+	console.log("                ipAddress:"+config.ipAddress);
+	console.log("                ipPort:   "+config.ipPort);
 	console.log(" ");
 		
 	try {
