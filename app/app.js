@@ -22,7 +22,7 @@ fs.readFile(file, 'utf8', function (err, data) {
 	  	}else{
 	  		config=JSON.parse(data);
 	  		console.log("    ...configuration loaded.");
-	  		console.log("Type: "+config.serverType);
+	  		worker=require(__dirname__+config.serverType+".js");
 	  	}
 	}
 );
