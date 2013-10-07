@@ -1,9 +1,9 @@
 /*
 	broker worker
 */
-module.exports=workerClass;
+module.exports=brokerClass;
 
-function workerClass(index,data){
+function brokerClass(index,data){
 	var id=index;
 	var config=data;
 	
@@ -11,9 +11,10 @@ function workerClass(index,data){
 	if(index==undefined) throw new Error('index is not defined.');
 	if(typeof(data)!='object') throw new Error('config is not an object.  type:'+typeof(data));
 	if(typeof(index)!='number') throw new Error('id must be a number.');
+
 }
 
-workerClass.prototype.main=function(){
+brokerClass.prototype.main=function(){
 	console.log("running main.");
 	return 0;/*successful spawn.*/
 	return 1;/*failed spawn.*/
