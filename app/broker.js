@@ -32,8 +32,4 @@ function Broker(id,config){
 		
 	}
 	this.status=0;/*successful spawn.  Return non-zero for error codes.*/
-
-
-Broker.prototype.main=function(){
-	
 }
