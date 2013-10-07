@@ -10,6 +10,7 @@
 		*policy is stored/enforced
 		*objects are encrypted and decrypted.
 */
+console.log("app.js starting as master process.");
 var fs = require('fs');
 var file = process.argv[2];
 var config=Object();
