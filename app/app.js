@@ -34,8 +34,8 @@ fs.readFile(file, 'utf8', function (err, data) {
 			console.log("           c   = "+JSON.stringify(data));
 			console.log("           type= "+typeof(data));
 			/*instantiate the new worker object with its parameters.*/
-			worker[index]=require(workerPath);
-			currentWorker=new workerClass(index,data);
+			workerClass=require(workerPath);
+			worker[index]=new workerClass(index,data);
 			
 			/*launch the new worker with the main() method*/
 			if(worker[index].main()==0){
