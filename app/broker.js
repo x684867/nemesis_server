@@ -2,11 +2,11 @@
 	broker worker
 */
 
-var config=None;
-var id=None;
+var config='';
+var id=0;
 
 module.exports.main=function(){
-	if((config==None) || (id==None)){
+	if((config=='') || (id==0)){
 		if(config==None) console.log("Error.  No Configuration set.");
 		if(id==None) console.log("Error.  No id parameter set.");
 	}else {
