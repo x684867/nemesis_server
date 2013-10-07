@@ -16,10 +16,13 @@
 	in real time and respawn any worker process which may die or become
 	unresponsive.	
 */
+const NODE_JS_BINARY='/usr/bin/nodejs';
+const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
+
 console.log("app.js starting as master process.");
 
 var config=Object();		/*This is the worker configuration.*/
-var worker=Array();				/*This array will store the workers.*/
+
 
 var file = process.argv[2];
 
@@ -36,25 +39,35 @@ fs.readFile(file, 'utf8', function (err, data) {
   		console.log("    ...workerName: "+workerPath)
   		
 		config.workers.forEach(function(data,index,array){
-			console.log("        ...spawning worker ["+index+"]");
+		
+			console.log("        ...instantiating worker ["+index+"]");
 			console.log("           config = "+JSON.stringify(data));
 			console.log(" ");
+			
 			/*instantiate the new worker object with its parameters.*/
 			workerClass=require(workerPath);
-			worker[index]=new workerClass(index,data);
+			worker=new workerClass(index,data);
 			
-			switch(worker[index].status){
-				case 0: console.log("           spawned successfully."); break;
+			switch(worker.status){
+				case 0: console.log("           created successfully."); break;
 				case 1: console.log("           error(1)(recoverable)"); break;
 				case 2: console.log("           error(2)(recoverable)"); break;
 				case 3: console.log("           error(3)(recoverable)"); break;
 				case 10: throw new Error("           error(10)(fatal)"); break;
 				default:
-						throw new Error("           failed to spawn and returned an\n"
+						throw new Error("           failed to create and returned an\n"
 									   +"           unknown or unhandled error.\n");
 						break;
 			
 			}
+			
+			/*Now we need to fork a process for this worker.*/
+			var process=require('child_process');
+			child=process.spawn(NODE_JS_BINARY,[CHILD_PROCESS_WRAPPER]);
+			
+			
+			
+			
   		});
  		console.log("    ...All workers have been spawned.");
 	}
