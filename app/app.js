@@ -16,7 +16,6 @@
 	in real time and respawn any worker process which may die or become
 	unresponsive.	
 */
-const NODE_JS_BINARY='/usr/bin/nodejs';
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
 
 var worker=Array();
@@ -64,11 +63,58 @@ fs.readFile(file, 'utf8', function (err, data) {
 			}
 			
 			/*Now we need to fork a process for this worker.*/
-			console.log("        ...spawning child process with wrapper.js.");
+			console.log("        ...forking child process with wrapper.js.");
 			var process=require('child_process');
-			worker[index]=process.spawn(NODE_JS_BINARY,[CHILD_PROCESS_WRAPPER]);
+			worker[index]=process.fork(CHILD_PROCESS_WRAPPER);
 			console.log("           done.  pid="+worker[index].pid)
+
+			console.log("        ...setup message handler.");
+			worker[index].on('message',function(msg){
+				switch(msg.code){
+					case 0: /*Child is alive.  This is the first message send by child.*/
+						console.log("           child has checked in and is alive.");
+						console.log("           sending server object to the child.");
+						worker[index].send(server);
+						console.log("           done.  child has server object");
+						break;
+					case 1:
+					
+					/*General Application Messages 10-19*/
+					case 10: /*Heartbeat Message*/
+						console.log("             worker["+index+"] heartbeat:"+msg.code);
+						/*
+						  Record the heartbeat to the statistics.  If not we may assume
+						  The process is hung or dead, which would lead us to respawn the
+						  process unnecessarily.
+						 */
+						break;
+					case 11: /*Object Created Message*/
+						console.log("             worker["+index+"] create object:"+msg.code);
+						
+						/*Process the object into the store.*/
+						
+						/*Handle the statistics*/
+						
+						break;
+					
+					
+						
+					/*Process management Messages 90-99*/
+					case 90: /*Suicide message: Kill me softly.*/
+						console.log("             worker["+index+"] wants to die:"+msg.code);
+						
+						/*Kill the child process here.*/
+						
+						break;
+					default:
+						throw new Error("unhandled message recieved from worker process.");
+				}
+			}
+
 			
+			console.log("        ...sending code:0 object as message to child.");
+			worker[index].send({code:0});
+			console.log("           done sending message.");
 			
 			
 			
