@@ -2,9 +2,9 @@
 	broker worker
 */
 
-function worker(myId, myConfig){
-	var id=myId;
-	var config=myConfig;
+function worker(){
+	var id=None;
+	var config=None;
 	
 	main=function(){
 		console.log("Firing broker.main()");
