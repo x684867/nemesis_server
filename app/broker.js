@@ -2,7 +2,7 @@
 	broker worker
 */
 
-function worker(){
+function workerClass(){
 	console("   worker (broker) constructor firing");
 	var id=None;
 	var config=None;
@@ -12,4 +12,4 @@ function worker(){
 	}
 }
 
-module.exports=worker;
+module.exports.worker=workerClass;
