@@ -17,7 +17,9 @@ console.log("    config_file: "+config_file);
 console.log(" ");
 console.log("read config_file");
 config_data=require(config_file);
-console.log("parse config_file");
+if(config_data) console.log("exists.");
+
+console.log("parse config_file: data="+config_data);
 config=JSON.parse(config_data);
 console.log("done.");
 console.log(config_data);
