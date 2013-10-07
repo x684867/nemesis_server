@@ -37,9 +37,7 @@ fs.readFile(file, 'utf8', function (err, data) {
 			workerClass=require(workerPath);
 			worker[index]=new workerClass(index,data);
 			
-			/*launch the new worker with the main() method*/
-			worker_response=worker[index].main();
-			switch(worker_response){
+			switch(worker[index].status){
 				case 0: console.log("           spawned successfully."); break;
 				case 1: console.log("           error(1)(recoverable)"); break;
 				case 2: console.log("           error(2)(recoverable)"); break;
