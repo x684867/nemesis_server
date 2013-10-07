@@ -15,16 +15,20 @@ function Broker(index,data){
 }
 
 Broker.prototype.main=function(){
-	console.log("          running Broker.main().");
+	console.log("           running Broker.main().");
 	
-	var http = require('http');
-	http.createServer(function (req, res) {
-	  res.writeHead(200, {'Content-Type': 'text/plain'});
-	  res.end('Hello World\n');
-	}).listen(1337, '127.0.0.1');
-	console.log('          Broker listening (http://127.0.0.1:1337/)');
+	try {
+		var http = require('http');
+		http.createServer(function (req, res) {
+		  res.writeHead(200, {'Content-Type': 'text/plain'});
+		  res.end('Hello World\n');
+		}).listen(1337, '127.0.0.1');
+	}catch(e){
+		console.log('           Broker failed to open http listener');
+		return 10;/*Fatal error.*/
+	}
 	
-	
+	console.log('           Broker listening (http://127.0.0.1:1337/)');
 	return 0;/*successful spawn.  Return non-zero for error codes.*/
 	
 }
