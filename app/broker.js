@@ -14,7 +14,7 @@ function workerClass(index,data){
 }
 
 workerClass.prototype.main=function(){
-	console("running main.");
+	console.log("running main.");
 	return 0;/*successful spawn.*/
 	return 1;/*failed spawn.*/
 }
