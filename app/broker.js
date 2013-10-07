@@ -12,4 +12,4 @@ function worker(){
 	}
 }
 
-module.exports.worker=worker;
+module.exports=worker;
