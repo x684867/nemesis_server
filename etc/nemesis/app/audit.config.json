@@ -1,25 +1,25 @@
-config={
-	'server_type':'audit',
-	'workers':[
+{
+	"serverType":"broker",
+	"workers":[
 				{
-					workerId:'21',
-					ipAddress:'127.0.1.1',
-					ipPort:80,
+					"workerId":11,
+					"ipAddress":"127.0.1.1",
+					"ipPort":80
 				},
 				{
-					workerId:'22',
-					ipAddress:'127.0.1.2',
-					ipPort:80
+					"workerId":12,
+					"ipAddress":"127.0.1.2",
+					"ipPort":80
 				},
 				{
-					workerId:'23',
-					ipAddress:'127.0.1.3',
-					ipPort:80
+					"workerId":13,
+					"ipAddress":"127.0.1.3",
+					"ipPort":80
 				},
 				{
-					workerId:'24',
-					ipAddress:'127.0.1.4',
-					ipPort:80
-				},					
+					"workerId":14,
+					"ipAddress":"127.0.1.4",
+					"ipPort":80
+				}					
 	]
 }
