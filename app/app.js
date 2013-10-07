@@ -49,19 +49,6 @@ fs.readFile(file, 'utf8', function (err, data) {
 			serverFactory=require(workerPath);
 			server=new serverFactory(index,data);
 			
-			switch(server.status){
-				case 0: console.log("           created successfully."); break;
-				case 1: console.log("           error(1)(recoverable)"); break;
-				case 2: console.log("           error(2)(recoverable)"); break;
-				case 3: console.log("           error(3)(recoverable)"); break;
-				case 10: throw new Error("           error(10)(fatal)"); break;
-				default:
-						throw new Error("           failed to create and returned an\n"
-									   +"           unknown or unhandled error.\n");
-						break;
-			
-			}
-			
 			/*Now we need to fork a process for this worker.*/
 			console.log("        ...forking child process with wrapper.js.");
 			var process=require('child_process');
@@ -71,13 +58,20 @@ fs.readFile(file, 'utf8', function (err, data) {
 			console.log("        ...setup message handler.");
 			worker[index].on('message',function(msg){
 				switch(msg.code){
-					case 0: /*Child is alive.  This is the first message send by child.*/
+				
+					/*Startup Messages 0-9*/
+					case 0: /*Child is alive. This is the first message sent by child.*/
 						console.log("           child has checked in and is alive.");
 						console.log("           sending server object to the child.");
 						worker[index].send(server);
 						console.log("           done.  child has server object");
 						break;
-					case 1:
+					case 1: /*Server is alive. This is the second message sent by child*/
+						console.log("           child responded: server is alive.");
+						break;
+					case 2: /*Server is dead. This is the second message sent by child*/
+						console.log("           child responded: server failed to start.");
+						break;
 					
 					/*General Application Messages 10-19*/
 					case 10: /*Heartbeat Message*/

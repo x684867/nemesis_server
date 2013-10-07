@@ -5,7 +5,6 @@ module.exports=Broker;
 
 function Broker(id,config){
 	
-	this.status=10;/*Fatal Error (status was not set by the constructor.*/
 		
 	if(config==undefined) throw new Error('config is not defined.');
 	if(id==undefined) throw new Error('index is not defined.');
@@ -16,7 +15,12 @@ function Broker(id,config){
 	console.log("                ipAddress:"+config.ipAddress);
 	console.log("                ipPort:   "+config.ipPort);
 	console.log(" ");
-		
+	this.status=0;/*successful spawn.  Return non-zero for error codes.*/
+	console.log('the server is instantiated.  But start() must be called to start it.');
+
+}
+Broker.start=function(){
+	console.log('Attempting to start the server...');
 	try {
 	
 		var http = require('http');
@@ -24,12 +28,13 @@ function Broker(id,config){
 		  res.writeHead(200, {'Content-Type': 'text/plain'});
 		  res.end('Hello World.  I am broker#'+config.workerId+'\n');
 		}).listen(config.ipPort, config.ipAddress);
-		
+	
 	}catch(e){
 	
 		console.log('           Broker failed to open http listener');
-		this.status=11;/*Fatal error.*/
+		return 10;/*Fatal Error*/
 		
 	}
-	this.status=0;/*successful spawn.  Return non-zero for error codes.*/
+	console.log('Server started!');
+	return 0;/*Successful start*/
 }
