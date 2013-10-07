@@ -43,4 +43,4 @@ fs.readFile(config_file,function(err,data){
 			});
 		}
 	}
-}
+});
