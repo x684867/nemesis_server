@@ -36,27 +36,25 @@ fs.readFile(file, 'utf8', function (err, data) {
   		console.log("    ...workerName: "+workerPath)
   		
 		config.workers.forEach(function(data,index,array){
-			console.log("        ...spawning worker ["+index+"] process.");
+			console.log("        ...spawning worker ["+index+"]");
 			console.log("           config = "+JSON.stringify(data));
 			console.log(" ");
+			/*instantiate the new worker object with its parameters.*/
+			workerClass=require(workerPath);
+			worker[index]=new workerClass(index,data);
 			
-			worker_params=[
-							'/srv/nemesis/app/worker.js',
-							index,
-							data
-			];
+			switch(worker[index].status){
+				case 0: console.log("           spawned successfully."); break;
+				case 1: console.log("           error(1)(recoverable)"); break;
+				case 2: console.log("           error(2)(recoverable)"); break;
+				case 3: console.log("           error(3)(recoverable)"); break;
+				case 10: throw new Error("           error(10)(fatal)"); break;
+				default:
+						throw new Error("           failed to spawn and returned an\n"
+									   +"           unknown or unhandled error.\n");
+						break;
 			
-			worker_process=require('child_process')
-			worker[index]=worker_process.spawn('/usr/bin/nodejs',worker_params);
-			
-			worker[index].on('close',function(code,signal){
-				console.log('worker process #'+index+' terminated.');
-			});
-			
-			worker[index].on('error'),function(code,signal){
-				console.log('worker process #'+index+' has thrown an error.');
-				worker[index].kill('SIGHUP');
-			});
+			}
   		});
  		console.log("    ...All workers have been spawned.");
 	}
