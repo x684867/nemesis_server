@@ -3,7 +3,7 @@
 */
 module.export=workerClass;
 
-function workerClass(index,data){
+function workerClass(){
 	var id=index;
 	var config=data;
 	
