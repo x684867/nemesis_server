@@ -14,9 +14,11 @@ config_file=process.argv[2];
 console.log("Starting /srv/nemesis/app/broker.js...");
 console.log(" ");
 console.log("    config_file: "+config_file);
-
+console.log(" ");
+console.log("read config_file");
 config_data=require(config_file);
+console.log("parse config_file");
 config=JSON.parse(config_data);
-
+console.log("done.");
 console.log(config_data);
 
