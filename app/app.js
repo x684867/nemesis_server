@@ -44,7 +44,7 @@ fs.readFile(file, 'utf8', function (err, data) {
 				case 1: console.log("           error(1)");
 				case 2: console.log("           error(2)");
 				case 3: console.log("           error(3)");
-				case else:
+				default:
 						throw new Error("           failed to spawn and returned an\n"
 									   +"           unknown or unhandled error.\n");
 						break;
