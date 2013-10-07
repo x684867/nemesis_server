@@ -18,8 +18,8 @@ fs.readFile(file, 'utf8', function (err, data) {
 	  		console.log('Error: ' + err);
 	  		return;
 	  	}else{
+	  		console.log('parsing configuration data');
 	  		config=JSON.parse(data);
 	  	}
 	}
 );
-console.log(config);
