@@ -17,19 +17,12 @@ process.argv.forEach(function(data,index,array){
 });
 console.log(" ");
 config_file=process.argv[2];
-console.log("  config_file: "+config_file);
-/*
-if(process.argv[1]==undefined){
-	console.log("Missing argument: configuration_path");
-	throw new Exception();
-}else{
-	config_file=process.argv[2];
-}
-
-*/
+console.log("    config_file: "+config_file);
 
 var fs=require('fs');
+console.log('reading config file');
 fs.readFile(config_file,function(err,data){
+	console.log('reading...');
 	if(err){
 		console.log("Error reading configuration file.");
 		console.log("  config_file:"+config_file);
