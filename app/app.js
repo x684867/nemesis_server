@@ -14,6 +14,7 @@ console.log("app.js starting as master process.");
 var fs = require('fs');
 var file = process.argv[2];
 var config=Object();
+console.log("    ...loading config file: "+file);
 fs.readFile(file, 'utf8', function (err, data) {
 	  	if (err) {
 	  		console.log('Error: ' + err);
