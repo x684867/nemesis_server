@@ -25,6 +25,7 @@ fs.readFile(config_file,'utf8',function(err,data){
 		console.log("Error reading configuration file.");
 		throw new Exception();
 	}else{
+		if(JSON==undefined) console.log("JSON is undefined.");
 		config=JSON.parse(data);
 		if(config==undefined){
 			console.log("config is undefined or invalid JSON");
