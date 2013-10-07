@@ -10,7 +10,7 @@
 		*policy is stored/enforced
 		*objects are encrypted and decrypted.
 */
-
+console.log("starting /srv/nemesis/app/broker.js...");
 if(process.argv[2]==undefined){
 	console.log("Missing argument: configuration_path");
 	throw new Exception();
