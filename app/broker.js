@@ -22,7 +22,7 @@ function Broker(id,config){
 		var http = require('http');
 		http.createServer(function (req, res) {
 		  res.writeHead(200, {'Content-Type': 'text/plain'});
-		  res.end('Hello World.  I am '+config.workerId+'\n');
+		  res.end('Hello World.  I am broker#'+config.workerId+'\n');
 		}).listen(config.ipPort, config.ipAddress);
 		
 	}catch(e){
