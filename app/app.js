@@ -40,7 +40,7 @@ fs.readFile(file, 'utf8', function (err, data) {
 			/*launch the new worker with the main() method*/
 			worker_response=worker[index].main();
 			switch(worker_response){
-				case 0: console.log("           spawned successfully.");
+				case 0: console.log("           spawned successfully."); break;
 				case 1: console.log("           error(1)");
 				case 2: console.log("           error(2)");
 				case 3: console.log("           error(3)");
