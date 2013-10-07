@@ -22,8 +22,8 @@ function Broker(id,config){
 		var http = require('http');
 		http.createServer(function (req, res) {
 		  res.writeHead(200, {'Content-Type': 'text/plain'});
-		  res.end('Hello World.  I am '+this.config.workerId+'\n');
-		}).listen(this.config.ipPort, this.config.ipAddress);
+		  res.end('Hello World.  I am '+config.workerId+'\n');
+		}).listen(config.ipPort, config.ipAddress);
 		
 	}catch(e){
 	
