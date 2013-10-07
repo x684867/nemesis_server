@@ -16,13 +16,15 @@ function Broker(index,data){
 
 Broker.prototype.main=function(){
 	console.log("           running Broker.main().");
-	
+	console.log("                ipAddress:"+this.config.ipAddress);
+	console.log("                ipPort:   "+this.config.ipPort);
+	console.log(" ");	
 	try {
 		var http = require('http');
 		http.createServer(function (req, res) {
 		  res.writeHead(200, {'Content-Type': 'text/plain'});
-		  res.end('Hello World\n');
-		}).listen(1337, '127.0.0.1');
+		  res.end('Hello World.  I am "+this.config.workerId+"\n');
+		}).listen(this.config.ipPort, this.config.ipAddress);
 	}catch(e){
 		console.log('           Broker failed to open http listener');
 		return 10;/*Fatal error.*/
