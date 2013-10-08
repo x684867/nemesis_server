@@ -2,11 +2,10 @@
 	broker worker
 */
 module.exports=Broker;
-//var log=require('/srv/nemesis/app/logger/logger.js');
-	log.source="broker.js";
 
 function Broker(id,config){
-	
+	var log=require('/srv/nemesis/app/logger/logger.js');
+		log.source="broker.js(constructor)";	
 		
 	if(config==undefined) throw new Error('config is not defined.');
 	if(id==undefined) throw new Error('index is not defined.');
@@ -21,6 +20,8 @@ function Broker(id,config){
 	log.drawLine();
 }
 Broker.start=function(){
+	var log=require('/srv/nemesis/app/logger/logger.js');
+		log.source="broker.js(start)";
 	log.write('Attempting to start the server...');
 	try {
 	
