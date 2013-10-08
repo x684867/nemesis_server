@@ -19,6 +19,8 @@
 */
 
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
+const MONITOR_PROCESS_SERVER=__dirname+"/monitor/monitor.js";
+
 var worker=Array();		/*This array tracks the worker processes.*/
 var config=Object();	/*This is the worker configuration.*/
 var file = process.argv[2];
@@ -69,18 +71,11 @@ fs.readFile(file, 'utf8', function (err, data) {
 							log.write("{code:2} sent to child.");
 						case 3:
 							log.write("Child process {code:3} rec'd by parent.");
-							
-							log.write("Process Monitoring not implemented.");
-							/* 
-							monitorFactory=require(__dirname+"/monitor/monitor.js");
-							monitor[index]=new monitorFactory(index,worker[index].pid());
-							monitor[index].interval=10; //Seconds
-							monitor[index].start();
-							*/
-						case 11:
-						case 13:
-						case 97:
-						case 99:
+							break;
+						case 11:log.write("{code:11} ping response from worker #"+index);break;
+						case 13:log.write("{code:13} not implemented");break;
+						case 97:log.write("{code:97} not implemented");break;
+						case 99:log.write("{code:99} not implemented");break;
 						default:
 							throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
 							break;
@@ -92,6 +87,10 @@ fs.readFile(file, 'utf8', function (err, data) {
 			});
 			worker[index].on('error',function(msg){
 				if(typeof(msg)=='object'){
+					throw new Error("worker[index].on('error',function(){...}); not implemented.");
+					/*
+						Todo:Implement error handling.
+					 */
 				}else{
 					throw new Error('Non-object error message passed from child process');
 				}
@@ -105,3 +104,12 @@ fs.readFile(file, 'utf8', function (err, data) {
 	}
 });
 
+/* Heartbeat monitor */
+setTimeout(function(){
+	log.write("Heartbeat monitor starting...");
+	worker.forEach(function(p,i,a){
+		log.write("ping worker #"+i,4);
+		p.send({code:10});
+	});
+	log.write("Heartbeat monitor stopping...");
+},3600);
