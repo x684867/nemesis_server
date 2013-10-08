@@ -24,18 +24,14 @@ function Broker(id,config){
 		
 		log.write('Attempting to start the server...');
 		try {
-		
 			var http = require('http');
 			http.createServer(function (req, res) {
 			  res.writeHead(200, {'Content-Type': 'text/plain'});
 			  res.end('Hello World.  I am broker#'+config.workerId+'\n');
 			}).listen(config.ipPort, config.ipAddress);
-		
 		}catch(e){
-		
 			log.write('           Broker failed to open http listener');
 			return 10;/*Fatal Error*/
-		
 		}
 		log.write('Server started!');
 		return 0;/*Successful start*/
