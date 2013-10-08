@@ -24,10 +24,10 @@ var worker=Array();		/*This array tracks the worker processes.*/
 var config=Object();	/*This is the worker configuration.*/
 var file = process.argv[2];
 var fs =require('fs');
+var logFactory=require('/srv/nemesis/app/logger/logger.js');
 
 (function(){
-	var log=require('/srv/nemesis/app/logger/logger.js');
-		log.source="app.js(main)";
+	log=new logger("app.js(main)");
 	
 	log.drawBanner("app.js starting as master process.",0);
 	

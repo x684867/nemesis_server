@@ -14,31 +14,31 @@
 */
 module.exports=logger;
 
-function logger(){/* Constructor*/}
+function logger(logSource){
+	this.source=(logSource==undefined)?'NoSource':logSource;
+	
+	this.indent=function(i){return Array(i).join(" ");}
 
-logger.source='SourceNotSet';
-
-logger.indent=function(i){return Array(i).join(" ");}
-
-/*write(message,intend)*/
-logger.write=function(m,i){
-	i=(i==undefined)?0:i-(logger.source.length+1);
-	i=(i<=0)?0:i;
-	console.log(logger.source+":"+logger.indent(i)+m);
-}
-
-/*drawLine(width,indent). Default Width==60*/
-logger.drawLine=function(w,i){
-	i=(i==undefined)?0:i;
-	w=((w==undefined)?60:w)-i-(logger.source.length+1);
-	w=(w<=0)?0:w;
-	console.log(logger.source+":"+logger.indent(i)+Array(w).join("-"));
-}
-
-/*drawBanner(message)*/
-logger.drawBanner=function(t,i){
-	i=(i==undefined)?0:i;
-	logger.drawLine(60,i);
-	logger.write(t);
-	logger.drawLine(60,i);
+	/*write(message,intend)*/
+	this.write=function(m,i){
+		i=(i==undefined)?0:i-(this.source.length+1);
+		i=(i<=0)?0:i;
+		console.log(this.source+":"+this.indent(i)+m);
+	}
+	
+	/*drawLine(width,indent). Default Width==60*/
+	this.drawLine=function(w,i){
+		i=(i==undefined)?0:i;
+		w=((w==undefined)?60:w)-i-(this.source.length+1);
+		w=(w<=0)?0:w;
+		console.log(this.source+":"+this.indent(i)+Array(w).join("-"));
+	}
+	
+	/*drawBanner(message)*/
+	this.drawBanner=function(t,i){
+		i=(i==undefined)?0:i;
+		logger.drawLine(60,i);
+		logger.write(t);
+		logger.drawLine(60,i);
+	}
 }
