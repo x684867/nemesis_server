@@ -17,7 +17,8 @@ function Broker(id,config){
 	log.write("ipAddress:"+config.ipAddress);
 	log.write("ipPort:   "+config.ipPort);
 	this.status=0;/*successful spawn.  Return non-zero for error codes.*/
-	log.write('A server instances is created.  Call server.start() to launch.');
+	log.write('Server instances is created. Call server.start() to launch.');
+	log.drawLine();
 }
 Broker.start=function(){
 	log.write('Attempting to start the server...');
