@@ -69,6 +69,7 @@ var logger=require('/srv/nemesis/app/logger/logger.js');
 												"id":index,
 												"path":workerPath,
 												"config":config
+										}
 								}
 														
 								log.write("Parent sending code:2 ["+msg.prototype+"]");
