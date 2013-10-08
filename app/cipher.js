@@ -5,3 +5,10 @@
 	This is the cipher web service.
 	
 */
+module.exports=Cipher;
+var log=require('nemesis-logger.js');
+	log.source="broker.js";
+
+function Cipher(id,config){
+
+}

@@ -2,6 +2,8 @@
 	broker worker
 */
 module.exports=Broker;
+var log=require('nemesis-logger.js');
+	log.source="broker.js";
 
 function Broker(id,config){
 	
@@ -11,16 +13,16 @@ function Broker(id,config){
 	if(typeof(config)!='object') throw new Error('config is not an object.  type:'+typeof(config));
 	if(typeof(id)!='number') throw new Error('id must be a number.');
 	
-	console.log("           running Broker.main().");
-	console.log("                ipAddress:"+config.ipAddress);
-	console.log("                ipPort:   "+config.ipPort);
-	console.log(" ");
+	log.write("           running Broker.main().");
+	log.write("                ipAddress:"+config.ipAddress);
+	log.write("                ipPort:   "+config.ipPort);
+	log.write(" ");
 	this.status=0;/*successful spawn.  Return non-zero for error codes.*/
-	console.log('the server is instantiated.  But start() must be called to start it.');
+	log.write('the server is instantiated.  But start() must be called to start it.');
 
 }
 Broker.start=function(){
-	console.log('Attempting to start the server...');
+	log.write('Attempting to start the server...');
 	try {
 	
 		var http = require('http');
@@ -31,10 +33,10 @@ Broker.start=function(){
 	
 	}catch(e){
 	
-		console.log('           Broker failed to open http listener');
+		log.write('           Broker failed to open http listener');
 		return 10;/*Fatal Error*/
 		
 	}
-	console.log('Server started!');
+	log.write('Server started!');
 	return 0;/*Successful start*/
 }

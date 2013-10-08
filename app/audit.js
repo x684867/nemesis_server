@@ -5,3 +5,10 @@
 	This is the audit web service.
 	
 */
+module.exports=Audit;
+var log=require('nemesis-logger.js');
+	log.source="audit.js";
+
+function Audit(id,config){
+
+}

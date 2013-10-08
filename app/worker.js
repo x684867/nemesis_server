@@ -8,35 +8,40 @@
 	is intended to manage the web services and interact with the parent (master)
 	process operated by app.js.
 */
-console.log('worker.js is starting...');
+var log=require('nemesis-logger.js');
+	log.source="worker.js";
+	
+log.drawBanner('worker.js is starting...');
 
 process.on('message', function(msg){
-	console.log('worker.js has received a message from parent.');
-	if(typeof(msg)=='object'){
-		console.log('parent message is an object.  We are happy!');
-		server=msg;
-		server_status=server.start();
-		switch(server_status){
-			case 0: process.send({code:1}); break;
-			case 10: process.send({code:2}); break;
-			default:
-				throw new Error("           failed to create and returned an\n"
-							   +"           unknown or unhandled error.\n");
-				break;	
-		}
-	}else{
-		console.log('parent message is not an object.  WTF?!');
-		process.send({code:2});
+	log.write('worker.js has received a message from parent.');
+	if(typeof(msg)!='object'){
+		throw new Error('Non-object message passed from parent to child process.');
 	}
-
-}
-
-/*Process has started.  
-  Send message to parent to check-in and fetch the server.
-  The message {code:0} tells the parent process that the process
-  started and it is healthy.
-  
-  The parent process will receive {code:0} and respond with a 
-  server object.  This object must then be spawned.
- */
-process.send({code:0});
+	switch(msg.code){
+		/*Process-Initialization Messages*/
+		case 0:
+				log.write("message {code:0} recieved.  Replying {code:1}");
+				process.send({code:1});
+				break;
+		code 2:
+				log.write("message {code:2} recieved.  Replying {code:[3,4]}");
+				server=msg.data;
+				if(typeof(server)=='object'){
+					process.send({code:((server.start()==0)?3:4 ));
+				}else{
+					throw new Error('message {code:2} contained non-object data value');
+				}
+				break;
+		/*Process-Monitoring Messages*/
+		code 10:log.write ("msg.code rec'd. Not implemented: {code:10}"); break;
+		code 12:log.write ("msg.code rec'd. Not implemented: {code:12}"); break;
+		/*Process-Management Messages*/
+		code 96:log.write ("msg.code rec'd. Not implemented: {code:96}"); break;
+		code 98:log.write ("msg.code rec'd. Not implemented: {code:98}"); break;
+		/*Catch-all*/
+		default:
+				throw new Error('Unrecognized or invalid message ('+msg.code+') passed to child.");
+				break;
+	}
+});

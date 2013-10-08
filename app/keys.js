@@ -5,3 +5,10 @@
 	This is the keys web service.
 	
 */
+module.exports=Keys;
+var log=require('nemesis-logger.js');
+	log.source="broker.js";
+
+function Keys(id,config){
+
+}
