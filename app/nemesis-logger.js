@@ -16,11 +16,22 @@ module.exports=logger;
 
 function logger(){/* Constructor*/}
 
-/*write(message,intend)*/
-logger.write=function(m,i){console.log( Array((i==undefined)?0:i).join(" ")+m);}
+logger.indent=function(i){return Array(i).join(" ");}
 
-/*drawLine(width). Default Width==60*/
-logger.drawLine=function(w){console.log(Array((w==undefined)?60:w).join("-"));}
+/*write(message,intend)*/
+logger.write=function(m,i){console.log(indent((i==undefined)?0:i)+m);}
+
+/*drawLine(width,indent). Default Width==60*/
+logger.drawLine=function(w,i){
+	i=(i==undefined)?0:i;
+	w=((w==undefined)?60:w)-i
+	console.log(indent(i)+Array(w).join("-"));
+}
 
 /*drawBanner(message)*/
-logger.drawBanner=function(t){logger.drawLine();logger.write(t);logger.drawLine();}
+logger.drawBanner=function(t,i){
+	i=(i==undefined)?0:i;
+	logger.drawLine(60,i);
+	logger.write(t);
+	logger.drawLine(60,i);
+}

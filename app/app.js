@@ -24,45 +24,44 @@ var config=Object();	/*This is the worker configuration.*/
 var file = process.argv[2];
 var fs =require('fs');
 var log=require('nemesis-logger.js');
-log.drawline();
-log.write("app.js starting as master process.");
-log.drawline();
+log.drawBanner("app.js starting as master process.",0);
 
 if(!fs.lstatSync(file).isFile()) throw new Error(file+" does not exist");
-console.log("    ...verified!  "+file+" exists.");
+log.write("...verified!  "+file+" exists.",4);
 
-console.log("    ...loading config file: "+file);
+log.write("...loading config file: "+file,4);
 fs.readFile(file, 'utf8', function (err, data) {
  	if (err) {
-  		console.log('Error: ' + err);
   		throw new Exception("Error encountered reading file ("+file+").  Error:"+err);
   	}else{
-  		config=JSON.parse(data);
-  		console.log("    ...configuration loaded.");
+  		config=JSON.parse(data);  
+  		log.write("...configuration loaded.",4);
   		workerPath=__dirname+"/"+config.serverType+".js"
-  		console.log("    ...workerName: "+workerPath);
+  		log.write("...workerName: "+workerPath,4);
   		
-		config.workers.forEach(function(data,index,array){
+		config.workers.forEach(
+			function(data,index,array){
 		
-			console.log("        ...instantiating worker ["+index+"]");
-			console.log("           config = "+JSON.stringify(data));
-			console.log(" ");
+			log.write("...instantiating worker ["+index+"]",8);
+			log.write("config = "+JSON.stringify(data),11);
+			log.drawline(60,8);
 			
 			/*instantiate the new worker object with its parameters.*/
 			serverFactory=require(workerPath);
 			server=new serverFactory(index,data);
 			
 			/*Now we need to fork a process for this worker.*/
-			console.log("        ...forking child process with wrapper.js.");
+			log.write("...forking child process with wrapper.js.",8);
 			var process=require('child_process');
 			worker[index]=process.fork(CHILD_PROCESS_WRAPPER);
-			console.log("           done.  pid="+worker[index].pid)
-
-			console.log("        ...setup message handler.");
+			log.write("pid="+worker[index].pid,12);
+			log.write("Process has been forked.",8);
+			
+			log.write("...Setup IPC Message Handling for Parent Process.",8);
 			ipcFactory=require('ipc');
 			ipc=new ipcFactory();
-			worker[index].on('message',ipc.handle_message(msg));
-			worker[index].on('error',ipc.handle_errors(msg));
+			worker[index].on('message',ipc.parent(msg));
+			worker[index].on('error',ipc.phandle_errors(msg));
 			
 			console.log("        ...sending code:0 object as message to child.");
 			worker[index].send({code:0});
