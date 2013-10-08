@@ -24,7 +24,7 @@ logger.indent=function(i){return Array(i).join(" ");}
 logger.write=function(m,i){
 	i=(i==undefined)?0:i-(logger.source.length+1);
 	i=(i<=0)?0:i;
-	console.log(logger.source+":"+indent(i)+m);
+	console.log(logger.source+":"+logger.indent(i)+m);
 }
 
 /*drawLine(width,indent). Default Width==60*/
@@ -32,7 +32,7 @@ logger.drawLine=function(w,i){
 	i=(i==undefined)?0:i;
 	w=((w==undefined)?60:w)-i-(logger.source.length+1);
 	w=(w<=0)?0:w;
-	console.log(logger.source+":"+indent(i)+Array(w).join("-"));
+	console.log(logger.source+":"+logger.indent(i)+Array(w).join("-"));
 }
 
 /*drawBanner(message)*/
