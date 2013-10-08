@@ -111,19 +111,20 @@ fs.readFile(file, 'utf8', function (err, data) {
 });
 
 /* Heartbeat monitor.  This sends the heartbeat "pings" to the worker processes. */
-setTimeout(
-	function(){
-		log.write("Heartbeat monitor starting...");
-		worker.forEach(function(p,i,a){
-			log.write("ping worker #"+i,4);
-			/*Note that a heartbeat includes the seconds since the epoch when it was sent*/
-			p.send({code:10,data:(new Date()).getTime()/1000});
-		});
-		log.write("Heartbeat monitor stopping...");
-	},
-	config.heartbeat.interval
-);
-
+(function(){
+	setTimeout(
+		function(){
+			log.write("Heartbeat monitor starting...");
+			worker.forEach(function(p,i,a){
+				log.write("ping worker #"+i,4);
+				/*Note that a heartbeat includes the seconds since the epoch when it was sent*/
+				p.send({code:10,data:(new Date()).getTime()/1000});
+			});
+			log.write("Heartbeat monitor stopping...");
+		},
+		config.heartbeat.interval
+	);
+});
 /* Statistics monitor*/
 /*
 	Not implemented!
