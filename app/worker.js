@@ -9,7 +9,7 @@
 	process operated by app.js.
 */
 var logger=require('/srv/nemesis/app/logger/logger.js');
-var log=new logger("keys.js(main)");
+var log=new logger("worker.js(main)");
 	
 log.drawBanner('worker.js is starting...');
 
@@ -28,7 +28,11 @@ process.on('message', function(msg){
 				log.write("message {code:2} recieved.  Replying {code:[3,4]}");
 				server=msg.data;
 				if(typeof(server)=='object'){
-					process.send({code:((server.start()==0)?3:4 )});
+					if(typeof(server.start)=='function'){
+						process.send({code:((server.start()==0)?3:4 )});
+					}else{
+						throw new Error('server.start() not present or not a function.');
+					}
 				}else{
 					throw new Error('message {code:2} contained non-object data value');
 				}

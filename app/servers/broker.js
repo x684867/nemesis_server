@@ -19,25 +19,26 @@ function Broker(id,config){
 	this.status=0;/*successful spawn.  Return non-zero for error codes.*/
 	log.write('Server instances is created. Call server.start() to launch.');
 	log.drawLine();
-}
-Broker.start=function(){
-	var log=require('/srv/nemesis/app/logger/logger.js');
-		log.source="broker.js(start)";
-	log.write('Attempting to start the server...');
-	try {
 	
-		var http = require('http');
-		http.createServer(function (req, res) {
-		  res.writeHead(200, {'Content-Type': 'text/plain'});
-		  res.end('Hello World.  I am broker#'+config.workerId+'\n');
-		}).listen(config.ipPort, config.ipAddress);
-	
-	}catch(e){
-	
-		log.write('           Broker failed to open http listener');
-		return 10;/*Fatal Error*/
+	this.start=function(){
+		var log=require('/srv/nemesis/app/logger/logger.js');
+			log.source="broker.js(start)";
+		log.write('Attempting to start the server...');
+		try {
 		
+			var http = require('http');
+			http.createServer(function (req, res) {
+			  res.writeHead(200, {'Content-Type': 'text/plain'});
+			  res.end('Hello World.  I am broker#'+config.workerId+'\n');
+			}).listen(config.ipPort, config.ipAddress);
+		
+		}catch(e){
+		
+			log.write('           Broker failed to open http listener');
+			return 10;/*Fatal Error*/
+		
+		}
+		log.write('Server started!');
+		return 0;/*Successful start*/
 	}
-	log.write('Server started!');
-	return 0;/*Successful start*/
 }
