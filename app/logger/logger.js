@@ -37,8 +37,8 @@ function logger(logSource){
 	/*drawBanner(message)*/
 	this.drawBanner=function(t,i){
 		i=(i==undefined)?0:i;
-		logger.drawLine(60,i);
-		logger.write(t);
-		logger.drawLine(60,i);
+		this.drawLine(60,i);
+		this.write(t);
+		this.drawLine(60,i);
 	}
 }
