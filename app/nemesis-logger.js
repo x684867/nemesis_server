@@ -19,5 +19,8 @@ function logger(){/* Constructor*/}
 /*write(message,intend)*/
 logger.write=function(m,i){console.log( Array((i==undefined)?0:i).join(" ")+m);}
 
-/*draw(width). Default Width==40*/
-logger.drawline=function(w){;console.log(Array((w==undefined)?40:w).join("-"));}
+/*drawLine(width). Default Width==60*/
+logger.drawLine=function(w){console.log(Array((w==undefined)?60:w).join("-"));}
+
+/*drawBanner(message)
+logger.drawBanner=function(t){logger.drawLine();logger.write(t);logger.drawLine();}

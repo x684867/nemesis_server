@@ -24,6 +24,7 @@ var config=Object();	/*This is the worker configuration.*/
 var file = process.argv[2];
 var fs =require('fs');
 var log=require('nemesis-logger.js');
+log.drawline();
 log.write("app.js starting as master process.");
 log.drawline();
 
