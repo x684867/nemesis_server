@@ -26,9 +26,36 @@ process.on('message', function(msg){
 				break;
 		case 2:
 				log.write("message {code:2} recieved.  Replying {code:[3,4]}");
-				server=msg.data;
+				if(typeof(msg.data)!='object'){
+					throw new Error('msg.data not an object in {code:2}');
+				}
+				if(typeof(msg.data.path)!='string'){
+					throw new Error('msg.data.path is not a string in {code:2}');
+				}
+				if(typeof(msg.data.id)!='number'){
+					throw new Error('msg.data.id is not a number in {code:2}');
+				}
+				if(typeof(msg.data.config)!='string'){
+					throw new Error('msg.data.config is not a string');
+				}
+				log.write("validated {code:2} message content.");
+				
+				serverFactory=require(msg.data.path);
+				server=new serverFactory(msg.data.id,msg.data.config);
+				
+				}else{
+					if(msg.data==undefined){
+						throw new Error('msg.data undefined in {code:2}');
+					}else{
+						throw new Error('msg.data not a string (expected) in {code:2}');
+					}
+				}
 				if(typeof(server)=='object'){
 					if(typeof(server.start)=='function'){
+					
+						serverFactory=require(workerPath);
+						server=new serverFactory(index,data);
+					
 						process.send({code:((server.start()==0)?3:4 )});
 					}else{
 						log.write(server.prototype);
@@ -37,6 +64,11 @@ process.on('message', function(msg){
 				}else{
 					throw new Error('message {code:2} contained non-object data value');
 				}
+				
+				
+				
+				
+				
 				break;
 		/*Process-Monitoring Messages*/
 		case 10:

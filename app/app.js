@@ -47,11 +47,8 @@ var logger=require('/srv/nemesis/app/logger/logger.js');
 			
 				log.write("Instantiating worker ["+index+"]");
 				log.write("config = "+JSON.stringify(data));
-	  			log.write("workerName: "+workerPath);
+	  			log.write("workerPath: "+workerPath);
 				log.drawLine(60);
-				
-				serverFactory=require(workerPath);
-				server=new serverFactory(index,data);
 				
 				log.write("Forking child process with wrapper.js.");
 				var process=require('child_process');
@@ -65,7 +62,17 @@ var logger=require('/srv/nemesis/app/logger/logger.js');
 						switch(msg.code){
 							case 1:
 								log.write("Child process {code:1} rec'd by parent.");
-								worker[index].send({code:2,data:server});
+								
+								msg={
+										"code":2,
+										"data":{
+												"id":index,
+												"path":workerPath,
+												"config":config
+								}
+																
+								log.write("Parent sending code:2 ["+JSON.stringify(msg)+"]");
+								worker[index].send(msg);
 								log.write("{code:2} sent to child.");
 							case 3:
 								log.write("Child process {code:3} rec'd by parent.");
