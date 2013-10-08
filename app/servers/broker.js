@@ -6,7 +6,7 @@ var logger=require('/srv/nemesis/app/logger/logger.js');
 
 
 function Broker(id,config){
-	var log=new logger("broker.js(main)");	
+	var log=new logger("broker.js(Id#"+id+")");	
 		
 	if(config==undefined) throw new Error('config is not defined.');
 	if(id==undefined) throw new Error('index is not defined.');
