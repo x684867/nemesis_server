@@ -52,14 +52,13 @@ fs.readFile(file, 'utf8', function (err, data) {
 			serverFactory=require(workerPath);
 			server=new serverFactory(index,data);
 			
-			log.write("Forking child process with wrapper.js.",8);
+			log.write("Forking child process with wrapper.js.");
 			var process=require('child_process');
 			worker[index]=process.fork(CHILD_PROCESS_WRAPPER);
-			log.write("pid="+worker[index].pid,12);
-			log.write("Process has been forked.",8);
+			log.write("Process forked [pid="+worker[index].pid+"]");
+			log.drawLine();
 			
 			log.write("Setup IPC Message Handling for Parent Process.",8);
-			ipcFactory=require('ipc');
 			worker[index].on('message',function(msg){
 				if(typeof(msg)=='object'){
 					switch(msg.code){
