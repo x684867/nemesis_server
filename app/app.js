@@ -47,7 +47,7 @@ fs.readFile(file, 'utf8', function (err, data) {
 			log.write("Instantiating worker ["+index+"]",8);
 			log.write("config = "+JSON.stringify(data),11);
   			log.write("workerName: "+workerPath,11);
-			log.drawline(60,8);
+			log.drawLine(60,8);
 			
 			serverFactory=require(workerPath);
 			server=new serverFactory(index,data);
