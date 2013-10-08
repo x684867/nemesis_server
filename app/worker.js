@@ -28,7 +28,7 @@ process.on('message', function(msg){
 				log.write("message {code:2} recieved.  Replying {code:[3,4]}");
 				server=msg.data;
 				if(typeof(server)=='object'){
-					process.send({code:((server.start()==0)?3:4 ));
+					process.send({code:((server.start()==0)?3:4 )});
 				}else{
 					throw new Error('message {code:2} contained non-object data value');
 				}
