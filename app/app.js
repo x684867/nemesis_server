@@ -113,3 +113,8 @@ setTimeout(function(){
 	});
 	log.write("Heartbeat monitor stopping...");
 },3600);
+
+/* Statistics monitor*/
+/*
+	Not implemented!
+*/
