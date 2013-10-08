@@ -38,7 +38,7 @@ fs.readFile(file, 'utf8', function (err, data) {
   		throw new Exception("Error encountered reading file ("+file+").  Error:"+err);
   	}else{
   		config=JSON.parse(data);  
-  		log.write("Configuration loaded.",4);
+  		log.write("Configuration loaded.");
   		workerPath=__dirname+"/servers/"+config.serverType+".js"
 
 		config.workers.forEach(
