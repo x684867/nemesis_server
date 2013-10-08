@@ -31,7 +31,7 @@ process.on('message', function(msg){
 					if(typeof(server.start)=='function'){
 						process.send({code:((server.start()==0)?3:4 )});
 					}else{
-						log.write(server);
+						log.write(server.prototype);
 						throw new Error('server.start() not present or not a function.');
 					}
 				}else{
