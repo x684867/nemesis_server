@@ -1,5 +1,6 @@
 /*
 	/srv/nemesis/app/app.js
+	Nemesis Web Services Master Process Script
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	
 	This is the master process (app.js) for the Nemesis web services.
@@ -16,28 +17,29 @@
 	in real time and respawn any worker process which may die or become
 	unresponsive.	
 */
+
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
-
-var worker=Array();
-
+var worker=Array();		/*This array tracks the worker processes.*/
+var config=Object();	/*This is the worker configuration.*/
+var file = process.argv[2];
+var fs = require('fs');
+var log= require('nemesis-logger.js');
 console.log("app.js starting as master process.");
 
-var config=Object();		/*This is the worker configuration.*/
 
-
-var file = process.argv[2];
+if(!fs.lstatSync(file).isFile()) throw new Error(file+" does not exist");
+console.log("    ...verified!  "+file+" exists.");
 
 console.log("    ...loading config file: "+file);
-var fs = require('fs');
 fs.readFile(file, 'utf8', function (err, data) {
  	if (err) {
   		console.log('Error: ' + err);
-  		return;
+  		throw new Exception("Error encountered reading file ("+file+").  Error:"+err);
   	}else{
   		config=JSON.parse(data);
   		console.log("    ...configuration loaded.");
   		workerPath=__dirname+"/"+config.serverType+".js"
-  		console.log("    ...workerName: "+workerPath)
+  		console.log("    ...workerName: "+workerPath);
   		
 		config.workers.forEach(function(data,index,array){
 		
@@ -56,63 +58,16 @@ fs.readFile(file, 'utf8', function (err, data) {
 			console.log("           done.  pid="+worker[index].pid)
 
 			console.log("        ...setup message handler.");
-			worker[index].on('message',function(msg){
-				switch(msg.code){
-				
-					/*Startup Messages 0-9*/
-					case 0: /*Child is alive. This is the first message sent by child.*/
-						console.log("           child has checked in and is alive.");
-						console.log("           sending server object to the child.");
-						worker[index].send(server);
-						console.log("           done.  child has server object");
-						break;
-					case 1: /*Server is alive. This is the second message sent by child*/
-						console.log("           child responded: server is alive.");
-						break;
-					case 2: /*Server is dead. This is the second message sent by child*/
-						console.log("           child responded: server failed to start.");
-						break;
-					
-					/*General Application Messages 10-19*/
-					case 10: /*Heartbeat Message*/
-						console.log("             worker["+index+"] heartbeat:"+msg.code);
-						/*
-						  Record the heartbeat to the statistics.  If not we may assume
-						  The process is hung or dead, which would lead us to respawn the
-						  process unnecessarily.
-						 */
-						break;
-					case 11: /*Object Created Message*/
-						console.log("             worker["+index+"] create object:"+msg.code);
-						
-						/*Process the object into the store.*/
-						
-						/*Handle the statistics*/
-						
-						break;
-					
-					
-						
-					/*Process management Messages 90-99*/
-					case 90: /*Suicide message: Kill me softly.*/
-						console.log("             worker["+index+"] wants to die:"+msg.code);
-						
-						/*Kill the child process here.*/
-						
-						break;
-					default:
-						throw new Error("unhandled message recieved from worker process.");
-				}
-			}
-
+			ipcFactory=require('ipc');
+			ipc=new ipcFactory();
+			worker[index].on('message',ipc.handle_message(msg));
+			worker[index].on('error',ipc.handle_errors(msg));
 			
 			console.log("        ...sending code:0 object as message to child.");
 			worker[index].send({code:0});
 			console.log("           done sending message.");
-			
-			
-			
-  		});
+		});
  		console.log("    ...All workers have been spawned.");
 	}
 });
+
