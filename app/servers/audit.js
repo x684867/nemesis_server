@@ -6,7 +6,7 @@
 	
 */
 module.exports=Audit;
-var log=require('nemesis-logger.js');
+var log=require('/srv/nemesis/app/logger/logger.js');
 	log.source="audit.js";
 
 function Audit(id,config){

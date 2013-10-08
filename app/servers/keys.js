@@ -6,7 +6,7 @@
 	
 */
 module.exports=Keys;
-var log=require('nemesis-logger.js');
+var log=require('/srv/nemesis/app/logger/logger.js');
 	log.source="broker.js";
 
 function Keys(id,config){
