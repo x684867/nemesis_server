@@ -72,7 +72,15 @@ fs.readFile(file, 'utf8', function (err, data) {
 						case 3:
 							log.write("Child process {code:3} rec'd by parent.");
 							break;
-						case 11:log.write("{code:11} ping response from worker #"+index);break;
+						case 11:
+							log.write("{code:11} ping response from worker #"+index);
+							delay=(new Date()).getTime()/1000 - msg.data;
+							if(delay <= config.heartbeat.maxDelay){
+								log.write("{code:11} heartbeat from worker #"+index+": good");
+							}else{
+								log.write("{code:11} heartbeat from worker #"+index+": slow");
+							}
+							break;
 						case 13:log.write("{code:13} not implemented");break;
 						case 97:log.write("{code:97} not implemented");break;
 						case 99:log.write("{code:99} not implemented");break;
@@ -104,15 +112,19 @@ fs.readFile(file, 'utf8', function (err, data) {
 	}
 });
 
-/* Heartbeat monitor */
-setTimeout(function(){
-	log.write("Heartbeat monitor starting...");
-	worker.forEach(function(p,i,a){
-		log.write("ping worker #"+i,4);
-		p.send({code:10});
-	});
-	log.write("Heartbeat monitor stopping...");
-},3600);
+/* Heartbeat monitor.  This sends the heartbeat "pings" to the worker processes. */
+setTimeout(
+	function(){
+		log.write("Heartbeat monitor starting...");
+		worker.forEach(function(p,i,a){
+			log.write("ping worker #"+i,4);
+			/*Note that a heartbeat includes the seconds since the epoch when it was sent*/
+			p.send({code:10,data:(new Date()).getTime()/1000;});
+		});
+		log.write("Heartbeat monitor stopping...");
+	},
+	config.heartbeat.interval
+);
 
 /* Statistics monitor*/
 /*

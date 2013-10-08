@@ -34,7 +34,10 @@ process.on('message', function(msg){
 				}
 				break;
 		/*Process-Monitoring Messages*/
-		code 10:log.write ("msg.code rec'd. Not implemented: {code:10}"); break;
+		code 10:
+				log.write ("{code:10} received");
+				process.send({code:11,data:msg.data});
+				break;
 		code 12:log.write ("msg.code rec'd. Not implemented: {code:12}"); break;
 		/*Process-Management Messages*/
 		code 96:log.write ("msg.code rec'd. Not implemented: {code:96}"); break;
