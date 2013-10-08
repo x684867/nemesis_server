@@ -14,21 +14,6 @@
 					"workerId":22,
 					"ipAddress":"127.0.2.2",
 					"ipPort":80
-				},
-				{
-					"workerId":23,
-					"ipAddress":"127.0.2.3",
-					"ipPort":80
-				},
-				{
-					"workerId":24,
-					"ipAddress":"127.0.2.4",
-					"ipPort":80
-				},
-				{
-					"workerId":25,
-					"ipAddress":"127.0.2.5",
-					"ipPort":80
-				}		
+				}	
 	]
 }
