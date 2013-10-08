@@ -17,7 +17,7 @@ modules.exports=logger;
 function logger(){/* Constructor*/}
 
 /*write(message,intend)*/
-logger.write(m,n){i=(n==undefined)?0:n;console.log( (Array(i).join(" ")+m);}
+logger.write=function(m,n){i=(n==undefined)?0:n;console.log( (Array(i).join(" ")+m);}
 
 /*draw(width)*/
-logger.drawline(w){console.log(Array(w).join("-"));}
+logger.drawline=function(w){console.log(Array(w).join("-"));}
