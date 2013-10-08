@@ -44,7 +44,13 @@ process.on('message', function(msg){
 		case 98:log.write ("msg.code rec'd. Not implemented: {code:98}"); break;
 		/*Catch-all*/
 		default:
-				throw new Error('Unrecognized or invalid message ('+msg.code+') passed to child.");
-				break;
+			if(msg.code==undefined){
+				throw new Error('msg.code is undefined when child processed message.');
+			}else{
+				throw new Error(
+					'Unrecognized or invalid message ('+msg.code+') passed to child.'
+				);
+			}
+			break;
 	}
 });
