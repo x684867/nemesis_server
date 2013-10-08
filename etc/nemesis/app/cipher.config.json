@@ -1,5 +1,9 @@
 {
 	"serverType":"broker",
+	"heartbeat":{
+				"interval":3600,
+				"maxDelay":100
+	},
 	"workers":[
 				{
 					"workerId":31,
