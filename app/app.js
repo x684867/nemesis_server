@@ -70,8 +70,8 @@ var logger=require('/srv/nemesis/app/logger/logger.js');
 												"path":workerPath,
 												"config":config
 								}
-																
-								log.write("Parent sending code:2 ["+JSON.stringify(msg)+"]");
+														
+								log.write("Parent sending code:2 ["+msg.prototype+"]");
 								worker[index].send(msg);
 								log.write("{code:2} sent to child.");
 							case 3:
