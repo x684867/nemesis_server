@@ -24,7 +24,7 @@ process.on('message', function(msg){
 				log.write("message {code:0} recieved.  Replying {code:1}");
 				process.send({code:1});
 				break;
-		code 2:
+		case 2:
 				log.write("message {code:2} recieved.  Replying {code:[3,4]}");
 				server=msg.data;
 				if(typeof(server)=='object'){
@@ -34,14 +34,14 @@ process.on('message', function(msg){
 				}
 				break;
 		/*Process-Monitoring Messages*/
-		code 10:
+		case 10:
 				log.write ("{code:10} received");
 				process.send({code:11,data:msg.data});
 				break;
-		code 12:log.write ("msg.code rec'd. Not implemented: {code:12}"); break;
+		case 12:log.write ("msg.code rec'd. Not implemented: {code:12}"); break;
 		/*Process-Management Messages*/
-		code 96:log.write ("msg.code rec'd. Not implemented: {code:96}"); break;
-		code 98:log.write ("msg.code rec'd. Not implemented: {code:98}"); break;
+		case 96:log.write ("msg.code rec'd. Not implemented: {code:96}"); break;
+		case 98:log.write ("msg.code rec'd. Not implemented: {code:98}"); break;
 		/*Catch-all*/
 		default:
 				throw new Error('Unrecognized or invalid message ('+msg.code+') passed to child.");
