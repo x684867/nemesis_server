@@ -2,7 +2,7 @@
 	broker worker
 */
 module.exports=Broker;
-var log=require('/srv/nemesis/app/logger/logger.js');
+//var log=require('/srv/nemesis/app/logger/logger.js');
 	log.source="broker.js";
 
 function Broker(id,config){
