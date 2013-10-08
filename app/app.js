@@ -19,14 +19,13 @@
 */
 
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
-const MONITOR_PROCESS_SERVER=__dirname+"/monitor/monitor.js";
 
 var worker=Array();		/*This array tracks the worker processes.*/
 var config=Object();	/*This is the worker configuration.*/
 var file = process.argv[2];
 var fs =require('fs');
 
-var log=require('nemesis-logger.js');
+var log=require('/srv/nemesis/app/logger/logger.js');
 	log.source="app.js";
 	
 log.drawBanner("app.js starting as master process.",0);
