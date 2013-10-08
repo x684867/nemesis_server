@@ -22,10 +22,10 @@ const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
 var worker=Array();		/*This array tracks the worker processes.*/
 var config=Object();	/*This is the worker configuration.*/
 var file = process.argv[2];
-var fs = require('fs');
-var log= require('nemesis-logger.js');
-console.log("app.js starting as master process.");
-
+var fs =require('fs');
+var log=require('nemesis-logger.js');
+log.write("app.js starting as master process.");
+log.drawline();
 
 if(!fs.lstatSync(file).isFile()) throw new Error(file+" does not exist");
 console.log("    ...verified!  "+file+" exists.");
