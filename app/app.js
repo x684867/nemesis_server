@@ -119,7 +119,7 @@ setTimeout(
 		worker.forEach(function(p,i,a){
 			log.write("ping worker #"+i,4);
 			/*Note that a heartbeat includes the seconds since the epoch when it was sent*/
-			p.send({code:10,data:(new Date()).getTime()/1000;});
+			p.send({code:10,data:(new Date()).getTime()/1000});
 		});
 		log.write("Heartbeat monitor stopping...");
 	},
