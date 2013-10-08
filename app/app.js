@@ -39,7 +39,7 @@ fs.readFile(file, 'utf8', function (err, data) {
   	}else{
   		config=JSON.parse(data);  
   		log.write("Configuration loaded.",4);
-  		workerPath=__dirname+"/"+config.serverType+".js"
+  		workerPath=__dirname+"/servers/"+config.serverType+".js"
 
 		config.workers.forEach(
 			function(data,index,array){
@@ -63,7 +63,27 @@ fs.readFile(file, 'utf8', function (err, data) {
 			worker[index].on('message',function(msg){
 				if(typeof(msg)=='object'){
 					switch(msg.code){
-					
+						case 1:
+							log.write("Child process {code:1} rec'd by parent.");
+							worker[index].send({code:2,data:server});
+							log.write("{code:2} sent to child.");
+						case 3:
+							log.write("Child process {code:3} rec'd by parent.");
+							
+							log.write("Process Monitoring not implemented.");
+							/* 
+							monitorFactory=require(__dirname+"/monitor/monitor.js");
+							monitor[index]=new monitorFactory(index,worker[index].pid());
+							monitor[index].interval=10; //Seconds
+							monitor[index].start();
+							*/
+						case 11:
+						case 13:
+						case 97:
+						case 99:
+						default:
+							throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
+							break;
 					}
 				}else{
 					throw new Error('Non-object passed as message from child process.');
