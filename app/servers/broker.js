@@ -4,8 +4,7 @@
 module.exports=Broker;
 
 function Broker(id,config){
-	var log=require('/srv/nemesis/app/logger/logger.js');
-		log.source="broker.js(constructor)";	
+	var log=new logger("broker.js(main)");	
 		
 	if(config==undefined) throw new Error('config is not defined.');
 	if(id==undefined) throw new Error('index is not defined.');
