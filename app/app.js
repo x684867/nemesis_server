@@ -24,7 +24,7 @@ var worker=Array();		/*This array tracks the worker processes.*/
 var config=Object();	/*This is the worker configuration.*/
 var file = process.argv[2];
 var fs =require('fs');
-var logFactory=require('/srv/nemesis/app/logger/logger.js');
+var logger=require('/srv/nemesis/app/logger/logger.js');
 
 (function(){
 	log=new logger("app.js(main)");
