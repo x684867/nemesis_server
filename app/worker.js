@@ -35,7 +35,7 @@ process.on('message', function(msg){
 				if(typeof(msg.data.id)!='number'){
 					throw new Error('msg.data.id is not a number in {code:2}: type'+typeof(msg.data.id));
 				}
-				if(typeof(msg.data.config)!='string'){
+				if(typeof(msg.data.config)!='object'){
 					throw new Error('msg.data.config is not a string {code:2}: type'+typeof(msg.data.id));
 				}
 				log.write("validated {code:2} message content.");

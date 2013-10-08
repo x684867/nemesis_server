@@ -45,7 +45,7 @@ var logger=require('/srv/nemesis/app/logger/logger.js');
 			config.workers.forEach(
 				function(data,index,array){
 			
-					workerConfig=JSON.stringify(data);
+					workerConfig=data;  //JSON Object.
 			
 					log.write("Instantiating worker ["+index+"]");
 					log.write("config = "+JSON.stringify(data));
