@@ -31,7 +31,7 @@ var log=require('/srv/nemesis/app/logger/logger.js');
 log.drawBanner("app.js starting as master process.",0);
 
 if(!fs.lstatSync(file).isFile()) throw new Error(file+" does not exist");
-log.write("Verified! ["+file+" exists]",4);
+log.write("configuration exists: ["+file+"]",4);
 
 log.write("Loading config file: "+file,4);
 fs.readFile(file, 'utf8', function (err, data) {
