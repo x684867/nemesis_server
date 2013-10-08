@@ -18,8 +18,7 @@ function Broker(id,config){
 	log.write("                ipPort:   "+config.ipPort);
 	log.write(" ");
 	this.status=0;/*successful spawn.  Return non-zero for error codes.*/
-	log.write('the server is instantiated.  But start() must be called to start it.');
-
+	log.write('A server instances is created.  Call server.start() to launch.');
 }
 Broker.start=function(){
 	log.write('Attempting to start the server...');

@@ -44,10 +44,10 @@ fs.readFile(file, 'utf8', function (err, data) {
 		config.workers.forEach(
 			function(data,index,array){
 		
-			log.write("Instantiating worker ["+index+"]",8);
-			log.write("config = "+JSON.stringify(data),11);
-  			log.write("workerName: "+workerPath,11);
-			log.drawLine(60,8);
+			log.write("Instantiating worker ["+index+"]");
+			log.write("config = "+JSON.stringify(data));
+  			log.write("workerName: "+workerPath);
+			log.drawLine(60);
 			
 			serverFactory=require(workerPath);
 			server=new serverFactory(index,data);
