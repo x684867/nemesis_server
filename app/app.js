@@ -45,78 +45,80 @@ var logger=require('/srv/nemesis/app/logger/logger.js');
 			config.workers.forEach(
 				function(data,index,array){
 			
-				log.write("Instantiating worker ["+index+"]");
-				log.write("config = "+JSON.stringify(data));
-	  			log.write("workerPath: "+workerPath);
-				log.drawLine(60);
-				
-				log.write("Forking child process with wrapper.js.");
-				var process=require('child_process');
-				worker[index]=process.fork(CHILD_PROCESS_WRAPPER);
-				log.write("Process forked [pid="+worker[index].pid+"]");
-				log.drawLine();
+					workerConfig=JSON.stringify(data);
 			
-				log.write("Setup IPC Message Handling for Parent Process.",8);
-				worker[index].on('message',function(msg){
-					if(typeof(msg)=='object'){
-						switch(msg.code){
-							case 1:
-								log.write("Child process {code:1} rec'd by parent.");
-								
-								msg={
-										"code":2,
-										"data":{
-												"id":index,
-												"path":workerPath,
-												"config":config
-										}
-								}
+					log.write("Instantiating worker ["+index+"]");
+					log.write("config = "+JSON.stringify(data));
+		  			log.write("workerPath: "+workerPath);
+					log.drawLine(60);
+				
+					log.write("Forking child process with wrapper.js.");
+					var process=require('child_process');
+					worker[index]=process.fork(CHILD_PROCESS_WRAPPER);
+					log.write("Process forked [pid="+worker[index].pid+"]");
+					log.drawLine();
+			
+					log.write("Setup IPC Message Handling for Parent Process.",8);
+					worker[index].on('message',function(msg){
+						if(typeof(msg)=='object'){
+							switch(msg.code){
+								case 1:
+									log.write("Child process {code:1} rec'd by parent.");
+									
+									msg={
+											"code":2,
+											"data":{
+													"id":index,
+													"path":workerPath,
+													"config":workerConfig
+											}
+									}
 														
-								log.write("Parent sending code:2 ["+msg.prototype+"]");
-								worker[index].send(msg);
-								log.write("{code:2} sent to child.");
-							case 3:
-								log.write("Child process {code:3} rec'd by parent.");
-								break;
-							case 11:
-								log.write("{code:11} ping response from worker #"+index);
-								delay=(new Date()).getTime()/1000 - msg.data;
-								if(delay <= config.heartbeat.maxDelay){
-									log.write("{code:11} heartbeat from worker #"+index+": good");
-								}else{
-									log.write("{code:11} heartbeat from worker #"+index+": slow");
-								}
-								break;
-							case 13:log.write("{code:13} not implemented");break;
-							case 97:log.write("{code:97} not implemented");break;
-							case 99:log.write("{code:99} not implemented");break;
-							default:
-								throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
-								break;
+									log.write("Parent sending code:2 ["+msg.prototype+"]");
+									worker[index].send(msg);
+									log.write("{code:2} sent to child.");
+								case 3:
+									log.write("Child process {code:3} rec'd by parent.");
+									break;
+								case 11:
+									log.write("{code:11} ping response from worker #"+index);
+									delay=(new Date()).getTime()/1000 - msg.data;
+									if(delay <= config.heartbeat.maxDelay){
+										log.write("{code:11} heartbeat from worker #"+index+": good");
+									}else{
+										log.write("{code:11} heartbeat from worker #"+index+": slow");
+									}
+									break;
+								case 13:log.write("{code:13} not implemented");break;
+								case 97:log.write("{code:97} not implemented");break;
+								case 99:log.write("{code:99} not implemented");break;
+								default:
+									throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
+									break;
+							}
+						}else{
+							throw new Error('Non-object passed as message from child process.');
+						}			
+					});
+					worker[index].on('error',function(msg){
+						if(typeof(msg)=='object'){
+							throw new Error("worker[index].on('error',function(){...}); not implemented.");
+							/*
+								Todo:Implement error handling.
+							 */
+						}else{
+							throw new Error('Non-object error message passed from child process');
 						}
-					}else{
-						throw new Error('Non-object passed as message from child process.');
-					}
-				
+					});
+					
+					log.write("Sending code:0 object as message to child.",8);
+					worker[index].send({code:0});
+					log.write("Done sending message to worker["+index+"]",8);
 				});
-				worker[index].on('error',function(msg){
-					if(typeof(msg)=='object'){
-						throw new Error("worker[index].on('error',function(){...}); not implemented.");
-						/*
-							Todo:Implement error handling.
-						 */
-					}else{
-						throw new Error('Non-object error message passed from child process');
-					}
-				});
-				
-				log.write("Sending code:0 object as message to child.",8);
-				worker[index].send({code:0});
-				log.write("Done sending message to worker["+index+"]",8);
-			});
-	 		log.write("All workers have been spawned.",4);
+		 		log.write("All workers have been spawned.",4);
+			}
 		}
-	});
+	);
 })
 	
 /* Heartbeat monitor.  This sends the heartbeat "pings" to the worker processes. */
