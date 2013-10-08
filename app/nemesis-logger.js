@@ -12,7 +12,7 @@
 	But before this project goes into production, syslog will be added so that
 	daemonized processes can send their output to syslog without much effort.
 */
-modules.exports=logger;
+module.exports=logger;
 
 function logger(){/* Constructor*/}
 
