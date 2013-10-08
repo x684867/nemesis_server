@@ -2,6 +2,8 @@
 	broker worker
 */
 module.exports=Broker;
+var logger=require('/srv/nemesis/app/logger/logger.js');
+
 
 function Broker(id,config){
 	var log=new logger("broker.js(main)");	

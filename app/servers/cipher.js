@@ -6,8 +6,10 @@
 	
 */
 module.exports=Cipher;
-	var log=new logger("cipher.js(main)");
+	
+var logger=require('/srv/nemesis/app/logger/logger.js');
+
 
 function Cipher(id,config){
-
+	var log=new logger("cipher.js(main)");
 }
