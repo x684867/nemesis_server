@@ -35,7 +35,7 @@ function s(x){return (typeof(x)=='string')?true:false;}
 function n(n){return (typeof(x)=='number')?true:false;}
 function o(x){return (typeof(x)=='object')?true:false;}
 function a(x){return (typeof(x.every)=='function')?true:false;}	
-function i(x,j,k){return this.n(x.workerId)&&this.s(x.ipAddress)&&this.n(x.ipPort)
+function i(x,j,k){return this.n(x.workerId)&&this.s(x.ipAddress)&&this.n(x.ipPort);}
 function e(x){return x.every(i);}
 
 function v(c){
