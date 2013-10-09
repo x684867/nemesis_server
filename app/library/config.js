@@ -57,21 +57,19 @@ function config(filename){
 		'Invalid network port (number) in worker configuration object',
 		'Invalid worker collection object (not an array)'
 	];
-
-	
 	
 	if(!file.lstatSync(filename).isFile()){throw new Error(filename+" doesn't exist");}
 	
 	log.write("file:"+filename);
 	
-	file.readFile(filename, 'utf8', function (err, jsonConfigData) {
- 		if (err) throw new Exception("Error reading config file.  Error:"+err);
+	file.readFile(filename,'utf8',function(e,d){
+ 		if (e) throw new Exception("Error reading config file.  Error:"+err);
  		
- 		log.drawBanner("rawJSON="+jsonConfigData);
+ 		log.drawBanner("rawJSON="+d);
  		
 		log.write("parsing configuration file");
 		try{
-			this.data=JSON.parse(jsonConfigData);
+			this.data=JSON.parse(d);
 		}catch(e){
 			throw("JSON.parse() failed to parse the configuration file ["+filename+"]")
 		}

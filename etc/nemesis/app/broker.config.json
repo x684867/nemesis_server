@@ -1,20 +1,20 @@
 {
 	"serverType":"broker",
 	"monitor":{
-				"heartbeat":{
-								"interval":3600,
-								"threshold":100
-				},
-				"statistics":{
-								"interval":3600
-				}
+		"heartbeat":{
+			"interval":3600,
+			"threshold":100
+		},
+		"statistics":{
+			"interval":3600
+		}
 	},
 	"workers":[
-				{
-					"workerId":21,
-					"ipAddress":"127.0.2.1",
-					"ipPort":8080
-				}
+		{
+			"workerId":21,
+			"ipAddress":"127.0.2.1",
+			"ipPort":8080
+		}
 	]
 }
 
