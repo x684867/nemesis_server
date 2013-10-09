@@ -29,6 +29,11 @@ module.exports=config;
 
 function config(filename){
 	
+	const T_OBJ='object';
+	const T_STR='string';
+	const T_NUM='number';
+	const T_FUNC='function';
+	
 	var E_CODES=[
 		'Invalid configuration object',
 		'Invalid monitor configuration object',
@@ -43,8 +48,10 @@ function config(filename){
 		'Invalid workerId in worker configuration object',
 		'Invalid IP address string in worker configuration object',
 		'Invalid network port (number) in worker configuration object',
+		'Invalid worker collection object (not an array)'
 	];
 	this.data={};
+
 		
 	log=new logger("config.js(main)");
 	log.drawBanner("starting constructor");
@@ -70,7 +77,8 @@ function config(filename){
 		if(typeof(c.monitor.statistics)!=T_OBJ) throw new Error(E_CODES[3]);
 		if(typeof(c.monitor.statistics.interval)!=T_NUM) throw new Error(E_CODES[8]);
 		if(typeof(c.workers)!=T_OBJ) throw new Error(E_CODES[4]);
-		c.workers.foreach(function(w,i,a){
+		if(typeof(c.workers.forEach)!=T_FUNC) throw new Error(E_CODES[13]);
+		c.workers.forEach(function(w,i,a){
 			if(typeof(w)!=T_OBJ) throw new Error(E_CODES[9]);
 			if(typeof(w.workerId)!=T_NUM) throw new Error(E_CODES[10]);
 			if(typeof(w.ipAddress)!=T_STR) throw new Error(E_CODES[11]);
