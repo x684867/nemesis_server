@@ -30,7 +30,7 @@ module.exports=config;
 var logger=require('/srv/nemesis/app/logger/logger.js');
 
 function config(filename){
-	log=new logger("config.js(main)");	
+	var log=new logger("config.js(main)");	
 	
 	const T_OBJ='object';
 	const T_STR='string';
