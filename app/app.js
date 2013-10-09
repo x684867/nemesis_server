@@ -23,7 +23,7 @@ const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
 var isMsgFormatValid=require('./library/msgValidator.js').isMsgFormatValid;
 var isErrFormatValid=require('./library/msgValidator.js').isErrFormatValid;
 var isConfigValid=require('./library/cfgValidator.js');
-var process=require('child_process');
+var child=require('child_process');
 var logger=require('/srv/nemesis/app/logger/logger.js');
 
 
@@ -55,7 +55,7 @@ var cfg_fname = process.argv[2];
 	config.workers.forEach(
 		function(workerConfig,id,array){
 			log.drawLine(60);
-			worker[id]=process.fork(CHILD_PROCESS_WRAPPER);
+			worker[id]=child.fork(CHILD_PROCESS_WRAPPER);
 			worker[id].send({code:0});
 			log.write(
 					  "worker["+id+"]={\n"
