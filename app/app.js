@@ -49,6 +49,8 @@ log.drawBanner("app.js starting as master process.",0);
 */
 var config=new configFactory(config_filename);
 
+log.drawBanner("config="+JSON.stringify(config));
+
 config.data.workers.forEach(
 	function(workerConfig,id,array){
 		log.drawLine(60);
