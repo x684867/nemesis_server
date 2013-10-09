@@ -19,47 +19,47 @@
 */
 
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
+/*
+	Capture command-line arguments
+*/
+var config_filename = process.argv[2];
 
+/*
+	Load dependencies
+*/
 var logger=require('/srv/nemesis/app/logger/logger.js');
 var isMsgFormatValid=require('./library/msgValidator.js').isMsgFormatValid;
 var isErrFormatValid=require('./library/msgValidator.js').isErrFormatValid;
-var isConfigValid=require('./library/cfgValidator.js');
+var configFactory=require('./library/config.js');
 var child=require('child_process');
 
+/*
+	Declare globals
+*/
 var worker=Array();		/*This array tracks the worker processes.*/
 var monitor=Array();
-var config=Object();	/*This is the worker configuration.*/
 
-var cfg_fname = process.argv[2];
-
+/*
+	Start the logger and show a banner
+*/
 log=new logger("app.js(main)");
 log.drawBanner("app.js starting as master process.",0);
+/*
+	Load the configuration passed in by arg[2]
+*/
+var config=new configFactory(config_filename);
 
-log.write("Loading config file");	
-var config_file =require('fs');
-if(!config_file.lstatSync(cfg_fname).isFile()){throw new Error(cfg_fname+" does not exist");}
-config_file.readFile(cfg_fname, 'utf8', function (err, jsonConfigData) {
- 	if (err) throw new Exception("Error reading config file.  Error:"+err);
- 		
-	log.write("parsing and validating the configuration file");
-	config=(require('./library/cfgValidator.js'))(JSON.parse(jsonConfigData));
-});
-log.write("configuration file has been loaded and validated.");
-log.drawLine();
-	
-log.write("Iterate through worker list and fork worker processes.");
-	
-config.workers.forEach(
+config.data.workers.forEach(
 	function(workerConfig,id,array){
 		log.drawLine(60);
 		worker[id]=child.fork(CHILD_PROCESS_WRAPPER);
 		worker[id].send({code:0});
 		log.write(
 				  "worker["+id+"]={\n"
-				 +" 'type':"+config.serverType+",\n"
+				 +" 'type':"+config.data.serverType+",\n"
 				 +" 'config':"+JSON.stringify(workerConfig)+",\n"
 				 +" 'pid':"+worker[id].pid+",\n"
-				 +"\n}"
+				 +"}"
 		);
 		log.drawLine();
 		worker[id].on('message',function(msg){
@@ -69,7 +69,7 @@ config.workers.forEach(
 					log.write("P:{code:1} from C#"+id);
 					msgCode2={"code":2,
 							  "data":{"id":id,
-									  "type":config.serverType,
+									  "type":config.data.serverType,
 									  "config":workerConfig}
 					}
 					worker[id].send(msgCode2);
@@ -81,7 +81,7 @@ config.workers.forEach(
 					break;
 				case 11:
 					delay=(new Date()).getTime()/1000 - msg.data;
-					if(delay < config.monitor.heartbeat.threshold){
+					if(delay < config.data.monitor.heartbeat.threshold){
 						log.write("P:{code:11} heartbeat worker#"+id+":good");
 						/*Record to stats*/
 					}else{
