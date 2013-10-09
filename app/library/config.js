@@ -38,6 +38,8 @@ function config(filename){
 	const T_STR='string';
 	const T_NUM='number';
 	const T_FUNC='function';
+
+	log.drawBanner("starting config constructor");
 	
 	var E_CODES=[
 		'Invalid configuration object',
@@ -57,9 +59,6 @@ function config(filename){
 	];
 	this.data={};
 
-		
-	log=new logger("config.js(main)");
-	log.drawBanner("starting config constructor");
 	
 	var file =require('fs');
 	if(!file.lstatSync(filename).isFile()){throw new Error(filename+" doesn't exist");}
