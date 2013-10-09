@@ -108,7 +108,7 @@ var cfg_fname = process.argv[2];
 			});
 			monitorFactory=require('./monitor/monitorFactory.js');
 			monitor[id]=new monitorFactory(worker[id]);
-		});
-			log.write("All workers have been spawned.");
-	}
+		}
+	);
+	log.write("All workers have been spawned.");
 })
