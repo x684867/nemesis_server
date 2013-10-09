@@ -21,131 +21,94 @@
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
 
 var worker=Array();		/*This array tracks the worker processes.*/
+var monitor=Array();
 var config=Object();	/*This is the worker configuration.*/
+
 var file = process.argv[2];
-var fs =require('fs');
+
 var logger=require('/srv/nemesis/app/logger/logger.js');
 
 (function(){
 	log=new logger("app.js(main)");
-	
 	log.drawBanner("app.js starting as master process.",0);
 	
-	if(!fs.lstatSync(file).isFile()) throw new Error(file+" does not exist");
-	log.write("Config exists:["+file+"]");
+	var config_file =require('fs');
+	if(!config_file.lstatSync(file).isFile()) throw new Error(file+" does not exist");
+	
 	log.write("Loading config file");
-	fs.readFile(file, 'utf8', function (err, data) {
+	config_file.readFile(file, 'utf8', function (err, jsonConfigData) {
 	 	if (err) {
-	  		throw new Exception("Error encountered reading file ("+file+").  Error:"+err);
+	  		throw new Exception("Error reading config file.  Error:"+err);
 	  	}else{
-	  		config=JSON.parse(data);  
-  			log.write("Configuration loaded.");
-  			workerPath=__dirname+"/servers/"+config.serverType+".js"
-
+	  		
+	  		config=JSON.parse(jsonConfigData);
+	  		
 			config.workers.forEach(
-				function(data,index,array){
-			
-					workerConfig=data;  //JSON Object.
-			
-					log.write("Instantiating worker ["+index+"]");
-					log.write("config = "+JSON.stringify(data));
-		  			log.write("workerPath: "+workerPath);
+				function(workerConfig,id,array){
+					/* workerConfig is a json object describing
+					   a single worker's configuration.  It is
+					   an element of the container (workers) array
+					   of the larger config object.
+					 */
+					log.drawLine(60);
+					log.write("Fork new child process:");
+					log.write("   worker["+id+"]={\n"
+							 +"      'type':"+config.serverType+",\n"
+							 +"      'config':"+JSON.stringify(workerConfig))+"   \n}"
+					);
 					log.drawLine(60);
 				
-					log.write("Forking child process with wrapper.js.");
 					var process=require('child_process');
-					worker[index]=process.fork(CHILD_PROCESS_WRAPPER);
-					log.write("Process forked [pid="+worker[index].pid+"]");
+					worker[id]=process.fork(CHILD_PROCESS_WRAPPER);
+					worker[id].send({code:0});/*sending 1st "are you alive?" message*/
+					log.write("Worker ["+id+"] forked as pid["+worker[id].pid+"]");
 					log.drawLine();
-			
-					log.write("Setup IPC Message Handling for Parent Process.",8);
-					worker[index].on('message',function(msg){
-						if(typeof(msg)=='object'){
-							switch(msg.code){
-								case 1:
-									log.write("Child process {code:1} rec'd by parent.");
-									
-									msg={
-											"code":2,
-											"data":{
-													"id":index,
-													"path":workerPath,
-													"config":workerConfig
-											}
-									}
-														
-									log.write("Parent sending code:2 ["+msg.prototype+"]");
-									worker[index].send(msg);
-									log.write("{code:2} sent to child.");
-								case 3:
-									log.write("Child process {code:3} rec'd by parent.");
-									break;
-								case 11:
-									log.write("{code:11} ping response from worker #"+index);
-									delay=(new Date()).getTime()/1000 - msg.data;
-									if(delay <= config.heartbeat.maxDelay){
-										log.write("{code:11} heartbeat from worker #"+index+": good");
-									}else{
-										log.write("{code:11} heartbeat from worker #"+index+": slow");
-									}
-									break;
-								case 13:log.write("{code:13} not implemented");break;
-								case 97:log.write("{code:97} not implemented");break;
-								case 99:log.write("{code:99} not implemented");break;
-								default:
-									throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
-									break;
-							}
-						}else{
-							throw new Error('Non-object passed as message from child process.');
-						}			
-					});
-					worker[index].on('error',function(msg){
-						if(typeof(msg)=='object'){
-							throw new Error("worker[index].on('error',function(){...}); not implemented.");
-							/*
-								Todo:Implement error handling.
-							 */
-						}else{
-							throw new Error('Non-object error message passed from child process');
+					worker[id].on('message',function(msg){
+						if(!isMsgFormatValid(msg)) throw("Rec'd invalid msg object.");
+						switch(msg.code){
+							case 1:
+								log.write("msg {code:1} rec'd by parent.");
+								msgCode2={"code":2,
+										  "data":{"id":id,
+												  "type":config.serverType,
+												  "config":workerConfig}
+								}
+								log.write("Parent: send("+JSON.stringify(msgCode2)+")");
+								worker[id].send(msgCode2);
+								log.write("Parent: {code:2} sent to worker#"+id);
+								break;
+							case 3:
+								log.write("Child process {code:3} rec'd by parent.");
+								/*This should be recorded to stats*/
+								break;
+							case 11:
+								log.write("{code:11} ping response from worker #"+id);
+								delay=(new Date()).getTime()/1000 - msg.data;
+								if(delay <= config.heartbeat.maxDelay){
+									log.write("{code:11} heartbeat from worker #"+id+": good");
+								}else{
+									log.write("{code:11} heartbeat from worker #"+id+": slow");
+								}
+								break;
+							case 13:log.write("{code:13} not implemented");break;
+							case 97:log.write("{code:97} not implemented");break;
+							case 99:log.write("{code:99} not implemented");break;
+							default:
+								throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
+								break;
 						}
+					});/*end of msg handler*/
+					worker[id].on('error',function(msg){
+						if(!isErrFormatValid(msg)){
+							throw new Error("Rec'd invalid msg object on error event.");
+						}
+						throw new Error("worker[index].on('error'...) not implemented.");
 					});
-					
-					log.write("Sending code:0 object as message to child.",8);
-					worker[index].send({code:0});
-					log.write("Done sending message to worker["+index+"]",8);
+					monitorFactory=require('./monitor/monitorFactory.js');
+					monitor[id]=new monitorFactory(worker[id]);
 				});
-		 		log.write("All workers have been spawned.",4);
+		 		log.write("All workers have been spawned.",);
 			}
 		}
 	);
 })
-	
-/* Heartbeat monitor.  This sends the heartbeat "pings" to the worker processes. */
-(function(){
-	var log=require('/srv/nemesis/app/logger/logger.js');
-		log.source="app.js(heartbeat)";
-
-
-	setTimeout(
-		function(){
-			log.write("Heartbeat monitor starting...");
-			worker.forEach(function(p,i,a){
-				log.write("ping worker #"+i,4);
-				/*Note that a heartbeat includes the seconds since the epoch when it was sent*/
-				p.send({code:10,data:(new Date()).getTime()/1000});
-			});
-			log.write("Heartbeat monitor stopping...");
-		},
-		config.heartbeat.interval
-	);
-});
-/* Statistics monitor*/
-(function(){
-	var log=require('/srv/nemesis/app/logger/logger.js');
-		log.source="app.js(stats)";
-
-})
-/*
-	Not implemented!
-*/
