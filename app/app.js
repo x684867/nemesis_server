@@ -57,9 +57,10 @@ var cfg_fname = process.argv[2];
 			log.drawLine(60);
 			worker[id]=process.fork(CHILD_PROCESS_WRAPPER);
 			worker[id].send({code:0});
-			log.write("worker["+id+"]={\n"
+			log.write(
+					  "worker["+id+"]={\n"
 					 +" 'type':"+config.serverType+",\n"
-					 +" 'config':"+JSON.stringify(workerConfig))+",\n"
+					 +" 'config':"+JSON.stringify(workerConfig)+",\n"
 					 +" 'pid':"+worker[id].pid+",\n"
 					 +"\n}"
 			);
