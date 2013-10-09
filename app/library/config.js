@@ -58,42 +58,32 @@ function config(filename){
 		'Invalid worker collection object (not an array)'
 	];
 	
-	if(!fs.lstatSync(filename).isFile()){throw new Error(filename+" doesn't exist");}
-	
-	log.write("file:"+filename);
-		
-	fs.readFile(filename,'utf8',function(e,d){
- 		if (e) throw new Exception("Error reading config file.  Error:"+err);
- 		
- 		log.drawBanner("rawJSON="+d);
- 		
-		log.write("parsing configuration file");
+	if(fs.lstatSync(filename).isFile()){
 		try{
-			this.data=JSON.parse(d);
+			this.data=JSON.parse(fs.readFileSync(filename));
 		}catch(e){
-			throw("JSON.parse() failed to parse the configuration file ["+filename+"]")
+			throw("JSON.parse() failed to read/parse the config file ["+filename+"]")
 		}
-		log.write("validating configuration file");
-		if(typeof(this.data)!=T_OBJ) throw new Error(E_CODES[0]);
-		if(typeof(this.data.serverType)!=T_STR) throw new Error(E_CODES[5]);
-		if(typeof(this.data.monitor)!=T_OBJ) throw new Error(E_CODES[1]);
-		if(typeof(this.data.monitor.heartbeat)!=T_OBJ) throw new Error(E_CODES[2]);
-		if(typeof(this.data.monitor.heartbeat.interval)!=T_NUM) throw new Error(E_CODES[6]);
-		if(typeof(this.data.monitor.heartbeat.threshold)!=T_NUM) throw new Error(E_CODES[7]);
-		if(typeof(this.data.monitor.statistics)!=T_OBJ) throw new Error(E_CODES[3]);
-		if(typeof(this.data.monitor.statistics.interval)!=T_NUM) throw new Error(E_CODES[8]);
-		if(typeof(this.data.workers)!=T_OBJ) throw new Error(E_CODES[4]);
-		if(typeof(this.data.workers.forEach)!=T_FUNC) throw new Error(E_CODES[13]);
-		this.data.workers.forEach(function(w,i,a){
-			if(typeof(w)!=T_OBJ) throw new Error(E_CODES[9]);
-			if(typeof(w.workerId)!=T_NUM) throw new Error(E_CODES[10]);
-			if(typeof(w.ipAddress)!=T_STR) throw new Error(E_CODES[11]);
-			if(typeof(w.ipPort)!=T_NUM) throw new Error(E_CODES[12]);
-		});
-		log.write("configuration JSON object is valid");
+	}else{
+		throw new Error(filename+" doesn't exist");
+	}
+	log.write("validating configuration file");
+	if(typeof(this.data)!=T_OBJ) throw new Error(E_CODES[0]);
+	if(typeof(this.data.serverType)!=T_STR) throw new Error(E_CODES[5]);
+	if(typeof(this.data.monitor)!=T_OBJ) throw new Error(E_CODES[1]);
+	if(typeof(this.data.monitor.heartbeat)!=T_OBJ) throw new Error(E_CODES[2]);
+	if(typeof(this.data.monitor.heartbeat.interval)!=T_NUM) throw new Error(E_CODES[6]);
+	if(typeof(this.data.monitor.heartbeat.threshold)!=T_NUM) throw new Error(E_CODES[7]);
+	if(typeof(this.data.monitor.statistics)!=T_OBJ) throw new Error(E_CODES[3]);
+	if(typeof(this.data.monitor.statistics.interval)!=T_NUM) throw new Error(E_CODES[8]);
+	if(typeof(this.data.workers)!=T_OBJ) throw new Error(E_CODES[4]);
+	if(typeof(this.data.workers.forEach)!=T_FUNC) throw new Error(E_CODES[13]);
+	this.data.workers.forEach(function(w,i,a){
+		if(typeof(w)!=T_OBJ) throw new Error(E_CODES[9]);
+		if(typeof(w.workerId)!=T_NUM) throw new Error(E_CODES[10]);
+		if(typeof(w.ipAddress)!=T_STR) throw new Error(E_CODES[11]);
+		if(typeof(w.ipPort)!=T_NUM) throw new Error(E_CODES[12]);
 	});
-	
+	log.write("configuration JSON object is valid");
 	log.write("exit constructor.");
-	log=void(0);
-	
 }

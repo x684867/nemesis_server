@@ -17,13 +17,11 @@
 	in real time and respawn any worker process which may die or become
 	unresponsive.	
 */
-
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
 /*
 	Capture command-line arguments
 */
 var config_filename = process.argv[2];
-
 /*
 	Load dependencies
 */
@@ -32,13 +30,11 @@ var isMsgFormatValid=require('./library/msgValidator.js').isMsgFormatValid;
 var isErrFormatValid=require('./library/msgValidator.js').isErrFormatValid;
 var configFactory=require('./library/config.js');
 var child=require('child_process');
-
 /*
 	Declare globals
 */
 var worker=Array();		/*This array tracks the worker processes.*/
 var monitor=Array();
-
 /*
 	Start the logger and show a banner
 */
