@@ -34,9 +34,9 @@ function isMsgFormatValid(msg){
 			/*
 				Process-Initialization Messages
 			*/
-			code 0:return true;break;/*No data property.*/
-			code 1:return true;break;/*No data property.*/
-			code 2:
+			case 0:return true;break;/*No data property.*/
+			case 1:return true;break;/*No data property.*/
+			case 2:
 				/*------------------------------------------------ 
 					{
 						code:2,
@@ -57,13 +57,13 @@ function isMsgFormatValid(msg){
 				}
 				throw new Error('Msg {code:2} lacks data property');
 				break;/*we should never get to the break.  it's here for form.*/
-			code 3:return true;break;/*No data property.*/
-			code 4:return true;break;/*No data property.*/
+			case 3:return true;break;/*No data property.*/
+			case 4:return true;break;/*No data property.*/
 			/*
 				Process-Monitoring Messages
 			*/
-			code 10:return true;break;/*No data property.*/
-			code 11:
+			case 10:return true;break;/*No data property.*/
+			case 11:
 				/*------------------------------------------------ 
 					{code:11,data:<number>}
 				------------------------------------------------*/
@@ -73,8 +73,8 @@ function isMsgFormatValid(msg){
 				}
 				throw("Msg {code:11} lacks data property.");
 				break;					
-			code 12:return true;break;/*No data property.*/
-			code 13:
+			case 12:return true;break;/*No data property.*/
+			case 13:
 				/*------------------------------------------------ 
 					{code:13,data:[<array of statistic objects>]}
 				------------------------------------------------*/
