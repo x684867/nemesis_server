@@ -93,6 +93,7 @@ function config(filename){
 		log.write("configuration JSON object is valid");
 	});
 	
-	log.write("Finishing config file read operations.");
+	log.write("exit constructor.");
+	log=void(0);
 	
 }
