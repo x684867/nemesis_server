@@ -20,13 +20,20 @@
 
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
 
+var isMsgFormatValid=require('./library/msgValidator.js');
+var isErrFormatValid=require('./library/msgValidator.js');
+var isConfigValid=require('./library/cfgValidator.js');
+
+var logger=require('/srv/nemesis/app/logger/logger.js');
+
+
 var worker=Array();		/*This array tracks the worker processes.*/
 var monitor=Array();
 var config=Object();	/*This is the worker configuration.*/
 
 var file = process.argv[2];
 
-var logger=require('/srv/nemesis/app/logger/logger.js');
+
 
 (function(){
 	log=new logger("app.js(main)");

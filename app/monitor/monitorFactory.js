@@ -40,24 +40,6 @@ function monitorFactory(process,config){
 			interval
 		);
 	}
-	
-	if(this.isConfigValid(c)){
-		startHeartbeat(process,c.monitor.heartbeat);
-		startStatistics(process,c.monitor.statistics);
-	}
-
-	this.isConfigValid=function(c){
-		return ((c==undefined)
-			   	&&(c.monitor!=undefined)
-			    &&(c.monitor.heartbeat!=undefined)
-			   	&&(c.monitor.statistics!=undefined)
-			   	&&(typeof(config)=='object')
-			   	&&(typeof(config.monitor)=='object')
-			   	&&(typeof(config.monitor.heartbeat)=='number')
-			   	&&(typeof(config.monitor.statistics)=='number')
-			   )?true:false;
-	}
-	
-
-
+	this.startHeartbeat(process,c.monitor.heartbeat);
+	this.startStatistics(process,c.monitor.statistics);
 }

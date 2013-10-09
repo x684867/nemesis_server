@@ -2,7 +2,9 @@
 	General Function Library for Message Handling by Parent and Child Processes.
 	(c) 2013 Sam Caldwell.  All Rights Reserved.  
  */
- 
+module.exports=isMsgFormatValid;
+module.exports=isErrFormatValid;
+
 function isMsgFormatValid(msg){
 	/*Internal methods*/
 	this.hasDataProperty=function(msg){return (msg.data==undefined)?false:true;}
