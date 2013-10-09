@@ -58,10 +58,13 @@ function config(filename){
 		
 	log=new logger("config.js(main)");
 	log.drawBanner("starting config constructor");
-	var config_file =require('fs');
-	if(!config_file.lstatSync(filename).isFile()){throw new Error(filename+" does not exist");}
+	
+	var file =require('fs');
+	if(!file.lstatSync(filename).isFile()){throw new Error(filename+" doesn't exist");}
+	
 	log.write("reading configuration file:"+filename);
-	config_file.readFile(filename, 'utf8', function (err, jsonConfigData) {
+	
+	file.readFile(filename, 'utf8', function (err, jsonConfigData) {
  		if (err) throw new Exception("Error reading config file.  Error:"+err);
  		
  		log.drawBanner("rawJSON="+jsonConfigData);
