@@ -84,7 +84,7 @@ function config(filename){
 			if(typeof(w.ipAddress)!=T_STR) throw new Error(E_CODES[11]);
 			if(typeof(w.ipPort)!=T_NUM) throw new Error(E_CODES[12]);
 		});
-		log.write("configuration JSON object is valid");break;
+		log.write("configuration JSON object is valid");
 		this.data=c;/*storing the JSON object in the public property for the config class.*/
 	});
 }
