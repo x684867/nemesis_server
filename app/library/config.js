@@ -64,6 +64,8 @@ function config(filename){
 	config_file.readFile(filename, 'utf8', function (err, jsonConfigData) {
  		if (err) throw new Exception("Error reading config file.  Error:"+err);
  		
+ 		log.drawBanner("rawJSON="+jsonConfigData);
+ 		
 		log.write("parsing configuration file");
 		try{
 			this.data=JSON.parse(jsonConfigData);
