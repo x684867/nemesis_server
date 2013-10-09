@@ -27,11 +27,9 @@
 */
 module.exports=config;
 
+var logger=require('/srv/nemesis/app/logger/logger.js');
 
-	
 function config(filename){
-
-	var logger=require('/srv/nemesis/app/logger/logger.js');
 	log=new logger("config.js(main)");	
 	
 	const T_OBJ='object';
@@ -58,7 +56,6 @@ function config(filename){
 		'Invalid worker collection object (not an array)'
 	];
 	this.data={};
-
 	
 	var file =require('fs');
 	if(!file.lstatSync(filename).isFile()){throw new Error(filename+" doesn't exist");}
@@ -97,4 +94,5 @@ function config(filename){
 	});
 	
 	log.write("Finishing config file read operations.");
+	
 }
