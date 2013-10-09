@@ -55,7 +55,7 @@ function config(filename){
 		'Invalid network port (number) in worker configuration object',
 		'Invalid worker collection object (not an array)'
 	];
-	this.data={};
+	this.data={status:undefined};
 	
 	var file =require('fs');
 	if(!file.lstatSync(filename).isFile()){throw new Error(filename+" doesn't exist");}
