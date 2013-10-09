@@ -51,7 +51,7 @@ function isMsgFormatValid(msg){
 					    }
 					}
 				------------------------------------------------*/
-				if(this.hasDataProperty(msg){
+				if(this.hasDataProperty(msg)){
 					if(this.isValidCode2Data(msg))return true;
 					throw new Error('Msg {code:2} data is not properly formed.');
 				}
