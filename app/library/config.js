@@ -60,7 +60,7 @@ function config(filename){
 	log.drawBanner("starting config constructor");
 	var config_file =require('fs');
 	if(!config_file.lstatSync(filename).isFile()){throw new Error(filename+" does not exist");}
-	log.write("reading configuration file");
+	log.write("reading configuration file:"+filename);
 	config_file.readFile(filename, 'utf8', function (err, jsonConfigData) {
  		if (err) throw new Exception("Error reading config file.  Error:"+err);
  		
