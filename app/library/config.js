@@ -62,7 +62,7 @@ function config(filename){
 	var file =require('fs');
 	if(!file.lstatSync(filename).isFile()){throw new Error(filename+" doesn't exist");}
 	
-	log.write("reading configuration file:"+filename);
+	log.write("read config file:"+filename);
 	
 	file.readFile(filename, 'utf8', function (err, jsonConfigData) {
  		if (err) throw new Exception("Error reading config file.  Error:"+err);
@@ -94,4 +94,6 @@ function config(filename){
 		});
 		log.write("configuration JSON object is valid");
 	});
+	
+	log.write("Finishing config file read operations.");
 }
