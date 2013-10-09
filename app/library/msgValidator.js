@@ -79,13 +79,10 @@ function isMsgFormatValid(msg){
 					{code:13,data:[<array of statistic objects>]}
 				------------------------------------------------*/
 				if(this.hasDataProperty(msg)){
-					if(typeof(msg.data)=='array'){
-						return true;
-					}else{
-						throw new Error("Msg {code:13} data property is non-array.");
-				}else{
-					throw new Error("Msg {code:13} lacks data property.");
+					if(typeof(msg.data)=='array') return true;
+					throw new Error("Msg {code:13} data property is non-array.");
 				}
+				throw new Error("Msg {code:13} lacks data property.");
 				break;
 		}/*end of switch()*/
 	}
