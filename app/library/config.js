@@ -66,7 +66,7 @@ function config(filename){
  		
 		log.write("parsing configuration file");
 		try{
-			var this.data=JSON.parse(jsonConfigData);
+			this.data=JSON.parse(jsonConfigData);
 		}catch(e){
 			throw("JSON.parse() failed to parse the configuration file ["+filename+"]")
 		}
