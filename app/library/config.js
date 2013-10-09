@@ -66,28 +66,27 @@ function config(filename){
  		
 		log.write("parsing configuration file");
 		try{
-			var c=JSON.parse(jsonConfigData);
+			var this.data=JSON.parse(jsonConfigData);
 		}catch(e){
 			throw("JSON.parse() failed to parse the configuration file ["+filename+"]")
 		}
 		log.write("validating configuration file");
-		if(typeof(c)!=T_OBJ) throw new Error(E_CODES[0]);
-		if(typeof(c.serverType)!=T_STR) throw new Error(E_CODES[5]);
-		if(typeof(c.monitor)!=T_OBJ) throw new Error(E_CODES[1]);
-		if(typeof(c.monitor.heartbeat)!=T_OBJ) throw new Error(E_CODES[2]);
-		if(typeof(c.monitor.heartbeat.interval)!=T_NUM) throw new Error(E_CODES[6]);
-		if(typeof(c.monitor.heartbeat.threshold)!=T_NUM) throw new Error(E_CODES[7]);
-		if(typeof(c.monitor.statistics)!=T_OBJ) throw new Error(E_CODES[3]);
-		if(typeof(c.monitor.statistics.interval)!=T_NUM) throw new Error(E_CODES[8]);
-		if(typeof(c.workers)!=T_OBJ) throw new Error(E_CODES[4]);
-		if(typeof(c.workers.forEach)!=T_FUNC) throw new Error(E_CODES[13]);
-		c.workers.forEach(function(w,i,a){
+		if(typeof(this.data)!=T_OBJ) throw new Error(E_CODES[0]);
+		if(typeof(this.data.serverType)!=T_STR) throw new Error(E_CODES[5]);
+		if(typeof(this.data.monitor)!=T_OBJ) throw new Error(E_CODES[1]);
+		if(typeof(this.data.monitor.heartbeat)!=T_OBJ) throw new Error(E_CODES[2]);
+		if(typeof(this.data.monitor.heartbeat.interval)!=T_NUM) throw new Error(E_CODES[6]);
+		if(typeof(this.data.monitor.heartbeat.threshold)!=T_NUM) throw new Error(E_CODES[7]);
+		if(typeof(this.data.monitor.statistics)!=T_OBJ) throw new Error(E_CODES[3]);
+		if(typeof(this.data.monitor.statistics.interval)!=T_NUM) throw new Error(E_CODES[8]);
+		if(typeof(this.data.workers)!=T_OBJ) throw new Error(E_CODES[4]);
+		if(typeof(this.data.workers.forEach)!=T_FUNC) throw new Error(E_CODES[13]);
+		this.data.workers.forEach(function(w,i,a){
 			if(typeof(w)!=T_OBJ) throw new Error(E_CODES[9]);
 			if(typeof(w.workerId)!=T_NUM) throw new Error(E_CODES[10]);
 			if(typeof(w.ipAddress)!=T_STR) throw new Error(E_CODES[11]);
 			if(typeof(w.ipPort)!=T_NUM) throw new Error(E_CODES[12]);
 		});
 		log.write("configuration JSON object is valid");
-		this.data=c;/*storing the JSON object in the public property for the config class.*/
 	});
 }
