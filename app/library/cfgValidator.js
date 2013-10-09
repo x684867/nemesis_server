@@ -33,27 +33,20 @@ module.exports=isValid;
 
 function isValid(c){
 
-	this.isstring=function(s){return (typeof(s)=='string')?true:false;}
-	this.isnumber=function(n){return (typeof(n)=='number')?true:false;}
-	this.isobject=function(o){return (typeof(o)=='object')?true:false;}
-	this.isarray=function(a){return (typeof(o)=='object')&&(typeof(o.every)=='function')?true:false;}	
-	this.evalWorkerArray(w){
-		return w.every(function(e,i,a){
-			return  this.isnumber(e.workerId) &&
-				    this.isstring(e.ipAddress) &&
-				    this.isnumber(e.ipPort)	   
-		});
-	}
-	
-	
-	return 	this.isobject(c) &&
-			this.isstring(c.serverType) &&
-			this.isobject(c.monitor) &&
-			this.isobject(c.monitor.heartbeat) &&
-			this.isnumber(c.monitor.heartbeat.interval) && 
-			this.isnumber(c.monitor.heartbeat.threshold) &&
-			this.isobject(c.monitor.statistics) &&
-			this.isnumber(c.monitor.statistics.interval) &&
-			this.isarray(c.workers) &&
-			this.evalWorkerArray(c.workers);
+	this.s=function(x){return (typeof(x)=='string')?true:false;}
+	this.n=function(n){return (typeof(x)=='number')?true:false;}
+	this.o=function(x){return (typeof(x)=='object')?true:false;}
+	this.a=function(x){return (typeof(x)=='object')&&(typeof(x.every)=='function')?true:false;}	
+	this.e(x){return x.every(function(e,i,a){return this.n(e.workerId)&&this.s(e.ipAddress)&&this.n(e.ipPort)});}
+
+	return 	this.o(c) &&
+			this.s(c.serverType) &&
+			this.o(c.monitor) &&
+			this.o(c.monitor.heartbeat) &&
+			this.n(c.monitor.heartbeat.interval) && 
+			this.n(c.monitor.heartbeat.threshold) &&
+			this.o(c.monitor.statistics) &&
+			this.n(c.monitor.statistics.interval) &&
+			this.a(c.workers) &&
+			this.e(c.workers);
 }
