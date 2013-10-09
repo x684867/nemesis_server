@@ -29,24 +29,25 @@
 	
 */
 
-module.exports=isValid;
+module.exports=validateConfig;
 
-function isValid(c){
+function validateConfig(c){
+	if(isValidServerConfig(c)){
+		return c;
+	}else{
+		throw new Error('Invalid or malformed JSON configuration.');
+	}
+}
 
-	this.s=function(x){return (typeof(x)=='string')?true:false;}
-	this.n=function(n){return (typeof(x)=='number')?true:false;}
-	this.o=function(x){return (typeof(x)=='object')?true:false;}
-	this.a=function(x){return (typeof(x)=='object')&&(typeof(x.every)=='function')?true:false;}	
-	this.e(x){return x.every(function(e,i,a){return this.n(e.workerId)&&this.s(e.ipAddress)&&this.n(e.ipPort)});}
-
-	return 	this.o(c) &&
-			this.s(c.serverType) &&
-			this.o(c.monitor) &&
-			this.o(c.monitor.heartbeat) &&
-			this.n(c.monitor.heartbeat.interval) && 
-			this.n(c.monitor.heartbeat.threshold) &&
-			this.o(c.monitor.statistics) &&
-			this.n(c.monitor.statistics.interval) &&
-			this.a(c.workers) &&
-			this.e(c.workers);
+function isValidServerConfig(c){
+	function s(x){return (typeof(x)=='string')?true:false;}
+	function n(n){return (typeof(x)=='number')?true:false;}
+	function o(x){return (typeof(x)=='object')?true:false;}
+	function a(x){return (typeof(x.every)=='function')?true:false;}	
+	function i(x,j,k){return this.n(x.workerId)&&this.s(x.ipAddress)&&this.n(x.ipPort)
+	function e(x){return x.every(i);}
+	return 	o(c)&&s(c.serverType)&&o(c.monitor)&&o(c.monitor.heartbeat)&&
+			n(c.monitor.heartbeat.interval)&& n(c.monitor.heartbeat.threshold)&&
+			o(c.monitor.statistics)&&n(c.monitor.statistics.interval)&&a(c.workers)&&
+			e(c.workers);
 }
