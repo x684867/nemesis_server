@@ -1,8 +1,13 @@
 {
 	"serverType":"broker",
-	"heartbeat":{
-				"interval":3600,
-				"maxDelay":100
+	"monitor":{
+				"heartbeat":{
+								"interval":3600,
+								"threshold":100
+				},
+				"statistics":{
+								"interval":3600
+				}
 	},
 	"workers":[
 				{
