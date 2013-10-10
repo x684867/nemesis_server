@@ -3,7 +3,7 @@
 	(c) 2013 Sam Caldwell.  All Rights Reserved.  
  */
 module.exports=validatorClass;
-
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js');
 function validatorClass(){
 	this.isValidError=function(msg){
 		return (typeof(msg)=='object')?true:false;
@@ -16,7 +16,7 @@ function validatorClass(){
 		const TSTR='string';
 		const TNUM='number';
 
-		var logger=require('/srv/nemesis/app/logger/logger.js');
+		var logger=require(LOGGER_CLASS);
 		var log=new logger('msgValidator');
 	
 		/*End of method definition*/

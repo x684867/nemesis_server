@@ -30,44 +30,37 @@
 			*Begin service development.
 	---------------------------------------------------------------------------------
 */
-global LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js');
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/library/worker.js';
 const PID_WRITER_SCRIPT='/srv/nemesis/app/library/pidWriter.js';
 const VALIDATOR_CLASS='./library/msgValidator.js';
 const CONFIG_CLASS='./library/config.js';
-/*
-	Capture command-line arguments
-*/
+
+/*Capture command-line arguments*/
 var config_filename = process.argv[2];
-/*
-	Load dependencies
-*/
+
+/*Load dependencies*/
 var logger=require(LOGGER_CLASS);
 var validatorClass=require(VALIDATOR_CLASS);
 var validator=new validatorClass();
 var configFactory=require(CONFIG_CLASS);
-/*
-	Declare globals
-*/
+
+/*Declare globals*/
 var worker=Array();		/*This array tracks the worker processes.*/
 var monitor=Array();
-/*
-	Start the logger and show a banner
-*/
+
+/*Start the logger and show a banner*/
 log=new logger("app.js(main)");
 log.drawBanner("app.js starting as master process pid:["+process.pid+"]");
-/*
-	Setup Process management
-*/
+
+/*Setup Process management*/
 process.title="nemesisMaster";
 process.on('SIGHUP',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGHUP]");});
 process.on('SIGKILL',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGKILL]");});
 process.on('SIGINT',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGINT]");});
 process.on('SIGTERM',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGTERM]");});
-/*
-	Load the configuration passed in by arg[2]
-*/
+
+/*Load the configuration passed in by arg[2]*/
 var config=new configFactory(config_filename);
 
 log.drawBanner("config="+JSON.stringify(config));

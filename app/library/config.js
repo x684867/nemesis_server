@@ -26,7 +26,7 @@
 	}	
 */
 module.exports=config;
-
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js');
 const TOBJ='object';
 const TSTR='string';
 const TNUM='number';
@@ -59,7 +59,7 @@ const E_MISSING_SSL_CA='Missing file (ca_cert)';
 	
 function config(filename){
 	var fs =require('fs');
-	var logger=require('/srv/nemesis/app/logger/logger.js');
+	var logger=require(LOGGER_CLASS);
 	var log=new logger("config.js(main)");	
 	log.drawBanner("starting config constructor");
 
