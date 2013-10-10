@@ -42,24 +42,22 @@ function isMsgFormatValid(msg){
 				const TOBJ='object';
 				const TSTR='string';
 				const TNUM='number';
-				if((function(m){
-					return ((typeof(m.data)=='TOBJ')
-						&&(m.data.id!=undefined)&&(m.data.type!=undefined)
-			   			&&(m.data.config!=undefined)&&(typeof(m.data.id)=='TNUM')
-			   			&&(typeof(m.data.type)=='TSTR')&&(typeof(m.data.config)=='TOBJ')
-			   			&&(m.data.config.workerId!=undefined)
-			   			&&(m.data.config.ipAddress!=undefined)
-			   			&&(m.data.config.ipPort!=undefined)
-			   			&&(typeof(m.data.config.workerId)=='TNUM')
-			   			&&(typeof(m.data.config.ipAddress)=='TSTR')
-			   			&&(typeof(m.data.config.ipPort)=='TSTR')
-			   		)?true:false
-			   	})){
-			   		if(this.isValidCode2Data(msg))return true;
-					throw new Error('Msg {code:2} data is not properly formed.');
-				}
-				throw new Error('Msg {code:2} lacks data property');
-				break;/*we should never get to the break.  it's here for form.*/
+				if(typeof(m.data)!=TOBJ) throw new Error('{code:2,data:<non-object>}');
+				if(typeof(m.data.id)==undefined) throw new Error('data.id undefined');
+				if(typeof(m.data.type)==undefined) throw new Error('data.type undefined');
+				if(typeof(m.data.config)!=undefined)throw new Error('data.config undefined);
+				if(typeof(m.data.id)!=TNUM) throw new Error('data.id not a number');
+				if(typeof(m.data.type)!=TSTR) throw new Error('data.type not a string');
+				if(typeof(m.data.config!=TOBJ) throw new Error('data.config not object');
+				if(typeof(m.data.config.workerId)==undefined) throw new Error('data.config.workerId undefined');
+				if(typeof(m.data.config.ipAddress)==undefined) throw new Error('data.config.ipAddress');
+				if(typeof(m.data.config.ipPort)==undefined) throw new Error('data.config.ipPort')
+				if(typeof(m.data.config.workerId)!=TNUM) throw new Error('data.config.workerId not number');
+				if(typeof(m.data.config.ipAddress)!=TSTR) throw new Error('data.config.ipAddress not string');
+				if(typeof(m.data.config.ipPort)!=TNUM) throw new Error('data.config.ipPort not number');
+				log.write("{code:2,data:<object>} is correctly formatted.");
+				return true;
+				break;				
 			case 3:return true;break;/*No data property.*/
 			case 4:return true;break;/*No data property.*/
 			/*
