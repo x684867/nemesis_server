@@ -26,8 +26,10 @@ var config_filename = process.argv[2];
 	Load dependencies
 */
 var logger=require('/srv/nemesis/app/logger/logger.js');
-var isMsgFormatValid=require('./library/msgValidator.js').isMsgFormatValid;
-var isErrFormatValid=require('./library/msgValidator.js').isErrFormatValid;
+
+var validatorClass=require('./library/msgValidator.js');
+var validator=new validatorClass();
+
 var configFactory=require('./library/config.js');
 /*
 	Declare globals
@@ -63,7 +65,7 @@ config.data.workers.forEach(
 		);
 		log.drawLine();
 		child.on('message',function(msg){
-			if(!isMsgFormatValid(msg)) throw("Parent: Rec'd invalid msg object.");
+			if(!validator.isValidMsg(msg)) throw("Parent: Rec'd invalid msg object.");
 			switch(msg.code){
 				case 1:
 					log.write("P:{code:1} from C#"+id);
@@ -98,7 +100,7 @@ config.data.workers.forEach(
 			}
 		});
 		child.on('error',function(msg){
-			if(!isErrFormatValid(msg)){
+			if(!validator.isValidError(msg)){
 				throw new Error("Rec'd invalid msg object on error event.");
 			}
 			throw new Error("worker[index].on('error'...) not implemented.");
