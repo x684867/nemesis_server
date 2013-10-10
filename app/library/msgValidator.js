@@ -45,7 +45,7 @@ function isMsgFormatValid(msg){
 				if(typeof(m.data)!=TOBJ) throw new Error('{code:2,data:<non-object>}');
 				if(typeof(m.data.id)==undefined) throw new Error('data.id undefined');
 				if(typeof(m.data.type)==undefined) throw new Error('data.type undefined');
-				if(typeof(m.data.config)==undefined)throw new Error('data.config undefined);
+				if(typeof(m.data.config)==undefined)throw new Error('data.config undefined');
 				if(typeof(m.data.id)!=TNUM) throw new Error('data.id not a number');
 				if(typeof(m.data.type)!=TSTR) throw new Error('data.type not a string');
 				if(typeof(m.data.config!=TOBJ) throw new Error('data.config not object');
