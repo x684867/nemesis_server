@@ -28,6 +28,7 @@ function Broker(id,config,ssl_config){
 		log.write('Attempting to start the server...');
 		try {
 			if(config.ssl){
+				log.write('  starting with https');
 				var web=require('https');
 				web.createServer(
 					ssl_config,
@@ -37,6 +38,7 @@ function Broker(id,config,ssl_config){
 					}
 				).listen(config.ipPort, config.ipAddress);
 			}else{
+			    log.write('  starting with http');
 				var web=require('http');
 				web.createServer(
 					function(req,res){
