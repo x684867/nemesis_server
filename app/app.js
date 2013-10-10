@@ -48,21 +48,19 @@ log.drawBanner("config="+JSON.stringify(config));
 
 config.data.workers.forEach(
 	function(workerConfig,id,array){
-		(function(){
-			log.drawLine(60);
-			log.write("fork process with wrapper");
-			var child=require('child_process');
-			worker[id]=child.fork(CHILD_PROCESS_WRAPPER);
-			worker[id].send({code:0});
-			log.write(
-				  "worker["+id+"]={\n"
-				 +" 'type':"+config.data.serverType+",\n"
-				 +" 'config':"+JSON.stringify(workerConfig)+",\n"
-				 +" 'pid':"+worker[id].pid+",\n"
-				 +"}"
-			);
-			log.drawLine();
-		});
+		log.drawLine(60);
+		log.write("fork process with wrapper");
+		var child=require('child_process');
+		worker[id]=child.fork(CHILD_PROCESS_WRAPPER);
+		worker[id].send({code:0});
+		log.write(
+			  "worker["+id+"]={\n"
+			 +" 'type':"+config.data.serverType+",\n"
+			 +" 'config':"+JSON.stringify(workerConfig)+",\n"
+			 +" 'pid':"+worker[id].pid+",\n"
+			 +"}"
+		);
+		log.drawLine();
 		worker[id].on('message',function(msg){
 			if(!isMsgFormatValid(msg)) throw("Parent: Rec'd invalid msg object.");
 			switch(msg.code){
@@ -95,9 +93,9 @@ config.data.workers.forEach(
 				case 99:log.write("{code:99} not implemented");break;
 				default:
 					throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
-					break;
+				break;
 			}
-		});/*end of msg handler*/
+		});
 		worker[id].on('error',function(msg){
 			if(!isErrFormatValid(msg)){
 				throw new Error("Rec'd invalid msg object on error event.");
