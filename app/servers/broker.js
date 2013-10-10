@@ -37,7 +37,7 @@ function Broker(id,config,ssl_config){
 				}
 			).listen(config.ipPort, config.ipAddress);
 		}catch(e){
-			log.write("Broker failed to listen on "+config.ipAddress+":"+config.ipPort+)
+			log.write("Broker failed to listen on "+config.ipAddress+":"+config.ipPort)
 			return 10;/*Fatal Error*/
 		}
 		log.write('Server started!');
