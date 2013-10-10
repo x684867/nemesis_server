@@ -14,7 +14,7 @@ function isMsgFormatValid(msg){
 	/*End of method definition*/
 	log.write("Evaluate msg object");
 	if(typeof(msg)=='object'){
-		log.write("msg is object");
+		log.write("msg is object.\n  Dumping:"+JSON.stringify(msg));
 		if(msg.code==undefined) throw new Error("Msg is missing expected code property.");
 		if(typeof(msg.code)!='number') throw new Error('Message code is not a number');
 		log.write("eval msg.code value {code:"+msg.code+"}");
