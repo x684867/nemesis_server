@@ -38,10 +38,11 @@ process.on('message', function(msg){
 				if(typeof(msg.data.config)!='object'){
 					throw new Error('msg.data.config is not a string {code:2}: type'+typeof(msg.data.config));
 				}
-				log.write("validated {code:2} message content.");
-				log.write("msg.data.id    ="+msg.data.id);
-				log.write("msg.data.path  ="+msg.data.path);
-				log.write("msg.data.config="+msg.data.config);
+				log.write(
+					 "validated {code:2} message content:\n"
+					+"\t"+JSON.stringify(msg)+"\n"
+				);
+
 				log.drawLine();
 				serverFactory=require(msg.data.path);
 				server=new serverFactory(msg.data.id,msg.data.config);
