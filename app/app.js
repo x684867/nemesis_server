@@ -62,7 +62,7 @@ config.data.workers.forEach(
 				 +"}"
 			);
 			log.drawLine();
-		}
+		});
 		worker[id].on('message',function(msg){
 			if(!isMsgFormatValid(msg)) throw("Parent: Rec'd invalid msg object.");
 			switch(msg.code){
