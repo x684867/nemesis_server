@@ -31,8 +31,6 @@
 	---------------------------------------------------------------------------------
 */
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
-
-process.title="nemesisMaster";
 /*
 	Capture command-line arguments
 */
@@ -53,7 +51,18 @@ var monitor=Array();
 	Start the logger and show a banner
 */
 log=new logger("app.js(main)");
-log.drawBanner("app.js starting as master process.",0);
+log.drawBanner("app.js starting as master process pid:["+process.pid+"]");
+/*
+	Setup Process management
+*/
+process.title="nemesisMaster";
+process.on('SIGHUP',function(){
+	console.log("SIGHUP signal received. pid:["+process.pid+"]");
+});
+process.on('SIGKILL',function(){
+	console.log("SIGKILL signal received. pid:["+process.pid+"]");
+});
+
 /*
 	Load the configuration passed in by arg[2]
 */
