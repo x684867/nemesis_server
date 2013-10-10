@@ -46,7 +46,7 @@ process.on('message', function(msg){
 				log.write('Server is instantiated.');
 				
 				log.write("starting process and sending {code:[3,4]} based on return.");
-				process.send({code:((server.start()==0)?3:4 )});
+				process.send({code:server.start()});
 
 				break;
 		/*Process-Monitoring Messages*/

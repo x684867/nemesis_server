@@ -1,10 +1,17 @@
 /*
-	broker worker
+	Nemesis Broker Server
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
+	
+	This file defines the broker web service.
+	
 */
-module.exports=Broker;
+module.exports=BrokerServer;
 
+/*Return codes for server.start()*/
+const SERVER_OK=3
+const SERVER_FAIL=4
 
-function Broker(id,config,ssl_config){	
+function BrokerServer(id,config,ssl_config){	
 
 	var logger=require('/srv/nemesis/app/logger/logger.js');
 		log=new logger("broker.js(start)");
@@ -49,9 +56,9 @@ function Broker(id,config,ssl_config){
 			}
 		}catch(e){
 			log.write("Broker failed to listen on "+config.ipAddress+":"+config.ipPort)
-			return 10;/*Fatal Error*/
+			return SERVER_FAIL;
 		}
 		log.write('Server started!');
-		return 0;/*Successful start*/
-	}
+		return SERVER_OK;/*Successful start*/
+	}/*server.start();*/
 }
