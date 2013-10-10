@@ -56,10 +56,10 @@ config.data.workers.forEach(
 		worker[id]=child.pid;
 		log.write(
 			  "worker["+id+"]={\n"
-			 +" 'type':"+config.data.serverType+",\n"
-			 +" 'config':"+JSON.stringify(workerConfig)+",\n"
-			 +" 'pid':"+worker[id]+",\n"
-			 +"}"
+			 +"\t\t\t'type':"+config.data.serverType+",\n"
+			 +"\t\t\t'config':"+JSON.stringify(workerConfig)+",\n"
+			 +"\t\t\t'pid':"+worker[id]+",\n"
+			 +"\t}"
 		);
 		log.drawLine();
 		child.on('message',function(msg){
