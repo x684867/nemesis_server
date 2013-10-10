@@ -8,7 +8,7 @@
 	is intended to manage the web services and interact with the parent (master)
 	process operated by app.js.
 */
-var logger=require('/srv/nemesis/app/logger/logger.js');
+var logger=require(LOGGER_CLASS);
 var log=new logger("worker.js(main)");
 	log.drawBanner('worker.js is starting...');
 

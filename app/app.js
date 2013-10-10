@@ -30,7 +30,12 @@
 			*Begin service development.
 	---------------------------------------------------------------------------------
 */
-const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
+global const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
+
+const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/library/worker.js';
+const PID_WRITER_SCRIPT='/srv/nemesis/app/library/pidWriter.js';
+const VALIDATOR_CLASS='./library/msgValidator.js';
+const CONFIG_CLASS='./library/config.js';
 /*
 	Capture command-line arguments
 */
@@ -38,10 +43,10 @@ var config_filename = process.argv[2];
 /*
 	Load dependencies
 */
-var logger=require('/srv/nemesis/app/logger/logger.js');
-var validatorClass=require('./library/msgValidator.js');
+var logger=require(LOGGER_CLASS);
+var validatorClass=require(VALIDATOR_CLASS);
 var validator=new validatorClass();
-var configFactory=require('./library/config.js');
+var configFactory=require(CONFIG_CLASS);
 /*
 	Declare globals
 */
@@ -75,12 +80,13 @@ config.data.workers.forEach(
 		child=processFactory.fork(CHILD_PROCESS_WRAPPER);
 		child.title=config.data.serverType+id
 		child.send({code:0});
-		worker[id]=child.pid;
+		pidWriterFactory=require(PID_WRITER_SCRIPT);
+		pidWriter=new pidWriterFactory(config.data.pidDirectory,child.pid)
 		log.write(
 			  "\n\nworker["+id+"]={\n"
 			 +"\t'type':"+config.data.serverType+",\n"
 			 +"\t'config':"+JSON.stringify(workerConfig)+",\n"
-			 +"\t'pid':"+worker[id]+",\n"
+			 +"\t'pid':"+child.pid+",\n"
 			 +"}\n\n"
 		);
 		log.drawLine();
@@ -134,4 +140,5 @@ config.data.workers.forEach(
 		monitor.push(new monitorFactory(child,config));
 	});
 });
-log.write("All workers have been spawned.");
+log.write("All workers have been spawned.  Terminating app.js");
+process.exit(0);

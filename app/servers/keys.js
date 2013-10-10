@@ -6,7 +6,7 @@
 	
 */
 module.exports=Keys;
-var logger=require('/srv/nemesis/app/logger/logger.js');
+var logger=require(LOGGER_CLASS);
 
 
 function Keys(id,config){
