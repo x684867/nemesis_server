@@ -27,15 +27,24 @@ function Broker(id,config,ssl_config){
 
 		log.write('Attempting to start the server...');
 		try {
-		
-		
-			((config.ssl)?require('https'):require('http')).createServer(
-				ssl_config,
-				function (req,res) {
-				  res.writeHead(200, {'Content-Type': 'text/plain'});
-				  res.end('Hello World.  I am broker#'+config.workerId+'\n');
-				}
-			).listen(config.ipPort, config.ipAddress);
+			if(config.ssl){
+				var web=require('https');
+				web.createServer(
+					ssl_config:'',
+					function(req,res){
+						res.writeHead(200, {'Content-Type': 'text/plain'});
+							res.end('Hello World.  I am broker#'+config.workerId+'\n');
+					}
+				).listen(config.ipPort, config.ipAddress);
+			}else{
+				var web=require('http');
+				web.createServer(
+					function(req,res){
+						res.writeHead(200,{'Content-Type':'text/plain'});
+						res.end('Hello World.  I am broker#'+config.workerId+'\n');
+					}
+				).listen(config.ipPort,config.ipAddress);
+			}
 		}catch(e){
 			log.write("Broker failed to listen on "+config.ipAddress+":"+config.ipPort)
 			return 10;/*Fatal Error*/
