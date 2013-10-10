@@ -84,6 +84,9 @@ function isMsgFormatValid(msg){
 				}
 				throw new Error("Msg {code:13} lacks data property.");
 				break;
+			default:
+				throw new Error("Unknown msg code encountered.");
+				break;
 		}/*end of switch()*/
 	}
 	throw new Error('Message is not an object');
