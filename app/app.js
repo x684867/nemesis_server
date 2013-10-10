@@ -29,8 +29,6 @@
 			*Redeploy system to fresh Linux environment using 4-host design.
 			*Begin service development.
 	---------------------------------------------------------------------------------
-		
-	
 */
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
 /*
