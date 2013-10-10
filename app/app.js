@@ -61,10 +61,10 @@ function app_cleanup(signal,p){
 }
 
 process.title="nemesisMaster";
-process.on('SIGHUP',app_cleanup(signal,process));
-process.on('SIGKILL',app_cleanup(signal,process));
-process.on('SIGINT',app_cleanup(signal,process));
-process.on('SIGTERM',app_cleanup(signal,process));
+process.on('SIGHUP',app_cleanup('SIGHUP',process));
+process.on('SIGKILL',app_cleanup('SIGKILL',process));
+process.on('SIGINT',app_cleanup('SIGINT',process));
+process.on('SIGTERM',app_cleanup('SIGTERM',process));
 /*
 	Load the configuration passed in by arg[2]
 */
