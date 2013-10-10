@@ -55,11 +55,11 @@ config.data.workers.forEach(
 		child.send({code:0});
 		worker[id]=child.pid;
 		log.write(
-			  "worker["+id+"]={\n"
-			 +"\t\t\t'type':"+config.data.serverType+",\n"
-			 +"\t\t\t'config':"+JSON.stringify(workerConfig)+",\n"
-			 +"\t\t\t'pid':"+worker[id]+",\n"
-			 +"\t}"
+			  "\n\nworker["+id+"]={\n"
+			 +"\t\t'type':"+config.data.serverType+",\n"
+			 +"\t\t'config':"+JSON.stringify(workerConfig)+",\n"
+			 +"\t\t'pid':"+worker[id]+",\n"
+			 +"\t}\n\n"
 		);
 		log.drawLine();
 		child.on('message',function(msg){
