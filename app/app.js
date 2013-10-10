@@ -50,18 +50,19 @@ config.data.workers.forEach(
 	function(workerConfig,id,array){
 		log.drawLine(60);
 		log.write("fork process with wrapper");
-		var child=require('child_process');
-		worker[id]=child.fork(CHILD_PROCESS_WRAPPER);
-		worker[id].send({code:0});
+		var processFactory=require('child_process');
+		child=processFactory.fork(CHILD_PROCESS_WRAPPER);
+		child.send({code:0});
+		worker[id]=child.pid;
 		log.write(
 			  "worker["+id+"]={\n"
 			 +" 'type':"+config.data.serverType+",\n"
 			 +" 'config':"+JSON.stringify(workerConfig)+",\n"
-			 +" 'pid':"+worker[id].pid+",\n"
+			 +" 'pid':"+worker[id]+",\n"
 			 +"}"
 		);
 		log.drawLine();
-		worker[id].on('message',function(msg){
+		child.on('message',function(msg){
 			if(!isMsgFormatValid(msg)) throw("Parent: Rec'd invalid msg object.");
 			switch(msg.code){
 				case 1:
@@ -71,7 +72,7 @@ config.data.workers.forEach(
 									  "type":config.data.serverType,
 									  "config":workerConfig}
 					}
-					worker[id].send(msgCode2);
+					child.send(msgCode2);
 					log.write("P:{code:2,data:"+JSON.stringify(msgCode2)+"}to C#"+id);
 					break;
 				case 3:
@@ -96,7 +97,7 @@ config.data.workers.forEach(
 				break;
 			}
 		});
-		worker[id].on('error',function(msg){
+		child.on('error',function(msg){
 			if(!isErrFormatValid(msg)){
 				throw new Error("Rec'd invalid msg object on error event.");
 			}
