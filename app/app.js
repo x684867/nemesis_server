@@ -62,7 +62,9 @@ process.on('SIGHUP',function(){
 process.on('SIGKILL',function(){
 	console.log("SIGKILL signal received. pid:["+process.pid+"]");
 });
-
+process.on('SIGINT',function(){
+	console.log("SIGINT signal received.  pid:{"+process.pid+"]");
+});
 /*
 	Load the configuration passed in by arg[2]
 */
