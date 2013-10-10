@@ -31,6 +31,8 @@
 	---------------------------------------------------------------------------------
 */
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
+
+process.title="nemesisMaster";
 /*
 	Capture command-line arguments
 */
@@ -39,10 +41,8 @@ var config_filename = process.argv[2];
 	Load dependencies
 */
 var logger=require('/srv/nemesis/app/logger/logger.js');
-
 var validatorClass=require('./library/msgValidator.js');
 var validator=new validatorClass();
-
 var configFactory=require('./library/config.js');
 /*
 	Declare globals
