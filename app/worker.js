@@ -10,8 +10,8 @@
 */
 var logger=require('/srv/nemesis/app/logger/logger.js');
 var log=new logger("worker.js(main)");
-	
-log.drawBanner('worker.js is starting...');
+	log.drawBanner('worker.js is starting...');
+
 
 process.on('message', function(msg){
 	log.write('worker.js has received a message from parent.');
@@ -44,7 +44,9 @@ process.on('message', function(msg){
 				);
 				log.drawLine();
 				log.write('Loading the server specified in the config.');
-				serverFactory=require('./server/'+msg.data.type+'.js');
+				(function(){
+					
+				serverFactory=require('./app/servers/'+msg.data.type+'.js');
 				log.write('Instantiating the server.');
 				server=new serverFactory(msg.data.id,msg.data.config);
 				log.write('Server is instantiated.');
