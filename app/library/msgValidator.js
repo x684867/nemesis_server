@@ -11,23 +11,6 @@ function isMsgFormatValid(msg){
 	
 	/*Internal methods*/
 	this.hasDataProperty=function(msg){return (msg.data==undefined)?false:true;}
-	this.isValidCode2Data=function(m){
-		return ((typeof(m.data)=='object')
-				&&(m.data.id!=undefined)
-			    &&(m.data.type!=undefined)
-			   	&&(m.data.config!=undefined)
-			   	&&(typeof(m.data.id)=='number')
-			   	&&(typeof(m.data.type)=='string')
-			   	&&(typeof(m.data.config)=='object')
-			   	&&(m.data.config.workerId!=undefined)
-			   	&&(m.data.config.ipAddress!=undefined)
-			   	&&(m.data.config.ipPort!=undefined)
-			   	&&(typeof(m.data.config.workerId)=='number')
-			   	&&(typeof(m.data.config.ipAddress)=='string')
-			   	&&(typeof(m.data.config.ipPort)=='string')
-			   )?true:false;
-	}
-
 	/*End of method definition*/
 	log.write("Evaluate msg object");
 	if(typeof(msg)=='object'){
@@ -56,8 +39,23 @@ function isMsgFormatValid(msg){
 					    }
 					}
 				------------------------------------------------*/
-				if(this.hasDataProperty(msg)){
-					if(this.isValidCode2Data(msg))return true;
+				const TOBJ='object';
+				const TSTR='string';
+				const TNUM='number';
+				if((function(m){
+					return ((typeof(m.data)=='TOBJ')
+						&&(m.data.id!=undefined)&&(m.data.type!=undefined)
+			   			&&(m.data.config!=undefined)&&(typeof(m.data.id)=='TNUM')
+			   			&&(typeof(m.data.type)=='TSTR')&&(typeof(m.data.config)=='TOBJ')
+			   			&&(m.data.config.workerId!=undefined)
+			   			&&(m.data.config.ipAddress!=undefined)
+			   			&&(m.data.config.ipPort!=undefined)
+			   			&&(typeof(m.data.config.workerId)=='TNUM')
+			   			&&(typeof(m.data.config.ipAddress)=='TSTR')
+			   			&&(typeof(m.data.config.ipPort)=='TSTR')
+			   		)?true:false
+			   	})){
+			   		if(this.isValidCode2Data(msg))return true;
 					throw new Error('Msg {code:2} data is not properly formed.');
 				}
 				throw new Error('Msg {code:2} lacks data property');
