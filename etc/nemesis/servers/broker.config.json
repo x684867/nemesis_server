@@ -19,9 +19,9 @@
 		{ "workerId":22, "ipAddress":"127.0.2.2", "ipPort":80, "ssl":true },
 		{ "workerId":23, "ipAddress":"127.0.2.3", "ipPort":80, "ssl":true },
 		{ "workerId":24, "ipAddress":"127.0.2.4", "ipPort":80, "ssl":true },
-		{ "workerId":25, "ipAddress":"127.0.2.5", "ipPort":80, "ssl":false },
-		{ "workerId":26, "ipAddress":"127.0.2.6", "ipPort":80, "ssl":false },
-		{ "workerId":27, "ipAddress":"127.0.2.7", "ipPort":80, "ssl":false },
-		{ "workerId":28, "ipAddress":"127.0.2.8", "ipPort":80, "ssl":false }
+		{ "workerId":25, "ipAddress":"127.0.2.5", "ipPort":81, "ssl":false },
+		{ "workerId":26, "ipAddress":"127.0.2.6", "ipPort":81, "ssl":false },
+		{ "workerId":27, "ipAddress":"127.0.2.7", "ipPort":81, "ssl":false },
+		{ "workerId":28, "ipAddress":"127.0.2.8", "ipPort":81, "ssl":false }
 	]
 }
