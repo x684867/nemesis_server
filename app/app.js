@@ -15,7 +15,22 @@
 	as workers for the given web service.  The mission of this app.js
 	script is to launch the required threads and then to monitor them
 	in real time and respawn any worker process which may die or become
-	unresponsive.	
+	unresponsive.
+	
+	Version: 2013.10.10 Caldwell, Sam (mail@samcaldwell.net).  Prototype platform.
+		FEATURES:
+			*Rapid deployment from bare metal to functioning system in 30 minutes or less.
+			*Scalable server cluster configuration with load balancing.
+			*Maintainable framework for basic/new features.
+			
+		TODO:
+			*Test ability to scale prototype broker server.
+			*Replicate current successes to all server types.
+			*Redeploy system to fresh Linux environment using 4-host design.
+			*Begin service development.
+	---------------------------------------------------------------------------------
+		
+	
 */
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/worker.js';
 /*
