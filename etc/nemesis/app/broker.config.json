@@ -15,7 +15,7 @@
 			"ca_cert":"/etc/ssl/certs/broker.crt"
 	},
 	"workers":[
-		{ "workerId":21, "ipAddress":"127.0.2.1", "ipPort":80, "ssl":false },
+		{ "workerId":21, "ipAddress":"127.0.2.1", "ipPort":80, "ssl":true },
 		{ "workerId":22, "ipAddress":"127.0.2.2", "ipPort":80, "ssl":false },
 		{ "workerId":23, "ipAddress":"127.0.2.3", "ipPort":80, "ssl":false },
 		{ "workerId":24, "ipAddress":"127.0.2.4", "ipPort":80, "ssl":false },

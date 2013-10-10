@@ -43,25 +43,28 @@ function config(filename){
 	this.data={status:undefined};
 	
 	var E_CODES=[
-		'Invalid configuration object',
-		'Invalid monitor configuration object',
-		'Invalid heartbeat monitor configuration object',
-		'Invalid stats monitor configuration object',
-		'Invalid workers configuration object',
-		'Invalid serverType in configuration object',
-		'Invalid heartbeat interval in configuration object',
-		'Invalid heartbeat interval in configuration object',
-		'Invalid stats interval in configuration object',
-		'Invalid worker collection object (array)',
-		'Invalid workerId in worker configuration object',
-		'Invalid IP address string in worker configuration object',
-		'Invalid network port (number) in worker configuration object',
-		'Invalid worker collection object (not an array)',
-		'Invalid worker ssl parameter (expect boolean)',
-		'Invalid ssl object',
-		'Invalid ssl private_key (expect string)',
-		'Invalid ssl public_key (expect string)',
-		'Invalid ssl ca_cert (expect string)'
+		/*00*/'Invalid configuration object',
+		/*01*/'Invalid monitor configuration object',
+		/*02*/'Invalid heartbeat monitor configuration object',
+		/*03*/'Invalid stats monitor configuration object',
+		/*04*/'Invalid workers configuration object',
+		/*05*/'Invalid serverType in configuration object',
+		/*06*/'Invalid heartbeat interval in configuration object',
+		/*07*/'Invalid heartbeat interval in configuration object',
+		/*08*/'Invalid stats interval in configuration object',
+		/*09*/'Invalid worker collection object (array)',
+		/*10*/'Invalid workerId in worker configuration object',
+		/*11*/'Invalid IP address string in worker configuration object',
+		/*12*/'Invalid network port (number) in worker configuration object',
+		/*13*/'Invalid worker collection object (not an array)',
+		/*14*/'Invalid worker ssl parameter (expect boolean)',
+		/*15*/'Invalid ssl object',
+		/*16*/'Invalid ssl private_key (expect string)',
+		/*17*/'Invalid ssl public_key (expect string)',
+		/*18*/'Invalid ssl ca_cert (expect string)',
+		/*19*/'Missing file (private_key)',
+		/*20*/'Missing file (public_key)',
+		/*21*/'Missing file (ca_cert)'
 	];
 	
 	if(fs.lstatSync(filename).isFile()){
