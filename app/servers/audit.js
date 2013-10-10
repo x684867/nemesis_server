@@ -6,7 +6,7 @@
 	
 */
 module.exports=Audit;
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js');
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 var logger=require(LOGGER_CLASS);
 
 function Audit(id,config){

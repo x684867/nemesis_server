@@ -30,7 +30,7 @@
 			*Begin service development.
 	---------------------------------------------------------------------------------
 */
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js');
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/library/worker.js';
 const PID_WRITER_SCRIPT='/srv/nemesis/app/library/pidWriter.js';
 const VALIDATOR_CLASS='./library/msgValidator.js';

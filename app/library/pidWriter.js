@@ -1,1 +1,1 @@
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js');
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';

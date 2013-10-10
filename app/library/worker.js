@@ -12,6 +12,7 @@ var logger=require(LOGGER_CLASS);
 var log=new logger("worker.js(main)");
 	log.drawBanner('worker.js is starting...');
 
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 const TOBJ='object';
 const TSTR='string';
 const TNUM='number';
