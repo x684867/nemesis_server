@@ -103,7 +103,9 @@ config.data.workers.forEach(
 			}
 			throw new Error("worker[index].on('error'...) not implemented.");
 		});
+		log.write("Loading monitorFactory to init monitoring.");
 		monitorFactory=require('./monitor/monitorFactory.js');
+		log.write("Pushing the new monitor object to the monitor[] array.");
 		monitor.push(new monitorFactory(worker[id]));
 	}
 );
