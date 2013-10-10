@@ -75,7 +75,7 @@ config.data.workers.forEach(
 									  "config":workerConfig}
 					}
 					child.send(msgCode2);
-					log.write("P:{code:2,data:"+JSON.stringify(msgCode2)+"}to C#"+id);
+					log.write("P:"+JSON.stringify(msgCode2)+"to C#"+id);
 					break;
 				case 3:
 					log.write("P:{code:3}from C#"+id);
