@@ -30,7 +30,7 @@ function Broker(id,config,ssl_config){
 			if(config.ssl){
 				var web=require('https');
 				web.createServer(
-					ssl_config:'',
+					ssl_config,
 					function(req,res){
 						res.writeHead(200, {'Content-Type': 'text/plain'});
 							res.end('Hello World.  I am broker#'+config.workerId+'\n');
