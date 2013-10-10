@@ -55,16 +55,16 @@ log.drawBanner("app.js starting as master process pid:["+process.pid+"]");
 /*
 	Setup Process management
 */
+function app_cleanup(signal,p){
+	console.log("Received "+signal+" on process "+p.pid);
+	/*Perform cleanup operations.*/
+}
+
 process.title="nemesisMaster";
-process.on('SIGHUP',function(){
-	console.log("SIGHUP signal received. pid:["+process.pid+"]");
-});
-process.on('SIGKILL',function(){
-	console.log("SIGKILL signal received. pid:["+process.pid+"]");
-});
-process.on('SIGINT',function(){
-	console.log("SIGINT signal received.  pid:{"+process.pid+"]");
-});
+process.on('SIGHUP',app_cleanup(signal,process));
+process.on('SIGKILL',app_cleanup(signal,process));
+process.on('SIGINT',app_cleanup(signal,process));
+process.on('SIGTERM',app_cleanup(signal,process));
 /*
 	Load the configuration passed in by arg[2]
 */
@@ -135,11 +135,8 @@ config.data.workers.forEach(
 				throw new Error("Rec'd invalid msg object on error event.");
 			}
 			throw new Error("worker[index].on('error'...) not implemented.");
-		log.write("Loading monitorFactory to init monitoring.");
 		monitorFactory=require('./monitor/monitorFactory.js');
-		log.write("Pushing the new monitor object to the monitor[] array.");
 		monitor.push(new monitorFactory(child,config));
-		log.write("Monitoring should be online.");
 	});
 });
 log.write("All workers have been spawned.");
