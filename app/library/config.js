@@ -80,7 +80,6 @@ function config(filename){
 	
 	if(typeof(this.data)!=TOBJ) throw new Error(E_CODES[0]);
 	/*Create a run-time value in the configuration for ssl verification later.*/
-	this.data.requireSSL=false;
 	
 	/*Verify root properties.*/
 	if(typeof(this.data.serverType)!=TSTR) throw new Error(E_CODES[5]);
