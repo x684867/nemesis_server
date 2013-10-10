@@ -67,7 +67,7 @@ config.data.workers.forEach(
 		log.write("fork process with wrapper");
 		var processFactory=require('child_process');
 		child=processFactory.fork(CHILD_PROCESS_WRAPPER);
-		child.title="nemesisWorker"+id+"-"+config.data.serverType;
+		child.title=config.data.serverType+id
 		child.send({code:0});
 		worker[id]=child.pid;
 		log.write(
