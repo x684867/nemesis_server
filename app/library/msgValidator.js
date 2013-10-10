@@ -6,6 +6,9 @@ module.exports=isMsgFormatValid;
 module.exports=isErrFormatValid;
 
 function isMsgFormatValid(msg){
+	var logger=require('/srv/nemesis/app/logger/logger.js');
+	var log=new logger('msgValidator');
+	
 	/*Internal methods*/
 	this.hasDataProperty=function(msg){return (msg.data==undefined)?false:true;}
 	this.isValidCode2Data=function(m){
@@ -26,10 +29,12 @@ function isMsgFormatValid(msg){
 	}
 
 	/*End of method definition*/
-
+	log.write("Evaluate msg object");
 	if(typeof(msg)=='object'){
+		log.write("msg is object");
 		if(msg.code==undefined) throw new Error("Msg is missing expected code property.");
 		if(typeof(msg.code)!='number') throw new Error('Message code is not a number');
+		log.write("eval msg.code value {code:"+msg.code+"}");
 		switch(msg.code){
 			/*
 				Process-Initialization Messages
