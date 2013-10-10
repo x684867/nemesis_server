@@ -66,18 +66,16 @@ function config(filename){
 	this.data={status:undefined};
 	
 	try{
-		fs.stat(filename,function(err,stats){
-			if(stats.isFile()){
-				try{
-					this.data=JSON.parse(fs.readFileSync(filename));
-				} catch(e) {
-					throw("JSON.parse() failed to read/parse the config file ["+filename+"]");
-				}
-			}else{
-				throw new Error(E_CFG_FILE_NOT_FOUND+":"+filename);
+		if(fs.statSync(filename).isFile()){
+			try{
+				this.data=JSON.parse(fs.readFileSync(filename));
+			} catch(e) {
+				throw("JSON.parse() failed to read/parse the config file ["+filename+"]");
 			}
-		});
-	} catch (e) {
+		}else{
+			throw new Error(E_CFG_FILE_NOT_FOUND+":"+filename);
+		}
+	} catch(e) {
 		throw new Error(E_CFG_FILE_NOT_FOUND+":"+filename);
 	}
 	log.write("validating configuration file");
