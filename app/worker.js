@@ -42,7 +42,7 @@ process.on('message', function(msg){
 				
 				serverFactory=require('/srv/nemesis/app/servers/'+msg.data.type+'.js');
 				log.write('Instantiating the server.');
-				server=new serverFactory(msg.data.id,msg.data.config);
+				server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
 				log.write('Server is instantiated.');
 				
 				log.write("starting process and sending {code:[3,4]} based on return.");

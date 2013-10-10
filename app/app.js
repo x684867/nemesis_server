@@ -85,7 +85,13 @@ config.data.workers.forEach(
 					msgCode2={"code":2,
 							  "data":{"id":id,
 									  "type":config.data.serverType,
-									  "config":workerConfig}
+									  "config":workerConfig
+									  "ssl":{
+									  		"key":config.data.ssl.private_key,
+									  		"cert":config.data.ssl.public_key,
+									  		"ca_cert":config.data.ssl.ca_cert
+									  }
+							  }
 					}
 					child.send(msgCode2);
 					log.write("P:"+JSON.stringify(msgCode2)+"to C#"+id);
