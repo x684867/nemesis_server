@@ -12,10 +12,13 @@ var logger=require('/srv/nemesis/app/logger/logger.js');
 var log=new logger("worker.js(main)");
 	log.drawBanner('worker.js is starting...');
 
+const TOBJ='object';
+const TSTR='string';
+const TNUM='number';
 
 process.on('message', function(msg){
 	log.write('worker.js has received a message from parent.');
-	if(typeof(msg)!='object'){
+	if(typeof(msg)!=TOBJ){
 		throw new Error('Non-object message passed from parent to child process.');
 	}
 	switch(msg.code){
@@ -26,26 +29,17 @@ process.on('message', function(msg){
 				break;
 		case 2:
 				log.write("message {code:2} recieved.");
-				if(typeof(msg.data)!='object'){
-					throw new Error('msg.data not an object in {code:2}: type'+typeof(msg.data));
-				}
-				if(typeof(msg.data.type)!='string'){
-					throw new Error('msg.data.type is not a string in {code:2}: type'+typeof(msg.data.type));
-				}
-				if(typeof(msg.data.id)!='number'){
-					throw new Error('msg.data.id is not a number in {code:2}: type'+typeof(msg.data.id));
-				}
-				if(typeof(msg.data.config)!='object'){
-					throw new Error('msg.data.config is not a string {code:2}: type'+typeof(msg.data.config));
-				}
+				if(typeof(msg.data)!=TOBJ) throw new Error('msg.data not object');
+				if(typeof(msg.data.type)!=TSTR) throw new Error('msg.data.type not string');
+				if(typeof(msg.data.id)!=TNUM) throw new Error('msg.data.id not number');
+				if(typeof(msg.data.config)!=TOBJ) throw new Error('msg.data.config not object');
 				log.write(
 					 "validated {code:2} message content:\n"
 					+"\t"+JSON.stringify(msg)+"\n"
 				);
 				log.drawLine();
 				log.write('Loading the server specified in the config.');
-				(function(){
-					
+				
 				serverFactory=require('./app/servers/'+msg.data.type+'.js');
 				log.write('Instantiating the server.');
 				server=new serverFactory(msg.data.id,msg.data.config);
@@ -69,9 +63,7 @@ process.on('message', function(msg){
 			if(msg.code==undefined){
 				throw new Error('msg.code is undefined when child processed message.');
 			}else{
-				throw new Error(
-					'Unrecognized or invalid message ('+msg.code+') passed to child.'
-				);
+				throw new Error('Unrecognized/Invalid msg ('+msg.code+') sent to child.');
 			}
 			break;
 	}
