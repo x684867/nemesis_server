@@ -104,7 +104,7 @@ config.data.workers.forEach(
 			throw new Error("worker[index].on('error'...) not implemented.");
 		});
 		monitorFactory=require('./monitor/monitorFactory.js');
-		monitor[id]=new monitorFactory(worker[id]);
+		monitor.push(new monitorFactory(worker[id]));
 	}
 );
 log.write("All workers have been spawned.");
