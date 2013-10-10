@@ -40,7 +40,7 @@ process.on('message', function(msg){
 				log.drawLine();
 				log.write('Loading the server specified in the config.');
 				
-				serverFactory=require('./app/servers/'+msg.data.type+'.js');
+				serverFactory=require('/srv/nemesis/app/servers/'+msg.data.type+'.js');
 				log.write('Instantiating the server.');
 				server=new serverFactory(msg.data.id,msg.data.config);
 				log.write('Server is instantiated.');
