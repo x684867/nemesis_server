@@ -20,7 +20,6 @@ function validatorClass(){
 		var log=new logger('msgValidator');
 	
 		/*End of method definition*/
-		log.write("Evaluate msg object");
 		if(typeof(msg)==TOBJ){
 			log.write("msg is object.\n  Dumping:"+JSON.stringify(msg));
 			if(msg.code==undefined) throw new Error("Msg is missing expected code property.");
