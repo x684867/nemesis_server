@@ -9,6 +9,11 @@
 			"interval":3600
 		}
 	},
+	"ssl":{
+			"private_key":"/etc/ssl/private/broker.key",
+			"public_key":"/etc/ssl/certs/broker.crt",
+			"ca_cert":"/etc/ssl/certs/broker.crt"
+	},
 	"workers":[
 		{ "workerId":21, "ipAddress":"127.0.2.1", "ipPort":80, "ssl":false },
 		{ "workerId":22, "ipAddress":"127.0.2.2", "ipPort":80, "ssl":false },

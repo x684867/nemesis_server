@@ -32,10 +32,11 @@ function config(filename){
 	var logger=require('/srv/nemesis/app/logger/logger.js');
 	var log=new logger("config.js(main)");	
 	
-	const T_OBJ='object';
-	const T_STR='string';
-	const T_NUM='number';
-	const T_FUNC='function';
+	const TOBJ='object';
+	const TSTR='string';
+	const TNUM='number';
+	const TFUNC='function';
+	const TBOOL='boolean';
 
 	log.drawBanner("starting config constructor");
 
@@ -56,7 +57,11 @@ function config(filename){
 		'Invalid IP address string in worker configuration object',
 		'Invalid network port (number) in worker configuration object',
 		'Invalid worker collection object (not an array)',
-		'Invalid worker ssl parameter (expect boolean)'
+		'Invalid worker ssl parameter (expect boolean)',
+		'Invalid ssl object',
+		'Invalid ssl private_key (expect string)',
+		'Invalid ssl public_key (expect string)',
+		'Invalid ssl ca_cert (expect string)'
 	];
 	
 	if(fs.lstatSync(filename).isFile()){
@@ -69,27 +74,46 @@ function config(filename){
 		throw new Error(filename+" doesn't exist");
 	}
 	log.write("validating configuration file");
-	if(typeof(this.data)!=T_OBJ) throw new Error(E_CODES[0]);
-	if(typeof(this.data.serverType)!=T_STR) throw new Error(E_CODES[5]);
-	if(typeof(this.data.monitor)!=T_OBJ) throw new Error(E_CODES[1]);
-	if(typeof(this.data.monitor.heartbeat)!=T_OBJ) throw new Error(E_CODES[2]);
-	if(typeof(this.data.monitor.heartbeat.interval)!=T_NUM) throw new Error(E_CODES[6]);
-	if(typeof(this.data.monitor.heartbeat.threshold)!=T_NUM) throw new Error(E_CODES[7]);
-	if(typeof(this.data.monitor.statistics)!=T_OBJ) throw new Error(E_CODES[3]);
-	if(typeof(this.data.monitor.statistics.interval)!=T_NUM) throw new Error(E_CODES[8]);
-	if(typeof(this.data.workers)!=T_OBJ) throw new Error(E_CODES[4]);
-	if(typeof(this.data.workers.forEach)!=T_FUNC) throw new Error(E_CODES[13]);
+	
+	if(typeof(this.data)!=TOBJ) throw new Error(E_CODES[0]);
+	
+	if(typeof(this.data.serverType)!=TSTR) throw new Error(E_CODES[5]);
+	
+	if(typeof(this.data.monitor)!=TOBJ) throw new Error(E_CODES[1]);
+	if(typeof(this.data.monitor.heartbeat)!=TOBJ) throw new Error(E_CODES[2]);
+	if(typeof(this.data.monitor.heartbeat.interval)!=TNUM) throw new Error(E_CODES[6]);
+	if(typeof(this.data.monitor.heartbeat.threshold)!=TNUM) throw new Error(E_CODES[7]);
+	if(typeof(this.data.monitor.statistics)!=TOBJ) throw new Error(E_CODES[3]);
+	if(typeof(this.data.monitor.statistics.interval)!=TNUM) throw new Error(E_CODES[8]);
+	
+	if(typeof(this.data.ssl)!=TOBJ) throw new Error(E_CODES[15]);
+	if(typeof(this.data.ssl.private_key)!=TSTR) throw new Error(E_CODES[16]);
+	if(typeof(this.data.ssl.public_key)!=TSTR) throw new Error(E_CODES[17]);
+	if(typeof(this.data.ssl.ca_cert)!=TSTR) throw new Error(E_CODES[18]);	
+	
+	if(typeof(this.data.workers)!=TOBJ) throw new Error(E_CODES[4]);
+	if(typeof(this.data.workers.forEach)!=TFUNC) throw new Error(E_CODES[13]);
 	this.data.workers.forEach(function(w,i,a){
-		if(typeof(w)!=T_OBJ) throw new Error(E_CODES[9]);
-		if(typeof(w.workerId)!=T_NUM) throw new Error(E_CODES[10]);
-		if(typeof(w.ipAddress)!=T_STR) throw new Error(E_CODES[11]);
-		if(typeof(w.ipPort)!=T_NUM) throw new Error(E_CODES[12]);
-		if(typeof(w.ssl)!=T_BOOL) throw new Error(E_CODES[14]);
+		if(typeof(w)!=TOBJ) throw new Error(E_CODES[9]);
+		if(typeof(w.workerId)!=TNUM) throw new Error(E_CODES[10]);
+		if(typeof(w.ipAddress)!=TSTR) throw new Error(E_CODES[11]);
+		if(typeof(w.ipPort)!=TNUM) throw new Error(E_CODES[12]);
+		if(typeof(w.ssl)!=TBOOL) throw new Error(E_CODES[14]);
 		if(w.ssl){
 			w.ipPort=443
 			log.write("NOTICE: ssl=true.  Override ipPort to 443");
 		}
 	});
+	
+	log.write("Verifying that SSL Certificate/Key files exist.");
+	[	this.data.ssl.private_key,
+		this.data.ssl.public_key,
+		this.data.ssl.ca_cert
+	].forEach(function(f,i,a){
+		if(!fs.lstatSync(f).isFile()) throw new Error(E_CODES[i+19]);
+		log.write("  EXISTS!  ["+i+"]:["+f+"]");
+	});
+	
 	log.write("configuration JSON object is valid");
 	log.write("exit constructor.");
 }
