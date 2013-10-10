@@ -32,6 +32,30 @@ const TSTR='string';
 const TNUM='number';
 const TFUNC='function';
 const TBOOL='boolean';
+
+const E_CFG_FILE_NOT_FOUND='Configuration file not found';
+const E_BAD_OBJ='Invalid configuration object';
+const E_BAD_MONITOR_OBJ='Invalid monitor configuration object';
+const E_BAD_HB_OBJ='Invalid heartbeat monitor configuration object';
+const E_BAD_STAT_OBJ='Invalid stats monitor configuration object';
+const E_BAD_WRKR_COLL_OBJ='Invalid workers configuration object';
+const E_BAD_SRVR_TYPE='Invalid serverType (expect string)';
+const E_BAD_HB_INTERVAL='Invalid heartbeat interval (expect number)';
+const E_BAD_HB_THRESHOLD='Invalid heartbeat interval in configuration object';
+const E_BAD_STAT_INTERVAL='Invalid stats interval in configuration object';
+const E_BAD_WRKR_OBJ='Invalid worker collection object (array)';
+const E_BAD_WRKR_ID='Invalid workerId in worker configuration object';
+const E_BAD_WRKR_IP='Invalid IP address string in worker configuration object';
+const E_BAD_WRKR_PORT='Invalid network port (number) in worker configuration object';
+const E_BAD_WRKR_ARR='Invalid worker collection object (not an array)';
+const E_BAD_WRKR_SSL='Invalid worker ssl parameter (expect boolean)';
+const E_BAD_SSL_OBJ='Invalid ssl object';
+const E_BAD_SSL_KEY='Invalid ssl private_key (expect string)';
+const E_BAD_SSL_CRT='Invalid ssl public_key (expect string)';
+const E_BAD_SSL_CA='Invalid ssl ca_cert (expect string)';
+const E_MISSING_SSL_KEY='Missing file (private_key)';
+const E_MISSING_SSL_CRT='Missing file (public_key)';
+const E_MISSING_SSL_CA='Missing file (ca_cert)';
 	
 function config(filename){
 	var fs =require('fs');
@@ -41,37 +65,20 @@ function config(filename){
 
 	this.data={status:undefined};
 	
-	const E_BAD_OBJ='Invalid configuration object';
-	const E_BAD_MONITOR_OBJ='Invalid monitor configuration object';
-	const E_BAD_HB_OBJ='Invalid heartbeat monitor configuration object';
-	const E_BAD_STAT_OBJ='Invalid stats monitor configuration object';
-	const E_BAD_WRKR_COLL_OBJ='Invalid workers configuration object';
-	const E_BAD_SRVR_TYPE='Invalid serverType (expect string)';
-	const E_BAD_HB_INTERVAL='Invalid heartbeat interval (expect number)';
-	const E_BAD_HB_THRESHOLD='Invalid heartbeat interval in configuration object';
-	const E_BAD_STAT_INTERVAL='Invalid stats interval in configuration object';
-	const E_BAD_WRKR_OBJ='Invalid worker collection object (array)';
-	const E_BAD_WRKR_ID='Invalid workerId in worker configuration object';
-	const E_BAD_WRKR_IP='Invalid IP address string in worker configuration object';
-	const E_BAD_WRKR_PORT='Invalid network port (number) in worker configuration object';
-	const E_BAD_WRKR_ARR='Invalid worker collection object (not an array)';
-	const E_BAD_WRKR_SSL='Invalid worker ssl parameter (expect boolean)';
-	const E_BAD_SSL_OBJ='Invalid ssl object';
-	const E_BAD_SSL_KEY='Invalid ssl private_key (expect string)';
-	const E_BAD_SSL_CRT='Invalid ssl public_key (expect string)';
-	const E_BAD_SSL_CA='Invalid ssl ca_cert (expect string)';
-	const E_MISSING_SSL_KEY='Missing file (private_key)';
-	const E_MISSING_SSL_CRT='Missing file (public_key)';
-	const E_MISSING_SSL_CA='Missing file (ca_cert)';
-	
-	if(fs.lstatSync(filename).isFile()){
-		try{
-			this.data=JSON.parse(fs.readFileSync(filename));
-		}catch(e){
-			throw("JSON.parse() failed to read/parse the config file ["+filename+"]")
+	try{
+		fs.stat(filename,function(err,stats){
+			if(stats.isFile()){
+				try{
+					this.data=JSON.parse(fs.readFileSync(filename));
+				}catch(e){
+					throw("JSON.parse() failed to read/parse the config file ["+filename+"]")
+				}
+			}else{
+				throw new Error(E_CFG_FILE_NOT_FOUND+":"+filename);
+			}
 		}
-	}else{
-		throw new Error(filename+" doesn't exist");
+	}catch(e){
+		throw new Error(E_CFG_FILE_NOT_FOUND+":"+filename);
 	}
 	log.write("validating configuration file");
 	
