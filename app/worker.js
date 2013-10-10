@@ -27,16 +27,16 @@ process.on('message', function(msg){
 		case 2:
 				log.write("message {code:2} recieved.");
 				if(typeof(msg.data)!='object'){
-					throw new Error('msg.data not an object in {code:2}: type'+typeof(msg.data.id));
+					throw new Error('msg.data not an object in {code:2}: type'+typeof(msg.data));
 				}
-				if(typeof(msg.data.path)!='string'){
-					throw new Error('msg.data.path is not a string in {code:2}: type'+typeof(msg.data.id));
+				if(typeof(msg.data.type)!='string'){
+					throw new Error('msg.data.type is not a string in {code:2}: type'+typeof(msg.data.type));
 				}
 				if(typeof(msg.data.id)!='number'){
 					throw new Error('msg.data.id is not a number in {code:2}: type'+typeof(msg.data.id));
 				}
 				if(typeof(msg.data.config)!='object'){
-					throw new Error('msg.data.config is not a string {code:2}: type'+typeof(msg.data.id));
+					throw new Error('msg.data.config is not a string {code:2}: type'+typeof(msg.data.config));
 				}
 				log.write("validated {code:2} message content.");
 				log.write("msg.data.id    ="+msg.data.id);
