@@ -54,7 +54,7 @@ function config(filename){
 	const E_BAD_WRKR_ID='Invalid workerId in worker configuration object';
 	const E_BAD_WRKR_IP='Invalid IP address string in worker configuration object';
 	const E_BAD_WRKR_PORT='Invalid network port (number) in worker configuration object';
-	const E_BAD_WRKR_ARR='Invalid worker collection object (not an array)',
+	const E_BAD_WRKR_ARR='Invalid worker collection object (not an array)';
 	const E_BAD_WRKR_SSL='Invalid worker ssl parameter (expect boolean)';
 	const E_BAD_SSL_OBJ='Invalid ssl object';
 	const E_BAD_SSL_KEY='Invalid ssl private_key (expect string)';
