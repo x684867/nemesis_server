@@ -13,17 +13,17 @@
 		{
 			"workerId":21,
 			"ipAddress":"127.0.2.1",
-			"ipPort":8080
+			"ipPort":80
 		},
 		{
 			"workerId":22,
 			"ipAddress":"127.0.2.2",
-			"ipPort":8080
+			"ipPort":80
 		},
 		{
 			"workerId":23,
 			"ipAddress":"127.0.2.3",
-			"ipPort":8080
+			"ipPort":80
 		}
 	]
 }
