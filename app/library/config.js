@@ -55,7 +55,8 @@ function config(filename){
 		'Invalid workerId in worker configuration object',
 		'Invalid IP address string in worker configuration object',
 		'Invalid network port (number) in worker configuration object',
-		'Invalid worker collection object (not an array)'
+		'Invalid worker collection object (not an array)',
+		'Invalid worker ssl parameter (expect boolean)'
 	];
 	
 	if(fs.lstatSync(filename).isFile()){
@@ -83,6 +84,11 @@ function config(filename){
 		if(typeof(w.workerId)!=T_NUM) throw new Error(E_CODES[10]);
 		if(typeof(w.ipAddress)!=T_STR) throw new Error(E_CODES[11]);
 		if(typeof(w.ipPort)!=T_NUM) throw new Error(E_CODES[12]);
+		if(typeof(w.ssl)!=T_BOOL) throw new Error(E_CODES[14]);
+		if(w.ssl){
+			w.ipPort=443
+			log.write("NOTICE: ssl=true.  Override ipPort to 443");
+		}
 	});
 	log.write("configuration JSON object is valid");
 	log.write("exit constructor.");
