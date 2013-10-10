@@ -40,6 +40,6 @@ function monitorFactory(process,config){
 			interval
 		);
 	}
-	this.startHeartbeat(process,config.monitor.monitor.heartbeat);
+	this.startHeartbeat(process,config.monitor.heartbeat);
 	this.startStatistics(process,config.monitor.statistics);
 }
