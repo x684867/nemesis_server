@@ -76,21 +76,21 @@ function config(filename){
 	log.write("validating configuration file");
 	
 	if(typeof(this.data)!=TOBJ) throw new Error(E_CODES[0]);
+	/*Create a run-time value in the configuration for ssl verification later.*/
+	this.data.requireSSL=false;
 	
+	/*Verify root properties.*/
 	if(typeof(this.data.serverType)!=TSTR) throw new Error(E_CODES[5]);
 	
+	/*Verify the monitor configuration.*/
 	if(typeof(this.data.monitor)!=TOBJ) throw new Error(E_CODES[1]);
 	if(typeof(this.data.monitor.heartbeat)!=TOBJ) throw new Error(E_CODES[2]);
 	if(typeof(this.data.monitor.heartbeat.interval)!=TNUM) throw new Error(E_CODES[6]);
 	if(typeof(this.data.monitor.heartbeat.threshold)!=TNUM) throw new Error(E_CODES[7]);
 	if(typeof(this.data.monitor.statistics)!=TOBJ) throw new Error(E_CODES[3]);
 	if(typeof(this.data.monitor.statistics.interval)!=TNUM) throw new Error(E_CODES[8]);
-	
-	if(typeof(this.data.ssl)!=TOBJ) throw new Error(E_CODES[15]);
-	if(typeof(this.data.ssl.private_key)!=TSTR) throw new Error(E_CODES[16]);
-	if(typeof(this.data.ssl.public_key)!=TSTR) throw new Error(E_CODES[17]);
-	if(typeof(this.data.ssl.ca_cert)!=TSTR) throw new Error(E_CODES[18]);	
-	
+
+	/*Worker Verification*/
 	if(typeof(this.data.workers)!=TOBJ) throw new Error(E_CODES[4]);
 	if(typeof(this.data.workers.forEach)!=TFUNC) throw new Error(E_CODES[13]);
 	this.data.workers.forEach(function(w,i,a){
@@ -102,18 +102,28 @@ function config(filename){
 		if(w.ssl){
 			w.ipPort=443
 			log.write("NOTICE: ssl=true.  Override ipPort to 443");
+			this.data.requireSSL=true;
 		}
 	});
-	
-	log.write("Verifying that SSL Certificate/Key files exist.");
-	[	this.data.ssl.private_key,
-		this.data.ssl.public_key,
-		this.data.ssl.ca_cert
-	].forEach(function(f,i,a){
-		if(!fs.lstatSync(f).isFile()) throw new Error(E_CODES[i+19]);
-		log.write("  EXISTS!  ["+i+"]:["+f+"]");
-	});
-	
+	if(this.data.requireSSL){
+		/*SSL Verification must come AFTER the worker verification*/
+		log.write("SSL Verification required.");
+		if(typeof(this.data.ssl)!=TOBJ) throw new Error(E_CODES[15]);
+		if(typeof(this.data.ssl.private_key)!=TSTR) throw new Error(E_CODES[16]);
+		if(typeof(this.data.ssl.public_key)!=TSTR) throw new Error(E_CODES[17]);
+		if(typeof(this.data.ssl.ca_cert)!=TSTR) throw new Error(E_CODES[18]);	
+
+		log.write("Verifying that SSL Certificate/Key files exist.");
+		[	this.data.ssl.private_key,
+			this.data.ssl.public_key,
+			this.data.ssl.ca_cert
+		].forEach(function(f,i,a){
+			if(!fs.lstatSync(f).isFile()) throw new Error(E_CODES[i+19]);
+			log.write("  EXISTS!  ["+i+"]:["+f+"]");
+		});
+	}else{
+		log.write("SSL Verification not required.");
+	}	
 	log.write("configuration JSON object is valid");
 	log.write("exit constructor.");
 }
