@@ -78,9 +78,10 @@ function config(filename){
 	}
 	log.write("validating configuration file");
 	
-	if(typeof(this.data)!=TOBJ) throw new Error(E_CODES[0]);
-	/*Create a run-time value in the configuration for ssl verification later.*/
+	var requireSSL=false;
 	
+	if(typeof(this.data)!=TOBJ) throw new Error(E_CODES[0]);
+		
 	/*Verify root properties.*/
 	if(typeof(this.data.serverType)!=TSTR) throw new Error(E_CODES[5]);
 	
@@ -104,7 +105,7 @@ function config(filename){
 		if(w.ssl){
 			w.ipPort=443
 			log.write("NOTICE: ssl=true.  Override ipPort to 443");
-			this.data.requireSSL=true;
+			requireSSL=true;
 		}
 	});
 	if(this.data.requireSSL){
