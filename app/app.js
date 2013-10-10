@@ -107,6 +107,7 @@ config.data.workers.forEach(
 		monitorFactory=require('./monitor/monitorFactory.js');
 		log.write("Pushing the new monitor object to the monitor[] array.");
 		monitor.push(new monitorFactory(worker[id]));
+		log.write("Monitoring should be online.");
 	}
 );
 log.write("All workers have been spawned.");
