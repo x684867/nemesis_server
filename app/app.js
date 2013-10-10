@@ -29,7 +29,6 @@ var logger=require('/srv/nemesis/app/logger/logger.js');
 var isMsgFormatValid=require('./library/msgValidator.js').isMsgFormatValid;
 var isErrFormatValid=require('./library/msgValidator.js').isErrFormatValid;
 var configFactory=require('./library/config.js');
-var child=require('child_process');
 /*
 	Declare globals
 */
@@ -49,17 +48,21 @@ log.drawBanner("config="+JSON.stringify(config));
 
 config.data.workers.forEach(
 	function(workerConfig,id,array){
-		log.drawLine(60);
-		worker[id]=child.fork(CHILD_PROCESS_WRAPPER);
-		worker[id].send({code:0});
-		log.write(
+		(function(){
+			log.drawLine(60);
+			log.write("fork process with wrapper");
+			var child=require('child_process');
+			worker[id]=child.fork(CHILD_PROCESS_WRAPPER);
+			worker[id].send({code:0});
+			log.write(
 				  "worker["+id+"]={\n"
 				 +" 'type':"+config.data.serverType+",\n"
 				 +" 'config':"+JSON.stringify(workerConfig)+",\n"
 				 +" 'pid':"+worker[id].pid+",\n"
 				 +"}"
-		);
-		log.drawLine();
+			);
+			log.drawLine();
+		}
 		worker[id].on('message',function(msg){
 			if(!isMsgFormatValid(msg)) throw("Parent: Rec'd invalid msg object.");
 			switch(msg.code){
