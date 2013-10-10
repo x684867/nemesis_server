@@ -85,7 +85,7 @@ config.data.workers.forEach(
 					msgCode2={"code":2,
 							  "data":{"id":id,
 									  "type":config.data.serverType,
-									  "config":workerConfig
+									  "config":workerConfig,
 									  "ssl":{
 									  		"key":config.data.ssl.private_key,
 									  		"cert":config.data.ssl.public_key,
