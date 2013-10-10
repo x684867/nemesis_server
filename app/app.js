@@ -56,15 +56,15 @@ log.drawBanner("app.js starting as master process pid:["+process.pid+"]");
 	Setup Process management
 */
 function app_cleanup(signal,p){
-	console.log("Received "+signal+" on process "+p.pid);
+	console.log("Received "+signal+" on process "+process.pid);
 	/*Perform cleanup operations.*/
 }
 
 process.title="nemesisMaster";
-process.on('SIGHUP',app_cleanup('SIGHUP',process));
-process.on('SIGKILL',app_cleanup('SIGKILL',process));
-process.on('SIGINT',app_cleanup('SIGINT',process));
-process.on('SIGTERM',app_cleanup('SIGTERM',process));
+process.on('SIGHUP',app_cleanup);
+process.on('SIGKILL',app_cleanup);
+process.on('SIGINT',app_cleanup);
+process.on('SIGTERM',app_cleanup);
 /*
 	Load the configuration passed in by arg[2]
 */
