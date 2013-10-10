@@ -3,7 +3,7 @@
 	(c) 2013 Sam Caldwell.  All Rights Reserved.  
  */
 module.exports=validatorClass;
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js');
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 function validatorClass(){
 	this.isValidError=function(msg){
 		return (typeof(msg)=='object')?true:false;

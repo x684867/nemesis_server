@@ -26,7 +26,7 @@
 	}	
 */
 module.exports=config;
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js');
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 const TOBJ='object';
 const TSTR='string';
 const TNUM='number';
