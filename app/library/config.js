@@ -62,7 +62,7 @@ function config(filename){
 	const E_BAD_SSL_CA='Invalid ssl ca_cert (expect string)';
 	const E_MISSING_SSL_KEY='Missing file (private_key)';
 	const E_MISSING_SSL_CRT='Missing file (public_key)';
-	const E_MISSING_SSL_CA'Missing file (ca_cert)';
+	const E_MISSING_SSL_CA='Missing file (ca_cert)';
 	
 	if(fs.lstatSync(filename).isFile()){
 		try{
