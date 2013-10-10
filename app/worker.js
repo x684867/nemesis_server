@@ -42,10 +42,12 @@ process.on('message', function(msg){
 					 "validated {code:2} message content:\n"
 					+"\t"+JSON.stringify(msg)+"\n"
 				);
-
 				log.drawLine();
+				log.write('Loading the server specified in the config.');
 				serverFactory=require(msg.data.path);
+				log.write('Instantiating the server.');
 				server=new serverFactory(msg.data.id,msg.data.config);
+				log.write('Server is instantiated.');
 				
 				log.write("starting process and sending {code:[3,4]} based on return.");
 				process.send({code:((server.start()==0)?3:4 )});
