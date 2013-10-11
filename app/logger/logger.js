@@ -17,7 +17,7 @@ const TNUM='number';
 const SYSLOG_CONFIG='/srv/nemesis/app/logger/logger.config.json';
 const SYSLOG_PARAMETERS='/srv/nemesis/app/logger/parameters.json';
 
-function logger(src,pri,fac)){
+function logger(src,pri,fac){
 
 	if(typeof(src)!=TSTR) throw new Error('SYSLOG source not a string (expected)');
 	if(typeof(pri)!=TNUM) throw new Error('SYSLOG priority not a number (expected)');
