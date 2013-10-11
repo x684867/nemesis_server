@@ -9,5 +9,5 @@
 	"ip":"127.0.0.1",
 	"port":514,
 	"proto":"udp",
-	"msgSize":1024,
+	"msgSize":1024
 }
