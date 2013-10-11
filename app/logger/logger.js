@@ -25,7 +25,7 @@ function logger(source){
 		(require('fs')).rename(logfile,logfile+"."+(new Date).getTime());
 	}
 	this.rawWrite=function(m){
-		(require('fs')).writeFile(logfile,m,function(err){if(err) throw err;});
+		(require('fs')).appendFile(logfile,m,function(err){if(err) throw err;});
 	}
 	this.write=function(message){
 		this.rawWrite(source+"["+(new Date).toUTCString()+"] "+message);
