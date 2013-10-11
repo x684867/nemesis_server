@@ -41,14 +41,14 @@ function logger(s,p,f){
 	this.source=s;
 	this.priority=p;
 	this.facility=f;
+	this.config_file=config.baseDir+this.sources+'.log';
 	
-	var config_file=config.baseDir+this.sources+'.log';
 	/*rotate log file*/
 	try{
-		b=(config_file)+'.'+parseInt((new Date).getTime()/1000);
+		b=(this.config_file)+'.'+parseInt((new Date).getTime()/1000);
 		fs=require('fs');
-		fs.renameSync(config_file,b);
-		fs.writeFileSync(config_file,format(this.source,this.facility,this.priority,'log started'));
+		fs.renameSync(this.config_file,b);
+		fs.writeFileSync(this.config_file,format(this.source,this.facility,this.priority,'log started'));
 	}catch(e){
 		console.log("logger.js: no log file to rotate when starting ["+config_file+"]");
 	}
@@ -59,12 +59,13 @@ function logger(s,p,f){
 	
 	this.rawWrite=function(m){
 		f=require('fs');
-		fd=f.open(config_file,'a',function(err){if(err) throw err;});
+		fd=f.open(this.config_file,'a',function(err){if(err) throw err;});
 		try{
 			f.writeSync(fd,m,0,m.length);
 		}catch(e){
-			throw new Error("Error writing to log file ["+config_file+"]");
+			throw new Error("Error writing to log file ["+this.config_file+"]");
 		}
+		f.close(fd);
 	}
 	this.write=function(msg){rawWrite(source,facility,priority,msg);}
 	this.drawLine=function(w){
