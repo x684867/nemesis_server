@@ -31,8 +31,8 @@ base_install(){
 	time apt-get install openssh-server openssh-client -y && \
 	time apt-get install nginx-full -y && \
 	time apt-get install node -y && \
-	time apt-get install npm -y && \
 	time apt-get install openssl -y && \
+	time /srv/nemesis/bin/node-install && \
 	echo "software is now installed...configuring system." && \
 	rm -f /etc/nginx/sites-enabled/* && \
 	rm -rf /etc/nginx/sites-available && \
