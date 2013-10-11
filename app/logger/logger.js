@@ -15,6 +15,7 @@ const LOG_LINE_WIDTH=60;
 
 const TSTR='string';
 const TNUM='number';
+const TOBJ='object';
 
 const E_SYSLOG_BAD_SOURCE='SYSLOG source not a string (expected)';
 const E_SYSLOG_BAD_PRIORITY='SYSLOG priority not a string (expected)';
@@ -35,8 +36,8 @@ function logger(s,p,f){
 	var config=this.loadConfig(SYSLOG_CONFIG);
 	var parameters=this.loadParameters(SYSLOG_PARAMETERS);
 
-	if(typeof(config)!='object') throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
-	if(typeof(parameters)!='object') throw new Error(E_SYSLOG_PARAMS_FAILED_LOAD);
+	if(typeof(config)!=TOBJ) throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
+	if(typeof(parameters)!=TOBJ) throw new Error(E_SYSLOG_PARAMS_FAILED_LOAD);
 	if(config.facility.indexOf(f) == -1) throw new Error(E_INVALID_SOURCE);
 	if(config.priority.indexOf(p) == -1) throw new Error(E_INVALID_PRIORITY);
 	if(config.sources.indexOf(s) == -1) throw new Error(E_INVALID_SOURCE);

@@ -49,7 +49,8 @@ var worker=Array();		/*This array tracks the worker processes.*/
 var monitor=Array();
 
 /*Start the logger and show a banner*/
-var log=(new (require(LOGGER_CLASS)))('LOGGER_SOURCE','LOGGER_PRIORITY','LOGGER_FACILITY');	
+global.logger=require(LOGGER_CLASS);
+var log=new global.logger(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);	
 log.drawBanner("app.js starting as master process pid:["+process.pid+"]");
 
 /*Setup Process management*/
