@@ -5,10 +5,11 @@
 	This file creates a class for monitoring the Nemesis worker processes.
 */
 module.exports=monitorFactory;
+
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-const LOGGER_SOURCE='monitor.js(main)';
-const LOGGER_PRIORITY='informational';
-const LOGGER_FACILITY='local0';
+global.logger=require(LOGGER_CLASS);
+
+
 function monitorFactory(process,config){
 		
 	this.startHeartbeat=function(process,interval){
@@ -20,7 +21,7 @@ function monitorFactory(process,config){
 			then used by the IPC event listener to calculate the
 			time required for the child to respond to the ping.
 		*/
-		var log=(new (require(LOGGER_CLASS)))(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);
+		var log=new global.logger('monitor.heartbeat');	
 		
 		setTimeout(
 			function(){
@@ -32,7 +33,7 @@ function monitorFactory(process,config){
 	}
 	
 	this.startStatistics=function(process,interval){
-		var log=(new (require(LOGGER_CLASS)))(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);
+		var log=new global.logger('monitor.stats');	
 		setTimeout(
 			function(){
 				log.write("StatsRequest! PID:"+process.pid);

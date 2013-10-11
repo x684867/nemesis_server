@@ -3,10 +3,12 @@
 	(c) 2013 Sam Caldwell.  All Rights Reserved.  
  */
 module.exports=validatorClass;
+
+const LOGGER_SOURCE='lib.msgValidator';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-const LOGGER_SOURCE='msgValidator.js';
-const LOGGER_PRIORITY='informational';
-const LOGGER_FACILITY='local0';
+global.logger=require(LOGGER_CLASS);
+
+
 function validatorClass(){
 	this.isValidError=function(msg){
 		return (typeof(msg)=='object')?true:false;
@@ -19,7 +21,7 @@ function validatorClass(){
 		const TSTR='string';
 		const TNUM='number';
 
-		var log=(new (require(LOGGER_CLASS)))(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);
+		var log=new global.logger(LOGGER_SOURCE);	
 	
 		/*End of method definition*/
 		if(typeof(msg)==TOBJ){

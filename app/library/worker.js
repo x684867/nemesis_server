@@ -8,11 +8,13 @@
 	is intended to manage the web services and interact with the parent (master)
 	process operated by app.js.
 */
+
+const LOGGER_SOURCE='lib.worker';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-const LOGGER_SOURCE='worker.js';
-const LOGGER_PRIORITY='informational';
-const LOGGER_FACILITY='local0';
-var log=(new (require(LOGGER_CLASS)))(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);
+global.logger=require(LOGGER_CLASS);
+
+
+var log=new global.logger(LOGGER_SOURCE);	
 	log.drawBanner('worker.js is starting...');
 
 const TOBJ='object';

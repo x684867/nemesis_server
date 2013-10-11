@@ -6,13 +6,11 @@
 	
 */
 module.exports=Cipher;
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-const LOGGER_SOURCE='cipher.js(main)';
-const LOGGER_PRIORITY='informational';
-const LOGGER_FACILITY='local0';
-var logger=require(LOGGER_CLASS);
 
+const LOGGER_SOURCE='server.cipher';
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
+global.logger=require(LOGGER_CLASS);
 
 function Cipher(id,config){
-	var log=(new (require(LOGGER_CLASS)))(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);
+	var log=new global.logger(LOGGER_SOURCE);	
 }

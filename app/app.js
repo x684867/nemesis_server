@@ -30,11 +30,10 @@
 			*Begin service development.
 	---------------------------------------------------------------------------------
 */
+const LOGGER_SOURCE='app.main';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 global.logger=require(LOGGER_CLASS);
-const LOGGER_SOURCE='app.js(main)';
-const LOGGER_PRIORITY='informational';
-const LOGGER_FACILITY='local0';
+
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/library/worker.js';
 const PID_WRITER_SCRIPT='/srv/nemesis/app/library/pidWriter.js';
 const VALIDATOR_CLASS='./library/msgValidator.js';
@@ -51,7 +50,7 @@ var monitor=Array();
 
 /*Start the logger and show a banner*/
 
-var log=new global.logger(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);	
+var log=new global.logger(LOGGER_SOURCE);	
 log.drawBanner("app.js starting as master process pid:["+process.pid+"]");
 
 /*Setup Process management*/
@@ -70,7 +69,7 @@ pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 config.data.workers.forEach(
 	function(workerConfig,id,array){
 		if(workerConfig.enabled){
-			log.source="app.js(loop)";
+			log.source="app.loop";
 			log.drawLine(60);
 			log.write("fork process with wrapper");
 			var processFactory=require('child_process');

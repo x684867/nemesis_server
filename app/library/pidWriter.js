@@ -5,13 +5,13 @@
 */
 module.exports=pidWriter;
 
+const LOGGER_SOURCE='lib.pidWriter';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-const LOGGER_SOURCE='pidWriter.js(main)';
-const LOGGER_PRIORITY='informational';
-const LOGGER_FACILITY='local0';
+global.logger=require(LOGGER_CLASS);
+
 
 function pidWriter(pidDir){
-	var log=(new (require(LOGGER_CLASS)))(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);
+	var log=new global.logger(LOGGER_SOURCE);	
 	
 	var pidFileBase=pidDir+'/nemesisWorker';
 	
