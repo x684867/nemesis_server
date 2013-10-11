@@ -36,26 +36,28 @@ function logger(src,pri,fac){
 	this.facility=fac;
 	
 	var config_file=config.baseDir+config.sources+'.log';
+
 	rotateLog(config_file);
+	var timestamp(){return (new Date).toUTCString();}
 	var format=function(s,f,p,m){
 		return s+"["+parseInt((new Date).getTime()/1000)+"]["+f+"]["+p+"]:"+m;
 	}
 	var rotateLog=function(f){
-	   b=(f)+'.'+parseInt((new Date).getTime()/1000);
-	   fs=require('fs');
-	   try{fs.renameSync(f,b);}catch(e){/*do nothing.*/}
-	   fs.writeFileSync(f,format(this.source,this.facility,this.priority,'log started'));
+		b=(f)+'.'+parseInt((new Date).getTime()/1000);
+		fs=require('fs');
+		try{fs.renameSync(f,b);}catch(e){/*do nothing.*/}
+		fs.writeFileSync(f,format(this.source,this.facility,this.priority,'log started'));
 	}
 	var loadConfig=function(c){
 		try{
-			return JSON.parse((fs=require('fs')).readFileSync(c));
+			return JSON.parse((require('fs')).readFileSync(c));
 		}catch(e){
 			throw new Error('SYSLOG config file failed to read.');
 		}
 	}
 	var loadParameters=function(p){
 		try{
-			return JSON.parse((fs=require('fs')).readFileSync(p));
+			return JSON.parse((require('fs')).readFileSync(p));
 		}catch(e){
 			throw new Error('SYSLOG parameters file failed to read.');
 		}	
@@ -67,9 +69,7 @@ function logger(src,pri,fac){
 			function(err){if(err) throw err;}
 		);
 	}
-	this.drawLine=function(w){
-		this.write(this.source+":"+Array((((w==undefined)||(w<0))?60:w).join("-"));
-	}
+	this.drawLine=function(w){this.write(Array((((w==undefined)||(w<0))?70:w).join("-")));}
 	this.drawBanner=function(t){
 		i=(i==undefined)?0:i;
 		this.drawLine(60,i);
