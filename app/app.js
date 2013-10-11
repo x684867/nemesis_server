@@ -68,6 +68,7 @@ pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 config.data.workers.forEach(
 	function(workerConfig,id,array){
 		if(workerConfig.enabled){
+			log.source="app.js(config.data.workers.forEach)";
 			log.drawLine(60);
 			log.write("fork process with wrapper");
 			var processFactory=require('child_process');
