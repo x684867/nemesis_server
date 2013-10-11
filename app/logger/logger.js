@@ -45,9 +45,13 @@ function logger(s,p,f){
 	var config_file=config.baseDir+this.sources+'.log';
 	/*rotate log file*/
 	b=(config_file)+'.'+parseInt((new Date).getTime()/1000);
-	fs=require('fs');
-	try{fs.renameSync(config_file,b);}catch(e){/*do nothing.*/}
-	fs.writeFileSync(config_file,format(this.source,this.facility,this.priority,'log started'));
+	try{
+		fs=require('fs');
+		fs.renameSync(config_file,b);
+		fs.writeFileSync(config_file,format(this.source,this.facility,this.priority,'log started'));
+	}catch(e){
+		console.log("logger.js: no log file to rotate when starting ["+config_file+"]");
+	}
 	/*end of rotate log file.*/
 	
 	var timestamp=function(){return (new Date).toUTCString();}
