@@ -3,8 +3,19 @@
 	"_title":"LOGGER CONFIGURATION",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 	
-	"audit":"/var/log/nemesis/audit.log",
-	"broker":"/var/log/nemesis/broker.log",
-	"cipher":"/var/log/nemesis/cipher.log",
-	"keys":"/var/log/nemesis/keys.log"
+	"baseDir":"/var/log/nemesis/",
+	"audit":"audit.log",
+	"broker":"broker.log",
+	"cipher":"cipher.log",
+	"keys":"keys.log",
+		
+	"facility":["kern","user","mail","daemon","auth","syslog","lpr",
+				"news","uucp","clock","authpriv","ftp","ntp","audit",
+				"alert","cron","local0","local1","local2","local3",
+				"local4","local5","local6","local7"],
+				
+	"priority":["emergency","alert","critical","error",
+			  "warning","notice","informational","debug"],
+	
+	"sources":["audit","broker","cipher","keys"]
 }
