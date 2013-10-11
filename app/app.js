@@ -31,25 +31,25 @@
 	---------------------------------------------------------------------------------
 */
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
+const LOGGER_SOURCE='app.js(main)';
+const LOGGER_PRIORITY='informational';
+const LOGGER_FACILITY='local0';
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/library/worker.js';
 const PID_WRITER_SCRIPT='/srv/nemesis/app/library/pidWriter.js';
 const VALIDATOR_CLASS='./library/msgValidator.js';
 const CONFIG_CLASS='./library/config.js';
 
-/*Capture command-line arguments*/
-var config_filename = process.argv[2];
+var config_filename = process.argv[2];/*Capture command-line arguments*/
 
-/*Load dependencies*/
 var validatorClass=require(VALIDATOR_CLASS);
 var validator=new validatorClass();
 var configFactory=require(CONFIG_CLASS);
 
-/*Declare globals*/
 var worker=Array();		/*This array tracks the worker processes.*/
 var monitor=Array();
 
 /*Start the logger and show a banner*/
-log=new (require(LOGGER_CLASS))("app.js(main)");
+var log=(new (require(LOGGER_CLASS)))(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);	
 log.drawBanner("app.js starting as master process pid:["+process.pid+"]");
 
 /*Setup Process management*/

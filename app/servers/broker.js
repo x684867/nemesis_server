@@ -6,15 +6,17 @@
 	
 */
 module.exports=BrokerServer;
-
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
+const LOGGER_SOURCE='broker.js(main)';
+const LOGGER_PRIORITY='informational';
+const LOGGER_FACILITY='local0';
 /*Return codes for server.start()*/
 const SERVER_OK=3
 const SERVER_FAIL=4
 
 function BrokerServer(id,config,ssl_config){	
 
-	var logger=require('/srv/nemesis/app/logger/logger.js');
-		log=new logger("broker.js(start)");
+	var log=(new (require(LOGGER_CLASS)))(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);
 
 	if(config==undefined) throw new Error('config is not defined.');
 	if(id==undefined) throw new Error('index is not defined.');

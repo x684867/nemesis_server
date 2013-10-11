@@ -4,6 +4,9 @@
  */
 module.exports=validatorClass;
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
+const LOGGER_SOURCE='msgValidator.js';
+const LOGGER_PRIORITY='informational';
+const LOGGER_FACILITY='local0';
 function validatorClass(){
 	this.isValidError=function(msg){
 		return (typeof(msg)=='object')?true:false;
@@ -16,8 +19,7 @@ function validatorClass(){
 		const TSTR='string';
 		const TNUM='number';
 
-		var logger=require(LOGGER_CLASS);
-		var log=new logger('msgValidator');
+		var log=(new (require(LOGGER_CLASS)))(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);
 	
 		/*End of method definition*/
 		if(typeof(msg)==TOBJ){
