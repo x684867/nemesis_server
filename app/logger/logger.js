@@ -38,7 +38,7 @@ function logger(src,pri,fac){
 	var config_file=config.baseDir+config.sources+'.log';
 
 	rotateLog(config_file);
-	var timestamp(){return (new Date).toUTCString();}
+	var timestamp=function(){return (new Date).toUTCString();}
 	var format=function(s,f,p,m){
 		return s+"["+parseInt((new Date).getTime()/1000)+"]["+f+"]["+p+"]:"+m;
 	}
