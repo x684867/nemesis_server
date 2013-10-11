@@ -22,7 +22,8 @@ const logfile='/var/log/nemesis/nemesis.log';
 function logger(source){
 	
 	this.rawWrite=function(message){
-		(require('fs')).writeFileSync(logfile,message,{encoding:'utf8',flags:'a'});
+		fs=require('fs');
+		fs.writeFileSync(logfile,message,{flags:'a'});
 	}
 	this.write=function(message){
 		this.rawWrite(source+"["+(new Date).toUTCString()+"] "+message);
