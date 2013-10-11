@@ -4,10 +4,6 @@
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 	
 	"baseDir":"/var/log/nemesis/",
-	"audit":"audit.log",
-	"broker":"broker.log",
-	"cipher":"cipher.log",
-	"keys":"keys.log",
 		
 	"facility":["kern","user","mail","daemon","auth","syslog","lpr",
 				"news","uucp","clock","authpriv","ftp","ntp","audit",

@@ -23,29 +23,29 @@ const E_SYSLOG_BAD_FACILITY='SYSLOG facility not a string (expected)';
 const E_INVALID_SOURCE='SYSLOG source not in param list';
 const E_INVALID_PRIORITY='SYSLOG priority not in param list';
 const E_INVALID_FACILITY='SYSLOG facility not in param list';
+const E_SYSLOG_BAD_BASEDIR='SYSLOG baseDir invalid (expect string)';
 
+const LOGGER_CONFIG='./loggerConfig.js';
 const SYSLOG_CONFIG='/srv/nemesis/app/logger/logger.config.json';
-const SYSLOG_PARAMETERS='/srv/nemesis/app/logger/parameters.json';
+
+
 
 function logger(s,p,f){
 	if(typeof(s)!=TSTR) throw new Error(E_SYSLOG_BAD_SOURCE+':'+s);
 	if(typeof(p)!=TSTR) throw new Error(E_SYSLOG_BAD_PRIORITY+':'+p);
 	if(typeof(f)!=TSTR) throw new Error(E_SYSLOG_BAD_FACILITY+':'+f);
-	var loggerConfig=require('./loggerConfig.js');
-	var config=loggerConfig(SYSLOG_CONFIG);
-	var parameters=loggerConfig(SYSLOG_PARAMETERS);
-
+	var config=(require(LOGGER_CONFIG))(SYSLOG_CONFIG);
 	if(typeof(config)!=TOBJ) throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
-	if(typeof(parameters)!=TOBJ) throw new Error(E_SYSLOG_PARAMS_FAILED_LOAD);
 	if(config.facility.indexOf(f) == -1) throw new Error(E_INVALID_SOURCE);
 	if(config.priority.indexOf(p) == -1) throw new Error(E_INVALID_PRIORITY);
 	if(config.sources.indexOf(s) == -1) throw new Error(E_INVALID_SOURCE);
+	if(typeof(config.log.baseDir)!=TSTR) throw new Error(E_SYSLOG_BAD_BASEDIR);
 
 	this.source=s;
 	this.priority=p;
 	this.facility=f;
 	
-	var config_file=config.baseDir+config.sources+'.log';
+	var config_file=config.baseDir+this.sources+'.log';
 
 	rotateLog(config_file);
 	var timestamp=function(){return (new Date).toUTCString();}
