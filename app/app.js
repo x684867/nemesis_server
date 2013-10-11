@@ -31,6 +31,7 @@
 	---------------------------------------------------------------------------------
 */
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
+global.logger=require(LOGGER_CLASS);
 const LOGGER_SOURCE='app.js(main)';
 const LOGGER_PRIORITY='informational';
 const LOGGER_FACILITY='local0';
@@ -49,7 +50,7 @@ var worker=Array();		/*This array tracks the worker processes.*/
 var monitor=Array();
 
 /*Start the logger and show a banner*/
-global.logger=require(LOGGER_CLASS);
+
 var log=new global.logger(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);	
 log.drawBanner("app.js starting as master process pid:["+process.pid+"]");
 
