@@ -23,7 +23,8 @@ function logger(source){
 	
 	this.rawWrite=function(message){
 		fs=require('fs');
-		fs.writeFile(logfile,message,{flags:'a'},function(err){if(err) throw err;});
+		fs.rename(logfile,logfile.(new Date).getTime())
+		fs.writeFile(logfile,message,function(err){if(err) throw err;});
 	}
 	this.write=function(message){
 		this.rawWrite(source+"["+(new Date).toUTCString()+"] "+message);
