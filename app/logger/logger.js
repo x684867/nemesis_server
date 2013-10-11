@@ -14,7 +14,9 @@
 */
 module.exports=logger;
 
-function logger(logSource,enableDebug=false){
+function logger(logSource,enableDebug){
+	if(typeof(enableDebug)!='boolean') enableDebug=false;
+
 	this.source=(logSource==undefined)?'NoSource':logSource;
 	
 	this.indent=function(i){return Array(i).join(" ");}
