@@ -6,7 +6,6 @@
 # 
 [ "$(whoami)" != "root" ] && echo "This script must run as root" && exit 1
 
-echo "$0 disabled" && exit 1
 
 apt-get install binutils -y && \
 apt-get install cpp cpp-4.7 -y && \
