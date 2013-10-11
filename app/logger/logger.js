@@ -23,7 +23,7 @@ function logger(source){
 	
 	this.rawWrite=function(message){
 		fs=require('fs');
-		fs.rename(logfile,(logfile.(new Date).getTime()),function(err){if(err) throw(err));
+		fs.rename(logfile,logfile+(new Date).getTime()));
 		fs.writeFile(logfile,message,function(err){if(err) throw err;});
 	}
 	this.write=function(message){
