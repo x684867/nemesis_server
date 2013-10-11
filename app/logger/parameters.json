@@ -7,40 +7,15 @@
 	These parameters are used by logger.js to communicate with SYSLOG.
 */
 {
-	facility:{
-		kern:00,
-		user:01,
-		mail:02,
-		daemon:03,
-		auth:04,
-		syslog:05,
-		lpr:06,
-		news:07,
-		uucp:08,
-		clock:09,
-		authpriv:10,
-		ftp:11,
-		ntp:12,
-		audit:13,
-		alert:14,
-		cron:15,
-		local0:16,
-		local1:17,
-		local2:18,
-		local3:19,
-		local4:20,
-		local5:21,
-		local6:22,
-		local7:23
-	},
-	severity:{
-		emergency:0,
-		alert:1,
-		critical:2,
-		error:3,
-		warning:4,
-		notice:5,
-		informational:6,
-		debug:7
-	}
+	"baseDir":"/var/log/nemesis/",
+
+	"facility":["kern","user","mail","daemon","auth","syslog","lpr",
+				"news","uucp","clock","authpriv","ftp","ntp","audit",
+				"alert","cron","local0","local1","local2","local3",
+				"local4","local5","local6","local7"],
+				
+	"priority":["emergency","alert","critical","error",
+			  "warning","notice","informational","debug"],
+	
+	"sources":["audit","broker","cipher","keys"]
 }

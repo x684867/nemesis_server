@@ -3,11 +3,16 @@
 	/srv/nemesis/app/logger/logger.config.json
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	
-	This file defines the SYSLOG configuration.
+	This file defines how logger handles data written
+	to it.  Eventually this will define the interface
+	between nemesis and syslog in compliance with the
+	open standards.  
+	
+	For now this simply defines the log files.
 */
 {
-	"ip":"127.0.0.1",
-	"port":514,
-	"proto":"udp",
-	"msgSize":1024
+	"audit":"/var/log/nemesis/audit.log",
+	"broker":"/var/log/nemesis/broker.log",
+	"cipher":"/var/log/nemesis/cipher.log",
+	"keys":"/var/log/nemesis/keys"
 }

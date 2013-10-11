@@ -36,18 +36,16 @@ base_install(){
 	echo "software is now installed...configuring system." && \
 	rm -f /etc/nginx/sites-enabled/* && \
 	rm -rf /etc/nginx/sites-available && \
+	rm -rf /etc/rsyslog* && \
 	ln -sf /srv/nemesis/etc/nginx/sites-available /etc/nginx/sites-available && \
 	ln -sf /srv/nemesis/etc/nginx/sites-available/${SERVER_TYPE} /etc/nginx/sites-enabled/${SERVER_TYPE} && \
-	[ -f /etc/init/${SERVER_TYPE} ] && rm /etc/init/${SERVER_TYPE}
+	rm /etc/init/${SERVER_TYPE} && \
 	ln -sf /srv/nemesis/etc/init/${SERVER_TYPE} /etc/init/${SERVER_TYPE} && \
 	ln -sf /srv/nemesis/etc/init.d/nemesis-${SERVER_TYPE} /etc/init.d/nemesis-${SERVER_TYPE} && \
-	mkdir -p /var/run/nemesis/${SERVER_TYPE} && \
-	echo "#Nemesis TCP Listener" > /etc/rsyslog.d/99-nemesis.conf && \
-	echo "#Created by $0" >> /etc/rsyslog.d/99-nemesis.conf && \
-	echo "\$ModLoad imtcp" >> /etc/rsyslog.d/99-nemesis.conf && \
-	echo "\$InputTCPServerRun 514" >> /etc/rsyslog.d/99-nemesis.conf && \
-	echo "\$TCPServerAddress 127.0.0.1" >> /etc/rsyslog.d/99-nemesis.conf && \
+	ln -sf /srv/nemesis/etc/rsyslog/rsyslog.conf /etc/rsyslog.conf && \
 	service rsyslog restart && \
+	mkdir -p /var/run/nemesis/${SERVER_TYPE} && \
+	mkdir -p /var/log/nemesis/{audit,broker,cipher,keys} && \
 	echo "Base installation complete for ${SERVER_TYPE}" && return 0
 	# Fall through if a failure occurs.
 	echo "base_install() failed for ${SERVER_TYPE}}" && return 1
