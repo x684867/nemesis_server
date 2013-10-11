@@ -50,7 +50,7 @@ function logger(s,p,f){
 		fs.renameSync(this.config_file,b);
 		fs.writeFileSync(this.config_file,format(this.source,this.facility,this.priority,'log started'));
 	}catch(e){
-		console.log("logger.js: no log file to rotate when starting ["+config_file+"]");
+		console.log("logger.js: no log file to rotate when starting ["+this.config_file+"]");
 	}
 	/*end of rotate log file.*/
 	
