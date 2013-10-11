@@ -1,0 +1,13 @@
+/*
+	LOGGER CONFIGURATION
+	/srv/nemesis/app/logger/logger.config.json
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
+	
+	This file defines the SYSLOG configuration.
+*/
+{
+	"ip":"127.0.0.1",
+	"port":514,
+	"proto":"udp",
+	"msgSize":1024
+}
