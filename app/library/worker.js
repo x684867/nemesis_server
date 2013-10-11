@@ -8,10 +8,10 @@
 	is intended to manage the web services and interact with the parent (master)
 	process operated by app.js.
 */
+const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 var log=new (require(LOGGER_CLASS))("worker.js(main)");
 	log.drawBanner('worker.js is starting...');
 
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 const TOBJ='object';
 const TSTR='string';
 const TNUM='number';

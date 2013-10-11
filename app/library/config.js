@@ -49,6 +49,7 @@ const E_BAD_WRKR_IP='Invalid IP address string in worker configuration object';
 const E_BAD_WRKR_PORT='Invalid network port (number) in worker configuration object';
 const E_BAD_WRKR_ARR='Invalid worker collection object (not an array)';
 const E_BAD_WRKR_SSL='Invalid worker ssl parameter (expect boolean)';
+const E_BAD_WRKR_EN='Invalid worker enabled flag (expect boolean)';
 const E_BAD_SSL_OBJ='Invalid ssl object';
 const E_BAD_SSL_KEY='Invalid ssl private_key (expect string)';
 const E_BAD_SSL_CRT='Invalid ssl public_key (expect string)';
@@ -58,6 +59,7 @@ const E_MISSING_SSL_CRT='Missing file (public_key)';
 const E_MISSING_SSL_CA='Missing file (ca_cert)';
 const E_BAD_PID_DIR='Missing PID Directory (pidDirectory) in configuration file.';
 const E_MISSING_PID_DIR='Missing PID Directory specified in the configuration file.';
+
 	
 function config(filename){
 	var fs =require('fs');
@@ -113,6 +115,7 @@ function config(filename){
 	if(typeof(this.data.workers.forEach)!=TFUNC) throw new Error(E_BAD_WRKR_ARR);
 	this.data.workers.forEach(function(w,i,a){
 		if(typeof(w)!=TOBJ) throw new Error(E_BAD_WRKR_OBJ);
+		if(typeof(w)!=TBOOL) throw new Error(E_BAD_WRKR_EN);
 		if(typeof(w.workerId)!=TNUM) throw new Error(E_BAD_WRKR_ID);
 		if(typeof(w.ipAddress)!=TSTR) throw new Error(E_BAD_WRKR_IP);
 		if(typeof(w.ipPort)!=TNUM) throw new Error(E_BAD_WRKR_PORT);
