@@ -24,14 +24,14 @@ base_install(){
 	#base installation
 	#
 	init_profile && \
+	ln -sf /srv/nemesis/bin/delay /usr/bin/delay && \
 	echo "Updating the clock..." && \
 	time ntpdate $TIME_SERVER && \
 	echo "installing software packages" && \
 	time apt-get install vim -y && \
 	time apt-get install openssh-server openssh-client -y && \
-	time apt-get install nginx-full -y && \
-	time apt-get install node -y && \
 	time apt-get install openssl -y && \
+	time apt-get install nginx-full -y && \
 	time /srv/nemesis/bin/node-install && \
 	echo "software is now installed...configuring system." && \
 	rm -f /etc/nginx/sites-enabled/* && \
