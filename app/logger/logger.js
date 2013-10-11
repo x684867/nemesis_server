@@ -17,63 +17,24 @@ const TSTR='string';
 const TNUM='number';
 const TOBJ='object';
 
-const E_SYSLOG_BAD_SOURCE='SYSLOG source not a string (expected)';
-const E_SYSLOG_BAD_PRIORITY='SYSLOG priority not a string (expected)';
-const E_SYSLOG_BAD_FACILITY='SYSLOG facility not a string (expected)';
-const E_INVALID_SOURCE='SYSLOG source not in param list';
-const E_INVALID_PRIORITY='SYSLOG priority not in param list';
-const E_INVALID_FACILITY='SYSLOG facility not in param list';
-const E_SYSLOG_BAD_BASEDIR='SYSLOG baseDir invalid (expect string)';
+const logfile='/var/log/nemesis/nemesis.log';
 
-const LOGGER_CONFIG='./loggerConfig.js';
-const SYSLOG_CONFIG='/srv/nemesis/app/logger/logger.config.json';
-
-function logger(s,p,f){
-	if(typeof(s)!=TSTR) throw new Error(E_SYSLOG_BAD_SOURCE+':'+s);
-	if(typeof(p)!=TSTR) throw new Error(E_SYSLOG_BAD_PRIORITY+':'+p);
-	if(typeof(f)!=TSTR) throw new Error(E_SYSLOG_BAD_FACILITY+':'+f);
-	var config=(require(LOGGER_CONFIG))(SYSLOG_CONFIG);
-	if(typeof(config)!=TOBJ) throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
-	if(config.facility.indexOf(f) == -1) throw new Error(E_INVALID_SOURCE+" ["+f+"]["+config.facility.join()+"]");
-	if(config.priority.indexOf(p) == -1) throw new Error(E_INVALID_PRIORITY+" ["+p+"]["+config.priority.join()+"]");
-	if(typeof(config.baseDir)!=TSTR) throw new Error(E_SYSLOG_BAD_BASEDIR+" ["+config.log.baseDir+"]");
-
+function logger(source){
+	
 	this.source=s;
-	this.priority=p;
-	this.facility=f;
-	this.config_file=config.baseDir+this.sources+'.log';
 	
-	/*rotate log file*/
-	try{
-		b=(this.config_file)+'.'+parseInt((new Date).getTime()/1000);
-		fs=require('fs');
-		fs.renameSync(this.config_file,b);
-		fs.writeFileSync(this.config_file,format(this.source,this.facility,this.priority,'log started'));
-	}catch(e){
-		console.log("logger.js: no log file to rotate when starting ["+this.config_file+"]");
+	this.rawWrite=function(message){
+		(require('fs')).appendFile(logfile,message,function(err){if(err) throw err;});	
 	}
-	/*end of rotate log file.*/
-	
-	var timestamp=function(){return (new Date).toUTCString();}
-	var format=function(s,f,p,m){return s+"["+timestamp()+"]["+f+"]["+p+"]:"+m;}
-	
-	this.rawWrite=function(m){
-		f=require('fs');
-		fd=f.open(this.config_file,'a',function(err){if(err) throw err;});
-		try{
-			f.writeSync(fd,m,0,m.length);
-		}catch(e){
-			throw new Error("Error writing to log file ["+this.config_file+"]");
-		}
-		f.close(fd);
-	}
-	this.write=function(msg){rawWrite(source,facility,priority,msg);}
+	this.write=function(message){
+		this.rawWrite(source+"["+(new Date).toUTCString()+"] "+message);
+	}	
 	this.drawLine=function(w){
 		this.rawWrite(Array((((w==undefined)||(w<0))?LOG_LINE_WIDTH:w)).join("-"));
 	}
 	this.drawBanner=function(t){
 		this.drawLine(LOG_LINE_WIDTH);
-		this.rawWrite(t);
+		this.write(t);
 		this.drawLine(LOG_LINE_WIDTH);
 	}
 
