@@ -1,18 +1,10 @@
-/*
-	LOGGER CONFIGURATION
-	/srv/nemesis/app/logger/logger.config.json
-	(c) 2013 Sam Caldwell.  All Rights Reserved.
-	
-	This file defines how logger handles data written
-	to it.  Eventually this will define the interface
-	between nemesis and syslog in compliance with the
-	open standards.  
-	
-	For now this simply defines the log files.
-*/
 {
+	"_filename":"/srv/nemesis/app/logger/logger.config.json",
+	"_title":"LOGGER CONFIGURATION",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+	
 	"audit":"/var/log/nemesis/audit.log",
 	"broker":"/var/log/nemesis/broker.log",
 	"cipher":"/var/log/nemesis/cipher.log",
-	"keys":"/var/log/nemesis/keys"
+	"keys":"/var/log/nemesis/keys.log"
 }
