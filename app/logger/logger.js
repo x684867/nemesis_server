@@ -31,7 +31,7 @@ function logger(s,p,f){
 	if(typeof(s)!=TSTR) throw new Error(E_SYSLOG_BAD_SOURCE+':'+s);
 	if(typeof(p)!=TSTR) throw new Error(E_SYSLOG_BAD_PRIORITY+':'+p);
 	if(typeof(f)!=TSTR) throw new Error(E_SYSLOG_BAD_FACILITY+':'+f);
-	var loggerConfig=require('./logger/loggerConfig.js');
+	var loggerConfig=require('./loggerConfig.js');
 	var config=loggerConfig(SYSLOG_CONFIG);
 	var parameters=loggerConfig(SYSLOG_PARAMETERS);
 
