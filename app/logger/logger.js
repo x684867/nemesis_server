@@ -33,8 +33,8 @@ function logger(s,p,f){
 	if(typeof(s)!=TSTR) throw new Error(E_SYSLOG_BAD_SOURCE+':'+s);
 	if(typeof(p)!=TSTR) throw new Error(E_SYSLOG_BAD_PRIORITY+':'+p);
 	if(typeof(f)!=TSTR) throw new Error(E_SYSLOG_BAD_FACILITY+':'+f);
-	var config=this.loadConfig(SYSLOG_CONFIG);
-	var parameters=this.loadParameters(SYSLOG_PARAMETERS);
+	var config=loadConfig(SYSLOG_CONFIG);
+	var parameters=loadParameters(SYSLOG_PARAMETERS);
 
 	if(typeof(config)!=TOBJ) throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
 	if(typeof(parameters)!=TOBJ) throw new Error(E_SYSLOG_PARAMS_FAILED_LOAD);
