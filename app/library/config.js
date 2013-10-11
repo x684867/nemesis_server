@@ -78,7 +78,11 @@ function config(filename){
 			throw new Error(E_CFG_FILE_NOT_FOUND+":"+filename);
 		}
 	} catch(e) {
-		throw new Error(E_CFG_FILE_NOT_FOUND+":"+filename);
+		if(e){
+			throw e
+		}else{
+			throw new Error(E_CFG_FILE_NOT_FOUND+":"+filename);
+		}
 	}
 	log.write("validating configuration file");
 	
