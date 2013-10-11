@@ -11,36 +11,46 @@
 
 module.exports=logger;
 
+const LOG_LINE_WIDTH=60;
+
 const TSTR='string';
 const TNUM='number';
+
+const E_SYSLOG_BAD_SOURCE='SYSLOG source not a string (expected)';
+const E_SYSLOG_BAD_PRIORITY='SYSLOG priority not a string (expected)';
+const E_SYSLOG_BAD_FACILITY='SYSLOG facility not a string (expected)';
+const E_SYSLOG_CONFIG_FAILED_LOAD='SYSLOG config file failed to load';
+const E_SYSLOG_PARAMS_FAILED_LOAD='SYSLOG parameters file failed to load';
+const E_INVALID_SOURCE='SYSLOG source not in param list';
+const E_INVALID_PRIORITY='SYSLOG priority not in param list';
+const E_INVALID_FACILITY='SYSLOG facility not in param list';
 
 const SYSLOG_CONFIG='/srv/nemesis/app/logger/logger.config.json';
 const SYSLOG_PARAMETERS='/srv/nemesis/app/logger/parameters.json';
 
-function logger(src,pri,fac){
-
-	if(typeof(src)!=TSTR) throw new Error('SYSLOG source not a string (expected)');
-	if(typeof(pri)!=TNUM) throw new Error('SYSLOG priority not a number (expected)');
-	if(typeof(fac)!=TNUM) throw new Error('SYSLOG facility not a number (expected)');
+function logger(s,p,f){
+	if(typeof(s)!=TSTR) throw new Error(E_SYSLOG_BAD_SOURCE+':'+s);
+	if(typeof(p)!=TSTR) throw new Error(E_SYSLOG_BAD_PRIORITY+':'+p);
+	if(typeof(f)!=TSTR) throw new Error(E_SYSLOG_BAD_FACILITY+':'+f);
 	var config=this.loadConfig(SYSLOG_CONFIG);
 	var parameters=this.loadParameters(SYSLOG_PARAMETERS);
 
-	if(typeof(config)!='object') throw new Error('SYSLOG config file failed to load');
-	if(typeof(config)!='object') throw new Error('SYSLOG parameters file failed to load');
-	if(config.facility.indexOf(fac) == -1) throw new Error('SYSLOG facility is invalid');
-	if(config.priority.indexOf(pri) == -1) throw new Error('SYSLOG priority is invalid');
-	if(config.sources.indexOf(src) == -1) throw new Error('SYSLOG source is invalid');
+	if(typeof(config)!='object') throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
+	if(typeof(parameters)!='object') throw new Error(E_SYSLOG_PARAMS_FAILED_LOAD);
+	if(config.facility.indexOf(f) == -1) throw new Error(E_INVALID_SOURCE);
+	if(config.priority.indexOf(p) == -1) throw new Error(E_INVALID_PRIORITY);
+	if(config.sources.indexOf(s) == -1) throw new Error(E_INVALID_SOURCE);
 
-	this.source=src;
-	this.priority=pri;
-	this.facility=fac;
+	this.source=s;
+	this.priority=p;
+	this.facility=f;
 	
 	var config_file=config.baseDir+config.sources+'.log';
 
 	rotateLog(config_file);
 	var timestamp=function(){return (new Date).toUTCString();}
 	var format=function(s,f,p,m){
-		return s+"["+parseInt((new Date).getTime()/1000)+"]["+f+"]["+p+"]:"+m;
+		return s+"["+timestamp()+"]["+f+"]["+p+"]:"+m;
 	}
 	var rotateLog=function(f){
 		b=(f)+'.'+parseInt((new Date).getTime()/1000);
@@ -62,19 +72,17 @@ function logger(src,pri,fac){
 			throw new Error('SYSLOG parameters file failed to read.');
 		}	
 	}
-	this.write=function(msg){
-		(require('fs')).appendFile(
-			config_file,
-			format(source,facility,priority,msg),
-			function(err){if(err) throw err;}
-		);
+	var rawWrite=function(msg){
+		(require('fs')).appendFile(config_file,msg,function(err){if(err) throw err;});
 	}
-	this.drawLine=function(w){this.write(Array((((w==undefined)||(w<0))?70:w).join("-")));}
+	this.write=function(msg){rawWrite(source,facility,priority,msg);}
+	this.drawLine=function(w){
+		rawWrite(Array((((w==undefined)||(w<0))?LOG_LINE_WIDTH:w).join("-")));
+	}
 	this.drawBanner=function(t){
-		i=(i==undefined)?0:i;
-		this.drawLine(60,i);
-		this.write(t);
-		this.drawLine(60,i);
+		this.drawLine(LOG_LINE_WIDTH);
+		rawWrite(t);
+		this.drawLine(LOG_LINE_WIDTH);
 	}
 
 }
