@@ -21,12 +21,14 @@ const logfile='/var/log/nemesis/nemesis.log';
 
 function logger(source){
 	
+	this.log=(require('fs')).createWriteStream(logfile,{'flags':'a'});
+	
 	this.rawWrite=function(message){
-		(require('fs')).appendFile(logfile,message,function(err){if(err) throw err;});	
+		this.log.write(message);
 	}
 	this.write=function(message){
 		this.rawWrite(source+"["+(new Date).toUTCString()+"] "+message);
-	}	
+	}
 	this.drawLine=function(w){
 		this.rawWrite(Array((((w==undefined)||(w<0))?LOG_LINE_WIDTH:w)).join("-"));
 	}
@@ -35,7 +37,6 @@ function logger(source){
 		this.write(t);
 		this.drawLine(LOG_LINE_WIDTH);
 	}
-
 }
 
 
