@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash +x
 #
 # Node Install Script for Nemesis
 # /srv/nemesis/bin/node-install
@@ -8,6 +8,7 @@
 
 apt-get install build-essential dpkg-dev fakeroot g++ g++-4.7 libstdc++6-4.7-dev make -y && \
 cd /srv/nemesis/src/nodejs && \
+make clean && \
 ./configure && \
 make && \
 make install && \
