@@ -28,8 +28,6 @@ const E_SYSLOG_BAD_BASEDIR='SYSLOG baseDir invalid (expect string)';
 const LOGGER_CONFIG='./loggerConfig.js';
 const SYSLOG_CONFIG='/srv/nemesis/app/logger/logger.config.json';
 
-
-
 function logger(s,p,f){
 	if(typeof(s)!=TSTR) throw new Error(E_SYSLOG_BAD_SOURCE+':'+s);
 	if(typeof(p)!=TSTR) throw new Error(E_SYSLOG_BAD_PRIORITY+':'+p);
@@ -45,18 +43,15 @@ function logger(s,p,f){
 	this.facility=f;
 	
 	var config_file=config.baseDir+this.sources+'.log';
-
-	rotateLog(config_file);
+	/*rotate log file*/
+	b=(config_file)+'.'+parseInt((new Date).getTime()/1000);
+	fs=require('fs');
+	try{fs.renameSync(config_file,b);}catch(e){/*do nothing.*/}
+	fs.writeFileSync(config_file,format(this.source,this.facility,this.priority,'log started'));
+	/*end of rotate log file.*/
+	
 	var timestamp=function(){return (new Date).toUTCString();}
-	var format=function(s,f,p,m){
-		return s+"["+timestamp()+"]["+f+"]["+p+"]:"+m;
-	}
-	var rotateLog=function(f){
-		b=(f)+'.'+parseInt((new Date).getTime()/1000);
-		fs=require('fs');
-		try{fs.renameSync(f,b);}catch(e){/*do nothing.*/}
-		fs.writeFileSync(f,format(this.source,this.facility,this.priority,'log started'));
-	}
+	var format=function(s,f,p,m){return s+"["+timestamp()+"]["+f+"]["+p+"]:"+m;}
 	this.rawWrite=function(msg){
 		(require('fs')).appendFile(config_file,msg,function(err){if(err) throw err;});
 	}
