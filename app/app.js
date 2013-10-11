@@ -30,6 +30,7 @@
 			*Begin service development.
 	---------------------------------------------------------------------------------
 */
+console.log("Starting Nemesis...");
 const LOGGER_SOURCE='app.main';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 global.logger=require(LOGGER_CLASS);
@@ -140,5 +141,5 @@ config.data.workers.forEach(
 		log.write("id#"+id+" workerId#"+workerConfig.workerId+" disabled in config.");
 	}
 });
-log.write("All workers have been spawned.  Terminating app.js");
+console.log("All workers have been spawned.  Terminating app.js");
 process.exit(0);
