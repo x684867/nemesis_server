@@ -63,7 +63,7 @@ function config(filename){
 	var fs =require('fs');
 	var logger=require(LOGGER_CLASS);
 	var log=new logger("config.js(main)");	
-	log.drawBanner("starting config constructor");
+	log.drawBanner("starting config constructor\n  Filename: "+filename);
 
 	this.data={status:undefined};
 	
