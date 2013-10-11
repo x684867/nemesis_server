@@ -36,10 +36,10 @@ function logger(s,p,f){
 	if(typeof(f)!=TSTR) throw new Error(E_SYSLOG_BAD_FACILITY+':'+f);
 	var config=(require(LOGGER_CONFIG))(SYSLOG_CONFIG);
 	if(typeof(config)!=TOBJ) throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
-	if(config.facility.indexOf(f) == -1) throw new Error(E_INVALID_SOURCE);
-	if(config.priority.indexOf(p) == -1) throw new Error(E_INVALID_PRIORITY);
-	if(config.sources.indexOf(s) == -1) throw new Error(E_INVALID_SOURCE);
-	if(typeof(config.log.baseDir)!=TSTR) throw new Error(E_SYSLOG_BAD_BASEDIR);
+	if(config.facility.indexOf(f) == -1) throw new Error(E_INVALID_SOURCE+" ["+config.facility.join()+"]");
+	if(config.priority.indexOf(p) == -1) throw new Error(E_INVALID_PRIORITY+" ["+config.priority.join()+"]");
+	if(config.sources.indexOf(s) == -1) throw new Error(E_INVALID_SOURCE+" ["+config.sources.join()+"]");
+	if(typeof(config.log.baseDir)!=TSTR) throw new Error(E_SYSLOG_BAD_BASEDIR+" ["+config.log.baseDir+"]");
 
 	this.source=s;
 	this.priority=p;
