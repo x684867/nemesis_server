@@ -23,7 +23,7 @@ function logger(source){
 	
 	this.rawWrite=function(message){
 		fs=require('fs');
-		fs.writeFileSync(logfile,message,{flags:'a'});
+		fs.writeFile(logfile,message,{flags:'a'},function(err){if(err) throw err;});
 	}
 	this.write=function(message){
 		this.rawWrite(source+"["+(new Date).toUTCString()+"] "+message);
