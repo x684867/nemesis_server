@@ -1,5 +1,6 @@
 {
 	"serverType":"broker",
+	"pidDirectory":"/var/run/nemesis/broker"
 	"monitor":{
 		"heartbeat":{
 			"interval":3600,
