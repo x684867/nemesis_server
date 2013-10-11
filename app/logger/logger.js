@@ -33,8 +33,8 @@ function logger(s,p,f){
 	if(typeof(s)!=TSTR) throw new Error(E_SYSLOG_BAD_SOURCE+':'+s);
 	if(typeof(p)!=TSTR) throw new Error(E_SYSLOG_BAD_PRIORITY+':'+p);
 	if(typeof(f)!=TSTR) throw new Error(E_SYSLOG_BAD_FACILITY+':'+f);
-	var config=loadConfig(SYSLOG_CONFIG);
-	var parameters=loadParameters(SYSLOG_PARAMETERS);
+	var config=this.loadConfig(SYSLOG_CONFIG);
+	var parameters=this.loadParameters(SYSLOG_PARAMETERS);
 
 	if(typeof(config)!=TOBJ) throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
 	if(typeof(parameters)!=TOBJ) throw new Error(E_SYSLOG_PARAMS_FAILED_LOAD);
@@ -59,30 +59,30 @@ function logger(s,p,f){
 		try{fs.renameSync(f,b);}catch(e){/*do nothing.*/}
 		fs.writeFileSync(f,format(this.source,this.facility,this.priority,'log started'));
 	}
-	var loadConfig=function(c){
+	this.loadConfig=function(c){
 		try{
 			return JSON.parse((require('fs')).readFileSync(c));
 		}catch(e){
 			throw new Error('SYSLOG config file failed to read.');
 		}
 	}
-	var loadParameters=function(p){
+	this.loadParameters=function(p){
 		try{
 			return JSON.parse((require('fs')).readFileSync(p));
 		}catch(e){
 			throw new Error('SYSLOG parameters file failed to read.');
 		}	
 	}
-	var rawWrite=function(msg){
+	this.rawWrite=function(msg){
 		(require('fs')).appendFile(config_file,msg,function(err){if(err) throw err;});
 	}
 	this.write=function(msg){rawWrite(source,facility,priority,msg);}
 	this.drawLine=function(w){
-		rawWrite(Array((((w==undefined)||(w<0))?LOG_LINE_WIDTH:w).join("-")));
+		this.rawWrite(Array((((w==undefined)||(w<0))?LOG_LINE_WIDTH:w).join("-")));
 	}
 	this.drawBanner=function(t){
 		this.drawLine(LOG_LINE_WIDTH);
-		rawWrite(t);
+		this.rawWrite(t);
 		this.drawLine(LOG_LINE_WIDTH);
 	}
 
