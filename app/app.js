@@ -64,6 +64,7 @@ process.on('SIGTERM',function(){console.log("[pid:"+process.pid+"]"+process.titl
 var config=new configFactory(config_filename);
 
 log.drawBanner("config="+JSON.stringify(config));
+pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 
 config.data.workers.forEach(
 	function(workerConfig,id,array){
@@ -73,8 +74,9 @@ config.data.workers.forEach(
 		child=processFactory.fork(CHILD_PROCESS_WRAPPER);
 		child.title=config.data.serverType+id
 		child.send({code:0});
-		pidWriterFactory=require(PID_WRITER_SCRIPT);
-		pidWriter=new pidWriterFactory(config.data.pidDirectory,child.pid)
+		
+		pidFile.createNew(child.pid);
+		
 		log.write(
 			  "\n\nworker["+id+"]={\n"
 			 +"\t'type':"+config.data.serverType+",\n"
