@@ -39,7 +39,6 @@ base_install(){
 	rm -rf /etc/rsyslog* && \
 	ln -sf /srv/nemesis/etc/nginx/sites-available /etc/nginx/sites-available && \
 	ln -sf /srv/nemesis/etc/nginx/sites-available/${SERVER_TYPE} /etc/nginx/sites-enabled/${SERVER_TYPE} && \
-	rm /etc/init/${SERVER_TYPE} && \
 	ln -sf /srv/nemesis/etc/init/${SERVER_TYPE} /etc/init/${SERVER_TYPE} && \
 	ln -sf /srv/nemesis/etc/init.d/nemesis-${SERVER_TYPE} /etc/init.d/nemesis-${SERVER_TYPE} && \
 	ln -sf /srv/nemesis/etc/rsyslog/rsyslog.conf /etc/rsyslog.conf && \
@@ -48,7 +47,7 @@ base_install(){
 	mkdir -p /var/log/nemesis/{audit,broker,cipher,keys} && \
 	echo "Base installation complete for ${SERVER_TYPE}" && return 0
 	# Fall through if a failure occurs.
-	echo "base_install() failed for ${SERVER_TYPE}}" && return 1
+	echo "base_install() failed for ${SERVER_TYPE}" && return 1
 }
 [ "$(whoami)" != "root" ] && echo "$0 must be run as root." && exit 1
 [ -z "$1" ] && echo "Missing argument." && exit 1
