@@ -6,6 +6,7 @@
 # 
 [ "$(whoami)" != "root" ] && echo "This script must run as root" && exit 1
 
+echo "Install development tools."
 apt-get install binutils -y && \
 apt-get install cpp cpp-4.7 -y && \
 apt-get install g++ g++-4.7 -y && \
