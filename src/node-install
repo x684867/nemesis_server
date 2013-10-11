@@ -1,0 +1,33 @@
+#!/bin/bash +x
+#
+# Node Install Script for Nemesis
+# /srv/nemesis/bin/node-install
+# (c) 2013 Sam Caldwell.  All Rights Reserved.
+# 
+[ "$(whoami)" != "root" ] && echo "This script must run as root" && exit 1
+
+apt-get install binutils -y && \
+apt-get install cpp cpp-4.7 -y && \
+apt-get install g++ g++-4.7 -y && \
+apt-get install gcc gcc-4.7 -y && \
+apt-get install fakeroot -y && \
+apt-get install libgcc-4.7-dev -y &&\
+apt-get install make -y && \
+echo " " && \
+for i in $(seq 1 1 5); do echo -n "$i "; sleep 1; done
+echo " done." && \
+cd /srv/nemesis/src/nodejs && \
+make clean && \
+./configure && make && make install && \
+ln -sf /usr/local/bin/node /usr/bin/nodejs && \
+echo "Node JS is installed." && \
+/usr/local/bin/node -v && \
+echo "done." && \
+exit 0 
+
+echo " "
+echo "+---------------------+"
+echo "|Something went wrong.|"
+echo "+---------------------+"
+echo " "
+exit 1
