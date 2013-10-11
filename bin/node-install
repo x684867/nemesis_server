@@ -6,6 +6,8 @@
 # 
 [ "$(whoami)" != "root" ] && echo "This script must run as root" && exit 1
 
+echo "$0 disabled" && exit 0
+
 apt-get install binutils cpp cpp-4.7 dpkg-dev fakeroot g++ -y && \
 apt-get install g++-4.7 gcc gcc-4.7 libppl-c4 -y && linux-libc-dev -y && \
 apt-get install libc-dev-bin libc6-dev libcloog-ppl1 libgcc-4.7-dev -y && \
