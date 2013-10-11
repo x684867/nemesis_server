@@ -20,8 +20,6 @@ const TOBJ='object';
 const E_SYSLOG_BAD_SOURCE='SYSLOG source not a string (expected)';
 const E_SYSLOG_BAD_PRIORITY='SYSLOG priority not a string (expected)';
 const E_SYSLOG_BAD_FACILITY='SYSLOG facility not a string (expected)';
-const E_SYSLOG_CONFIG_FAILED_LOAD='SYSLOG config file failed to load';
-const E_SYSLOG_PARAMS_FAILED_LOAD='SYSLOG parameters file failed to load';
 const E_INVALID_SOURCE='SYSLOG source not in param list';
 const E_INVALID_PRIORITY='SYSLOG priority not in param list';
 const E_INVALID_FACILITY='SYSLOG facility not in param list';
@@ -33,8 +31,9 @@ function logger(s,p,f){
 	if(typeof(s)!=TSTR) throw new Error(E_SYSLOG_BAD_SOURCE+':'+s);
 	if(typeof(p)!=TSTR) throw new Error(E_SYSLOG_BAD_PRIORITY+':'+p);
 	if(typeof(f)!=TSTR) throw new Error(E_SYSLOG_BAD_FACILITY+':'+f);
-	var config=this.loadConfig(SYSLOG_CONFIG);
-	var parameters=this.loadParameters(SYSLOG_PARAMETERS);
+	var loggerConfig=require('./logger/loggerConfig.js');
+	var config=loggerConfig(SYSLOG_CONFIG);
+	var parameters=loggerConfig(SYSLOG_PARAMETERS);
 
 	if(typeof(config)!=TOBJ) throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
 	if(typeof(parameters)!=TOBJ) throw new Error(E_SYSLOG_PARAMS_FAILED_LOAD);
@@ -58,20 +57,6 @@ function logger(s,p,f){
 		fs=require('fs');
 		try{fs.renameSync(f,b);}catch(e){/*do nothing.*/}
 		fs.writeFileSync(f,format(this.source,this.facility,this.priority,'log started'));
-	}
-	this.loadConfig=function(c){
-		try{
-			return JSON.parse((require('fs')).readFileSync(c));
-		}catch(e){
-			throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
-		}
-	}
-	this.loadParameters=function(p){
-		try{
-			return JSON.parse((require('fs')).readFileSync(p));
-		}catch(e){
-			throw new Error(E_SYSLOG_PARAMS_FAILED_LOAD);
-		}	
 	}
 	this.rawWrite=function(msg){
 		(require('fs')).appendFile(config_file,msg,function(err){if(err) throw err;});
