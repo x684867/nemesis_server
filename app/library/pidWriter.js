@@ -12,10 +12,10 @@ function pidWriter(pidDir){
 	
 	var pidFileBase=pidDir+'/nemesisWorker';
 	
-	this.createNew=function(child.pid){
-		(require('fs')).writeFile(pidFileBase+child.pid+'.pid',child.pid,function(err){
+	this.createNew=function(pid){
+		(require('fs')).writeFile(pidFileBase+pid+'.pid',pid,function(err){
 			if(err) throw err;
-			log.write("pidWriter wrote nemesisWorker.pid for pid"+child.pid);
+			log.write("pidWriter wrote nemesisWorker.pid for pid"+pid);
 		});
 	}
 }
