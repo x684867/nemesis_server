@@ -38,7 +38,7 @@ function logger(s,p,f){
 	if(typeof(config)!=TOBJ) throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
 	if(config.facility.indexOf(f) == -1) throw new Error(E_INVALID_SOURCE+" ["+f+"]["+config.facility.join()+"]");
 	if(config.priority.indexOf(p) == -1) throw new Error(E_INVALID_PRIORITY+" ["+p+"]["+config.priority.join()+"]");
-	if(typeof(config.log.baseDir)!=TSTR) throw new Error(E_SYSLOG_BAD_BASEDIR+" ["+config.log.baseDir+"]");
+	if(typeof(config.baseDir)!=TSTR) throw new Error(E_SYSLOG_BAD_BASEDIR+" ["+config.log.baseDir+"]");
 
 	this.source=s;
 	this.priority=p;
