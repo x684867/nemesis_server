@@ -21,7 +21,9 @@ const logfile='/var/log/nemesis/nemesis.log';
 
 function logger(source){
 	
-	this.rotatelog(){(require('fs')).rename(logfile,logfile+"."+(new Date).getTime());}
+	this.rotatelog=function(){
+		(require('fs')).rename(logfile,logfile+"."+(new Date).getTime());
+	}
 	this.rawWrite=function(m){
 		(require('fs')).writeFile(logfile,m,function(err){if(err) throw err;});
 	}
