@@ -44,8 +44,8 @@ function logger(s,p,f){
 	
 	var config_file=config.baseDir+this.sources+'.log';
 	/*rotate log file*/
-	b=(config_file)+'.'+parseInt((new Date).getTime()/1000);
 	try{
+		b=(config_file)+'.'+parseInt((new Date).getTime()/1000);
 		fs=require('fs');
 		fs.renameSync(config_file,b);
 		fs.writeFileSync(config_file,format(this.source,this.facility,this.priority,'log started'));
@@ -56,7 +56,7 @@ function logger(s,p,f){
 	
 	var timestamp=function(){return (new Date).toUTCString();}
 	var format=function(s,f,p,m){return s+"["+timestamp()+"]["+f+"]["+p+"]:"+m;}
-	this.rawWrite=function(msg){(require('fs')).appendFile(config_file,msg,function(err){if(err) throw err;});}
+	this.rawWrite=function(msg){(new require('fs')).appendFile(config_file,msg,function(err){if(err) throw err;});}
 	this.write=function(msg){rawWrite(source,facility,priority,msg);}
 	this.drawLine=function(w){
 		this.rawWrite(Array((((w==undefined)||(w<0))?LOG_LINE_WIDTH:w)).join("-"));
