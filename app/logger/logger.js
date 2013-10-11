@@ -62,7 +62,7 @@ function logger(s,p,f){
 		fd=f.open(config_file,'a',function(err){if(err) throw err;});
 		try{
 			f.writeSync(fd,m,0,m.length);
-		catch(e){
+		}catch(e){
 			throw new Error("Error writing to log file ["+config_file+"]");
 		}
 	}
