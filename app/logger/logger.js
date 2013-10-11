@@ -24,7 +24,7 @@ function logger(source){
 	this.log=(require('fs')).createWriteStream(logfile,{'flags':'a'});
 	
 	this.rawWrite=function(message){
-		this.log.write(message+"/n");
+		this.log.write(message+'/n');
 	}
 	this.write=function(message){
 		this.rawWrite(source+"["+(new Date).toUTCString()+"] "+message);
