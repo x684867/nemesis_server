@@ -63,14 +63,14 @@ function logger(s,p,f){
 		try{
 			return JSON.parse((require('fs')).readFileSync(c));
 		}catch(e){
-			throw new Error('SYSLOG config file failed to read.');
+			throw new Error(E_SYSLOG_CONFIG_FAILED_LOAD);
 		}
 	}
 	this.loadParameters=function(p){
 		try{
 			return JSON.parse((require('fs')).readFileSync(p));
 		}catch(e){
-			throw new Error('SYSLOG parameters file failed to read.');
+			throw new Error(E_SYSLOG_PARAMS_FAILED_LOAD);
 		}	
 	}
 	this.rawWrite=function(msg){
