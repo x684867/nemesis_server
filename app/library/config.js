@@ -56,6 +56,8 @@ const E_BAD_SSL_CA='Invalid ssl ca_cert (expect string)';
 const E_MISSING_SSL_KEY='Missing file (private_key)';
 const E_MISSING_SSL_CRT='Missing file (public_key)';
 const E_MISSING_SSL_CA='Missing file (ca_cert)';
+const E_BAD_PID_DIR='Missing PID Directory (pidDirectory) in configuration file.';
+const E_MISSING_PID_DIR='Missing PID Directory specified in the configuration file.';
 	
 function config(filename){
 	var fs =require('fs');
@@ -85,6 +87,15 @@ function config(filename){
 	if(typeof(this.data)!=TOBJ) throw new Error(E_BAD_OBJ);
 	/*Verify root properties.*/
 	if(typeof(this.data.serverType)!=TSTR) throw new Error(E_BAD_SRVR_TYPE);
+	if(typeof(this.data.pidDirectory)!=TSTR) throw new Error(E_BAD_PID_DIR);
+	
+	/*Verify that pidDirectory exists in file system.*/
+	if(fs.lstatSync(this.data.pidDirectory).isDirectory()){
+		log.write("PID Directory ["+this.data.pidDirectory+"]: verified");
+	}else{
+		throw new Error(E_MISSING_PID_DIR);
+	}
+		
 	/*Verify the monitor configuration.*/
 	if(typeof(this.data.monitor)!=TOBJ) throw new Error(E_BAD_MONITOR_OBJ);
 	if(typeof(this.data.monitor.heartbeat)!=TOBJ) throw new Error(E_BAD_HB_OBJ);
