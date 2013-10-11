@@ -40,7 +40,6 @@ const CONFIG_CLASS='./library/config.js';
 var config_filename = process.argv[2];
 
 /*Load dependencies*/
-var logger=require(LOGGER_CLASS);
 var validatorClass=require(VALIDATOR_CLASS);
 var validator=new validatorClass();
 var configFactory=require(CONFIG_CLASS);
@@ -50,7 +49,7 @@ var worker=Array();		/*This array tracks the worker processes.*/
 var monitor=Array();
 
 /*Start the logger and show a banner*/
-log=new logger("app.js(main)");
+log=new (require(LOGGER_CLASS))("app.js(main)");
 log.drawBanner("app.js starting as master process pid:["+process.pid+"]");
 
 /*Setup Process management*/
