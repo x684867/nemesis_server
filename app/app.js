@@ -136,7 +136,7 @@ config.data.workers.forEach(
 			monitor.push(new monitorFactory(child,config));
 		});
 	}else{
-		log.write("Not spawning id#"+id+"  workerId#"+workerConfig.workerId+" disabled. in the config file.");
+		log.write("id#"+id+" workerId#"+workerConfig.workerId+" disabled in config file.");
 	}
 });
 log.write("All workers have been spawned.  Terminating app.js");
