@@ -6,9 +6,4 @@
 #
 [ -z "$1" ] && echo "missing timing parameter (seconds)" && exit 1
 echo " "
-for i in $(seq 1 1 $1); do 
-	echo -n "$i "
-	sleep 1
-done
-echo " "
-
+for i in $(seq $1 -1 1); do echo -n "$i ";sleep 1;done;echo " "

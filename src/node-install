@@ -7,15 +7,8 @@
 [ "$(whoami)" != "root" ] && echo "This script must run as root" && exit 1
 
 echo "Install development tools."
-apt-get install binutils -y && \
-apt-get install cpp cpp-4.7 -y && \
-apt-get install g++ g++-4.7 -y && \
-apt-get install gcc gcc-4.7 -y && \
-apt-get install fakeroot -y && \
-apt-get install libgcc-4.7-dev -y &&\
-apt-get install make -y && \
-echo " " && \
-for i in $(seq 1 1 5); do echo -n "$i "; sleep 1; done
+echo " "
+delay 5 && \
 echo " done." && \
 cd /srv/nemesis/src/nodejs && \
 make clean && \

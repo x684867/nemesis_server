@@ -22,5 +22,5 @@ apt-get install gcc gcc-4.7 -y && \
 apt-get install fakeroot -y && \
 apt-get install libgcc-4.7-dev -y &&\
 apt-get install make -y && \
-${BUILD_PATH}/nemesis-install && \
+${BUILD_PATH}/node-install && \
 echo "DONE.  SUCCESS."
