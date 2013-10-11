@@ -21,8 +21,6 @@ const logfile='/var/log/nemesis/nemesis.log';
 
 function logger(source){
 	
-	this.source=s;
-	
 	this.rawWrite=function(message){
 		(require('fs')).appendFile(logfile,message,function(err){if(err) throw err;});	
 	}
