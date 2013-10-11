@@ -116,16 +116,14 @@ function config(filename){
 	this.data.workers.forEach(function(w,i,a){
 		if(typeof(w)!=TOBJ) throw new Error(E_BAD_WRKR_OBJ);
 		if(typeof(w.enabled)!=TBOOL) throw new Error(E_BAD_WRKR_EN);
-		if(w.enabled){
-			if(typeof(w.workerId)!=TNUM) throw new Error(E_BAD_WRKR_ID);
-			if(typeof(w.ipAddress)!=TSTR) throw new Error(E_BAD_WRKR_IP);
-			if(typeof(w.ipPort)!=TNUM) throw new Error(E_BAD_WRKR_PORT);
-			if(typeof(w.ssl)!=TBOOL) throw new Error(E_BAD_WRKR_SSL);
-			if(w.ssl){
-				w.ipPort=443
-				log.write("NOTICE: ssl=true.  Override ipPort to 443");
-				requireSSL=true;
-			}
+		if(typeof(w.workerId)!=TNUM) throw new Error(E_BAD_WRKR_ID);
+		if(typeof(w.ipAddress)!=TSTR) throw new Error(E_BAD_WRKR_IP);
+		if(typeof(w.ipPort)!=TNUM) throw new Error(E_BAD_WRKR_PORT);
+		if(typeof(w.ssl)!=TBOOL) throw new Error(E_BAD_WRKR_SSL);
+		if(w.ssl){
+			w.ipPort=443
+			log.write("NOTICE: ssl=true.  Override ipPort to 443");
+			requireSSL=true;
 		}
 	});
 	if(this.data.requireSSL){
