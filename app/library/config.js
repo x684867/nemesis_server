@@ -27,6 +27,7 @@
 */
 module.exports=config;
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
+global.logger=require(LOGGER_CLASS);
 const LOGGER_SOURCE='config.js(main)';
 const LOGGER_PRIORITY='informational';
 const LOGGER_FACILITY='local0';
@@ -66,7 +67,8 @@ const E_MISSING_PID_DIR='Missing PID Directory specified in the configuration fi
 	
 function config(filename){
 	var fs =require('fs');
-	var log=(new (require(LOGGER_CLASS)))(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);
+
+	var log=new global.logger(LOGGER_SOURCE,LOGGER_PRIORITY,LOGGER_FACILITY);
 	log.drawBanner("starting config constructor\n  Filename: "+filename);
 
 	this.data={status:undefined};
