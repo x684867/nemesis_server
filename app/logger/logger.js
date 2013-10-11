@@ -14,10 +14,13 @@
 */
 module.exports=logger;
 
-function logger(logSource){
+function logger(logSource,enableDebug=false){
 	this.source=(logSource==undefined)?'NoSource':logSource;
 	
 	this.indent=function(i){return Array(i).join(" ");}
+	this.debugMode=enableDebug;
+	
+	this.debug=function(m){if(debugMode)this.write(m);}
 
 	/*write(message,intend)*/
 	this.write=function(m,i){
