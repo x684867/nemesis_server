@@ -59,7 +59,12 @@ function logger(s,p,f){
 	
 	this.rawWrite=function(m){
 		f=require('fs');
-		f.appendFile(config_file,m,function(err){if(err) throw err;});
+		fd=f.open(config_file,'a',function(err){if(err) throw err;});
+		try{
+			f.writeSync(fd,m,0,m.length);
+		catch(e){
+			throw new Error("Error writing to log file ["+config_file+"]");
+		}
 	}
 	this.write=function(msg){rawWrite(source,facility,priority,msg);}
 	this.drawLine=function(w){
