@@ -44,6 +44,7 @@ export SERVER_BIN="/srv/nemesis/app/app.js"
 
 case "$2" in
 	start)
+		clear
 		/usr/bin/nodejs $SERVER_BIN $SERVER_CONF
 	;;
 	stop)
