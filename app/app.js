@@ -56,6 +56,7 @@ log.drawBanner("app.js   PID:["+process.pid+"]");
 
 /*Setup Process management*/
 log.write("Setup Process Management");
+process.on('EINVAL',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[EINVAL]");});
 log.write("  Call to process.on() is disabled.");
 /*
 process.on('SIGHUP',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGHUP]");});
