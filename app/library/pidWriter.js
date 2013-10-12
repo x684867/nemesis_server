@@ -18,7 +18,7 @@ function pidWriter(pidDir){
 	this.createNew=function(pid){
 		(require('fs')).writeFile(pidFileBase+pid+'.pid',pid,function(err){
 			if(err) throw err;
-			log.write("pidWriter wrote nemesisWorker.pid for pid"+pid);
+			log.write("wrote nemesisWorker.pid for pid:"+pid);
 		});
 	}
 }
