@@ -40,6 +40,8 @@ const E_INV_MSG_ON_ERROR_EVENT="Received invalid message object on error event."
 const E_FEATURE_NOT_IMPLEMENTED="This feature is not implemented.";
 const E_INV_MSG_PARENT="Parent: Rec'd invalid msg object."
 
+function timestamp(){return "["+(new Date).toISOString()+"]";}
+
 var app={
 	loadconfig:function(config_filename){
 		var configFactory=require(CONFIG_CLASS);
@@ -55,7 +57,7 @@ var app={
 	},
 	start:function(config){
 		console.log(Array(80).join("-")+"\n"
-					+"["+(new Date).toISOString()+"]"
+					+"["+timestamp()+"]"
 					+"[PID:"+process.pid+" <"+module.filename+">]\n"
 					+Array(80).join("-")+"\n"
 					+"app.start()\n\n"
@@ -64,7 +66,7 @@ var app={
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
-					console.log("["+(new Date).toISOString()+"] spawning worker #"+id);
+					console.log("["+timestamp()+"] spawning worker #"+id);
 					child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
 					msg={code:2,
 						 pid:child.pid,
@@ -76,7 +78,7 @@ var app={
 								    ca_cert:config.data.ssl.ca_cert	}}
 					};
 					pidFile.createNew(msg.pid);
-					console.log("["+(new Date).toISOString()+"][PID:"+process.pid+"]-->\n"
+					console.log(+timestamp()+"[PID:"+process.pid+"]-->\n"
 						+Array(80).join("-")+"\n"
 						+"message: "+JSON.stringify(msg)+"\n"
 						+Array(80).join("-")+"\n"
@@ -85,24 +87,24 @@ var app={
 						validator=require(VALIDATOR_CLASS);
 		  				if(!validator.isValidMsg(msg)) throw(E_INV_MSG_PARENT);
 						switch(msg.code){
-							case 1:console.log("["+(new Date).toISOString()+"]{P:1}=>{C:2}");break;
-							case 3:console.log("["+(new Date).toISOString()+"]{P:3}=>{STOP}");break;
-							case 4:console.log("["+(new Date).toISOString()+"]{P:4}=>{FAIL}");break;
+							case 1:console.log(timestamp()+"{P:1}=>{C:2}");break;
+							case 3:console.log(timestamp()+"{P:3}=>{STOP}");break;
+							case 4:console.log(timestamp()+"{P:4}=>{FAIL}");break;
 							case 11:
 								delay=(new Date()).getTime()/1000 - msg.data;
 								if(delay < config.data.monitor.heartbeat.threshold){
-									console.log("["+(new Date).toISOString()+"]{P:11} hbeat w#"+id+":good");
+									console.log(timestamp()+"{P:11} hbeat w#"+id+":good");
 									this.pollMonitoring(msg);
 								}else{
-									console.log("["+(new Date).toISOString()+"]{P:11} hbeat w#"+id+":slow");
+									console.log(timestamp()+"{P:11} hbeat w#"+id+":slow");
 									this.pollStatistics(msg);
 								}
 								break;
-							case 13:console.log("["+(new Date).toISOString()+"]{P:13} not implemented");break;
-							case 97:console.log("["+(new Date).toISOString()+"]{P:97} not implemented");break;
-							case 99:console.log("["+(new Date).toISOString()+"]{P:99} not implemented");break;
+							case 13:console.log(timestamp()+"{P:13} not impl.");break;
+							case 97:console.log(timestamp()+"{P:97} not impl.");break;
+							case 99:console.log(timestamp()+"{P:99} not impl.");break;
 							default:
-								throw new Error("["+(new Date).toISOString()+"]Unknown/Invalid msg.code: ["+msg.code+"]");
+								throw new Error(timestamp()+":Unk/Inv code:"+msg.code);
 								break;
 		  				}
 					});
@@ -111,20 +113,20 @@ var app={
 						throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on()");
 					});
 				}else{
-					console.log("["+(new Date).toISOString()+"] worker #"+id+" disabled");
+					console.log(timestamp()+" worker #"+id+" disabled");
 				}
 			}
 		);
 		return config;
 	},
 	pollMonitoring:function(msg){
-		console.log("["+(new Date).toISOString()+"] Poll for monitoring invoked.");
+		console.log(timestamp()+" Poll for monitoring invoked.");
 	},
 	pollStatistics:function(msg){
-		console.log("["+(new Date).toISOString()+"] Poll for statistics invoked.");
+		console.log(timestamp()+" Poll for statistics invoked.");
 	},
 	startMonitoring:function(config){
-		console.log("["+(new Date).toISOString()+"] app.startMonitoring()");
+		console.log(timestamp()+" app.startMonitoring()");
 		/*
 			Spawn process and run with the monitor app.
 			Pass the worker process id list and statistics process
@@ -136,7 +138,7 @@ var app={
 		return true;
 	},
 	startStats:function(config){
-		console.log("["+(new Date).toISOString()+"] app.startStats()");
+		console.log(timestamp()+" app.startStats()");
 		/*
 			Spawn process and run with the stats app.
 			Pass the worker process id list and monitor process id
@@ -150,15 +152,14 @@ var app={
 /*
 */
 console.log(Array(80).join("-")+"\n"
-			+"["+(new Date).toISOString()+"]"
-			+"[PID:"+process.pid+" <"+module.filename+">]\n"
+			+timestamp()+"[PID:"+process.pid+" <"+module.filename+">]\n"
 			+Array(80).join("-")+"\n"
 			+"Starting Nemesis...\n\n"
 );
 if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
 	if(app.start(config)){
 		if((app.startMonitoring(config)) && (app.startStats(config))){
-			console.log("All services are started.");
+			console.log(timestamp()+"All services are started.");
 			/*terminates*/
 		}else{
 			throw new Error('monitoring/stats failed');
