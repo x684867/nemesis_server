@@ -38,67 +38,63 @@ const E_M_NOT_IMPLEMENTED='Unimplemented message encountered.';
 const MSG_CD2_D_CORRECT='{code:2,data:<object>} is correctly formatted.';
 /* */
 function validatorClass(){
-	/* */
 	this.isValidError=function(msg){return (typeof(msg)=='object')?true:false;}
 	this.typeCheck=function(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 	this.isUndefined=function(d,e){if(typeof(d)=='undefined') throw new Error(e);}
-	/* */
-	logger=require(LOGGER_CLASS);
-	this.log=new logger(LOGGER_SOURCE);
-	/* */
-	this.isValidMsg=function(m){
-		this.typeCheck(m,TOBJ,E_M_NOT_OBJ);
-		this.isUndefined(m.code,E_M_CD_NOT_SET);
-		this.typeCheck(m.code,TNUM,E_M_CD_NOT_NUM);
-		switch(m.code){
-			case 0:return true;break;
-			case 1:return true;break;
-			case 2:
-				this.typeCheck(m.data,TOBJ,E_M_CD2_NON_OBJ);
-				this.typeCheck(m.data,TOBJ,E_M_CD2_NON_OBJ);
-				this.isUndefined(m.data.id,E_M_CD2_D_ID_UNDEF);
-				this.isUndefined(m.data.type,E_M_CD2_D_TYPE_UNDEF);
-				this.isUndefined(m.data.config,E_M_CD2_D_CFG_UNDEF);
-				this.typeCheck(m.data.id,TNUM,E_M_CD2_D_ID_NAN);
-				this.typeCheck(m.data.type,TSTR,E_M_CD2_D_TYPE_NSTR);
-				this.typeCheck(m.data.config,TOBJ,E_M_CD2_CFG_NAO);
-				this.isUndefined(m.data.config.workerId,E_M_CD2_CFG_WID_UNDEF);
-				this.isUndefined(m.data.config.ipAddress,E_M_CD2_CFG_IP_UNDEF);
-				this.isUndefined(m.data.config.ipPort,E_M_CD2_CFG_PORT_UNDEF);
-				this.typeCheck(m.data.config.workerId,TNUM,E_M_CD2_CFG_ID_NAN);
-				this.typeCheck(m.data.config.ipAddress,TSTR,E_M_CD2_CFG_IP_NSTR);
-				this.typeCheck(m.data.config.ipPort,TNUM,E_M_CD2_CFG_PORT_NAN);
-				this.log.write(MSG_CD2_D_CORRECT);
-				return true;
-				break;		
-			case 3:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 4:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 5:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 6:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 7:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 8:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 9:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 10:return true;break;
-			case 11:
-				this.isUndefined(m.data,E_M_CD11_D_UNDEF);
-				this.typeCheck(m.data,TNUM,E_M_CD11_D_NON_OBJ);
-				return true;
-				break;					
-			case 12:return true;break;
-			case 13:
-				this.isUndefined(m.data,E_M_CD13_D_UNDEF);
-				this.typeCheck(m.data,TOBJ,E_M_CD13_D_NOT_OBJ);
-				return true;
-				break;
-			case 95:return true;break;
-			case 96:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 97:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 98:return true;break;
-			case 99:return true;break;
-			default:
-				throw new Error(E_M_UNKNOWN_CODE);
-				return false;
-				break;
-		}/*end of switch()*/
-	}
+}
+function typeCheck(m,TOBJ,E_M_NOT_OBJ);
+function isUndefined(m.code,E_M_CD_NOT_SET);
+function typeCheck(m.code,TNUM,E_M_CD_NOT_NUM);
+
+validatorClass.isValidMsg=function(m){
+	switch(m.code){
+		case 0:return true;break;
+		case 1:return true;break;
+		case 2:
+			typeCheck(m.data,TOBJ,E_M_CD2_NON_OBJ);
+			typeCheck(m.data,TOBJ,E_M_CD2_NON_OBJ);
+			isUndefined(m.data.id,E_M_CD2_D_ID_UNDEF);
+			isUndefined(m.data.type,E_M_CD2_D_TYPE_UNDEF);
+			isUndefined(m.data.config,E_M_CD2_D_CFG_UNDEF);
+			typeCheck(m.data.id,TNUM,E_M_CD2_D_ID_NAN);
+			typeCheck(m.data.type,TSTR,E_M_CD2_D_TYPE_NSTR);
+			typeCheck(m.data.config,TOBJ,E_M_CD2_CFG_NAO);
+			isUndefined(m.data.config.workerId,E_M_CD2_CFG_WID_UNDEF);
+			isUndefined(m.data.config.ipAddress,E_M_CD2_CFG_IP_UNDEF);
+			isUndefined(m.data.config.ipPort,E_M_CD2_CFG_PORT_UNDEF);
+			typeCheck(m.data.config.workerId,TNUM,E_M_CD2_CFG_ID_NAN);
+			typeCheck(m.data.config.ipAddress,TSTR,E_M_CD2_CFG_IP_NSTR);
+			typeCheck(m.data.config.ipPort,TNUM,E_M_CD2_CFG_PORT_NAN);
+			log.write(MSG_CD2_D_CORRECT);
+			return true;
+			break;		
+		case 3:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+		case 4:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+		case 5:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+		case 6:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+		case 7:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+		case 8:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+		case 9:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+		case 10:return true;break;
+		case 11:
+			isUndefined(m.data,E_M_CD11_D_UNDEF);
+			typeCheck(m.data,TNUM,E_M_CD11_D_NON_OBJ);
+			return true;
+			break;					
+		case 12:return true;break;
+		case 13:
+			isUndefined(m.data,E_M_CD13_D_UNDEF);
+			typeCheck(m.data,TOBJ,E_M_CD13_D_NOT_OBJ);
+			return true;
+			break;
+		case 95:return true;break;
+		case 96:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+		case 97:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+		case 98:return true;break;
+		case 99:return true;break;
+		default:
+			throw new Error(E_M_UNKNOWN_CODE);
+			return false;
+			break;
+	}/*end of switch()*/
 }

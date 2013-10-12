@@ -61,20 +61,15 @@ var app={
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
 					child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
-					child.send(
-						{	code:2,
-							data:{
-								id:id,
-								type:config.data.serverType,
-								config:workerConfig,
-								ssl:{
-									key:config.data.ssl.private_key,
-									cert:config.data.ssl.public_key,
-									ca_cert:config.data.ssl.ca_cert
-								}
-							}
-						}
-					);
+					child.send({	
+							code:2,
+							data:{	id:id,
+									type:config.data.serverType,
+									config:workerConfig,
+									ssl:{	key:config.data.ssl.private_key,
+											cert:config.data.ssl.public_key,
+											ca_cert:config.data.ssl.ca_cert	}	}
+					});
 					pidFile.createNew(child.pid);
 					log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
 					
