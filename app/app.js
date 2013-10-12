@@ -146,10 +146,9 @@ var app={
 }
 /*
 */
-console.log("Starting Nemesis...");
-/*Capture command-line arguments*/
 (function(){
-	if(config=app.loadconfig(process.argv[2])){
+	console.log("Starting Nemesis...");
+	if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
 		if(app.start(config)){
 			if(app.startMonitoring(config)){
 				console.log("All services are started.");
