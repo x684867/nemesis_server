@@ -30,9 +30,6 @@
 			*Begin service development.
 	---------------------------------------------------------------------------------
 */
-require(VALIDATOR_CLASS);
-
-const LOGGER_SOURCE='app.main';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/library/worker.js';
 const PID_WRITER_SCRIPT='/srv/nemesis/app/library/pidWriter.js';
@@ -44,39 +41,38 @@ const E_FEATURE_NOT_IMPLEMENTED="This feature is not implemented.";
 const E_INV_MSG_PARENT="Parent: Rec'd invalid msg object."
 
 var app={
-	logger:require(LOGGER_CLASS),
-	worker:[],
-	monitor:[],
 	loadconfig:function(config_filename){
 		var configFactory=require(CONFIG_CLASS);
 		var config=new configFactory(config_filename);
 		return config;
 	},
 	code2:function(c,i,t,f,k,r,a){
-		return {"code":c,"data":{"id":i,"type":t,"config":f,"ssl":{"key":k,"cert":r,"ca_cert":a}}};
+		return {"code":c,"data":
+					{"id":i,"type":t,"config":f,"ssl":
+						{"key":k,"cert":r,"ca_cert":a}}};
 	},
 	start:function(config){
-		(log=new logger("app(start)")).drawBanner("PID:["+process.pid+"]");
+		(log=new require(module.filename)).drawBanner("PID:["+process.pid+"]");
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
-		log.write("config.data.workers.forEach() starting...");
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
 					child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
-					child.send({	
-							code:2,
-							data:{	id:id,
-									type:config.data.serverType,
-									config:workerConfig,
-									ssl:{	key:config.data.ssl.private_key,
-											cert:config.data.ssl.public_key,
-											ca_cert:config.data.ssl.ca_cert	}	}
-					});
-					pidFile.createNew(child.pid);
-					log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
+					msg={code:2,
+						 pid:child.pid,
+						 data:{id:id,
+						 	   type:config.data.serverType,
+							   config:workerConfig,
+							   ssl:{key:config.data.ssl.private_key,
+								    cert:config.data.ssl.public_key,
+								    ca_cert:config.data.ssl.ca_cert	}}
+					};
+					pidFile.createNew(msg.pid);
+					log.write(JSON.stringify(msg));
 					
 					child.on('message',function(msg){
 						this.log=new logger("app(eval)");
+						validator=require(VALIDATOR_CLASS);
 		  				if(!validator.isValidMsg(msg)) throw(E_INV_MSG_PARENT);
 						switch(msg.code){
 							case 1:log.write("{P:1}=>{C:2}");break;
