@@ -16,6 +16,8 @@ function validatorClass(){
 			Todo: Define error message formats and inspection code.
 		 */
 	}
+	this.typeCheck=function(d,t,e){if(typeof(d)!=t) throw new Error(e);}
+	this.isUndefined=function(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 	this.isValidMsg=function(msg){
 		const TOBJ='object';
 		const TSTR='string';
@@ -30,39 +32,27 @@ function validatorClass(){
 			if(typeof(msg.code)!=TNUM) throw new Error('Message code is not a number');
 			log.write("eval msg.code value {code:"+msg.code+"}");
 			switch(msg.code){
-				/*
-					Process-Initialization Messages
-				*/
 				case 0:return true;break;/*No data property.*/
 				case 1:return true;break;/*No data property.*/
 				case 2:
-					/*------------------------------------------------ 
-						{
-							code:2,
-							data:{
-								id:<number>,
-						 	   	type:<string>,
-						 	   	config:{
-						 	   			workerId:<number>,
-						 			   	ipAddress:<string>,
-						 			   	ipPort:<number>
-						       }
-						    }
-						}
-					------------------------------------------------*/
-					if(typeof(m.data)!=TOBJ) throw new Error('{code:2,data:<non-object>}');
-					if(typeof(m.data.id)==undefined) throw new Error('data.id undefined');
-					if(typeof(m.data.type)==undefined) throw new Error('data.type undefined');
-					if(typeof(m.data.config)==undefined)throw new Error('data.config undefined');
-					if(typeof(m.data.id)!=TNUM) throw new Error('data.id not a number');
-					if(typeof(m.data.type)!=TSTR) throw new Error('data.type not a string');
-					if(typeof(m.data.config)!=TOBJ) throw new Error('data.config not object');
-					if(typeof(m.data.config.workerId)==undefined) throw new Error('data.config.workerId undefined');
-					if(typeof(m.data.config.ipAddress)==undefined) throw new Error('data.config.ipAddress');
-					if(typeof(m.data.config.ipPort)==undefined) throw new Error('data.config.ipPort')
-					if(typeof(m.data.config.workerId)!=TNUM) throw new Error('data.config.workerId not number');
-					if(typeof(m.data.config.ipAddress)!=TSTR) throw new Error('data.config.ipAddress not string');
-					if(typeof(m.data.config.ipPort)!=TNUM) throw new Error('data.config.ipPort not number');
+					/*------------------------------------------------------------------ 
+						{code:2,data:{id:<number>,type:<string>,
+						   config:{workerId:<number>,ipAddress:<string>,ipPort:<number>}}}
+					--------------------------------------------------------------------*/
+					this.typeCheck(m.data,TOBJ,'{code:2,data:<non-object>}');
+					this.typeCheck(m.data,TOBJ,'{code:2,data:<non-object>}');
+					this.isUndefined(m.data.id,'data.id undefined');
+					this.isUndefined(m.data.type,'data.type undefined');
+					this.isUndefined(m.data.config,'data.config undefined');
+					this.typeCheck(m.data.id,TNUM,'data.id not a number');
+					this.typeCheck(m.data.type,TSTR,'data.type not a string');
+					this.typeCheck(m.data.config,TOBJ,'data.config not object');
+					this.isUndefined(m.data.config.workerId,'data.config.workerId undefined');
+					this.isUndefined(m.data.config.ipAddress,'data.config.ipAddress');
+					this.isUndefined(m.data.config.ipPort,'data.config.ipPort')
+					this.typeCheck(m.data.config.workerId,TNUM,'data.config.workerId not number');
+					this.typeCheck(m.data.config.ipAddress,TSTR,'data.config.ipAddress not string');
+					this.typeCheck(m.data.config.ipPort,TNUM,'data.config.ipPort not number');
 					log.write("{code:2,data:<object>} is correctly formatted.");
 					return true;
 					break;				
