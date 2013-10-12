@@ -64,3 +64,4 @@ function workerClass(){
 		}
 	});
 }
+workerClass();
