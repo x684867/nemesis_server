@@ -23,7 +23,7 @@ function logger(source){
 
 	this.rawWrite=function(m){
 		(require('fs')).appendFile(logfile,m,function(err){if(err) throw err;});
-		console.log("\n"+m+"\n");
+		console.log(m);
 	}
 	this.write=function(message){
 		this.rawWrite(source+"["+(new Date).toISOString()+"] "+message);
