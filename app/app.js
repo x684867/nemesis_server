@@ -47,7 +47,7 @@ applicationClass={
 		var configFactory=require(CONFIG_CLASS);
 		var config=new configFactory(config_filename);
 		return config
-	}
+	},
 
 	evalmessages:function(msg){
 		var validator=new (require(VALIDATOR_CLASS));
@@ -74,7 +74,7 @@ applicationClass={
 				throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
 				break;
 	  	}
-	}
+	},
 
 	start:function(config){
 		this.log.drawBanner("app.js  PID:["+process.pid+"]");
