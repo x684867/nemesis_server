@@ -30,10 +30,10 @@
 			*Begin service development.
 	---------------------------------------------------------------------------------
 */
-console.log("Starting Nemesis ["+(new Date).toISOString()+"]...");
+console.log("Starting Nemesis...");
 const LOGGER_SOURCE='app.main';
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-global.logger=require(LOGGER_CLASS);
+global.logger=require('/srv/nemesis/app/logger/logger.js');
+var log=new global.logger(LOGGER_SOURCE);	
 
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/library/worker.js';
 const PID_WRITER_SCRIPT='/srv/nemesis/app/library/pidWriter.js';
@@ -41,17 +41,13 @@ const VALIDATOR_CLASS='./library/msgValidator.js';
 const CONFIG_CLASS='./library/config.js';
 
 var config_filename = process.argv[2];/*Capture command-line arguments*/
-
 var validatorClass=require(VALIDATOR_CLASS);
 var validator=new validatorClass();
 var configFactory=require(CONFIG_CLASS);
-
 var worker=Array();		/*This array tracks the worker processes.*/
 var monitor=Array();
 
 /*Start the logger and show a banner*/
-
-var log=new global.logger(LOGGER_SOURCE);	
 log.drawBanner("app.js   PID:["+process.pid+"]");
 
 /*Setup Process management*/
@@ -64,7 +60,6 @@ log.write("Process Management Setup Complete");
 */
 
 var config=new configFactory(config_filename);
-
 pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 
 log.write("config.data.workers.forEach() starting...");
@@ -82,19 +77,12 @@ config.data.workers.forEach(
 				switch(msg.code){
 					case 1:
 						log.write("P:{code:1} from C#"+id);
-						msgCode2={"code":2,
-								  "data":{"id":id,
-										  "type":config.data.serverType,
-										  "config":workerConfig,
-										  "ssl":{
-										  		"key":config.data.ssl.private_key,
-										  		"cert":config.data.ssl.public_key,
-										  		"ca_cert":config.data.ssl.ca_cert
-										  }
-								  }
-						}
-						child.send(msgCode2);
-						log.write("P:"+JSON.stringify(msgCode2)+"to C#"+id);
+						m={"code":2,"data":{"id":id,"type":config.data.serverType,
+						   "config":workerConfig,"ssl":{"key":config.data.ssl.private_key,
+						   "cert":config.data.ssl.public_key,"ca_cert":config.data.ssl.ca_cert
+						}}}
+						child.send(m);
+						log.write("P:"+JSON.stringify(m)+"to C#"+id);
 						break;
 					case 3:log.write("P:{code:3}from C#"+id);break;
 					case 11:
