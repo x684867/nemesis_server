@@ -24,21 +24,35 @@ var events = require('events');
 var EventEmitter = events.EventEmitter;
 var inherits = util.inherits;
 
-// methods that are called when trying to shut down expliclitly bound EEs
-var endMethods = ['end', 'abort', 'destroy', 'destroySoon'];
-
 // communicate with events module, but don't require that
 // module to have to load this one, since this module has
 // a few side effects.
 events.usingDomains = true;
 
+// overwrite process.domain with a getter/setter that will allow for more
+// effective optimizations
+var _domain = [null];
+Object.defineProperty(process, 'domain', {
+  enumerable: true,
+  get: function() {
+    return _domain[0];
+  },
+  set: function(arg) {
+    return _domain[0] = arg;
+  }
+});
+
+// objects with external array data are excellent ways to communicate state
+// between js and c++ w/o much overhead
+var _domain_flag = {};
+
 // let the process know we're using domains
-process._usingDomains();
+process._setupDomainUse(_domain, _domain_flag);
 
 exports.Domain = Domain;
 
-exports.create = exports.createDomain = function(cb) {
-  return new Domain(cb);
+exports.create = exports.createDomain = function() {
+  return new Domain();
 };
 
 // it's possible to enter one domain while already inside
@@ -57,6 +71,58 @@ function Domain() {
   this.members = [];
 }
 
+Domain.prototype.members = undefined;
+Domain.prototype._disposed = undefined;
+
+// Called by process._fatalException in case an error was thrown.
+Domain.prototype._errorHandler = function errorHandler(er) {
+  var caught = false;
+  // ignore errors on disposed domains.
+  //
+  // XXX This is a bit stupid.  We should probably get rid of
+  // domain.dispose() altogether.  It's almost always a terrible
+  // idea.  --isaacs
+  if (this._disposed)
+    return true;
+
+  er.domain = this;
+  er.domainThrown = true;
+  // wrap this in a try/catch so we don't get infinite throwing
+  try {
+    // One of three things will happen here.
+    //
+    // 1. There is a handler, caught = true
+    // 2. There is no handler, caught = false
+    // 3. It throws, caught = false
+    //
+    // If caught is false after this, then there's no need to exit()
+    // the domain, because we're going to crash the process anyway.
+    caught = this.emit('error', er);
+
+    // Exit all domains on the stack.  Uncaught exceptions end the
+    // current tick and no domains should be left on the stack
+    // between ticks.
+    stack.length = 0;
+    exports.active = process.domain = null;
+  } catch (er2) {
+    // The domain error handler threw!  oh no!
+    // See if another domain can catch THIS error,
+    // or else crash on the original one.
+    // If the user already exited it, then don't double-exit.
+    if (this === exports.active) {
+      stack.pop();
+    }
+    if (stack.length) {
+      exports.active = process.domain = stack[stack.length - 1];
+      caught = process._fatalException(er2);
+    } else {
+      caught = false;
+    }
+    return caught;
+  }
+  return caught;
+};
+
 Domain.prototype.enter = function() {
   if (this._disposed) return;
 
@@ -64,6 +130,7 @@ Domain.prototype.enter = function() {
   // to push it onto the stack so that we can pop it later.
   exports.active = process.domain = this;
   stack.push(this);
+  _domain_flag[0] = stack.length;
 };
 
 Domain.prototype.exit = function() {
@@ -74,6 +141,7 @@ Domain.prototype.exit = function() {
   do {
     d = stack.pop();
   } while (d && d !== this);
+  _domain_flag[0] = stack.length;
 
   exports.active = stack[stack.length - 1];
   process.domain = exports.active;
@@ -188,45 +256,11 @@ Domain.prototype.bind = function(cb, interceptError) {
   return b;
 };
 
-Domain.prototype.dispose = function() {
+Domain.prototype.dispose = util.deprecate(function() {
   if (this._disposed) return;
 
   // if we're the active domain, then get out now.
   this.exit();
-
-  this.emit('dispose');
-
-  // remove error handlers.
-  this.removeAllListeners();
-  this.on('error', function() {});
-
-  // try to kill all the members.
-  // XXX There should be more consistent ways
-  // to shut down things!
-  this.members.forEach(function(m) {
-    // if it's a timeout or interval, cancel it.
-    clearTimeout(m);
-
-    // drop all event listeners.
-    if (m instanceof EventEmitter) {
-      m.removeAllListeners();
-      // swallow errors
-      m.on('error', function() {});
-    }
-
-    // Be careful!
-    // By definition, we're likely in error-ridden territory here,
-    // so it's quite possible that calling some of these methods
-    // might cause additional exceptions to be thrown.
-    endMethods.forEach(function(method) {
-      if (typeof m[method] === 'function') {
-        try {
-          m[method]();
-        } catch (er) {}
-      }
-    });
-
-  });
 
   // remove from parent domain, if there is one.
   if (this.domain) this.domain.remove(this);
@@ -234,7 +268,7 @@ Domain.prototype.dispose = function() {
   // kill the references so that they can be properly gc'ed.
   this.members.length = 0;
 
-  // finally, mark this domain as 'no longer relevant'
+  // mark this domain as 'no longer relevant'
   // so that it can't be entered or activated.
   this._disposed = true;
-};
+});

@@ -32,6 +32,7 @@ import multiprocessing
 import optparse
 import os
 from os.path import join
+import shlex
 import subprocess
 import sys
 import time
@@ -57,15 +58,26 @@ VARIANT_FLAGS = [[],
                  ["--nocrankshaft"]]
 MODE_FLAGS = {
     "debug"   : ["--nobreak-on-abort", "--nodead-code-elimination",
-                 "--enable-slow-asserts", "--debug-code", "--verify-heap"],
-    "release" : ["--nobreak-on-abort", "--nodead-code-elimination"]}
+                 "--nofold-constants", "--enable-slow-asserts",
+                 "--debug-code", "--verify-heap"],
+    "release" : ["--nobreak-on-abort", "--nodead-code-elimination",
+                 "--nofold-constants"]}
 
 SUPPORTED_ARCHS = ["android_arm",
                    "android_ia32",
                    "arm",
                    "ia32",
                    "mipsel",
+                   "nacl_ia32",
+                   "nacl_x64",
                    "x64"]
+# Double the timeout for these:
+SLOW_ARCHS = ["android_arm",
+              "android_ia32",
+              "arm",
+              "mipsel",
+              "nacl_ia32",
+              "nacl_x64"]
 
 
 def BuildOptions():
@@ -82,6 +94,9 @@ def BuildOptions():
                     default=False, action="store_true")
   result.add_option("--cat", help="Print the source of the tests",
                     default=False, action="store_true")
+  result.add_option("--flaky-tests",
+                    help="Regard tests marked as flaky (run|skip|dontcare)",
+                    default="dontcare")
   result.add_option("--command-prefix",
                     help="Prepended to each shell command used to run a test",
                     default="")
@@ -137,6 +152,10 @@ def BuildOptions():
                     default=False, action="store_true")
   result.add_option("--warn-unused", help="Report unused rules",
                     default=False, action="store_true")
+  result.add_option("--junitout", help="File name of the JUnit output")
+  result.add_option("--junittestsuite",
+                    help="The testsuite name in the JUnit output file",
+                    default="v8tests")
   return result
 
 
@@ -171,6 +190,8 @@ def ProcessOptions(options):
     print("Specifying --command-prefix disables network distribution, "
           "running tests locally.")
     options.no_network = True
+  options.command_prefix = shlex.split(options.command_prefix)
+  options.extra_flags = shlex.split(options.extra_flags)
   if options.j == 0:
     options.j = multiprocessing.cpu_count()
   if options.no_stress:
@@ -184,8 +205,11 @@ def ProcessOptions(options):
   if options.valgrind:
     run_valgrind = os.path.join("tools", "run-valgrind.py")
     # This is OK for distributed running, so we don't need to set no_network.
-    options.command_prefix = ("python -u " + run_valgrind +
+    options.command_prefix = (["python", "-u", run_valgrind] +
                               options.command_prefix)
+  if not options.flaky_tests in ["run", "skip", "dontcare"]:
+    print "Unknown flaky test mode %s" % options.flaky_tests
+    return False
   return True
 
 
@@ -268,12 +292,12 @@ def Execute(arch, mode, args, options, suites, workspace):
   timeout = options.timeout
   if timeout == -1:
     # Simulators are slow, therefore allow a longer default timeout.
-    if arch in ["android", "arm", "mipsel"]:
+    if arch in SLOW_ARCHS:
       timeout = 2 * TIMEOUT_DEFAULT;
     else:
       timeout = TIMEOUT_DEFAULT;
 
-  options.timeout *= TIMEOUT_SCALEFACTOR[mode]
+  timeout *= TIMEOUT_SCALEFACTOR[mode]
   ctx = context.Context(arch, mode, shell_dir,
                         mode_flags, options.verbose,
                         timeout, options.isolates,
@@ -285,7 +309,8 @@ def Execute(arch, mode, args, options, suites, workspace):
     "mode": mode,
     "arch": arch,
     "system": utils.GuessOS(),
-    "isolates": options.isolates
+    "isolates": options.isolates,
+    "deopt_fuzzer": False,
   }
   all_tests = []
   num_tests = 0
@@ -293,10 +318,10 @@ def Execute(arch, mode, args, options, suites, workspace):
   for s in suites:
     s.ReadStatusFile(variables)
     s.ReadTestCases(ctx)
-    all_tests += s.tests
     if len(args) > 0:
       s.FilterTestCasesByArgs(args)
-    s.FilterTestCasesByStatus(options.warn_unused)
+    all_tests += s.tests
+    s.FilterTestCasesByStatus(options.warn_unused, options.flaky_tests)
     if options.cat:
       verbose.PrintTestSource(s.tests)
       continue
@@ -322,6 +347,9 @@ def Execute(arch, mode, args, options, suites, workspace):
   try:
     start_time = time.time()
     progress_indicator = progress.PROGRESS_INDICATORS[options.progress]()
+    if options.junitout:
+      progress_indicator = progress.JUnitTestProgressIndicator(
+          progress_indicator, options.junitout, options.junittestsuite)
 
     run_networked = not options.no_network
     if not run_networked:

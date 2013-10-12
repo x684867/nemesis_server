@@ -185,6 +185,35 @@ FakeInput.prototype.end = function() {};
   assert.equal(callCount, 1);
   rli.close();
 
+  // wide characters should be treated as two columns.
+  assert.equal(readline.isFullWidthCodePoint('a'.charCodeAt(0)), false);
+  assert.equal(readline.isFullWidthCodePoint('あ'.charCodeAt(0)), true);
+  assert.equal(readline.isFullWidthCodePoint('谢'.charCodeAt(0)), true);
+  assert.equal(readline.isFullWidthCodePoint('고'.charCodeAt(0)), true);
+  assert.equal(readline.isFullWidthCodePoint(0x1f251), true); // surrogate
+  assert.equal(readline.codePointAt('ABC', 0), 0x41);
+  assert.equal(readline.codePointAt('あいう', 1), 0x3044);
+  assert.equal(readline.codePointAt('\ud800\udc00', 0),  // surrogate
+      0x10000);
+  assert.equal(readline.codePointAt('\ud800\udc00A', 2), // surrogate
+      0x41);
+  assert.equal(readline.getStringWidth('abcde'), 5);
+  assert.equal(readline.getStringWidth('古池や'), 6);
+  assert.equal(readline.getStringWidth('ノード.js'), 9);
+  assert.equal(readline.getStringWidth('你好'), 4);
+  assert.equal(readline.getStringWidth('안녕하세요'), 10);
+  assert.equal(readline.getStringWidth('A\ud83c\ude00BC'), 5); // surrogate
+
+  // check if vt control chars are stripped
+  assert.equal(readline.stripVTControlCharacters('\u001b[31m> \u001b[39m'), '> ');
+  assert.equal(readline.stripVTControlCharacters('\u001b[31m> \u001b[39m> '), '> > ');
+  assert.equal(readline.stripVTControlCharacters('\u001b[31m\u001b[39m'), '');
+  assert.equal(readline.stripVTControlCharacters('> '), '> ');
+  assert.equal(readline.getStringWidth('\u001b[31m> \u001b[39m'), 2);
+  assert.equal(readline.getStringWidth('\u001b[31m> \u001b[39m> '), 4);
+  assert.equal(readline.getStringWidth('\u001b[31m\u001b[39m'), 0);
+  assert.equal(readline.getStringWidth('> '), 2);
+
   assert.deepEqual(fi.listeners('end'), []);
   assert.deepEqual(fi.listeners(terminal ? 'keypress' : 'data'), []);
 });

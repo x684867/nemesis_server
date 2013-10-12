@@ -112,7 +112,7 @@ if (isWindows) {
       }
 
       // Skip empty and invalid entries
-      if (typeof path !== 'string') {
+      if (!util.isString(path)) {
         throw new TypeError('Arguments to path.resolve must be strings');
       } else if (!path) {
         continue;
@@ -121,7 +121,7 @@ if (isWindows) {
       var result = splitDeviceRe.exec(path),
           device = result[1] || '',
           isUnc = device && device.charAt(1) !== ':',
-          isAbsolute = !!result[2] || isUnc, // UNC paths are always absolute
+          isAbsolute = exports.isAbsolute(path),
           tail = result[3];
 
       if (device &&
@@ -172,9 +172,14 @@ if (isWindows) {
     var result = splitDeviceRe.exec(path),
         device = result[1] || '',
         isUnc = device && device.charAt(1) !== ':',
-        isAbsolute = !!result[2] || isUnc, // UNC paths are always absolute
+        isAbsolute = exports.isAbsolute(path),
         tail = result[3],
         trailingSlash = /[\\\/]$/.test(tail);
+
+    // If device is a drive letter, we'll normalize to lower case.
+    if (device && device.charAt(1) === ':') {
+      device = device[0].toLowerCase() + device.substr(1);
+    }
 
     // Normalize the tail path
     tail = normalizeArray(tail.split(/[\\\/]+/).filter(function(p) {
@@ -198,9 +203,18 @@ if (isWindows) {
   };
 
   // windows version
+  exports.isAbsolute = function(path) {
+    var result = splitDeviceRe.exec(path),
+        device = result[1] || '',
+        isUnc = device && device.charAt(1) !== ':';
+    // UNC paths are always absolute
+    return !!result[2] || isUnc;
+  };
+
+  // windows version
   exports.join = function() {
     function f(p) {
-      if (typeof p !== 'string') {
+      if (!util.isString(p)) {
         throw new TypeError('Arguments to path.join must be strings');
       }
       return p;
@@ -309,7 +323,7 @@ if (isWindows) {
       var path = (i >= 0) ? arguments[i] : process.cwd();
 
       // Skip empty and invalid entries
-      if (typeof path !== 'string') {
+      if (!util.isString(path)) {
         throw new TypeError('Arguments to path.resolve must be strings');
       } else if (!path) {
         continue;
@@ -333,7 +347,7 @@ if (isWindows) {
   // path.normalize(path)
   // posix version
   exports.normalize = function(path) {
-    var isAbsolute = path.charAt(0) === '/',
+    var isAbsolute = exports.isAbsolute(path),
         trailingSlash = path.substr(-1) === '/';
 
     // Normalize the path
@@ -351,12 +365,16 @@ if (isWindows) {
     return (isAbsolute ? '/' : '') + path;
   };
 
+  // posix version
+  exports.isAbsolute = function(path) {
+    return path.charAt(0) === '/';
+  };
 
   // posix version
   exports.join = function() {
     var paths = Array.prototype.slice.call(arguments, 0);
     return exports.normalize(paths.filter(function(p, index) {
-      if (typeof p !== 'string') {
+      if (!util.isString(p)) {
         throw new TypeError('Arguments to path.join must be strings');
       }
       return p;
@@ -411,7 +429,6 @@ if (isWindows) {
   exports.delimiter = ':';
 }
 
-
 exports.dirname = function(path) {
   var result = splitPath(path),
       root = result[0],
@@ -459,7 +476,7 @@ exports.existsSync = util.deprecate(function(path) {
 if (isWindows) {
   exports._makeLong = function(path) {
     // Note: this will *probably* throw somewhere.
-    if (typeof path !== 'string')
+    if (!util.isString(path))
       return path;
 
     if (!path) {

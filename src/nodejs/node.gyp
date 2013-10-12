@@ -16,6 +16,7 @@
     'node_use_openssl%': 'true',
     'node_use_systemtap%': 'false',
     'node_shared_openssl%': 'false',
+    'node_use_mdb%': 'false',
     'library_files': [
       'src/node.js',
       'lib/_debugger.js',
@@ -34,6 +35,12 @@
       'lib/freelist.js',
       'lib/fs.js',
       'lib/http.js',
+      'lib/_http_agent.js',
+      'lib/_http_client.js',
+      'lib/_http_common.js',
+      'lib/_http_incoming.js',
+      'lib/_http_outgoing.js',
+      'lib/_http_server.js',
       'lib/https.js',
       'lib/module.js',
       'lib/net.js',
@@ -43,6 +50,7 @@
       'lib/querystring.js',
       'lib/readline.js',
       'lib/repl.js',
+      'lib/smalloc.js',
       'lib/stream.js',
       'lib/_stream_readable.js',
       'lib/_stream_writable.js',
@@ -53,6 +61,8 @@
       'lib/sys.js',
       'lib/timers.js',
       'lib/tls.js',
+      'lib/_tls_legacy.js',
+      'lib/_tls_wrap.js',
       'lib/tty.js',
       'lib/url.js',
       'lib/util.js',
@@ -84,53 +94,58 @@
         'src/node.cc',
         'src/node_buffer.cc',
         'src/node_constants.cc',
+        'src/node_contextify.cc',
         'src/node_extensions.cc',
         'src/node_file.cc',
         'src/node_http_parser.cc',
         'src/node_javascript.cc',
         'src/node_main.cc',
         'src/node_os.cc',
-        'src/node_script.cc',
         'src/node_stat_watcher.cc',
-        'src/node_string.cc',
+        'src/node_watchdog.cc',
         'src/node_zlib.cc',
         'src/pipe_wrap.cc',
         'src/signal_wrap.cc',
+        'src/smalloc.cc',
         'src/string_bytes.cc',
         'src/stream_wrap.cc',
-        'src/slab_allocator.cc',
         'src/tcp_wrap.cc',
         'src/timer_wrap.cc',
         'src/tty_wrap.cc',
         'src/process_wrap.cc',
-        'src/v8_typed_array.cc',
         'src/udp_wrap.cc',
+        'src/uv.cc',
         # headers to make for a more pleasant IDE experience
+        'src/env.h',
+        'src/env-inl.h',
         'src/handle_wrap.h',
         'src/node.h',
         'src/node_buffer.h',
         'src/node_constants.h',
-        'src/node_crypto.h',
+        'src/node_contextify.h',
         'src/node_extensions.h',
         'src/node_file.h',
         'src/node_http_parser.h',
+        'src/node_internals.h',
         'src/node_javascript.h',
-        'src/node_os.h',
         'src/node_root_certs.h',
-        'src/node_script.h',
-        'src/node_string.h',
         'src/node_version.h',
-        'src/ngx-queue.h',
+        'src/node_watchdog.h',
+        'src/node_wrap.h',
         'src/pipe_wrap.h',
+        'src/queue.h',
+        'src/smalloc.h',
         'src/tty_wrap.h',
         'src/tcp_wrap.h',
         'src/udp_wrap.h',
         'src/req_wrap.h',
-        'src/slab_allocator.h',
         'src/string_bytes.h',
         'src/stream_wrap.h',
         'src/tree.h',
-        'src/v8_typed_array.h',
+        'src/util.h',
+        'src/util-inl.h',
+        'src/weak-object.h',
+        'src/weak-object-inl.h',
         'deps/http_parser/http_parser.h',
         '<(SHARED_INTERMEDIATE_DIR)/node_natives.h',
         # javascript files to make for an even more pleasant IDE experience
@@ -149,7 +164,16 @@
       'conditions': [
         [ 'node_use_openssl=="true"', {
           'defines': [ 'HAVE_OPENSSL=1' ],
-          'sources': [ 'src/node_crypto.cc' ],
+          'sources': [
+            'src/node_crypto.cc',
+            'src/node_crypto_bio.cc',
+            'src/node_crypto_clienthello.cc',
+            'src/node_crypto.h',
+            'src/node_crypto_bio.h',
+            'src/node_crypto_clienthello.h',
+            'src/tls_wrap.cc',
+            'src/tls_wrap.h'
+          ],
           'conditions': [
             [ 'node_shared_openssl=="false"', {
               'dependencies': [ './deps/openssl/openssl.gyp:openssl' ],
@@ -190,13 +214,17 @@
             }
           ] ]
         } ],
-        [ 'node_use_systemtap=="true"', {
-          'defines': [ 'HAVE_SYSTEMTAP=1', 'STAP_SDT_V1=1' ],
-          'dependencies': [ 'node_systemtap_header' ],
+        [ 'node_use_mdb=="true"', {
+          'dependencies': [ 'node_mdb' ],
           'include_dirs': [ '<(SHARED_INTERMEDIATE_DIR)' ],
           'sources': [
+            'src/node_mdb.cc',
+          ],
+        } ],
+        [ 'node_use_systemtap=="true"', {
+          'defines': [ 'HAVE_SYSTEMTAP=1', 'STAP_SDT_V1=1' ],
+          'sources': [
             'src/node_dtrace.cc',
-            '<(SHARED_INTERMEDIATE_DIR)/node_systemtap.h',
           ],
         } ],
         [ 'node_use_etw=="true"', {
@@ -222,6 +250,9 @@
             'tools/msvs/genfiles/node_perfctr_provider.rc',
           ]
         } ],
+        [ 'v8_postmortem_support=="true"', {
+          'dependencies': [ 'deps/v8/tools/gyp/v8.gyp:postmortem-metadata' ],
+        }],
         [ 'node_shared_v8=="false"', {
           'sources': [
             'deps/v8/include/v8.h',
@@ -261,7 +292,6 @@
           'defines': [ '__POSIX__' ],
         }],
         [ 'OS=="mac"', {
-          'libraries': [ '-framework Carbon' ],
           'defines!': [
             'PLATFORM="mac"',
           ],
@@ -361,19 +391,18 @@
               ' and node_use_etw=="false"'
               ' and node_use_systemtap=="false"',
             {
-                'inputs': ['src/macros.py']
-              }
-              ],
+              'inputs': ['src/notrace_macros.py']
+            }],
             [ 'node_use_perfctr=="false"', {
               'inputs': [ 'src/perfctr_macros.py' ]
             }]
           ],
-              'action': [
-                '<(python)',
-                'tools/js2c.py',
-                '<@(_outputs)',
-                '<@(_inputs)',
-              ],
+          'action': [
+            '<(python)',
+            'tools/js2c.py',
+            '<@(_outputs)',
+            '<@(_inputs)',
+          ],
         },
       ],
     }, # end node_js2c
@@ -381,7 +410,7 @@
       'target_name': 'node_dtrace_header',
       'type': 'none',
       'conditions': [
-        [ 'node_use_dtrace=="true"', {
+        [ 'node_use_dtrace=="true" or node_use_systemtap=="true"', {
           'actions': [
             {
               'action_name': 'node_dtrace_header',
@@ -395,21 +424,30 @@
       ]
     },
     {
-      'target_name': 'node_systemtap_header',
+      'target_name': 'node_mdb',
       'type': 'none',
       'conditions': [
-        [ 'node_use_systemtap=="true"', {
-          'actions': [
-            {
-              'action_name': 'node_systemtap_header',
-              'inputs': [ 'src/node_systemtap.d' ],
-              'outputs': [ '<(SHARED_INTERMEDIATE_DIR)/node_systemtap.h' ],
-              'action': [ 'dtrace', '-h', '-C', '-s', '<@(_inputs)',
-                '-o', '<@(_outputs)' ]
-            }
-          ]
-        } ]
-      ]
+        [ 'node_use_mdb=="true"',
+          {
+            'dependencies': [ 'deps/mdb_v8/mdb_v8.gyp:mdb_v8' ],
+            'actions': [
+              {
+                'action_name': 'node_mdb',
+                'inputs': [ '<(PRODUCT_DIR)/obj.target/deps/mdb_v8/mdb_v8.so' ],
+                'outputs': [ '<(PRODUCT_DIR)/obj.target/node/src/node_mdb.o' ],
+                'conditions': [
+                  [ 'target_arch=="ia32"', {
+                    'action': [ 'elfwrap', '-o', '<@(_outputs)', '<@(_inputs)' ],
+                  } ],
+                  [ 'target_arch=="x64"', {
+                    'action': [ 'elfwrap', '-64', '-o', '<@(_outputs)', '<@(_inputs)' ],
+                  } ],
+                ],
+              },
+            ],
+          },
+        ],
+      ],
     },
     {
       'target_name': 'node_dtrace_provider',
@@ -420,13 +458,14 @@
             {
               'action_name': 'node_dtrace_provider_o',
               'inputs': [
-                'src/node_provider.d',
-                '<(PRODUCT_DIR)/obj.target/node/src/node_dtrace.o'
+                '<(PRODUCT_DIR)/obj.target/libuv/deps/uv/src/unix/core.o',
+                '<(PRODUCT_DIR)/obj.target/node/src/node_dtrace.o',
               ],
               'outputs': [
                 '<(PRODUCT_DIR)/obj.target/node/src/node_dtrace_provider.o'
               ],
-              'action': [ 'dtrace', '-G', '-xnolibs', '-s', '<@(_inputs)',
+              'action': [ 'dtrace', '-G', '-xnolibs', '-s', 'src/node_provider.d',
+                '-s', 'deps/uv/src/unix/uv-dtrace.d', '<@(_inputs)',
                 '-o', '<@(_outputs)' ]
             }
           ]
@@ -442,7 +481,7 @@
             {
               'action_name': 'node_dtrace_ustack_constants',
               'inputs': [
-                '<(PRODUCT_DIR)/obj.target/deps/v8/tools/gyp/libv8_base.a'
+                '<(PRODUCT_DIR)/obj.target/deps/v8/tools/gyp/libv8_base.<(target_arch).a'
               ],
               'outputs': [
                 '<(SHARED_INTERMEDIATE_DIR)/v8constants.h'

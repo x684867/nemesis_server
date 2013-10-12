@@ -19,26 +19,31 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var cares = process.binding('cares_wrap'),
-    net = require('net'),
-    isIp = net.isIP;
+var net = require('net');
+var util = require('util');
+
+var cares = process.binding('cares_wrap');
+var uv = process.binding('uv');
+
+var isIp = net.isIP;
 
 
-function errnoException(errorno, syscall) {
-  // TODO make this more compatible with ErrnoException from src/node.cc
-  // Once all of Node is using this function the ErrnoException from
-  // src/node.cc should be removed.
-
-  // For backwards compatibility. libuv returns ENOENT on NXDOMAIN.
-  if (errorno == 'ENOENT') {
-    errorno = 'ENOTFOUND';
+function errnoException(err, syscall) {
+  // FIXME(bnoordhuis) Remove this backwards compatibility shite and pass
+  // the true error to the user. ENOTFOUND is not even a proper POSIX error!
+  if (err === uv.UV_EAI_MEMORY ||
+      err === uv.UV_EAI_NODATA ||
+      err === uv.UV_EAI_NONAME) {
+    err = 'ENOTFOUND';
   }
-
-  var e = new Error(syscall + ' ' + errorno);
-
-  e.errno = e.code = errorno;
-  e.syscall = syscall;
-  return e;
+  if (typeof err === 'string') {  // c-ares error code.
+    var ex = new Error(syscall + ' ' + err);
+    ex.code = err;
+    ex.errno = err;
+    ex.syscall = syscall;
+    return ex;
+  }
+  return util._errnoException(err, syscall);
 }
 
 
@@ -59,7 +64,7 @@ function errnoException(errorno, syscall) {
 //   callback.immediately = true;
 // }
 function makeAsync(callback) {
-  if (typeof callback !== 'function') {
+  if (!util.isFunction(callback)) {
     return callback;
   }
   return function asyncCallback() {
@@ -73,6 +78,18 @@ function makeAsync(callback) {
       });
     }
   };
+}
+
+
+function onlookup(err, addresses) {
+  if (err) {
+    return this.callback(errnoException(err, 'getaddrinfo'));
+  }
+  if (this.family) {
+    this.callback(null, addresses[0], this.family);
+  } else {
+    this.callback(null, addresses[0], addresses[0].indexOf(':') >= 0 ? 6 : 4);
+  }
 }
 
 
@@ -113,51 +130,41 @@ exports.lookup = function(domain, family, callback) {
     return {};
   }
 
-  function onanswer(addresses) {
-    if (addresses) {
-      if (family) {
-        callback(null, addresses[0], family);
-      } else {
-        callback(null, addresses[0], addresses[0].indexOf(':') >= 0 ? 6 : 4);
-      }
-    } else {
-      callback(errnoException(process._errno, 'getaddrinfo'));
-    }
-  }
-
-  var wrap = cares.getaddrinfo(domain, family);
-
-  if (!wrap) {
-    throw errnoException(process._errno, 'getaddrinfo');
-  }
-
-  wrap.oncomplete = onanswer;
+  var req = {
+    callback: callback,
+    family: family,
+    oncomplete: onlookup
+  };
+  var err = cares.getaddrinfo(req, domain, family);
+  if (err) throw errnoException(err, 'getaddrinfo');
 
   callback.immediately = true;
-  return wrap;
+  return req;
 };
+
+
+function onresolve(err, result) {
+  if (err)
+    this.callback(errnoException(err, this.bindingName));
+  else
+    this.callback(null, result);
+}
 
 
 function resolver(bindingName) {
   var binding = cares[bindingName];
 
   return function query(name, callback) {
-    function onanswer(status, result) {
-      if (!status) {
-        callback(null, result);
-      } else {
-        callback(errnoException(process._errno, bindingName));
-      }
-    }
-
     callback = makeAsync(callback);
-    var wrap = binding(name, onanswer);
-    if (!wrap) {
-      throw errnoException(process._errno, bindingName);
-    }
-
+    var req = {
+      bindingName: bindingName,
+      callback: callback,
+      oncomplete: onresolve
+    };
+    var err = binding(req, name);
+    if (err) throw errnoException(err, bindingName);
     callback.immediately = true;
-    return wrap;
+    return req;
   }
 }
 
@@ -176,7 +183,7 @@ exports.reverse = resolveMap.PTR = resolver('getHostByAddr');
 
 exports.resolve = function(domain, type_, callback_) {
   var resolver, callback;
-  if (typeof type_ == 'string') {
+  if (util.isString(type_)) {
     resolver = resolveMap[type_];
     callback = callback_;
   } else {
@@ -184,10 +191,59 @@ exports.resolve = function(domain, type_, callback_) {
     callback = type_;
   }
 
-  if (typeof resolver === 'function') {
+  if (util.isFunction(resolver)) {
     return resolver(domain, callback);
   } else {
     throw new Error('Unknown type "' + type_ + '"');
+  }
+};
+
+
+exports.getServers = function() {
+  return cares.getServers();
+};
+
+
+exports.setServers = function(servers) {
+  // cache the original servers because in the event of an error setting the
+  // servers cares won't have any servers available for resolution
+  var orig = cares.getServers();
+
+  var newSet = [];
+
+  servers.forEach(function(serv) {
+    var ver = isIp(serv);
+
+    if (ver)
+      return newSet.push([ver, serv]);
+
+    var match = serv.match(/\[(.*)\](:\d+)?/);
+
+    // we have an IPv6 in brackets
+    if (match) {
+      ver = isIp(match[1]);
+      if (ver)
+        return newSet.push([ver, match[1]]);
+    }
+
+    var s = serv.split(/:\d+$/)[0];
+    ver = isIp(s);
+
+    if (ver)
+      return newSet.push([ver, s]);
+
+    throw new Error('IP address is not properly formatted: ' + serv);
+  });
+
+  var r = cares.setServers(newSet);
+
+  if (r) {
+    // reset the servers to the old servers, because ares probably unset them
+    cares.setServers(orig.join(','));
+
+    var err = cares.strerror(r);
+    throw new Error('c-ares failed to set servers: "' + err +
+                    '" [' + servers + ']');
   }
 };
 

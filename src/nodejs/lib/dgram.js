@@ -32,21 +32,8 @@ var BIND_STATE_BOUND = 2;
 // lazily loaded
 var cluster = null;
 var dns = null;
-var net = null;
 
-
-// no-op callback
-function noop() {
-}
-
-
-function isIP(address) {
-  if (!net)
-    net = require('net');
-
-  return net.isIP(address);
-}
-
+var errnoException = util._errnoException;
 
 function lookup(address, family, callback) {
   if (!dns)
@@ -90,15 +77,15 @@ function newHandle(type) {
 
 exports._createSocketHandle = function(address, port, addressType, fd) {
   // Opening an existing fd is not supported for UDP handles.
-  assert(typeof fd !== 'number' || fd < 0);
+  assert(!util.isNumber(fd) || fd < 0);
 
   var handle = newHandle(addressType);
 
   if (port || address) {
-    var r = handle.bind(address, port || 0, 0);
-    if (r == -1) {
+    var err = handle.bind(address, port || 0, 0);
+    if (err) {
       handle.close();
-      handle = null;
+      return err;
     }
   }
 
@@ -118,7 +105,7 @@ function Socket(type, listener) {
   this.type = type;
   this.fd = null; // compatibility hack
 
-  if (typeof listener === 'function')
+  if (util.isFunction(listener))
     this.on('message', listener);
 }
 util.inherits(Socket, events.EventEmitter);
@@ -164,7 +151,7 @@ Socket.prototype.bind = function(/*port, address, callback*/) {
 
   this._bindState = BIND_STATE_BINDING;
 
-  if (typeof arguments[arguments.length - 1] === 'function')
+  if (util.isFunction(arguments[arguments.length - 1]))
     self.once('listening', arguments[arguments.length - 1]);
 
   var UDP = process.binding('udp_wrap').UDP;
@@ -176,7 +163,7 @@ Socket.prototype.bind = function(/*port, address, callback*/) {
 
   var port = arguments[0];
   var address = arguments[1];
-  if (typeof address === 'function') address = '';  // a.k.a. "any address"
+  if (util.isFunction(address)) address = '';  // a.k.a. "any address"
 
   // resolve address first
   self._handle.lookup(address, function(err, ip) {
@@ -190,7 +177,13 @@ Socket.prototype.bind = function(/*port, address, callback*/) {
       cluster = require('cluster');
 
     if (cluster.isWorker) {
-      cluster._getServer(self, ip, port, self.type, -1, function(handle) {
+      cluster._getServer(self, ip, port, self.type, -1, function(err, handle) {
+        if (err) {
+          self.emit('error', errnoException(err, 'bind'));
+          self._bindState = BIND_STATE_UNBOUND;
+          return;
+        }
+
         if (!self._handle)
           // handle has been closed in the mean time.
           return handle.close();
@@ -203,8 +196,9 @@ Socket.prototype.bind = function(/*port, address, callback*/) {
       if (!self._handle)
         return; // handle has been closed in the mean time
 
-      if (self._handle.bind(ip, port || 0, /*flags=*/ 0)) {
-        self.emit('error', errnoException(process._errno, 'bind'));
+      var err = self._handle.bind(ip, port || 0, /*flags=*/ 0);
+      if (err) {
+        self.emit('error', errnoException(err, 'bind'));
         self._bindState = BIND_STATE_UNBOUND;
         // Todo: close?
         return;
@@ -223,10 +217,10 @@ Socket.prototype.sendto = function(buffer,
                                    port,
                                    address,
                                    callback) {
-  if (typeof offset !== 'number' || typeof length !== 'number')
+  if (!util.isNumber(offset) || !util.isNumber(length))
     throw new Error('send takes offset and length as args 2 and 3');
 
-  if (typeof address !== 'string')
+  if (!util.isString(address))
     throw new Error(this.type + ' sockets must send to port, address');
 
   this.send(buffer, offset, length, port, address, callback);
@@ -241,7 +235,7 @@ Socket.prototype.send = function(buffer,
                                  callback) {
   var self = this;
 
-  if (!Buffer.isBuffer(buffer))
+  if (!util.isBuffer(buffer))
     throw new TypeError('First argument must be a buffer object.');
 
   offset = offset | 0;
@@ -264,7 +258,10 @@ Socket.prototype.send = function(buffer,
   if (port <= 0 || port > 65535)
     throw new RangeError('Port should be > 0 and < 65536');
 
-  callback = callback || noop;
+  // Normalize callback so it's either a function or undefined but not anything
+  // else.
+  if (!util.isFunction(callback))
+    callback = undefined;
 
   self._healthCheck();
 
@@ -289,22 +286,28 @@ Socket.prototype.send = function(buffer,
     return;
   }
 
-  self._handle.lookup(address, function(err, ip) {
-    if (err) {
-      if (callback) callback(err);
-      self.emit('error', err);
+  self._handle.lookup(address, function(ex, ip) {
+    if (ex) {
+      if (callback) callback(ex);
+      self.emit('error', ex);
     }
     else if (self._handle) {
-      var req = self._handle.send(buffer, offset, length, port, ip);
-      if (req) {
+      var req = { buffer: buffer };  // Keep reference alive.
+      if (callback) {
+        req.callback = callback;
         req.oncomplete = afterSend;
-        req.cb = callback;
       }
-      else {
+      var err = self._handle.send(req,
+                                  buffer,
+                                  offset,
+                                  length,
+                                  port,
+                                  ip,
+                                  !!callback);
+      if (err && callback) {
         // don't emit as error, dgram_legacy.js compatibility
-        var err = errnoException(process._errno, 'send');
         process.nextTick(function() {
-          callback(err);
+          callback(errnoException(err, 'send'));
         });
       }
     }
@@ -312,11 +315,8 @@ Socket.prototype.send = function(buffer,
 };
 
 
-function afterSend(status, handle, req, buffer) {
-  var self = handle.owner;
-
-  if (req.cb)
-    req.cb(null, buffer.length); // compatibility with dgram_legacy.js
+function afterSend(err) {
+  this.callback(err ? errnoException(err, 'send') : null);
 }
 
 
@@ -332,28 +332,32 @@ Socket.prototype.close = function() {
 Socket.prototype.address = function() {
   this._healthCheck();
 
-  var address = this._handle.getsockname();
-  if (!address)
-    throw errnoException(process._errno, 'getsockname');
+  var out = {};
+  var err = this._handle.getsockname(out);
+  if (err) {
+    throw errnoException(err, 'getsockname');
+  }
 
-  return address;
+  return out;
 };
 
 
 Socket.prototype.setBroadcast = function(arg) {
-  if (this._handle.setBroadcast((arg) ? 1 : 0)) {
-    throw errnoException(process._errno, 'setBroadcast');
+  var err = this._handle.setBroadcast(arg ? 1 : 0);
+  if (err) {
+    throw errnoException(err, 'setBroadcast');
   }
 };
 
 
 Socket.prototype.setTTL = function(arg) {
-  if (typeof arg !== 'number') {
+  if (!util.isNumber(arg)) {
     throw new TypeError('Argument must be a number');
   }
 
-  if (this._handle.setTTL(arg)) {
-    throw errnoException(process._errno, 'setTTL');
+  var err = this._handle.setTTL(arg);
+  if (err) {
+    throw errnoException(err, 'setTTL');
   }
 
   return arg;
@@ -361,12 +365,13 @@ Socket.prototype.setTTL = function(arg) {
 
 
 Socket.prototype.setMulticastTTL = function(arg) {
-  if (typeof arg !== 'number') {
+  if (!util.isNumber(arg)) {
     throw new TypeError('Argument must be a number');
   }
 
-  if (this._handle.setMulticastTTL(arg)) {
-    throw errnoException(process._errno, 'setMulticastTTL');
+  var err = this._handle.setMulticastTTL(arg);
+  if (err) {
+    throw errnoException(err, 'setMulticastTTL');
   }
 
   return arg;
@@ -374,10 +379,9 @@ Socket.prototype.setMulticastTTL = function(arg) {
 
 
 Socket.prototype.setMulticastLoopback = function(arg) {
-  arg = arg ? 1 : 0;
-
-  if (this._handle.setMulticastLoopback(arg)) {
-    throw errnoException(process._errno, 'setMulticastLoopback');
+  var err = this._handle.setMulticastLoopback(arg ? 1 : 0);
+  if (err) {
+    throw errnoException(err, 'setMulticastLoopback');
   }
 
   return arg; // 0.4 compatibility
@@ -392,8 +396,9 @@ Socket.prototype.addMembership = function(multicastAddress,
     throw new Error('multicast address must be specified');
   }
 
-  if (this._handle.addMembership(multicastAddress, interfaceAddress)) {
-    throw new errnoException(process._errno, 'addMembership');
+  var err = this._handle.addMembership(multicastAddress, interfaceAddress);
+  if (err) {
+    throw new errnoException(err, 'addMembership');
   }
 };
 
@@ -406,8 +411,9 @@ Socket.prototype.dropMembership = function(multicastAddress,
     throw new Error('multicast address must be specified');
   }
 
-  if (this._handle.dropMembership(multicastAddress, interfaceAddress)) {
-    throw new errnoException(process._errno, 'dropMembership');
+  var err = this._handle.dropMembership(multicastAddress, interfaceAddress);
+  if (err) {
+    throw new errnoException(err, 'dropMembership');
   }
 };
 
@@ -428,13 +434,13 @@ Socket.prototype._stopReceiving = function() {
 };
 
 
-function onMessage(handle, slab, start, len, rinfo) {
+function onMessage(nread, handle, buf, rinfo) {
   var self = handle.owner;
-  if (!slab) {
-    return self.emit('error', errnoException(process._errno, 'recvmsg'));
+  if (nread < 0) {
+    return self.emit('error', errnoException(nread, 'recvmsg'));
   }
-  rinfo.size = len; // compatibility
-  self.emit('message', slab.slice(start, start + len), rinfo);
+  rinfo.size = buf.length; // compatibility
+  self.emit('message', buf, rinfo);
 }
 
 
@@ -448,11 +454,3 @@ Socket.prototype.unref = function() {
   if (this._handle)
     this._handle.unref();
 };
-
-// TODO share with net_uv and others
-function errnoException(errorno, syscall) {
-  var e = new Error(syscall + ' ' + errorno);
-  e.errno = e.code = errorno;
-  e.syscall = syscall;
-  return e;
-}

@@ -182,7 +182,7 @@ exports.Client = Client;
 
 
 Client.prototype._addHandle = function(desc) {
-  if (typeof desc != 'object' || typeof desc.handle != 'number') {
+  if (!util.isObject(desc) || !util.isNumber(desc.handle)) {
     return;
   }
 
@@ -296,7 +296,7 @@ Client.prototype.reqLookup = function(refs, cb) {
   this.req(req, function(err, res) {
     if (err) return cb(err);
     for (var ref in res) {
-      if (typeof res[ref] == 'object') {
+      if (util.isObject(res[ref])) {
         self._addHandle(res[ref]);
       }
     }
@@ -366,7 +366,7 @@ Client.prototype.reqEval = function(expression, cb) {
 };
 
 
-// Finds the first scope in the array in which the epxression evals.
+// Finds the first scope in the array in which the expression evals.
 Client.prototype._reqFramesEval = function(expression, evalFrames, cb) {
   if (evalFrames.length == 0) {
     // Just eval in global scope.
@@ -559,8 +559,7 @@ Client.prototype.mirrorObject = function(handle, depth, cb) {
         }
 
 
-        if (Array.isArray(mirror) &&
-            typeof prop.name != 'number') {
+        if (util.isArray(mirror) && !util.isNumber(prop.name)) {
           // Skip the 'length' property.
           return;
         }
@@ -593,7 +592,7 @@ Client.prototype.mirrorObject = function(handle, depth, cb) {
     val = function() {};
   } else if (handle.type === 'null') {
     val = null;
-  } else if (handle.value !== undefined) {
+  } else if (!util.isUndefined(handle.value)) {
     val = handle.value;
   } else if (handle.type === 'undefined') {
     val = undefined;
@@ -740,8 +739,7 @@ function SourceInfo(body) {
 // This class is the repl-enabled debugger interface which is invoked on
 // "node debug"
 function Interface(stdin, stdout, args) {
-  var self = this,
-      child;
+  var self = this;
 
   this.stdin = stdin;
   this.stdout = stdout;
@@ -857,13 +855,14 @@ function Interface(stdin, stdout, args) {
 
 
 Interface.prototype.pause = function() {
-  if (this.killed || this.paused++ > 0) return false;
+  if (this.killed || this.paused++ > 0) return this;
   this.repl.rli.pause();
   this.stdin.pause();
+  return this;
 };
 
 Interface.prototype.resume = function(silent) {
-  if (this.killed || this.paused === 0 || --this.paused !== 0) return false;
+  if (this.killed || this.paused === 0 || --this.paused !== 0) return this;
   this.repl.rli.resume();
   if (silent !== true) {
     this.repl.displayPrompt();
@@ -874,6 +873,7 @@ Interface.prototype.resume = function(silent) {
     this.waiting();
     this.waiting = null;
   }
+  return this;
 };
 
 
@@ -892,7 +892,7 @@ Interface.prototype.print = function(text, oneline) {
   if (this.killed) return;
   this.clearline();
 
-  this.stdout.write(typeof text === 'string' ? text : util.inspect(text));
+  this.stdout.write(util.isString(text) ? text : util.inspect(text));
 
   if (oneline !== true) {
     this.stdout.write('\n');
@@ -961,8 +961,8 @@ Interface.prototype.controlEval = function(code, context, filename, callback) {
   try {
     // Repeat last command if empty line are going to be evaluated
     if (this.repl.rli.history && this.repl.rli.history.length > 0) {
-      if (code === '(\n)') {
-        code = '(' + this.repl.rli.history[0] + '\n)';
+      if (code === '\n') {
+        code = this.repl.rli.history[0] + '\n';
       }
     }
 
@@ -1018,27 +1018,12 @@ Interface.prototype.debugEval = function(code, context, filename, callback) {
 
 // Utils
 
-// Returns number of digits (+1)
-function intChars(n) {
-  // TODO dumb:
-  if (n < 50) {
-    return 3;
-  } else if (n < 950) {
-    return 4;
-  } else if (n < 9950) {
-    return 5;
-  } else {
-    return 6;
-  }
-}
-
 // Adds spaces and prefix to number
-function leftPad(n, prefix) {
+// maxN is a maximum number we should have space for
+function leftPad(n, prefix, maxN) {
   var s = n.toString(),
-      nchars = intChars(n),
+      nchars = Math.max(2, String(maxN).length) + 1,
       nspaces = nchars - s.length - 1;
-
-  prefix || (prefix = ' ');
 
   for (var i = 0; i < nspaces; i++) {
     prefix += ' ';
@@ -1153,7 +1138,14 @@ Interface.prototype.list = function(delta) {
         line = lines[i];
       }
 
-      self.print(leftPad(lineno, breakpoint && '*') + ' ' + line);
+      var prefixChar = ' ';
+      if (current) {
+        prefixChar = '>';
+      } else if (breakpoint) {
+        prefixChar = '*';
+      }
+
+      self.print(leftPad(lineno, prefixChar, to) + ' ' + line);
     }
     self.resume();
   });
@@ -1214,7 +1206,7 @@ Interface.prototype.scripts = function() {
   this.pause();
   for (var id in client.scripts) {
     var script = client.scripts[id];
-    if (typeof script == 'object' && script.name) {
+    if (util.isObject(script) && script.name) {
       if (displayNatives ||
           script.name == client.currentScript ||
           !script.isNative) {
@@ -1315,7 +1307,8 @@ Interface.prototype.watchers = function() {
       if (verbose) self.print('Watchers:');
 
       self._watchers.forEach(function(watcher, i) {
-        self.print(leftPad(i, ' ') + ': ' + watcher + ' = ' +
+        self.print(leftPad(i, ' ', self._watchers.length - 1) +
+                   ': ' + watcher + ' = ' +
                    JSON.stringify(values[i]));
       });
 
@@ -1351,13 +1344,13 @@ Interface.prototype.setBreakpoint = function(script, line,
       ambiguous;
 
   // setBreakpoint() should insert breakpoint on current line
-  if (script === undefined) {
+  if (util.isUndefined(script)) {
     script = this.client.currentScript;
     line = this.client.currentSourceLine + 1;
   }
 
   // setBreakpoint(line-number) should insert breakpoint in current script
-  if (line === undefined && typeof script === 'number') {
+  if (util.isUndefined(line) && util.isNumber(script)) {
     line = script;
     script = this.client.currentScript;
   }
@@ -1452,7 +1445,7 @@ Interface.prototype.clearBreakpoint = function(script, line) {
     if (bp.scriptId === script ||
         bp.scriptReq === script ||
         (bp.script && bp.script.indexOf(script) !== -1)) {
-      if (index !== undefined) {
+      if (!util.isUndefined(index)) {
         ambiguous = true;
       }
       if (bp.line === line) {
@@ -1465,7 +1458,7 @@ Interface.prototype.clearBreakpoint = function(script, line) {
 
   if (ambiguous) return this.error('Script name is ambiguous');
 
-  if (breakpoint === undefined) {
+  if (util.isUndefined(breakpoint)) {
     return this.error('Script : ' + script + ' not found');
   }
 
@@ -1715,7 +1708,7 @@ Interface.prototype.trySpawn = function(cb) {
   }
 
   setTimeout(function() {
-    self.print('connecting..', true);
+    self.print('connecting to port ' + port + '..', true);
     attemptConnect();
   }, 50);
 };

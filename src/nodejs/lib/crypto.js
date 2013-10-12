@@ -31,10 +31,8 @@ try {
   var pseudoRandomBytes = binding.pseudoRandomBytes;
   var getCiphers = binding.getCiphers;
   var getHashes = binding.getHashes;
-  var crypto = true;
 } catch (e) {
-
-  var crypto = false;
+  throw new Error('node.js not compiled with openssl crypto support.');
 }
 
 var stream = require('stream');
@@ -45,7 +43,7 @@ var util = require('util');
 // to break them unnecessarily.
 function toBuf(str, encoding) {
   encoding = encoding || 'binary';
-  if (typeof str === 'string') {
+  if (util.isString(str)) {
     if (encoding === 'buffer')
       encoding = 'binary';
     str = new Buffer(str, encoding);
@@ -60,10 +58,6 @@ var StringDecoder = require('string_decoder').StringDecoder;
 function Credentials(secureProtocol, flags, context) {
   if (!(this instanceof Credentials)) {
     return new Credentials(secureProtocol, flags, context);
-  }
-
-  if (!crypto) {
-    throw new Error('node.js not compiled with openssl crypto support.');
   }
 
   if (context) {
@@ -106,7 +100,7 @@ exports.createCredentials = function(options, context) {
   if (options.ciphers) c.context.setCiphers(options.ciphers);
 
   if (options.ca) {
-    if (Array.isArray(options.ca)) {
+    if (util.isArray(options.ca)) {
       for (var i = 0, len = options.ca.length; i < len; i++) {
         c.context.addCACert(options.ca[i]);
       }
@@ -118,7 +112,7 @@ exports.createCredentials = function(options, context) {
   }
 
   if (options.crl) {
-    if (Array.isArray(options.crl)) {
+    if (util.isArray(options.crl)) {
       for (var i = 0, len = options.crl.length; i < len; i++) {
         c.context.addCRL(options.crl[i]);
       }
@@ -204,7 +198,7 @@ Hash.prototype._flush = function(callback) {
 
 Hash.prototype.update = function(data, encoding) {
   encoding = encoding || exports.DEFAULT_ENCODING;
-  if (encoding === 'buffer' && typeof data === 'string')
+  if (encoding === 'buffer' && util.isString(data))
     encoding = 'binary';
   this._binding.update(data, encoding);
   return this;
@@ -247,7 +241,7 @@ exports.createCipher = exports.Cipher = Cipher;
 function Cipher(cipher, password, options) {
   if (!(this instanceof Cipher))
     return new Cipher(cipher, password, options);
-  this._binding = new binding.Cipher;
+  this._binding = new binding.CipherBase(true);
 
   this._binding.init(cipher, toBuf(password));
   this._decoder = null;
@@ -306,7 +300,7 @@ exports.createCipheriv = exports.Cipheriv = Cipheriv;
 function Cipheriv(cipher, key, iv, options) {
   if (!(this instanceof Cipheriv))
     return new Cipheriv(cipher, key, iv, options);
-  this._binding = new binding.Cipher();
+  this._binding = new binding.CipherBase(true);
   this._binding.initiv(cipher, toBuf(key), toBuf(iv));
   this._decoder = null;
 
@@ -328,7 +322,7 @@ function Decipher(cipher, password, options) {
   if (!(this instanceof Decipher))
     return new Decipher(cipher, password, options);
 
-  this._binding = new binding.Decipher;
+  this._binding = new binding.CipherBase(false);
   this._binding.init(cipher, toBuf(password));
   this._decoder = null;
 
@@ -351,7 +345,7 @@ function Decipheriv(cipher, key, iv, options) {
   if (!(this instanceof Decipheriv))
     return new Decipheriv(cipher, key, iv, options);
 
-  this._binding = new binding.Decipher;
+  this._binding = new binding.CipherBase(false);
   this._binding.initiv(cipher, toBuf(key), toBuf(iv));
   this._decoder = null;
 
@@ -545,7 +539,7 @@ DiffieHellman.prototype.setPrivateKey = function(key, encoding) {
 
 
 exports.pbkdf2 = function(password, salt, iterations, keylen, callback) {
-  if (typeof callback !== 'function')
+  if (!util.isFunction(callback))
     throw new Error('No callback provided to pbkdf2');
 
   return pbkdf2(password, salt, iterations, keylen, callback);

@@ -23,15 +23,12 @@ var Timer = process.binding('timer_wrap').Timer;
 var L = require('_linklist');
 var assert = require('assert').ok;
 
+var kOnTimeout = Timer.kOnTimeout | 0;
+
 // Timeout values > TIMEOUT_MAX are set to 1.
 var TIMEOUT_MAX = 2147483647; // 2^31-1
 
-var debug;
-if (process.env.NODE_DEBUG && /timer/.test(process.env.NODE_DEBUG)) {
-  debug = function() { require('util').error.apply(this, arguments); };
-} else {
-  debug = function() { };
-}
+var debug = require('util').debuglog('timer');
 
 
 // IDLE TIMEOUTS
@@ -50,7 +47,7 @@ var lists = {};
 // the main function - creates lists on demand and the watchers associated
 // with them.
 function insert(item, msecs) {
-  item._idleStart = Date.now();
+  item._idleStart = Timer.now();
   item._idleTimeout = msecs;
 
   if (msecs < 0) return;
@@ -67,7 +64,7 @@ function insert(item, msecs) {
 
     lists[msecs] = list;
     list.msecs = msecs;
-    list.ontimeout = listOnTimeout;
+    list[kOnTimeout] = listOnTimeout;
   }
 
   L.append(list, item);
@@ -78,17 +75,17 @@ function listOnTimeout() {
   var msecs = this.msecs;
   var list = this;
 
-  debug('timeout callback ' + msecs);
+  debug('timeout callback %d', msecs);
 
-  var now = Date.now();
-  debug('now: ' + now);
+  var now = Timer.now();
+  debug('now: %s', now);
 
   var first;
   while (first = L.peek(list)) {
     var diff = now - first._idleStart;
     if (diff < msecs) {
       list.start(msecs - diff, 0);
-      debug(msecs + ' list wait because diff is ' + diff);
+      debug('%d list wait because diff is %d', msecs, diff);
       return;
     } else {
       L.remove(first);
@@ -114,14 +111,14 @@ function listOnTimeout() {
       } finally {
         if (threw) {
           process.nextTick(function() {
-            list.ontimeout();
+            list[kOnTimeout]();
           });
         }
       }
     }
   }
 
-  debug(msecs + ' list empty');
+  debug('%d list empty', msecs);
   assert(L.isEmpty(list));
   list.close();
   delete lists[msecs];
@@ -170,7 +167,7 @@ exports.active = function(item) {
     if (!list || L.isEmpty(list)) {
       insert(item, msecs);
     } else {
-      item._idleStart = Date.now();
+      item._idleStart = Timer.now();
       L.append(list, item);
     }
   }
@@ -220,8 +217,8 @@ exports.setTimeout = function(callback, after) {
 
 
 exports.clearTimeout = function(timer) {
-  if (timer && (timer.ontimeout || timer._onTimeout)) {
-    timer.ontimeout = timer._onTimeout = null;
+  if (timer && (timer[kOnTimeout] || timer._onTimeout)) {
+    timer[kOnTimeout] = timer._onTimeout = null;
     if (timer instanceof Timeout) {
       timer.close(); // for after === 0
     } else {
@@ -282,13 +279,13 @@ var Timeout = function(after) {
 
 Timeout.prototype.unref = function() {
   if (!this._handle) {
-    var now = Date.now();
+    var now = Timer.now();
     if (!this._idleStart) this._idleStart = now;
     var delay = this._idleStart + this._idleTimeout - now;
     if (delay < 0) delay = 0;
     exports.unenroll(this);
     this._handle = new Timer();
-    this._handle.ontimeout = this._onTimeout;
+    this._handle[kOnTimeout] = this._onTimeout;
     this._handle.start(delay, 0);
     this._handle.domain = this.domain;
     this._handle.unref();
@@ -305,7 +302,7 @@ Timeout.prototype.ref = function() {
 Timeout.prototype.close = function() {
   this._onTimeout = null;
   if (this._handle) {
-    this._handle.ontimeout = null;
+    this._handle[kOnTimeout] = null;
     this._handle.close();
   } else {
     exports.unenroll(this);
@@ -318,18 +315,24 @@ L.init(immediateQueue);
 
 
 function processImmediate() {
-  var immediate = L.shift(immediateQueue);
+  var queue = immediateQueue;
 
-  if (L.isEmpty(immediateQueue)) {
-    process._needImmediateCallback = false;
+  immediateQueue = {};
+  L.init(immediateQueue);
+
+  while (L.isEmpty(queue) === false) {
+    var immediate = L.shift(queue);
+    var domain = immediate.domain;
+    if (domain) domain.enter();
+    immediate._onImmediate();
+    if (domain) domain.exit();
   }
 
-  if (immediate._onImmediate) {
-    if (immediate.domain) immediate.domain.enter();
-
-    immediate._onImmediate();
-
-    if (immediate.domain) immediate.domain.exit();
+  // Only round-trip to C++ land if we have to. Calling clearImmediate() on an
+  // immediate that's in |queue| is okay. Worst case is we make a superfluous
+  // call to NeedImmediateCallbackSetter().
+  if (L.isEmpty(immediateQueue)) {
+    process._needImmediateCallback = false;
   }
 }
 
@@ -382,7 +385,7 @@ var unrefList, unrefTimer;
 
 
 function unrefTimeout() {
-  var now = Date.now();
+  var now = Timer.now();
 
   debug('unrefTimer fired');
 
@@ -438,10 +441,10 @@ exports._unrefActive = function(item) {
     unrefTimer = new Timer();
     unrefTimer.unref();
     unrefTimer.when = -1;
-    unrefTimer.ontimeout = unrefTimeout;
+    unrefTimer[kOnTimeout] = unrefTimeout;
   }
 
-  var now = Date.now();
+  var now = Timer.now();
   item._idleStart = now;
 
   if (L.isEmpty(unrefList)) {

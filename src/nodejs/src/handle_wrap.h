@@ -19,10 +19,14 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef HANDLE_WRAP_H_
-#define HANDLE_WRAP_H_
+#ifndef SRC_HANDLE_WRAP_H_
+#define SRC_HANDLE_WRAP_H_
 
-#include "ngx-queue.h"
+#include "env.h"
+#include "node.h"
+#include "queue.h"
+#include "uv.h"
+#include "v8.h"
 
 namespace node {
 
@@ -46,44 +50,49 @@ namespace node {
 //   js/c++ boundary crossing. At the javascript layer that should all be
 //   taken care of.
 
-#define UNWRAP_NO_ABORT(type)                                               \
-  assert(!args.Holder().IsEmpty());                                         \
-  assert(args.Holder()->InternalFieldCount() > 0);                          \
-  type* wrap = static_cast<type*>(                                          \
-      args.Holder()->GetPointerFromInternalField(0));
-
 class HandleWrap {
-  public:
-    static void Initialize(v8::Handle<v8::Object> target);
-    static v8::Handle<v8::Value> Close(const v8::Arguments& args);
-    static v8::Handle<v8::Value> Ref(const v8::Arguments& args);
-    static v8::Handle<v8::Value> Unref(const v8::Arguments& args);
+ public:
+  static void Close(const v8::FunctionCallbackInfo<v8::Value>& args);
+  static void Ref(const v8::FunctionCallbackInfo<v8::Value>& args);
+  static void Unref(const v8::FunctionCallbackInfo<v8::Value>& args);
 
-    inline uv_handle_t* GetHandle() { return handle__; };
+  inline uv_handle_t* GetHandle() { return handle__; }
 
-  protected:
-    HandleWrap(v8::Handle<v8::Object> object, uv_handle_t* handle);
-    virtual ~HandleWrap();
+ protected:
+  HandleWrap(Environment* env,
+             v8::Handle<v8::Object> object,
+             uv_handle_t* handle);
+  virtual ~HandleWrap();
 
-    virtual void SetHandle(uv_handle_t* h);
+  inline Environment* env() const {
+    return env_;
+  }
 
-    v8::Persistent<v8::Object> object_;
+  inline v8::Local<v8::Object> object() {
+    return PersistentToLocal(env()->isolate(), persistent());
+  }
 
-  private:
-    friend v8::Handle<v8::Value> GetActiveHandles(const v8::Arguments&);
-    static void OnClose(uv_handle_t* handle);
-    ngx_queue_t handle_wrap_queue_;
-    // Using double underscore due to handle_ member in tcp_wrap. Probably
-    // tcp_wrap should rename it's member to 'handle'.
-    uv_handle_t* handle__;
-    unsigned int flags_;
+  inline v8::Persistent<v8::Object>& persistent() {
+    return object_;
+  }
 
-    static const unsigned int kUnref = 1;
-    static const unsigned int kCloseCallback = 2;
+ private:
+  friend void GetActiveHandles(const v8::FunctionCallbackInfo<v8::Value>&);
+  static void OnClose(uv_handle_t* handle);
+  v8::Persistent<v8::Object> object_;
+  QUEUE handle_wrap_queue_;
+  Environment* const env_;
+  unsigned int flags_;
+  // Using double underscore due to handle_ member in tcp_wrap. Probably
+  // tcp_wrap should rename it's member to 'handle'.
+  uv_handle_t* handle__;
+
+  static const unsigned int kUnref = 1;
+  static const unsigned int kCloseCallback = 2;
 };
 
 
 }  // namespace node
 
 
-#endif  // HANDLE_WRAP_H_
+#endif  // SRC_HANDLE_WRAP_H_

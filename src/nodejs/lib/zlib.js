@@ -107,32 +107,60 @@ exports.createUnzip = function(o) {
 
 // Convenience methods.
 // compress/decompress a string or buffer in one step.
-exports.deflate = function(buffer, callback) {
-  zlibBuffer(new Deflate(), buffer, callback);
+exports.deflate = function(buffer, opts, callback) {
+  if (util.isFunction(opts)) {
+    callback = opts;
+    opts = {};
+  }
+  zlibBuffer(new Deflate(opts), buffer, callback);
 };
 
-exports.gzip = function(buffer, callback) {
-  zlibBuffer(new Gzip(), buffer, callback);
+exports.gzip = function(buffer, opts, callback) {
+  if (util.isFunction(opts)) {
+    callback = opts;
+    opts = {};
+  }
+  zlibBuffer(new Gzip(opts), buffer, callback);
 };
 
-exports.deflateRaw = function(buffer, callback) {
-  zlibBuffer(new DeflateRaw(), buffer, callback);
+exports.deflateRaw = function(buffer, opts, callback) {
+  if (util.isFunction(opts)) {
+    callback = opts;
+    opts = {};
+  }
+  zlibBuffer(new DeflateRaw(opts), buffer, callback);
 };
 
-exports.unzip = function(buffer, callback) {
-  zlibBuffer(new Unzip(), buffer, callback);
+exports.unzip = function(buffer, opts, callback) {
+  if (util.isFunction(opts)) {
+    callback = opts;
+    opts = {};
+  }
+  zlibBuffer(new Unzip(opts), buffer, callback);
 };
 
-exports.inflate = function(buffer, callback) {
-  zlibBuffer(new Inflate(), buffer, callback);
+exports.inflate = function(buffer, opts, callback) {
+  if (util.isFunction(opts)) {
+    callback = opts;
+    opts = {};
+  }
+  zlibBuffer(new Inflate(opts), buffer, callback);
 };
 
-exports.gunzip = function(buffer, callback) {
-  zlibBuffer(new Gunzip(), buffer, callback);
+exports.gunzip = function(buffer, opts, callback) {
+  if (util.isFunction(opts)) {
+    callback = opts;
+    opts = {};
+  }
+  zlibBuffer(new Gunzip(opts), buffer, callback);
 };
 
-exports.inflateRaw = function(buffer, callback) {
-  zlibBuffer(new InflateRaw(), buffer, callback);
+exports.inflateRaw = function(buffer, opts, callback) {
+  if (util.isFunction(opts)) {
+    callback = opts;
+    opts = {};
+  }
+  zlibBuffer(new InflateRaw(opts), buffer, callback);
 };
 
 function zlibBuffer(engine, buffer, callback) {
@@ -277,7 +305,7 @@ function Zlib(opts, mode) {
   }
 
   if (opts.dictionary) {
-    if (!Buffer.isBuffer(opts.dictionary)) {
+    if (!util.isBuffer(opts.dictionary)) {
       throw new Error('Invalid dictionary: it should be a Buffer instance');
     }
   }
@@ -299,10 +327,10 @@ function Zlib(opts, mode) {
   };
 
   var level = exports.Z_DEFAULT_COMPRESSION;
-  if (typeof opts.level === 'number') level = opts.level;
+  if (util.isNumber(opts.level)) level = opts.level;
 
   var strategy = exports.Z_DEFAULT_STRATEGY;
-  if (typeof opts.strategy === 'number') strategy = opts.strategy;
+  if (util.isNumber(opts.strategy)) strategy = opts.strategy;
 
   this._binding.init(opts.windowBits || exports.Z_DEFAULT_WINDOWBITS,
                      level,
@@ -313,13 +341,43 @@ function Zlib(opts, mode) {
   this._buffer = new Buffer(this._chunkSize);
   this._offset = 0;
   this._closed = false;
+  this._level = level;
+  this._strategy = strategy;
 
   this.once('end', this.close);
 }
 
 util.inherits(Zlib, Transform);
 
-Zlib.prototype.reset = function reset() {
+Zlib.prototype.params = function(level, strategy, callback) {
+  if (level < exports.Z_MIN_LEVEL ||
+      level > exports.Z_MAX_LEVEL) {
+    throw new RangeError('Invalid compression level: ' + level);
+  }
+  if (strategy != exports.Z_FILTERED &&
+      strategy != exports.Z_HUFFMAN_ONLY &&
+      strategy != exports.Z_RLE &&
+      strategy != exports.Z_FIXED &&
+      strategy != exports.Z_DEFAULT_STRATEGY) {
+    throw new TypeError('Invalid strategy: ' + strategy);
+  }
+
+  if (this._level !== level || this._strategy !== strategy) {
+    var self = this;
+    this.flush(binding.Z_SYNC_FLUSH, function() {
+      self._binding.params(level, strategy);
+      if (!self._hadError) {
+        self._level = level;
+        self._strategy = strategy;
+        if (callback) callback();
+      }
+    });
+  } else {
+    process.nextTick(callback);
+  }
+};
+
+Zlib.prototype.reset = function() {
   return this._binding.reset();
 };
 
@@ -329,8 +387,13 @@ Zlib.prototype._flush = function(callback) {
   this._transform(new Buffer(0), '', callback);
 };
 
-Zlib.prototype.flush = function(callback) {
+Zlib.prototype.flush = function(kind, callback) {
   var ws = this._writableState;
+
+  if (util.isFunction(kind) || (util.isUndefined(kind) && !callback)) {
+    callback = kind;
+    kind = binding.Z_FULL_FLUSH;
+  }
 
   if (ws.ended) {
     if (callback)
@@ -344,7 +407,7 @@ Zlib.prototype.flush = function(callback) {
       self.flush(callback);
     });
   } else {
-    this._flushFlag = binding.Z_FULL_FLUSH;
+    this._flushFlag = kind;
     this.write(new Buffer(0), '', callback);
   }
 };
@@ -372,7 +435,7 @@ Zlib.prototype._transform = function(chunk, encoding, cb) {
   var ending = ws.ending || ws.ended;
   var last = ending && (!chunk || ws.length === chunk.length);
 
-  if (chunk !== null && !Buffer.isBuffer(chunk))
+  if (!util.isNull(chunk) && !util.isBuffer(chunk))
     return cb(new Error('invalid input'));
 
   // If it's the last chunk, or a final flush, we use the Z_FINISH flush flag.
@@ -406,7 +469,7 @@ Zlib.prototype._transform = function(chunk, encoding, cb) {
   req.callback = callback;
 
   var self = this;
-  function callback(availInAfter, availOutAfter, buffer) {
+  function callback(availInAfter, availOutAfter) {
     if (self._hadError)
       return;
 
