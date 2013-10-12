@@ -44,6 +44,8 @@ export SERVER_BIN="/srv/nemesis/app/app.js"
 
 case "$2" in
 	start)
+		cd /srv/nemesis
+		git pull nemesis master
 		clear
 		/usr/bin/nodejs $SERVER_BIN $SERVER_CONF
 	;;
