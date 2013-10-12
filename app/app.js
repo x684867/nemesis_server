@@ -60,7 +60,6 @@ var app={
 					+Array(64).join("-")+"\n"
 					+"app.start()\n\n"
 		);
-
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 		config.data.workers.forEach(
 			function(workerConfig,id,array){

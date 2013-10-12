@@ -5,17 +5,26 @@
 */
 module.exports=pidWriter;
 
-const LOGGER_SOURCE='lib.pidWriter';
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 global.logger=require(LOGGER_CLASS);
 
 
 function pidWriter(pidDir){
-	var log=new global.logger(LOGGER_SOURCE);	
+			console.log(Array(64).join("-")+"\n"
+					+"["+(new Date).toISOString()+"]"
+					+"[PID:"+process.pid+" <"+module.filename+">]\n"
+					+Array(64).join("-")+"\n"
+					+"pidWriter::constructor()\n\n"
+		);
 	
 	var pidFileBase=pidDir+'/nemesisWorker';
 	
 	this.createNew=function(pid){
+		console.log(Array(64).join("-")+"\n"
+					+"["+(new Date).toISOString()+"]"
+					+"[PID:"+process.pid+" <"+module.filename+">]\n"
+					+Array(64).join("-")+"\n"
+					+"pidWriter::createNew()\n\n"
+		);
 		(require('fs')).writeFile(pidFileBase+pid+'.pid',pid,function(err){
 			if(err) throw err;
 			log.write("wrote nemesisWorker.pid for pid:"+pid);
