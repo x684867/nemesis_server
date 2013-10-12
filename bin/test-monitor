@@ -11,8 +11,11 @@ while true; do
 	echo "$(date)   $(cat /proc/loadavg)"
 	echo " "
 	netstat -plant
-	echo "-----------------------"
+	echo " "
 	netstat -planu
+	echo " "
+	echo "PID  CPU     RAM    SCRIPT    ARGS"
+	ps aux | grep node | grep -v grep | awk '{print $2" "$3" "$4" "$5" "$8" "$11" "$12}'
 	sleep 1
 	clear
 
