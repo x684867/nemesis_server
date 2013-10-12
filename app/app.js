@@ -78,6 +78,9 @@ applicationClass={
 		if(!validator.isValidError(msg)) throw new Error(E_INV_MSG_ON_ERROR_EVENT);
 		throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on()");
 	}
+	code2:function(c,i,t,f,k,r,a){
+		return {"code":c,"data":{"id":i,"type":t,"config":f,"ssl":{"key":k,"cert":r,"ca_cert":a}}};
+	}
 	start:function(config){
 		this.log.drawBanner("app.js  PID:["+process.pid+"]");
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
@@ -87,10 +90,11 @@ applicationClass={
 				if(workerConfig.enabled){
 					log.source="app.loop";
 					child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
-					child.send(m={"code":2,"data":{"id":id,"type":config.data.serverType,
-						"config":workerConfig,"ssl":{"key":config.data.ssl.private_key,
-						"cert":config.data.ssl.public_key,"ca_cert":config.data.ssl.ca_cert}}}
-					);
+					child.send(this.code2(	
+						2,id,config.data.serverType,workerConfig,
+						config.data.ssl.private_key,config.data.ssl.public_key,
+						config.data.ssl.ca_cert
+					));
 					pidFile.createNew(child.pid);
 					log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
 					child.on('message',function(msg){this.evalIPCmessages(msg)});
