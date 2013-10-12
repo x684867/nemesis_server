@@ -63,6 +63,8 @@ var app={
 					+"app.start()\n\n"
 		);
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
+		this.pidCount=0;
+		this.pidList=Array()(;
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
@@ -78,6 +80,8 @@ var app={
 								    ca_cert:config.data.ssl.ca_cert	}}
 					};
 					pidFile.createNew(msg.pid);
+					global.pidList.push(msg.pid);
+					global.pidCount++;
 					console.log(timestamp()+"[PID:"+process.pid+"]-->\n"
 						+Array(80).join("-")+"\n"
 						+"message: "+JSON.stringify(msg)+"\n"
@@ -116,21 +120,25 @@ var app={
 					});
 					console.log(timestamp()+"setup exit listener");
 					child.on('exit',function(code,signal){
-						console.log(timestamp()+"worker exit ("+id+")("+code+","+signal+")");
+						console.log(timestamp()+"worker exit ("+id+")("+code+","+signal+") count:"+pidCount);
+						global.pidCount--;
 					});
 					child.on('close',function(code,signal){
-						console.log(timestamp()+"worker close ("+id+")("+code+","+signal+")");
+						console.log(timestamp()+"worker close ("+id+")("+code+","+signal+") count:"+pidCount);
+						global.pidCount--;
 					});
 					child.on('disconnect',function(){
-						console.log(timestamp()+"worker disconnect ("+id+")");
+						console.log(timestamp()+"worker disconnect ("+id+") count:"+pidCount);
+						global.pidCount
 					});
-					console.log(timestamp()+"end of worker initializer.");
+					console.log(timestamp()+"end of worker initializer. pidCount"+pidCount));
 				}else{
-					console.log(timestamp()+" worker #"+id+" disabled");
+					console.log(timestamp()+" worker #"+id+" disabled.  pidCount"+pidCount));
 				}
+				console.log(timestamp()+" PIDLIST=["+pidList.join()+"]");
 			}
 		);
-		return config;
+		return (pidCount>0)?true:false;
 	},
 	pollMonitoring:function(msg){
 		console.log(timestamp()+" Poll for monitoring invoked.");
