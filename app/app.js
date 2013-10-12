@@ -63,8 +63,8 @@ var app={
 					+"app.start()\n\n"
 		);
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
-		this.pidCount=0;
-		this.pidList=Array();
+		global.pidCount=0;
+		global.pidList=Array();
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
