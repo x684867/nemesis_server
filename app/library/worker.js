@@ -32,10 +32,8 @@ const LOG_CODE10_RECD='Worker received {code:10}.';
 const LOG_CODE2_VALIDATED='Validated {code:2} msg content';
 
 function workerClass(){
-
 	var log=new global.logger(LOGGER_SOURCE);	
 		log.drawBanner('worker.js is starting...');
-
 	process.on('message', function(msg){
 		log.write('worker.js has received a message from parent.');
 		if(typeof(msg)!=TOBJ) throw new Error(E_BAD_IPC_MSG);
