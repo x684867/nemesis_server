@@ -78,10 +78,10 @@ applicationClass={
 	evalIPCerrors:function(msg){
 		if(!validator.isValidError(msg)) throw new Error(E_INV_MSG_ON_ERROR_EVENT);
 		throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on()");
-	}
+	},
 	code2:function(c,i,t,f,k,r,a){
 		return {"code":c,"data":{"id":i,"type":t,"config":f,"ssl":{"key":k,"cert":r,"ca_cert":a}}};
-	}
+	},
 	start:function(config){
 		this.log.drawBanner("app.js  PID:["+process.pid+"]");
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
