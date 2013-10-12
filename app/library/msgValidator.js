@@ -39,7 +39,7 @@ const MSG_CD2_D_CORRECT='{code:2,data:<object>} is correctly formatted.';
 /* */
 function validatorClass(){
 	/* */
-	this.isValidError=function(msg) return (typeof(msg)=='object')?true:false;
+	this.isValidError=function(msg){return (typeof(msg)=='object')?true:false;}
 	this.typeCheck=function(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 	this.isUndefined=function(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 	/* */
