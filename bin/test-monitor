@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# Test Monitor Script
+# /srv/nemesis/bin/test-monitor
+# (c) 2013 Sam Caldwell.  All Rights Reserved.
+#
+[ "$(whoami)" != "root" ] && echo "$0 must be run as root" && exit 1
+
+while true; do
+
+	echo " "
+	echo "$(date)   $(cat /proc/loadavg)"
+	echo " "
+	netstat -plant
+	echo " "
+	netstat -planu
+	echo " "
+	ps efx | grep nodejs | grep -v grep
+	echo " "
+	
+
+done
