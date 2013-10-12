@@ -87,7 +87,7 @@ var app={
 		log=new logger("app(start)");
 		log.drawBanner("app.js  PID:["+process.pid+"]");
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
-		this.log.write("config.data.workers.forEach() starting...");
+		log.write("config.data.workers.forEach() starting...");
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
