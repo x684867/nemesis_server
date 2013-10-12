@@ -144,6 +144,14 @@ var app={
 }
 /*
 */
+console.log(Array(60).join("-")+"\n"
+			+"["+(new Date).toISOString()+"]"
+			+"<"+module.filename+">"
+			+"[PID:"+process.pid+"]\n"
+			+Array(60).join("-")+"\n"
+			+(require('traceback')()[1])
+			+"\n\n"
+);
 console.log("Starting Nemesis...");
 if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
 	if(app.start(config)){
