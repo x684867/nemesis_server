@@ -1,16 +1,17 @@
 /*
-	General Message Validator 
+	General Message Validator
+	/srv/nemesis/app/library/msgValidator.js 
 	(c) 2013 Sam Caldwell.  All Rights Reserved.  
  */
 module.exports=validatorClass;
-
+/* */
 const LOGGER_SOURCE='lib.msgValidator';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-
+/* */
 const TOBJ='object';
 const TSTR='string';
 const TNUM='number';
-
+/* */
 const E_M_CD_NOT_SET='Message code is undefined {msg.code}';
 const E_M_CD_NOT_NUM='Message code is not a number {msg.code}';
 const E_M_CD2_NON_OBJ='{code:2,data:<non-object>}';
@@ -32,22 +33,23 @@ const E_M_CD13_D_NOT_OBJ="Msg {code:13} data property is non-array.";
 const E_M_CD13_D_UNDEF="Msg {code:13} lacks data property.";
 const E_M_UNKNOWN_CODE="Unknown msg code encountered.";
 const E_M_NOT_OBJ='Message is not an object';
-/*
- */
+const E_M_NOT_IMPLEMENTED='Unimplemented message encountered.';
+/* */
 const MSG_CD2_D_CORRECT='{code:2,data:<object>} is correctly formatted.';
-
+/* */
 function validatorClass(){
-	logger=require(LOGGER_CLASS);;
-	this.log=new logger(LOGGER_SOURCE);	
+	/* */
 	this.isValidError=function(msg) return (typeof(msg)=='object')?true:false;
 	this.typeCheck=function(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 	this.isUndefined=function(d,e){if(typeof(d)=='undefined') throw new Error(e);}
+	/* */
+	logger=require(LOGGER_CLASS);
+	this.log=new logger(LOGGER_SOURCE);
+	/* */
 	this.isValidMsg=function(m){
 		if(typeof(m)==TOBJ){
-			log.write("msg is object.\n  Dumping:"+JSON.stringify(m));
-			if(m.code==undefined) throw new Error(E_MSG_CD_NOT_SET);
-			if(typeof(m.code)!=TNUM) throw new Error(E_MSG_CD_NOT_NUM);
-			log.write("eval msg.code value {code:"+m.code+"}");
+			this.isUndefined(m.code,E_MSG_CD_NOT_SET);
+			this.typeCheck(m.code,TNUM,E_MSG_CD_NOT_NUM);
 			switch(m.code){
 				case 0:return true;break;
 				case 1:return true;break;
@@ -69,8 +71,13 @@ function validatorClass(){
 					log.write(MSG_CD2_D_CORRECT);
 					return true;
 					break;				
-				case 3:return true;break;
-				case 4:return true;break;
+				case 3:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+				case 4:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+				case 5:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+				case 6:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+				case 7:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+				case 8:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+				case 9:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
 				case 10:return true;break;
 				case 11:
 					this.isUndefined(m.data,E_M_CD11_D_UNDEF);
@@ -83,6 +90,11 @@ function validatorClass(){
 					this.typeCheck(m.data,TOBJ,E_M_CD13_D_NOT_OBJ);
 					return true;
 					break;
+				case 95:return true;break;
+				case 96:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+				case 97:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
+				case 98:return true;break;
+				case 99:return true;break;
 				default:
 					throw new Error(E_M_UNKNOWN_CODE);
 					return false;
