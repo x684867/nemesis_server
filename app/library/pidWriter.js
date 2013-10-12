@@ -9,8 +9,8 @@ function pidWriter(pidDir){
 			console.log(Array(80).join("-")+"\n"
 					+"["+(new Date).toISOString()+"]"
 					+"[PID:"+process.pid+" <"+module.filename+">]\n"
+					+"pidWriter::constructor()\n"
 					+Array(80).join("-")+"\n"
-					+"pidWriter::constructor()\n\n"
 		);
 	
 	var pidFileBase=pidDir+'/nemesisWorker';
