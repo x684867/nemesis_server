@@ -79,28 +79,27 @@ var app={
 					console.log(JSON.stringify(msg));
 					
 					child.on('message',function(msg){
-						this.log=new logger("app(eval)");
 						validator=require(VALIDATOR_CLASS);
 		  				if(!validator.isValidMsg(msg)) throw(E_INV_MSG_PARENT);
 						switch(msg.code){
-							case 1:console.log("{P:1}=>{C:2}");break;
-							case 3:console.log("{P:3}=>{STOP}");break;
-							case 4:console.log("{P:4}=>{FAIL}");break;
+							case 1:console.log("["+(new Date).toISOString()+"]{P:1}=>{C:2}");break;
+							case 3:console.log("["+(new Date).toISOString()+"]{P:3}=>{STOP}");break;
+							case 4:console.log("["+(new Date).toISOString()+"]{P:4}=>{FAIL}");break;
 							case 11:
 								delay=(new Date()).getTime()/1000 - msg.data;
 								if(delay < config.data.monitor.heartbeat.threshold){
-									console.log("{P:11} hbeat w#"+id+":good");
+									console.log("["+(new Date).toISOString()+"]{P:11} hbeat w#"+id+":good");
 									this.pollMonitoring(msg);
 								}else{
-									console.log("{P:11} hbeat w#"+id+":slow");
+									console.log("["+(new Date).toISOString()+"]{P:11} hbeat w#"+id+":slow");
 									this.pollStatistics(msg);
 								}
 								break;
-							case 13:console.log("{P:13} not implemented");break;
-							case 97:console.log("{P:97} not implemented");break;
-							case 99:console.log("{P:99} not implemented");break;
+							case 13:console.log("["+(new Date).toISOString()+"]{P:13} not implemented");break;
+							case 97:console.log("["+(new Date).toISOString()+"]{P:97} not implemented");break;
+							case 99:console.log("["+(new Date).toISOString()+"]{P:99} not implemented");break;
 							default:
-								throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
+								throw new Error("["+(new Date).toISOString()+"]Unknown/Invalid msg.code: ["+msg.code+"]");
 								break;
 		  				}
 					});
@@ -109,19 +108,20 @@ var app={
 						throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on()");
 					});
 				}else{
-					console.log("id#"+id+" worker#"+workerConfig.workerId+" disabled");
+					console.log("["+(new Date).toISOString()+"] worker #"+id+" disabled");
 				}
 			}
 		);
 		return config;
 	},
 	pollMonitoring:function(msg){
-		console.log("Poll for monitoring invoked.");
+		console.log("["+(new Date).toISOString()+"] Poll for monitoring invoked.");
 	},
 	pollStatistics:function(msg){
-		console.log("Poll for statistics invoked.");
+		console.log("["+(new Date).toISOString()+"] Poll for statistics invoked.");
 	},
 	startMonitoring:function(config){
+		console.log("["+(new Date).toISOString()+"] app.startMonitoring()");
 		/*
 			Spawn process and run with the monitor app.
 			Pass the worker process id list and statistics process
@@ -130,9 +130,10 @@ var app={
 			workers to monitor heartbeat and spawn new workers if 
 			any fail.
 		 */
-		return config;
+		return true;
 	},
 	startStats:function(config){
+		console.log("["+(new Date).toISOString()+"] app.startStats()");
 		/*
 			Spawn process and run with the stats app.
 			Pass the worker process id list and monitor process id
@@ -140,7 +141,7 @@ var app={
 			monitor and stats while also connecting to the workers to
 			collect statistics.
 		*/
-		return config;
+		return true;
 	}	
 }
 /*
@@ -153,11 +154,11 @@ console.log(Array(80).join("-")+"\n"
 );
 if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
 	if(app.start(config)){
-		if(app.startMonitoring(config)){
+		if((app.startMonitoring(config)) && (app.startStats(config))){
 			console.log("All services are started.");
 			/*terminates*/
 		}else{
-			throw new Error('monitoring failed');
+			throw new Error('monitoring/stats failed');
 		}
 	}else{
 		throw new Error('app.start() failed');
