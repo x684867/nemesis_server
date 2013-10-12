@@ -80,7 +80,7 @@ var app={
 					
 					child.on('message',function(msg){
 						this.log=new logger("app(eval)");
-						var validator=new require(VALIDATOR_CLASS);
+						validator=new require(VALIDATOR_CLASS);
 		  				if(!validator.isValidMsg(msg)) throw(E_INV_MSG_PARENT);
 						switch(msg.code){
 							case 1:log.write("{P:1}=>{C:2}");break;
