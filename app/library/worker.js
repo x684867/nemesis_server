@@ -36,7 +36,7 @@ function workerClass(){
 			   +Array(74).join("-")
 	);
 	process.on('message', function(msg){
-		log.write(LOG_MSG_RECD);
+		console.log(timestamp()+LOG_MSG_RECD);
 		/* */
 		var validator=new require(VALIDATOR_CLASS);
 		if(validator.isValidMsg(msg)){
@@ -71,5 +71,6 @@ function workerClass(){
 			 throw(E_BAD_MSG_RECD);
 		}
 	});
+	console.log(timestamp()+"terminating workerClass()");
 }
 workerClass();
