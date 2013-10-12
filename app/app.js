@@ -37,6 +37,9 @@ const PID_WRITER_SCRIPT='/srv/nemesis/app/library/pidWriter.js';
 const VALIDATOR_CLASS='./library/msgValidator.js';
 const CONFIG_CLASS='./library/config.js';
 
+const E_INV_MSG_ON_ERROR_EVENT="Received invalid message object on error event.";
+const E_FEATURE_NOT_IMPLEMENTED="This feature is not implemented.";
+
 applicationClass={
 	log:(new (require(LOGGER_CLASS))(LOGGER_SOURCE)),
 	worker:[],
@@ -72,8 +75,6 @@ applicationClass={
 				break;
 	  	}
 	},
-	const E_INV_MSG_ON_ERROR_EVENT="Received invalid message object on error event.";
-	const E_FEATURE_NOT_IMPLEMENTED="This feature is not implemented.";
 	evalIPCerrors:function(msg){
 		if(!validator.isValidError(msg)) throw new Error(E_INV_MSG_ON_ERROR_EVENT);
 		throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on()");
