@@ -63,35 +63,30 @@ var app={
 					+"app.start()\n\n"
 		);
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
-		global.pidCount=0;
-		global.pidList=Array();
+		global.procs=Array();
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
 					console.log(timestamp()+" spawning worker #"+id);
-					child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
-					console.log(
-								 timestamp()
-								+" child pid ["+child.pid+"]"
-								+" count ["+global.pidCount+"]"
-					);
-					msg={code:2,
-						 pid:child.pid,
-						 data:{id:id,
-						 	   type:config.data.serverType,
-							   config:workerConfig,
-							   ssl:{key:config.data.ssl.private_key,
-								    cert:config.data.ssl.public_key,
-								    ca_cert:config.data.ssl.ca_cert	}}
-					};
-					pidFile.createNew(msg.pid);
-					global.pidList.push(msg.pid);
-					global.pidCount++;
-					console.log(timestamp()+"[PID:"+process.pid+"]-->\n"
-						+Array(80).join("-")+"\n"
-						+"message: "+JSON.stringify(msg)+"\n"
-						+Array(80).join("-")+"\n"
-					);
+					var child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
+					if(child){
+						console.log(timestamp()
+								   +" child pid ["+child.pid+"]"
+								   +" count ("+global.procs.length+")"
+								   +" name:'"+global.procs.title+"'"
+						);
+						global.procs.push(child);
+						msg={code:2,
+							 pid:child.pid,
+							 data:{id:id,
+							 	   type:config.data.serverType,
+								   config:workerConfig,
+								   ssl:{key:config.data.ssl.private_key,
+									    cert:config.data.ssl.public_key,
+									    ca_cert:config.data.ssl.ca_cert	}}
+						};
+						pidFile.createNew(msg.pid);
+						console.log(timestamp()+"[PID:"+process.pid+"] JSON:"+JSON.stringify(msg));
 					console.log(timestamp()+"setup message listener");
 					child.on('message',function(msg){
 						validator=require(VALIDATOR_CLASS);
