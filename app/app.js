@@ -56,10 +56,12 @@ log.drawBanner("app.js   PID:["+process.pid+"]");
 
 /*Setup Process management*/
 log.write("Setup Process Management");
+/*
 process.on('SIGHUP',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGHUP]");});
 process.on('SIGKILL',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGKILL]");});
 process.on('SIGINT',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGINT]");});
 process.on('SIGTERM',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGTERM]");});
+*/
 log.write("Process Management Setup Complete");
 
 log.write("Load the configuration passed in by arg[2]");
