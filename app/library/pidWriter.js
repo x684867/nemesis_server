@@ -5,9 +5,6 @@
 */
 module.exports=pidWriter;
 
-global.logger=require(LOGGER_CLASS);
-
-
 function pidWriter(pidDir){
 			console.log(Array(64).join("-")+"\n"
 					+"["+(new Date).toISOString()+"]"
