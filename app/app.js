@@ -50,15 +50,6 @@ var monitor=Array();
 /*Start the logger and show a banner*/
 log.drawBanner("app.js   PID:["+process.pid+"]");
 
-/*Setup Process management*/
-/*log.write("Setup Process Management");
-process.on('SIGHUP',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGHUP]");});
-process.on('SIGKILL',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGKILL]");});
-process.on('SIGINT',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGINT]");});
-process.on('SIGTERM',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGTERM]");});
-log.write("Process Management Setup Complete");
-*/
-
 var config=new configFactory(config_filename);
 pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 
@@ -67,9 +58,16 @@ config.data.workers.forEach(
 	function(workerConfig,id,array){
 		if(workerConfig.enabled){
 			log.source="app.loop";
-			child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
-			child.title=config.data.serverType+id
-			child.send({code:0});
+			try{
+				child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
+			}catch (e){
+				throw new Error('Error occurred in child.fork() Error:'+e.message);
+			}
+			try{
+				child.send({code:0});
+			}catch(e){
+				throw new Error('Error occurred in child.send() Error:'+e.message);
+			}
 			pidFile.createNew(child.pid);
 			log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
 			child.on('message',function(msg){
