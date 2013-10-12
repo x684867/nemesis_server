@@ -39,7 +39,7 @@ case "$1" in
 	;;
 esac
 export SERVER_TYPE="$1"
-export SERVER_CONF="/srv/nemesis/etc/nemesis/${SERVER_TYPE}.config.json"
+export SERVER_CONF="/srv/nemesis/etc/nemesis/servers/${SERVER_TYPE}.config.json"
 export SERVER_BIN="/srv/nemesis/app/app.js"
 
 case "$2" in
