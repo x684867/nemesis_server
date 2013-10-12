@@ -32,9 +32,12 @@ function timestamp(){return "["+(new Date).toISOString()+"]";}
 function workerClass(){
 	console.log(Array(74).join('-')+"\n"
 			   +timestamp()+" <"+module.filename+">\n"
-			   +"Starting worker.js constructor...\n"
+			   +"Starting workerClass()...\n"
 			   +Array(74).join("-")
 	);
+	console.log(timestamp()+"workerClass():setup IPC message listener")
+	process.on('exit',function(code){console.log(timestamp()+"worker exit");});
+	process.on('close',function(code){console.log(timestamp()+"worker close");});
 	process.on('message', function(msg){
 		console.log(timestamp()+LOG_MSG_RECD);
 		/* */
@@ -71,6 +74,6 @@ function workerClass(){
 			 throw(E_BAD_MSG_RECD);
 		}
 	});
-	console.log(timestamp()+"terminating workerClass()");
+	console.log(timestamp()+"workerClass() terminating");
 }
 workerClass();
