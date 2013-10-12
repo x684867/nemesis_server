@@ -54,10 +54,10 @@ var app={
 		};
 	},
 	start:function(config){
-		console.log(Array(64).join("-")+"\n"
+		console.log(Array(80).join("-")+"\n"
 					+"["+(new Date).toISOString()+"]"
 					+"[PID:"+process.pid+" <"+module.filename+">]\n"
-					+Array(64).join("-")+"\n"
+					+Array(80).join("-")+"\n"
 					+"app.start()\n\n"
 		);
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
@@ -144,10 +144,10 @@ var app={
 }
 /*
 */
-console.log(Array(64).join("-")+"\n"
+console.log(Array(80).join("-")+"\n"
 			+"["+(new Date).toISOString()+"]"
 			+"[PID:"+process.pid+" <"+module.filename+">]\n"
-			+Array(64).join("-")+"\n"
+			+Array(80).join("-")+"\n"
 			+"Starting Nemesis...\n\n"
 );
 if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
