@@ -149,13 +149,19 @@ var app={
 console.log("Starting Nemesis...");
 /*Capture command-line arguments*/
 (function(){
-	system=app.startStats(app.startMonitoring(app.start(app.loadconfig(process.argv[2]))));
-	if(system.status==0){
-		console.log("All workers have been spawned.  Terminating app.js");
-		process.exit(0);
+	if(config=app.loadconfig(process.argv[2])){
+		if(app.start(config)){
+			if(app.startMonitoring(config)){
+				console.log("All services are started.");
+				/*terminates*/
+			}else{
+				throw new Error('monitoring failed');
+			}
+		}else{
+			throw new Error('app.start() failed');
+		}
 	}else{
-		throw new ("One or more errors occurred during app.start().");
-		process.exit(1);
+		throw new Error('app.loadconfig() failed to load configuration.');
 	}
 });
 
