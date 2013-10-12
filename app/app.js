@@ -52,7 +52,7 @@ var monitor=Array();
 /*Start the logger and show a banner*/
 
 var log=new global.logger(LOGGER_SOURCE);	
-log.drawBanner("app.js starting as master process pid:["+process.pid+"]");
+log.drawBanner("app.js\n\t\t\tMaster process pid:["+process.pid+"]");
 
 /*Setup Process management*/
 process.title="nemesisMaster";
