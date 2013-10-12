@@ -32,8 +32,7 @@ function BrokerServer(id,config,ssl_config){
 
 	log.write("BrokerServer():{ipAddress:'"+config.ipAddress+"',"
 	         				   +"ipPort:"+config.ipPort+","
-	         				   +"ssl enabled:"+config.ssl
-	         +"}");
+	         				   +"ssl:"+config.ssl+"}");
 	this.status=0;/*successful spawn.  Return non-zero for error codes.*/
 
 	log.write('Server instances is created. Call server.start() to launch.');
