@@ -1,5 +1,5 @@
 /*
-	/srv/nemsis/app/nemesis-logger.js
+	/srv/nemsis/app/logger/logger.js
 	Nemesis Logger
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	
@@ -26,6 +26,7 @@ function logger(source){
 	}
 	this.rawWrite=function(m){
 		(require('fs')).appendFile(logfile,m,function(err){if(err) throw err;});
+		console.log(m);
 	}
 	this.write=function(message){
 		this.rawWrite(source+"["+(new Date).toUTCString()+"] "+message);
