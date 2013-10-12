@@ -72,22 +72,11 @@ config.data.workers.forEach(
 	function(workerConfig,id,array){
 		if(workerConfig.enabled){
 			log.source="app.loop";
-			log.drawLine(60);
-			log.write("fork process with wrapper");
 			child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
 			child.title=config.data.serverType+id
 			child.send({code:0});
-			
 			pidFile.createNew(child.pid);
-			
-			log.write(
-				  "\n\nworker["+id+"]={\n"
-				 +"\t'type':"+config.data.serverType+",\n"
-				 +"\t'config':"+JSON.stringify(workerConfig)+",\n"
-				 +"\t'pid':"+child.pid+",\n"
-				 +"}\n\n"
-			);
-			log.drawLine();
+			log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
 			child.on('message',function(msg){
 				if(!validator.isValidMsg(msg)) throw("Parent: Rec'd invalid msg object.");
 				switch(msg.code){
@@ -107,10 +96,7 @@ config.data.workers.forEach(
 						child.send(msgCode2);
 						log.write("P:"+JSON.stringify(msgCode2)+"to C#"+id);
 						break;
-					case 3:
-						log.write("P:{code:3}from C#"+id);
-						/*This should be recorded to stats*/
-						break;
+					case 3:log.write("P:{code:3}from C#"+id);break;
 					case 11:
 						delay=(new Date()).getTime()/1000 - msg.data;
 						if(delay < config.data.monitor.heartbeat.threshold){
