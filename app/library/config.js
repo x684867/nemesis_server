@@ -65,7 +65,6 @@ function timestamp(){return "["+(new Date).toISOString()+"]";}
 function config(filename){
 	var fs =require('fs');
 
-	var log=new global.logger(LOGGER_SOURCE);	
 	console.log(Array(74).join('-')+"\n"
 			   +timestamp()+" <"+module.filename+">\n"
 			   +"config file: "+filename+"\n"
