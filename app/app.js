@@ -50,12 +50,6 @@ var app={
 		var config=new configFactory(config_filename);
 		return config;
 	},
-	evalIPCerrors:function(msg){
-		return function(msg){
-			if(!validator.isValidError(msg)) throw new Error(E_INV_MSG_ON_ERROR_EVENT);
-			throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on()");
-		}
-	},
 	code2:function(c,i,t,f,k,r,a){
 		return {"code":c,"data":{"id":i,"type":t,"config":f,"ssl":{"key":k,"cert":r,"ca_cert":a}}};
 	},
@@ -68,8 +62,7 @@ var app={
 				if(workerConfig.enabled){
 					child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
 					child.send(
-						{
-							code:2,
+						{	code:2,
 							data:{
 								id:id,
 								type:config.data.serverType,
@@ -84,6 +77,7 @@ var app={
 					);
 					pidFile.createNew(child.pid);
 					log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
+					
 					child.on('message',function(msg){
 						this.log=new logger("app(eval)");
 		  				if(!(new require(VALIDATOR_CLASS)).isValidMsg(msg)) throw(E_INV_MSG_PARENT);
@@ -110,11 +104,10 @@ var app={
 								break;
 		  				}
 					});
-					child.on('error',this.evalIPCerrors(msg));
-					/*
-					monitorFactory=require('./monitor/monitorFactory.js');
-					monitor.push(new monitorFactory(child,config));	
-					*/
+					child.on('error',function(msg){
+						if(!validator.isValidError(msg)) throw new Error(E_INV_MSG_ON_ERROR_EVENT);
+						throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on()");
+					});
 				}else{
 					log.write("id#"+id+" worker#"+workerConfig.workerId+" disabled (config).");
 				}
