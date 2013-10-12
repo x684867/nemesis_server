@@ -14,9 +14,6 @@ while true; do
 	netstat -plant
 	echo " "
 	netstat -planu
-	echo " "
-	ps efx | grep nodejs | grep -v grep
-	echo " "
 	sleep 1
 	clear
 
