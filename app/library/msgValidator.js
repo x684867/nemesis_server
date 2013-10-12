@@ -64,13 +64,13 @@ function validatorClass(){
 				this.typeCheck(m.data.config,TOBJ,E_M_CD2_CFG_NAO);
 				this.isUndefined(m.data.config.workerId,E_M_CD2_CFG_WID_UNDEF);
 				this.isUndefined(m.data.config.ipAddress,E_M_CD2_CFG_IP_UNDEF);
-				this.isUndefined(m.data.config.ipPort,E_M_CD2_CFG_PORT_UNDEF)
+				this.isUndefined(m.data.config.ipPort,E_M_CD2_CFG_PORT_UNDEF);
 				this.typeCheck(m.data.config.workerId,TNUM,E_M_CD2_CFG_ID_NAN);
 				this.typeCheck(m.data.config.ipAddress,TSTR,E_M_CD2_CFG_IP_NSTR);
 				this.typeCheck(m.data.config.ipPort,TNUM,E_M_CD2_CFG_PORT_NAN);
 				this.log.write(MSG_CD2_D_CORRECT);
 				return true;
-				break;				
+				break;		
 			case 3:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
 			case 4:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
 			case 5:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
