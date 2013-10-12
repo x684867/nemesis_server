@@ -144,7 +144,10 @@ var app={
 				}else{
 					console.log(timestamp()+"worker #"+id+" disabled.  pidCount"+global.procs.length);
 				}
-				console.log(timestamp()+" PIDLIST=["+global.procs.join()+"]");
+				console.log(
+					timestamp()
+					+" PIDLIST=["+global.procs.forEach(function(p,i,a){return p.pid;})+"]"
+				);
 			}
 		);
 		return (global.procs.length>0)?true:false;
