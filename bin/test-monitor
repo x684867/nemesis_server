@@ -14,7 +14,7 @@ while true; do
 	echo " "
 	netstat -planu
 	echo " "
-	echo "PID  CPU     RAM    SCRIPT    ARGS"
+	echo "PID  CPU     RAM   S/R   SCRIPT           ARGS"
 	ps aux | grep node | grep -v grep | awk '{print $2" "$3" "$4" "$5" "$8" "$11" "$12}'
 	sleep 1
 	clear
