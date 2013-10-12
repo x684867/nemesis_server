@@ -89,7 +89,7 @@ var app={
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
-					log.source="app.loop";
+					this.log.source="app.loop";
 					child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
 					child.send(this.code2(	
 						2,id,config.data.serverType,workerConfig,
@@ -97,7 +97,7 @@ var app={
 						config.data.ssl.ca_cert
 					));
 					pidFile.createNew(child.pid);
-					log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
+					this.log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
 					child.on('message',function(msg){this.evalIPCmessages(msg)});
 					child.on('error',function(msg){this.evalIPCerrors(msg)});
 					monitorFactory=require('./monitor/monitorFactory.js');
