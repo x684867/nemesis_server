@@ -73,7 +73,7 @@ function config(filename){
 			   +timestamp()+" <"+module.filename+">\n"
 			   +"config file: "+filename+"\n"
 			   +"Starting config constructor...\n"
-			   +Array(74).join("-")+"\n"
+			   +Array(74).join("-")
 	);
 
 	this.data={status:undefined};
@@ -95,7 +95,7 @@ function config(filename){
 			throw new Error(E_CFG_FILE_NOT_FOUND+":"+filename);
 		}
 	}
-	log.write("validating configuration file");
+	console.log(timestamp()+"validating configuration file");
 	
 	var requireSSL=false;
 	
@@ -131,29 +131,29 @@ function config(filename){
 		if(typeof(w.ssl)!=TBOOL) throw new Error(E_BAD_WRKR_SSL);
 		if(w.ssl){
 			w.ipPort=443
-			log.write("NOTICE: ssl=true.  Override ipPort to 443");
+			console.log(timestamp()+"NOTICE: ssl=true.  Override ipPort to 443");
 			requireSSL=true;
 		}
 	});
 	if(this.data.requireSSL){
 		/*SSL Verification must come AFTER the worker verification*/
-		log.write("SSL Verification required.");
+		console.log(timestamp()+"SSL Verification required.");
 		if(typeof(this.data.ssl)!=TOBJ) throw new Error(E_BAD_SSL_OBJ);
 		if(typeof(this.data.ssl.private_key)!=TSTR) throw new Error(E_BAD_SSL_KEY);
 		if(typeof(this.data.ssl.public_key)!=TSTR) throw new Error(E_BAD_SSL_CRT);
 		if(typeof(this.data.ssl.ca_cert)!=TSTR) throw new Error(E_BAD_SSL_CA);	
 
-		log.write("Verifying that SSL Certificate/Key files exist.");
+		console.log(timestamp()+"Verifying that SSL Certificate/Key files exist.");
 		[	{"file":this.data.ssl.private_key,"error":E_MISSING_SSL_KEY},
 			{"file":this.data.ssl.public_key,"error":E_MISSING_SSL_CERT},
 			{"file":this.data.ssl.ca_cert,"error":E_MISSING_SSL_CA}
 		].forEach(function(o,i){
 			if(!fs.lstatSync(o.file).isFile()) throw new Error(o.error);
-			log.write("  EXISTS!  ["+i+"]:["+o.file+"]");
+			console.log(timestamp()+"  EXISTS!  ["+i+"]:["+o.file+"]");
 		});
 	}else{
-		log.write("SSL Verification not required.");
+		console.log(timestamp()+"SSL Verification not required.");
 	}	
-	log.write("configuration JSON object is valid");
-	log.write("exit constructor.");
+	console.log(timestamp()+"configuration JSON object is valid");
+	console.log(timestamp()+"exit constructor.");
 }
