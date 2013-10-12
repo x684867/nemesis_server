@@ -54,10 +54,10 @@ var app={
 		};
 	},
 	start:function(config){
-		console.log(Array(60).join("-")+"\n"
+		console.log(Array(64).join("-")+"\n"
 					+"["+(new Date).toISOString()+"]"
 					+"[PID:"+process.pid+" <"+module.filename+">]\n"
-					+Array(60).join("-")+"\n"
+					+Array(64).join("-")+"\n"
 					+"Starting Nemesis...\n\n"
 		);
 
@@ -145,10 +145,10 @@ var app={
 }
 /*
 */
-console.log(Array(60).join("-")+"\n"
+console.log(Array(64).join("-")+"\n"
 			+"["+(new Date).toISOString()+"]"
 			+"[PID:"+process.pid+" <"+module.filename+">]\n"
-			+Array(60).join("-")+"\n"
+			+Array(64).join("-")+"\n"
 			+"Starting Nemesis...\n\n"
 );
 if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
