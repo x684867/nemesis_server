@@ -68,7 +68,12 @@ function config(filename){
 	var fs =require('fs');
 
 	var log=new global.logger(LOGGER_SOURCE);	
-	log.drawBanner("starting config constructor\n  Filename: "+filename);
+	console.log(Array(74).join('-')+"\n"
+			   +timestamp()+" <"+module.filename+">\n"
+			   +"config file: "+filename+"\n"
+			   +"Starting config constructor...\n"
+			   +Array(74).join("-")+"\n"
+	);
 
 	this.data={status:undefined};
 	
