@@ -113,11 +113,10 @@ var app={
 								default:
 									throw new Error(timestamp()+":Unk/Inv code:"+msg.code);
 									break;
-		  					}
-		  				}else{
-		  					console.log(timestamp()+"child process failed to spawn.");
-		  				}
-					});
+		  				});
+		  			}else{
+		  				console.log(timestamp()+"child process failed to spawn.");
+		  			}
 					console.log(timestamp()+"setup error listener");
 					child.on('error',function(msg){
 						if(!validator.isValidError(msg)) throw new Error(E_INV_MSG_ON_ERROR_EVENT);
