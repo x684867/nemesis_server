@@ -30,7 +30,7 @@
 			*Begin service development.
 	---------------------------------------------------------------------------------
 */
-console.log("Starting Nemesis...");
+console.log("Starting Nemesis ["+(new Date).toISOString()+"]...");
 const LOGGER_SOURCE='app.main';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 global.logger=require(LOGGER_CLASS);
