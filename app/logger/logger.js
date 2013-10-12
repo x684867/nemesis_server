@@ -20,13 +20,10 @@ const TOBJ='object';
 const logfile='/var/log/nemesis/nemesis.log';
 
 function logger(source){
-	
-	this.rotatelog=function(){
-		(require('fs')).rename(logfile,logfile+"."+(new Date).getTime());
-	}
+
 	this.rawWrite=function(m){
 		(require('fs')).appendFile(logfile,m,function(err){if(err) throw err;});
-		console.log(m);
+		console.log("\n"+m+"\n");
 	}
 	this.write=function(message){
 		this.rawWrite(source+"["+(new Date).toISOString()+"] "+message);
