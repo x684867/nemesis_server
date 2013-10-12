@@ -83,23 +83,22 @@ var app={
 						var validator=new require(VALIDATOR_CLASS);
 		  				if(!validator.isValidMsg(msg)) throw(E_INV_MSG_PARENT);
 						switch(msg.code){
-							case 1:
-								log.write("{{P:{code:1},{D:"+JSON.stringify(m)+"},{C:"+id+"}}");
-								break;
-							case 3:log.write("{{P:{code:3}},{C:"+id+"}}");break;
+							case 1:log.write("{P:1}=>{C:2}");break;
+							case 3:log.write("{P:3}=>{STOP}");break;
+							case 4:log.write("{P:4}=>{FAIL}");break;
 							case 11:
 								delay=(new Date()).getTime()/1000 - msg.data;
 								if(delay < config.data.monitor.heartbeat.threshold){
-									log.write("P:{code:11} heartbeat worker#"+id+":good");
+									log.write("{P:11} hbeat w#"+id+":good");
 									/*Record to stats*/
 								}else{
-									log.write("P:{code:11} heartbeat worker#"+id+":slow");
+									log.write("{P:11} hbeat w#"+id+":slow");
 									/*Record to stats*/
 								}
 								break;
-							case 13:log.write("{code:13} not implemented");break;
-							case 97:log.write("{code:97} not implemented");break;
-							case 99:log.write("{code:99} not implemented");break;
+							case 13:log.write("{P:13} not implemented");break;
+							case 97:log.write("{P:97} not implemented");break;
+							case 99:log.write("{P:99} not implemented");break;
 							default:
 								throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
 								break;
