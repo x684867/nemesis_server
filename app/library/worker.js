@@ -61,17 +61,11 @@ process.on('message', function(msg){
 		case 96:log.write(E_IPC_CODE_NOT_IMPLEMENTED+":{code:"+msg.code+"}"); break;
 		case 98:log.write(E_IPC_CODE_NOT_IMPLEMENTED+":{code:"+msg.code+"}"); break;
 		default:
-			throw new Error(
-							(msg.code==undefined)
-							?E_UNDEFINED_CHILD_PROCESS
-							:(E_INV_CHILD_RECEIVED+":"+msg.code)
-			);
+			if(msg.code==undefined){
+				throw new Error(E_UNDEFINED_CHILD_PROCESS);
+			}else{
+				throw new Error(E_INV_CHILD_RECEIVED+":"+msg.code);
+			}
 			break;
 	}
 });
-/*
-process.on('SIGHUP',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGHUP]");});
-process.on('SIGKILL',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGKILL]");});
-process.on('SIGINT',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGINT]");});
-process.on('SIGTERM',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGTERM]");});
-*/
