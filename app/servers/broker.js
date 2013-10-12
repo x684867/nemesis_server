@@ -41,6 +41,7 @@ function BrokerServer(id,config,ssl_config){
 					res.writeHead(200, {'Content-Type': 'text/plain'});
 					res.end('Hello World.  I am broker#'+config.workerId+'\n');
 				});
+			server.on('EADDRINUSE',function(err){throw(err);});
 			server.listen(config.ipPort,config.ipAddress);
 			log.write('Server started!');
 			return SERVER_OK;
