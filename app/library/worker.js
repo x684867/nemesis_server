@@ -44,24 +44,17 @@ function workerClass(){
 		var validator=new require(VALIDATOR_CLASS);
 		if(validator.isValidMsg(msg)){
 			switch(msg.code){
-				/**/
-				case 0:	console.log(timestamp()+LOG_CODE0_RECD);process.send({code:1});break;
-				/**/
-				case 2: console.log(timestamp()+LOG_CODE2_RECD);
-						console.log(timestamp()+LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
-						serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
-						server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
-						process.send({code:server.start()});
-						break;
-				/**/
+				case 0:console.log(timestamp()+LOG_CODE0_RECD);process.send({code:1});break;
+				case 2:console.log(timestamp()+LOG_CODE2_RECD);
+					   console.log(timestamp()+LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
+					   serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
+					   server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
+					   process.send({code:server.start()});
+					   break;
 				case 10:process.send({'code':11,'data':msg.data});break;
-				/**/
 				case 12:break;
-				/**/
 				case 96:break;
-				/**/
 				case 98:break;
-				/**/
 				default:
 					if(msg.code==undefined){
 						throw new Error(E_UNDEFINED_CHILD_PROCESS);
