@@ -39,7 +39,7 @@ const CONFIG_CLASS='./library/config.js';
 
 applicationClass={
 	logger:require(LOGGER_CLASS),
-	log:(new logger(LOGGER_SOURCE),
+	log:(new logger(LOGGER_SOURCE)),
 	worker:[],
 	monitor:[],
 
