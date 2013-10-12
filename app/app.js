@@ -125,5 +125,5 @@ config.data.workers.forEach(
 		log.write("id#"+id+" worker#"+workerConfig.workerId+" disabled (config).");
 	}
 });
-console.log("All workers have been spawned.  Terminating app.js");
+log.write("All workers have been spawned.  Terminating app.js");
 //process.exit(0);
