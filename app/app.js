@@ -84,8 +84,8 @@ var app={
 		return {"code":c,"data":{"id":i,"type":t,"config":f,"ssl":{"key":k,"cert":r,"ca_cert":a}}};
 	},
 	start:function(config){
-		this.log=new logger("app(start)");
-		this.log.drawBanner("app.js  PID:["+process.pid+"]");
+		log=new logger("app(start)");
+		log.drawBanner("app.js  PID:["+process.pid+"]");
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 		this.log.write("config.data.workers.forEach() starting...");
 		config.data.workers.forEach(
@@ -108,7 +108,7 @@ var app={
 						}
 					);
 					pidFile.createNew(child.pid);
-					this.log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
+					log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
 					child.on('message',function(msg){this.evalIPCmessages(msg)});
 					child.on('error',function(msg){this.evalIPCerrors(msg)});
 					monitorFactory=require('./monitor/monitorFactory.js');
