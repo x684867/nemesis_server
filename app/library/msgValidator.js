@@ -39,14 +39,14 @@ const MSG_CD2_D_CORRECT='{code:2,data:<object>} is correctly formatted.';
 /* */
 function validatorClass(){
 	this.isValidError=function(msg){return (typeof(msg)=='object')?true:false;}
-	this.typeCheck=function(d,t,e){if(typeof(d)!=t) throw new Error(e);}
-	this.isUndefined=function(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 }
-function typeCheck(m,TOBJ,E_M_NOT_OBJ);
-function isUndefined(m.code,E_M_CD_NOT_SET);
-function typeCheck(m.code,TNUM,E_M_CD_NOT_NUM);
+function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}
+function isUndefined(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 
 validatorClass.isValidMsg=function(m){
+	typeCheck(m,TOBJ,E_M_NOT_OBJ);
+	isUndefined(m.code,E_M_CD_NOT_SET);
+	typeCheck(m.code,TNUM,E_M_CD_NOT_NUM);
 	switch(m.code){
 		case 0:return true;break;
 		case 1:return true;break;
