@@ -63,7 +63,6 @@ var app={
 					+"app.start()\n\n"
 		);
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
-		global.procs=Array();
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
@@ -125,22 +124,21 @@ var app={
 					});
 					console.log(timestamp()+"setup exit listener");
 					child.on('exit',function(code,signal){
-						console.log(timestamp()+"worker exit ("+id+")("+code+","+signal+") count:"+pidCount);
-						global.pidCount--;
+						console.log(timestamp()+"worker exit ("+id+")("+code+","+signal+") count:"+global.procs.length);
 					});
 					child.on('close',function(code,signal){
-						console.log(timestamp()+"worker close ("+id+")("+code+","+signal+") count:"+pidCount);
+						console.log(timestamp()+"worker close ("+id+")("+code+","+signal+") count:"+global.procs.length);
 						global.pidCount--;
 					});
 					child.on('disconnect',function(){
-						console.log(timestamp()+"worker disconnect ("+id+") count:"+pidCount);
+						console.log(timestamp()+"worker disconnect ("+id+") count:"+global.procs.length);
 						global.pidCount
 					});
-					console.log(timestamp()+"end of worker initializer. pidCount"+pidCount);
+					console.log(timestamp()+"end of worker initializer. pidCount"+global.procs.length);
 				}else{
-					console.log(timestamp()+" worker #"+id+" disabled.  pidCount"+pidCount);
+					console.log(timestamp()+"worker #"+id+" disabled.  pidCount"+global.procs.length);
 				}
-				console.log(timestamp()+" PIDLIST=["+pidList.join()+"]");
+				console.log(timestamp()+" PIDLIST=["+global.procs.join()+"]");
 			}
 		);
 		return (pidCount>0)?true:false;
@@ -182,6 +180,7 @@ console.log(Array(80).join("-")+"\n"
 			+Array(80).join("-")+"\n"
 			+"Starting Nemesis...\n\n"
 );
+global.procs=Array();
 if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
 	if(app.start(config)){
 		if((app.startMonitoring(config)) && (app.startStats(config))){
