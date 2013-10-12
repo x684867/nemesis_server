@@ -13,7 +13,7 @@ module.exports=workerClass
 const SERVER_SCRIPT_PATH='/srv/nemesis/app/servers/';
 const LOGGER_SOURCE='lib.worker';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-global.logger=require(LOGGER_CLASS);
+
 const TOBJ='object';
 const TSTR='string';
 const TNUM='number';
@@ -32,7 +32,8 @@ const LOG_CODE10_RECD='Worker received {code:10}.';
 const LOG_CODE2_VALIDATED='Validated {code:2} msg content';
 
 function workerClass(){
-	var log=new global.logger(LOGGER_SOURCE);	
+		
+	var log=(new require(LOGGER_CLASS))(LOGGER_SOURCE);	
 		log.drawBanner('worker.js is starting...');
 	process.on('message', function(msg){
 		log.write('worker.js has received a message from parent.');
