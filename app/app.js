@@ -141,7 +141,7 @@ var app={
 				console.log(timestamp()+" PIDLIST=["+global.procs.join()+"]");
 			}
 		);
-		return (pidCount>0)?true:false;
+		return (global.procs.length>0)?true:false;
 	},
 	pollMonitoring:function(msg){
 		console.log(timestamp()+" Poll for monitoring invoked.");
