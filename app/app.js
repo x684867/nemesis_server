@@ -67,8 +67,12 @@ var app={
 				if(workerConfig.enabled){
 					var child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
 					if(child){
-						console.log(timestamp()+"spawn worker #"+id+" pid#"+child.pid);
 						global.procs.push(child);
+						console.log(timestamp()
+							      +"spawn worker #"+id
+							      +" pid#"+child.pid
+							      +" proc_count:"+global.procs.length
+						);
 						pidFile.createNew(child.pid);
 						msg={code:2,
 							 pid:child.pid,
