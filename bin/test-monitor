@@ -17,6 +17,7 @@ while true; do
 	echo " "
 	ps efx | grep nodejs | grep -v grep
 	echo " "
-	
+	sleep 1
+	clear
 
 done
