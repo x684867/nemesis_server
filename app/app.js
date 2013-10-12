@@ -112,7 +112,7 @@ var app={
 */
 console.log("Starting Nemesis...");
 /*Capture command-line arguments*/
-if(app.start(app.loadConfiguration(process.argv[2]))==0){
+if(app.start(app.loadconfig(process.argv[2]))==0){
 	console.log("All workers have been spawned.  Terminating app.js");
 	process.exit(0);
 }else{
