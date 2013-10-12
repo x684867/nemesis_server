@@ -58,21 +58,8 @@ config.data.workers.forEach(
 	function(workerConfig,id,array){
 		if(workerConfig.enabled){
 			log.source="app.loop";
-			try{
-				child=require('child_process').spawn
-				worker=child(CHILD_PROCESS_WRAPPER,[parent.pid,child.pid]);
-				worker.stdout.on('data',function(data){console.log(data);});
-				worker.stderr.on('data',function(data){console.log(data);});
-				worker.on('close',function(code){console.log("pid"+child.pid+" exit:"+code)});
-				//child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
-			}catch (e){
-				throw new Error('Error occurred in child.fork() Error:'+e.message);
-			}
-			try{
-				child.send({code:0});
-			}catch(e){
-				throw new Error('Error occurred in child.send() Error:'+e.message);
-			}
+			child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
+			child.send({code:0});
 			pidFile.createNew(child.pid);
 			log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
 			child.on('message',function(msg){
