@@ -83,7 +83,7 @@ var app={
 						var validator=new require(VALIDATOR_CLASS);
 		  				if(!validator.isValidMsg(msg)) throw(E_INV_MSG_PARENT);
 						switch(msg.code){
-							case 1:			
+							case 1:
 								log.write("{{P:{code:1},{D:"+JSON.stringify(m)+"},{C:"+id+"}}");
 								break;
 							case 3:log.write("{{P:{code:3}},{C:"+id+"}}");break;
