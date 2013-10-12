@@ -64,6 +64,7 @@ var app={
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
+					console.log("["+(new Date).toISOString()+"] spawning worker #"+id);
 					child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
 					msg={code:2,
 						 pid:child.pid,
