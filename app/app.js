@@ -113,6 +113,7 @@ var app={
 								default:
 									throw new Error(timestamp()+":Unk/Inv code:"+msg.code);
 									break;
+							}
 		  				});
 		  			}else{
 		  				console.log(timestamp()+"child process failed to spawn.");
