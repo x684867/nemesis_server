@@ -111,25 +111,52 @@ var app={
 					log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
 					child.on('message',function(msg){this.evalIPCmessages(msg)});
 					child.on('error',function(msg){this.evalIPCerrors(msg)});
+					/*
 					monitorFactory=require('./monitor/monitorFactory.js');
 					monitor.push(new monitorFactory(child,config));	
+					*/
 				}else{
 					log.write("id#"+id+" worker#"+workerConfig.workerId+" disabled (config).");
 				}
 			}
 		);
-	}		
+		return config;
+	},
+	startMonitoring:function(config){
+		/*
+			Spawn process and run with the monitor app.
+			Pass the worker process id list and statistics process
+			id to the monitor process.  This creates a mutual support
+			between monitor and stats while also connecting to the 
+			workers to monitor heartbeat and spawn new workers if 
+			any fail.
+		 */
+		return config;
+	},
+	startStats:function(config){
+		/*
+			Spawn process and run with the stats app.
+			Pass the worker process id list and monitor process id
+			to the stats process.  This creates a mutual support between
+			monitor and stats while also connecting to the workers to
+			collect statistics.
+		*/
+		return config;
+	}	
 }
 /*
 */
 console.log("Starting Nemesis...");
 /*Capture command-line arguments*/
-if(app.start(app.loadconfig(process.argv[2]))==0){
-	console.log("All workers have been spawned.  Terminating app.js");
-	process.exit(0);
-}else{
-	throw new ("One or more errors occurred during app.start().");
-	process.exit(1);
-}
+(function(){
+	system=app.startStats(app.startMonitoring(app.start(app.loadconfig(process.argv[2]))));
+	if(system.status==0){
+		console.log("All workers have been spawned.  Terminating app.js");
+		process.exit(0);
+	}else{
+		throw new ("One or more errors occurred during app.start().");
+		process.exit(1);
+	}
+});
 
 

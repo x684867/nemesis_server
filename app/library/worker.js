@@ -17,6 +17,7 @@ const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 const TOBJ='object';
 const TSTR='string';
 const TNUM='number';
+
 const E_BAD_IPC_MSG='Worker received an IPC message which is not an object';
 const E_BAD_IPC_MSG_CODE='Worker received an invalid message (code not number';
 const E_BAD_CODE2_MSG_DATA='Invalid {code:2} (msg.data not an object)';
