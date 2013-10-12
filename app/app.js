@@ -49,7 +49,9 @@ var app={
 	code2:function(c,i,t,f,k,r,a){
 		return {"code":c,"data":
 					{"id":i,"type":t,"config":f,"ssl":
-						{"key":k,"cert":r,"ca_cert":a}}};
+						{"key":k,"cert":r,"ca_cert":a}
+					}
+		};
 	},
 	start:function(config){
 		console.log(Array(60).join("-")
@@ -72,7 +74,7 @@ var app={
 								    ca_cert:config.data.ssl.ca_cert	}}
 					};
 					pidFile.createNew(msg.pid);
-					log.write(JSON.stringify(msg));
+					console.log(JSON.stringify(msg));
 					
 					child.on('message',function(msg){
 						this.log=new logger("app(eval)");
