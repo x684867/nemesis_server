@@ -58,7 +58,7 @@ var app={
 			+"["+(new Date).toISOString()+"]"
 			+"<"+module.filename+">"
 			+"[PID:"+process.pid+"]\n"
-			+arguments.callee.name+"()\n"
+			+__stack[1].getFunctionName()+"()\n"
 			+Array(60).join("-")+"\n\n"
 		);
 
