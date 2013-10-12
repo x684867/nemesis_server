@@ -31,23 +31,34 @@ function BrokerServer(id,config,ssl_config){
 	         				   +"ssl:"+config.ssl+"}");
 	this.status=0;/*successful spawn.  Return non-zero for error codes.*/
 	this.start=function(){
-		try{
-			var server=(config.ssl)
-				?require('https').createServer(ssl_config,function(req,res){
-					res.writeHead(200, {'Content-Type': 'text/plain'});
-					res.end('Hello World.  I am broker#'+config.workerId+'\n');
-				})
-				:require('http').createServer(function(req,res){
-					res.writeHead(200, {'Content-Type': 'text/plain'});
-					res.end('Hello World.  I am broker#'+config.workerId+'\n');
-				});
-			server.on('request',function(req,res){console.log('BrokerServer('+req+','+res+');');}
-			server.on('connection',function(socket){console.log('connection established')});
-			server.on('close',function(){console.log('connection closed')});
-			server.on('connect',function(request,socket,head){console.log('connect('+request+','+socket+','+head+')');});
-			server.on('clientError',function(exception,socket){console.log('clientError('+exception+','+socket+')');});
-			server.on('EADDRINUSE',function(err){throw("BrokerServer():"+err.message);});
-			
+		var server=(config.ssl)
+			?require('https').createServer(ssl_config,function(req,res){
+				res.writeHead(200, {'Content-Type': 'text/plain'});
+				res.end('Hello World.  I am broker#'+config.workerId+'\n');
+			})
+			:require('http').createServer(function(req,res){
+				res.writeHead(200, {'Content-Type': 'text/plain'});
+				res.end('Hello World.  I am broker#'+config.workerId+'\n');
+			});
+		server.on('request',function(req,res){
+			console.log('BrokerServer('+req+','+res+');');
+		});
+		server.on('connection',function(socket){
+			console.log('connection established')
+		});
+		server.on('close',function(){
+			console.log('connection closed')
+		});
+		server.on('connect',function(request,socket,head){
+			console.log('connect('+request+','+socket+','+head+')');
+		});
+		server.on('clientError',function(exception,socket){
+			console.log('clientError('+exception+','+socket+')');
+		});
+		server.on('EADDRINUSE',function(err){
+			throw("BrokerServer():"+err.message);
+		});
+		try{			
 			server.listen(config.ipPort,config.ipAddress);
 			log.write('Server started!');
 			return SERVER_OK;
