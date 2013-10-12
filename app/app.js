@@ -115,21 +115,21 @@ var app={
 									break;
 							}
 		  				});
-		  				console.log(timestamp()+"setup error listener");
+		  				console.log(timestamp()+"++setup error listener");
 						child.on('error',function(msg){
 							if(!validator.isValidError(msg)) throw new Error(E_INV_MSG_ON_ERROR_EVENT);
 							throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on("+msg+")");
 						});
-						console.log(timestamp()+"setup exit listener");
+						console.log(timestamp()+"++setup exit listener");
 						child.on('exit',function(code,signal){
 							console.log(timestamp()+"worker exit ("+id+")("+code+","+signal+") count:"+global.procs.length);
 						});
-						console.log(timestamp()+"setup close listener");
+						console.log(timestamp()+"++setup close listener");
 						child.on('close',function(code,signal){
 							console.log(timestamp()+"worker close ("+id+")("+code+","+signal+") count:"+global.procs.length);
 							global.pidCount--;
 						});
-						console.log(timestamp()+"setup disconnect listener");
+						console.log(timestamp()+"++setup disconnect listener");
 						child.on('disconnect',function(){
 							console.log(timestamp()+"worker disconnect ("+id+") count:"+global.procs.length);
 							global.pidCount
