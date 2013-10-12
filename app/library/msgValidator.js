@@ -37,12 +37,13 @@ const E_M_NOT_IMPLEMENTED='Unimplemented message encountered.';
 /* */
 const MSG_CD2_D_CORRECT='{code:2,data:<object>} is correctly formatted.';
 /* */
-function validatorClass(){
-	this.isValidError=function(msg){return (typeof(msg)=='object')?true:false;}
-}
 function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 function isUndefined(d,e){if(typeof(d)=='undefined') throw new Error(e);}
-
+/* */
+function validatorClass(){
+	this.isValidError=function(m){return (typeof(m)==TOBJ)?true:false;}
+}
+/* */
 validatorClass.isValidMsg=function(m){
 	typeCheck(m,TOBJ,E_M_NOT_OBJ);
 	isUndefined(m.code,E_M_CD_NOT_SET);
