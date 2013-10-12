@@ -92,21 +92,32 @@ var app={
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
 					child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
-					child.send(this.code2(	
-						2,id,config.data.serverType,workerConfig,
-						config.data.ssl.private_key,config.data.ssl.public_key,
-						config.data.ssl.ca_cert
-					));
+					child.send(
+						{
+							code:2,
+							data:{
+									id:id,
+									type:config.data.serverType,
+									config:workerConfig,
+									ssl:{
+										key:config.data.ssl.private_key,
+										cert:config.data.ssl.public_key,
+										ca_cert:config.data.ssl.ca_cert
+									}
+								}
+						}
+					);
 					pidFile.createNew(child.pid);
 					this.log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
 					child.on('message',function(msg){this.evalIPCmessages(msg)});
 					child.on('error',function(msg){this.evalIPCerrors(msg)});
 					monitorFactory=require('./monitor/monitorFactory.js');
 					monitor.push(new monitorFactory(child,config));	
-			}else{
-				log.write("id#"+id+" worker#"+workerConfig.workerId+" disabled (config).");
+				}else{
+					log.write("id#"+id+" worker#"+workerConfig.workerId+" disabled (config).");
+				}
 			}
-		});
+		);
 	}		
 }
 /*
