@@ -55,11 +55,13 @@ var app={
 	},
 	start:function(config){
 		console.log(Array(60).join("-")+"\n"
-					+"["+(new Date).toISOString()+"]"
-					+"<"+module.filename+">"
-					+"[PID:"+process.pid+"]\n"
-					+Array(60).join("-")+"\n"
+			+"["+(new Date).toISOString()+"]"
+			+"<"+module.filename+">"
+			+"[PID:"+process.pid+"]\n"
+			+arguments.callee.name+"()\n"
+			+Array(60).join("-")+"\n\n"
 		);
+
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
