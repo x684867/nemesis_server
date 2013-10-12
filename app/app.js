@@ -59,15 +59,7 @@ config.data.workers.forEach(
 		if(workerConfig.enabled){
 			log.source="app.loop";
 			child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
-			child.send({code:0});
-			pidFile.createNew(child.pid);
-			log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
-			child.on('message',function(msg){
-			  if(!validator.isValidMsg(msg)) throw("Parent: Rec'd invalid msg object.");
-			  switch(msg.code){
-				case 1:
-					log.write("P:{code:1} from C#"+id);
-					child.send(
+			child.send(
 						m={
 							"code":2,
 							"data":{
@@ -81,7 +73,15 @@ config.data.workers.forEach(
 					   				}
 					   		}
 						}
-					);
+			);
+			pidFile.createNew(child.pid);
+			log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
+			child.on('message',function(msg){
+			  if(!validator.isValidMsg(msg)) throw("Parent: Rec'd invalid msg object.");
+			  switch(msg.code){
+				case 1:
+					log.write("P:{code:1} from C#"+id);
+					
 					log.write("P:"+JSON.stringify(m)+"to C#"+id);
 					break;
 				case 3:log.write("P:{code:3}from C#"+id);break;
