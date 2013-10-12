@@ -6,25 +6,27 @@
 module.exports=pidWriter;
 
 function pidWriter(pidDir){
-			console.log(Array(64).join("-")+"\n"
+			console.log(Array(80).join("-")+"\n"
 					+"["+(new Date).toISOString()+"]"
 					+"[PID:"+process.pid+" <"+module.filename+">]\n"
-					+Array(64).join("-")+"\n"
+					+Array(80).join("-")+"\n"
 					+"pidWriter::constructor()\n\n"
 		);
 	
 	var pidFileBase=pidDir+'/nemesisWorker';
 	
 	this.createNew=function(pid){
-		console.log(Array(64).join("-")+"\n"
+		console.log(Array(80).join("-")+"\n"
 					+"["+(new Date).toISOString()+"]"
 					+"[PID:"+process.pid+" <"+module.filename+">]\n"
-					+Array(64).join("-")+"\n"
+					+Array(80).join("-")+"\n"
 					+"pidWriter::createNew()\n\n"
 		);
 		(require('fs')).writeFile(pidFileBase+pid+'.pid',pid,function(err){
 			if(err) throw err;
-			log.write("wrote nemesisWorker.pid for pid:"+pid);
+			console.log(
+				"["+(new Date).toISOString()+"]:wrote nemesisWorker.pid for pid:"+pid
+			);
 		});
 	}
 }
