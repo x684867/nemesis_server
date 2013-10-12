@@ -55,16 +55,14 @@ var log=new global.logger(LOGGER_SOURCE);
 log.drawBanner("app.js   PID:["+process.pid+"]");
 
 /*Setup Process management*/
-log.write("Setup Process Management");
-/*
+/*log.write("Setup Process Management");
 process.on('SIGHUP',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGHUP]");});
 process.on('SIGKILL',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGKILL]");});
 process.on('SIGINT',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGINT]");});
 process.on('SIGTERM',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGTERM]");});
-*/
 log.write("Process Management Setup Complete");
+*/
 
-log.write("Load the configuration passed in by arg[2]");
 var config=new configFactory(config_filename);
 
 pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
@@ -76,8 +74,7 @@ config.data.workers.forEach(
 			log.source="app.loop";
 			log.drawLine(60);
 			log.write("fork process with wrapper");
-			var processFactory=require('child_process');
-			child=processFactory.fork(CHILD_PROCESS_WRAPPER);
+			child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
 			child.title=config.data.serverType+id
 			child.send({code:0});
 			
