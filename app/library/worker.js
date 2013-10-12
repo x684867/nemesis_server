@@ -32,7 +32,6 @@ function timestamp(){return "["+(new Date).toISOString()+"]";}
 function workerClass(){
 	console.log(Array(74).join('-')+"\n"
 			   +timestamp()+" <"+module.filename+">\n"
-			   +"config file: "+filename+"\n"
 			   +"Starting worker.js constructor...\n"
 			   +Array(74).join("-")
 	);
