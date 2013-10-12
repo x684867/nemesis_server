@@ -52,21 +52,23 @@ var monitor=Array();
 /*Start the logger and show a banner*/
 
 var log=new global.logger(LOGGER_SOURCE);	
-log.drawBanner("app.js PID:["+process.pid+"]");
+log.drawBanner("app.js   PID:["+process.pid+"]");
 
 /*Setup Process management*/
-process.title="nemesisMaster";
+log.write("Setup Process Management");
 process.on('SIGHUP',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGHUP]");});
 process.on('SIGKILL',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGKILL]");});
 process.on('SIGINT',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGINT]");});
 process.on('SIGTERM',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGTERM]");});
+log.write("Process Management Setup Complete");
 
-/*Load the configuration passed in by arg[2]*/
+log.write("Load the configuration passed in by arg[2]");
 var config=new configFactory(config_filename);
 
 log.drawBanner("config="+JSON.stringify(config));
 pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 
+log.write("config.data.workers.forEach() starting...");
 config.data.workers.forEach(
 	function(workerConfig,id,array){
 		if(workerConfig.enabled){
