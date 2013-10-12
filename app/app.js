@@ -76,8 +76,11 @@ var app={
 								    ca_cert:config.data.ssl.ca_cert	}}
 					};
 					pidFile.createNew(msg.pid);
-					console.log(JSON.stringify(msg));
-					
+					console.log("["+(new Date).toISOString()+"][PID:"+process.pid+"]\n"
+						+Array(80).join("-")+"\n"
+						+"message: "+JSON.stringify(msg)+"\n"
+						+Array(80).join("-")+"\n"
+					);
 					child.on('message',function(msg){
 						validator=require(VALIDATOR_CLASS);
 		  				if(!validator.isValidMsg(msg)) throw(E_INV_MSG_PARENT);
