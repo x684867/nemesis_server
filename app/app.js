@@ -58,9 +58,8 @@ var app={
 	start:function(config){
 		console.log(Array(80).join("-")+"\n"
 					+"["+timestamp()+"]"
-					+"[PID:"+process.pid+" <"+module.filename+">]\n"
+					+"[PID:"+process.pid+" <"+module.filename+">]app.start()\n"
 					+Array(80).join("-")+"\n"
-					+"app.start()\n\n"
 		);
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 		config.data.workers.forEach(
