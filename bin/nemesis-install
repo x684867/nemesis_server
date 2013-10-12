@@ -9,10 +9,6 @@ export PATH=$PATH:/srv/nemesis/bin/
 export DEBUG=1
 [ $DEBUG -eq 1 ] && set -x
 
-configure_installer(){
-	export TIME_SERVER="0.pool.ntp.org"
-}
-
 init_profile(){
 	ln -sf /srv/nemesis/etc/vimrc /root/.vimrc
 	ln -sf /srv/nemesis/etc/nemesis.profile /etc/profile.d/nemesis.sh
@@ -51,10 +47,17 @@ base_install(){
 }
 [ "$(whoami)" != "root" ] && echo "$0 must be run as root." && exit 1
 [ -z "$1" ] && echo "Missing argument." && exit 1
+[ ! -z "$2" ] && {
+	[ "$2" == "--rebuild" ] && {
+		echo "Rebuild software"
+		/srv/nemesis/src/build-nemesis
+	}
+}
+
 export SERVER_TYPE=$(echo "$1" | tr -dc a-z)
+export TIME_SERVER="0.pool.ntp.org"
 
 echo "Starting install ( $SERVER_TYPE )..."
-configure_installer
 
 case "$SERVER_TYPE" in 
 	audit)
