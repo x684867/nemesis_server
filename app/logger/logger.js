@@ -26,7 +26,7 @@ function logger(source){
 		console.log(m);
 	}
 	this.write=function(message){
-		this.rawWrite(source+"["+(new Date).toISOString()+"] "+message);
+		this.rawWrite("["+(new Date).toISOString()+"] "+source+message);
 	}
 	this.drawLine=function(w){
 		this.rawWrite(Array((((w==undefined)||(w<0))?LOG_LINE_WIDTH:w)).join("-"));
