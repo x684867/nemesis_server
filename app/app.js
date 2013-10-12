@@ -52,7 +52,11 @@ var app={
 						{"key":k,"cert":r,"ca_cert":a}}};
 	},
 	start:function(config){
-		console.log(Array(60).join("-")+"\nPID:["+process.pid+"]\n"+Array(60).join("-"));
+		console.log(Array(60).join("-")
+					+"\n<"+module.filename+">"
+					+"\tPID:["+process.pid+"]\n"
+					+Array(60).join("-")
+		);
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
