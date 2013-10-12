@@ -68,7 +68,7 @@ function validatorClass(){
 				this.typeCheck(m.data.config.workerId,TNUM,E_M_CD2_CFG_ID_NAN);
 				this.typeCheck(m.data.config.ipAddress,TSTR,E_M_CD2_CFG_IP_NSTR);
 				this.typeCheck(m.data.config.ipPort,TNUM,E_M_CD2_CFG_PORT_NAN);
-				log.write(MSG_CD2_D_CORRECT);
+				this.log.write(MSG_CD2_D_CORRECT);
 				return true;
 				break;				
 			case 3:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
