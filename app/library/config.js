@@ -63,6 +63,7 @@ const E_MISSING_SSL_CA='Missing file (ca_cert)';
 const E_BAD_PID_DIR='Missing PID Directory (pidDirectory) in configuration file.';
 const E_MISSING_PID_DIR='Missing PID Directory specified in the configuration file.';
 
+function timestamp(){return "["+(new Date).toISOString()+"]";}
 	
 function config(filename){
 	var fs =require('fs');
