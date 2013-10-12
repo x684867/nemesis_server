@@ -55,10 +55,10 @@ var app={
 	},
 	start:function(config){
 		console.log(Array(60).join("-")+"\n"
-			+"["+(new Date).toISOString()+"]"
-			+"<"+module.filename+">"
-			+"[PID:"+process.pid+"]\n"
-			+Array(60).join("-")+"\n\n"
+					+"["+(new Date).toISOString()+"]"
+					+"[PID:"+process.pid+" <"+module.filename+">]\n"
+					+Array(60).join("-")+"\n"
+			ß		+"Starting Nemesis...\n\n"
 		);
 
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
@@ -147,8 +147,7 @@ var app={
 */
 console.log(Array(60).join("-")+"\n"
 			+"["+(new Date).toISOString()+"]"
-			+"<"+module.filename+">"
-			+"[PID:"+process.pid+"]\n"
+			+"[PID:"+process.pid+" <"+module.filename+">]\n"
 			+Array(60).join("-")+"\n"
 			+"Starting Nemesis...\n\n"
 );
