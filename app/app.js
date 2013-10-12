@@ -40,7 +40,7 @@ const CONFIG_CLASS='./library/config.js';
 const E_INV_MSG_ON_ERROR_EVENT="Received invalid message object on error event.";
 const E_FEATURE_NOT_IMPLEMENTED="This feature is not implemented.";
 
-applicationClass={
+var app={
 	log:(new (require(LOGGER_CLASS))(LOGGER_SOURCE)),
 	worker:[],
 	monitor:[],
@@ -112,7 +112,6 @@ applicationClass={
 */
 console.log("Starting Nemesis...");
 /*Capture command-line arguments*/
-var app=new applicationClass;
 if(app.start(app.loadConfiguration(process.argv[2]))==0){
 	console.log("All workers have been spawned.  Terminating app.js");
 	process.exit(0);
