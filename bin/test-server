@@ -60,4 +60,7 @@ case "$2" in
 esac
 
 echo "done."
+echo " "
+echo "  NODE VERSION: $(/usr/bin/node -v)"
+echo " "
 exit 0
