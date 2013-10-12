@@ -11,15 +11,12 @@
 module.exports=workerClass
 
 const SERVER_SCRIPT_PATH='/srv/nemesis/app/servers/';
-
 const LOGGER_SOURCE='lib.worker';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 global.logger=require(LOGGER_CLASS);
-
 const TOBJ='object';
 const TSTR='string';
 const TNUM='number';
-
 const E_BAD_IPC_MSG='Worker received an IPC message which is not an object';
 const E_BAD_IPC_MSG_CODE='Worker received an invalid message (code not number';
 const E_BAD_CODE2_MSG_DATA='Invalid {code:2} (msg.data not an object)';
@@ -29,7 +26,6 @@ const E_BAD_CODE2_MSG_DATA_CFG='Invalid {code:2} (msg.data.config not an object)
 const E_IPC_CODE_NOT_IMPLEMENTED="msg.code is not implemented";
 const E_UNDEFINED_CHILD_PROCESS="msg.code is undefined when child processed message.";
 const E_INV_CHILD_RECEIVED="Unrecognized/Invalid msg sent to child";
-
 const LOG_CODE0_RECD='Worker received {code:0}.  Replying with {code:1}';
 const LOG_CODE2_RECD='Worker received {code:2}.';
 const LOG_CODE10_RECD='Worker received {code:10}.';
@@ -40,32 +36,33 @@ function workerClass(){
 	var log=new global.logger(LOGGER_SOURCE);	
 		log.drawBanner('worker.js is starting...');
 
-process.on('message', function(msg){
-	log.write('worker.js has received a message from parent.');
-	if(typeof(msg)!=TOBJ) throw new Error(E_BAD_IPC_MSG);
-	if(typeof(msg.code)!=TNUM) throw new Error(E_BAD_IPC_MSG_CODE);
-	switch(msg.code){
-		case 0:	log.write(LOG_CODE0_RECD);process.send({code:1});break;
-		case 2: log.write(LOG_CODE2_RECD);
-				if(typeof(msg.data)!=TOBJ) throw new Error(E_BAD_CODE2_MSG_DATA);
-				if(typeof(msg.data.type)!=TSTR) throw new Error(E_BAD_CODE2_MSG_DATA_TYPE);
-				if(typeof(msg.data.id)!=TNUM) throw new Error(E_BAD_CODE2_MSG_DATA_ID);
-				if(typeof(msg.data.config)!=TOBJ) throw new Error(E_BAD_CODE2_MSG_DATA_CFG);
-				log.write(LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
-				serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
-				server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
-				process.send({code:server.start()});
+	process.on('message', function(msg){
+		log.write('worker.js has received a message from parent.');
+		if(typeof(msg)!=TOBJ) throw new Error(E_BAD_IPC_MSG);
+		if(typeof(msg.code)!=TNUM) throw new Error(E_BAD_IPC_MSG_CODE);
+		switch(msg.code){
+			case 0:	log.write(LOG_CODE0_RECD);process.send({code:1});break;
+			case 2: log.write(LOG_CODE2_RECD);
+					if(typeof(msg.data)!=TOBJ) throw new Error(E_BAD_CODE2_MSG_DATA);
+					if(typeof(msg.data.type)!=TSTR) throw new Error(E_BAD_CODE2_MSG_DATA_TYPE);
+					if(typeof(msg.data.id)!=TNUM) throw new Error(E_BAD_CODE2_MSG_DATA_ID);
+					if(typeof(msg.data.config)!=TOBJ) throw new Error(E_BAD_CODE2_MSG_DATA_CFG);
+					log.write(LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
+					serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
+					server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
+					process.send({code:server.start()});
+					break;
+			case 10:log.write(LOG_CODE10_RECD);process.send({'code':11,'data':msg.data});break;
+			case 12:log.write(E_IPC_CODE_NOT_IMPLEMENTED+":{code:"+msg.code+"}"); break;
+			case 96:log.write(E_IPC_CODE_NOT_IMPLEMENTED+":{code:"+msg.code+"}"); break;
+			case 98:log.write(E_IPC_CODE_NOT_IMPLEMENTED+":{code:"+msg.code+"}"); break;
+			default:
+				if(msg.code==undefined){
+					throw new Error(E_UNDEFINED_CHILD_PROCESS);
+				}else{
+					throw new Error(E_INV_CHILD_RECEIVED+":"+msg.code);
+				}
 				break;
-		case 10:log.write(LOG_CODE10_RECD);process.send({'code':11,'data':msg.data});break;
-		case 12:log.write(E_IPC_CODE_NOT_IMPLEMENTED+":{code:"+msg.code+"}"); break;
-		case 96:log.write(E_IPC_CODE_NOT_IMPLEMENTED+":{code:"+msg.code+"}"); break;
-		case 98:log.write(E_IPC_CODE_NOT_IMPLEMENTED+":{code:"+msg.code+"}"); break;
-		default:
-			if(msg.code==undefined){
-				throw new Error(E_UNDEFINED_CHILD_PROCESS);
-			}else{
-				throw new Error(E_INV_CHILD_RECEIVED+":"+msg.code);
-			}
-			break;
-	}
-});
+		}
+	});
+}
