@@ -61,6 +61,6 @@ esac
 
 echo "done."
 echo " "
-echo "  NODE VERSION: $(/usr/bin/node -v)"
+echo "  NODE VERSION: $(/usr/bin/nodejs -v)"
 echo " "
 exit 0
