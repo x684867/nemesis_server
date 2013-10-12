@@ -38,8 +38,8 @@ const VALIDATOR_CLASS='./library/msgValidator.js';
 const CONFIG_CLASS='./library/config.js';
 
 applicationClass={
-	logger:require(LOGGER_CLASS),
-	log:(new this.logger(LOGGER_SOURCE)),
+	logger:,
+	log:(new (require(LOGGER_CLASS))(LOGGER_SOURCE)),
 	worker:[],
 	monitor:[],
 
