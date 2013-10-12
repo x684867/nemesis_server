@@ -106,7 +106,7 @@ function config(filename){
 	
 	/*Verify that pidDirectory exists in file system.*/
 	if(fs.lstatSync(this.data.pidDirectory).isDirectory()){
-		log.write("PID Directory ["+this.data.pidDirectory+"]: verified.");
+		console.log(timestamp()+"PID Directory ["+this.data.pidDirectory+"]: verified.");
 	}else{
 		throw new Error(E_MISSING_PID_DIR);
 	}
