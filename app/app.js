@@ -55,7 +55,7 @@ var app={
 	},
 	start:function(config){
 		console.log(Array(60).join("-")+"\n"
-					+"["+(new Date)toISOstring()+"]"
+					+"["+(new Date)toISOString()+"]"
 					+"<"+module.filename+">"
 					+"[PID:"+process.pid+"]\n"
 					+Array(60).join("-")+"\n"
