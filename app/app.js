@@ -70,11 +70,6 @@ var app={
 					console.log(timestamp()+" spawning worker #"+id);
 					var child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
 					if(child){
-						console.log(timestamp()
-								   +" child pid ["+child.pid+"]"
-								   +" count ("+global.procs.length+")"
-								   +" name:'"+global.procs.title+"'"
-						);
 						global.procs.push(child);
 						msg={code:2,
 							 pid:child.pid,
@@ -83,34 +78,44 @@ var app={
 								   config:workerConfig,
 								   ssl:{key:config.data.ssl.private_key,
 									    cert:config.data.ssl.public_key,
-									    ca_cert:config.data.ssl.ca_cert	}}
+									    ca_cert:config.data.ssl.ca_cert
+									}
+							}
 						};
-						pidFile.createNew(msg.pid);
-						console.log(timestamp()+"[PID:"+process.pid+"] JSON:"+JSON.stringify(msg));
-					console.log(timestamp()+"setup message listener");
-					child.on('message',function(msg){
-						validator=require(VALIDATOR_CLASS);
-		  				if(!validator.isValidMsg(msg)) throw(E_INV_MSG_PARENT);
-						switch(msg.code){
-							case 1:console.log(timestamp()+"{P:1}=>{C:2}");break;
-							case 3:console.log(timestamp()+"{P:3}=>{STOP}");break;
-							case 4:console.log(timestamp()+"{P:4}=>{FAIL}");break;
-							case 11:
-								delay=(new Date()).getTime()/1000 - msg.data;
-								if(delay < config.data.monitor.heartbeat.threshold){
-									console.log(timestamp()+"{P:11} hbeat w#"+id+":good");
-									this.pollMonitoring(msg);
-								}else{
-									console.log(timestamp()+"{P:11} hbeat w#"+id+":slow");
-									this.pollStatistics(msg);
-								}
-								break;
-							case 13:console.log(timestamp()+"{P:13} not impl.");break;
-							case 97:console.log(timestamp()+"{P:97} not impl.");break;
-							case 99:console.log(timestamp()+"{P:99} not impl.");break;
-							default:
-								throw new Error(timestamp()+":Unk/Inv code:"+msg.code);
-								break;
+						pidFile.createNew(child.pid);
+						console.log(timestamp()
+								   +"{child pid ["+child.pid+"]},"
+								   +"{count:"+global.procs.length+"},"
+								   +"{name:'"+global.procs.title+"'},"
+								   +"{JSON:"+JSON.stringify(msg)+"}\n\n"
+								   +"setup message listener"
+						);
+						child.on('message',function(msg){
+							validator=require(VALIDATOR_CLASS);
+		  					if(!validator.isValidMsg(msg)) throw(E_INV_MSG_PARENT);
+							switch(msg.code){
+								case 1:console.log(timestamp()+"{P:1}=>{C:2}");break;
+								case 3:console.log(timestamp()+"{P:3}=>{STOP}");break;
+								case 4:console.log(timestamp()+"{P:4}=>{FAIL}");break;
+								case 11:
+									delay=(new Date()).getTime()/1000 - msg.data;
+									if(delay < config.data.monitor.heartbeat.threshold){
+										console.log(timestamp()+"{P:11} hbeat w#"+id+":good");
+										this.pollMonitoring(msg);
+									}else{
+										console.log(timestamp()+"{P:11} hbeat w#"+id+":slow");
+										this.pollStatistics(msg);
+									}
+									break;
+								case 13:console.log(timestamp()+"{P:13} not impl.");break;
+								case 97:console.log(timestamp()+"{P:97} not impl.");break;
+								case 99:console.log(timestamp()+"{P:99} not impl.");break;
+								default:
+									throw new Error(timestamp()+":Unk/Inv code:"+msg.code);
+									break;
+		  					}
+		  				}else{
+		  					console.log(timestamp()+"child process failed to spawn.");
 		  				}
 					});
 					console.log(timestamp()+"setup error listener");
