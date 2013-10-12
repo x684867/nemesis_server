@@ -58,7 +58,7 @@ var app={
 	start:function(config){
 		console.log(Array(80).join("-")+"\n"
 					+"["+timestamp()+"]"
-					+"[PID:"+process.pid+" <"+module.filename+">]app.start()\n"
+					+"[PID:"+process.pid+" <"+module.filename+">]\napp.start()\n"
 					+Array(80).join("-")+"\n"
 		);
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
