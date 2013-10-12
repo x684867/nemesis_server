@@ -56,8 +56,6 @@ log.drawBanner("app.js   PID:["+process.pid+"]");
 
 /*Setup Process management*/
 log.write("Setup Process Management");
-process.on('EINVAL',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[EINVAL]");});
-log.write("  Call to process.on() is disabled.");
 /*
 process.on('SIGHUP',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGHUP]");});
 process.on('SIGKILL',function(){console.log("[pid:"+process.pid+"]"+process.title+": signal[SIGKILL]");});
@@ -148,4 +146,4 @@ config.data.workers.forEach(
 	}
 });
 console.log("All workers have been spawned.  Terminating app.js");
-process.exit(0);
+//process.exit(0);
