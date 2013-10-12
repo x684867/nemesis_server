@@ -91,7 +91,6 @@ var app={
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
-					this.log.source="app.loop";
 					child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
 					child.send(this.code2(	
 						2,id,config.data.serverType,workerConfig,
