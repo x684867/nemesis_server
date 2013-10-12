@@ -58,7 +58,7 @@ var app={
 					+"["+(new Date).toISOString()+"]"
 					+"[PID:"+process.pid+" <"+module.filename+">]\n"
 					+Array(60).join("-")+"\n"
-			ß		+"Starting Nemesis...\n\n"
+					+"Starting Nemesis...\n\n"
 		);
 
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
