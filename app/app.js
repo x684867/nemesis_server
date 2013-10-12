@@ -109,10 +109,10 @@ var app={
 	},
 	pollMonitoring:function(msg){
 		console.log("Poll for monitoring invoked.");
-	}
+	},
 	pollStatistics:function(msg){
 		console.log("Poll for statistics invoked.");
-	}
+	},
 	startMonitoring:function(config){
 		/*
 			Spawn process and run with the monitor app.
