@@ -67,7 +67,6 @@ log.write("Process Management Setup Complete");
 log.write("Load the configuration passed in by arg[2]");
 var config=new configFactory(config_filename);
 
-log.drawBanner("config="+JSON.stringify(config));
 pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 
 log.write("config.data.workers.forEach() starting...");
