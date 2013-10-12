@@ -16,11 +16,8 @@ function pidWriter(pidDir){
 	var pidFileBase=pidDir+'/nemesisWorker';
 	
 	this.createNew=function(pid){
-		console.log(Array(80).join("-")+"\n"
-					+"["+(new Date).toISOString()+"]"
-					+"[PID:"+process.pid+" <"+module.filename+">]\n"
-					+Array(80).join("-")+"\n"
-					+"pidWriter::createNew()\n\n"
+		console.log("["+(new Date).toISOString()+"]"
+					+"[PID:"+process.pid+" <"+module.filename+">]pidWriter::createNew()"
 		);
 		(require('fs')).writeFile(pidFileBase+pid+'.pid',pid,function(err){
 			if(err) throw err;
