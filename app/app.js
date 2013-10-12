@@ -65,10 +65,12 @@ var app={
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
 				if(workerConfig.enabled){
-					console.log(timestamp()+" spawning worker #"+id);
+					console.log(timestamp()+"spawning worker #"+id);
 					var child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
 					if(child){
+						console.log(timestamp()+" pid:"+child.pid+" not null.");
 						global.procs.push(child);
+						pidFile.createNew(child.pid);
 						msg={code:2,
 							 pid:child.pid,
 							 data:{id:id,
@@ -80,7 +82,6 @@ var app={
 									}
 							}
 						};
-						pidFile.createNew(child.pid);
 						console.log(timestamp()
 								   +"{child pid ["+child.pid+"]},"
 								   +"{count:"+global.procs.length+"},"
