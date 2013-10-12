@@ -33,7 +33,7 @@ function workerClass(){
 	process.on('message', function(msg){
 		log.write(LOG_MSG_RECD);
 		/* */
-		var validator=new (require(VALIDATOR_CLASS));
+		var validator=new require(VALIDATOR_CLASS);
 		if(validator.isValidMsg(msg)){
 			switch(msg.code){
 				/**/

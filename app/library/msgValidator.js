@@ -3,8 +3,6 @@
 	/srv/nemesis/app/library/msgValidator.js 
 	(c) 2013 Sam Caldwell.  All Rights Reserved.  
  */
-module.exports=validatorClass;
-/* */
 const LOGGER_SOURCE='lib.msgValidator';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 /* */
@@ -40,11 +38,11 @@ const MSG_CD2_D_CORRECT='{code:2,data:<object>} is correctly formatted.';
 function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 function isUndefined(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 /* */
-function validatorClass(){
-	this.isValidError=function(m){return (typeof(m)==TOBJ)?true:false;}
+function isValidError(m){
+	return (typeof(m)==TOBJ)?true:false;
 }
 /* */
-validatorClass.isValidMsg=function(m){
+function isValidMsg(m){
 	typeCheck(m,TOBJ,E_M_NOT_OBJ);
 	isUndefined(m.code,E_M_CD_NOT_SET);
 	typeCheck(m.code,TNUM,E_M_CD_NOT_NUM);
