@@ -11,31 +11,35 @@ const LOGGER_SOURCE='server.broker';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 global.logger=require(LOGGER_CLASS);
 
-
 /*Return codes for server.start()*/
 const SERVER_OK=3
 const SERVER_FAIL=4
+
+const E_CFG_NOT_DEFINED='BrokerServer(): config is not defined.';
+const E_ID_NOT_DEFINED='BrokerServer(): id parameter not defined.';
+const E_CFG_NOT_OBJ='BrokerServer(): config is not an object.';
+const E_ID_NOT_NUMBER='BrokerServer(): id parameter must be a number';
+
 
 function BrokerServer(id,config,ssl_config){	
 
 	var log=new global.logger(LOGGER_SOURCE);	
 
-	if(config==undefined) throw new Error('config is not defined.');
-	if(id==undefined) throw new Error('index is not defined.');
-	if(typeof(config)!='object') throw new Error('config is not an object.  type:'+typeof(config));
-	if(typeof(id)!='number') throw new Error('id must be a number.');
+	if(typeof(config)=='undefined') throw new Error(E_CFG_NOT_DEFINED);
+	if(typeof(id)=='undefined') throw new Error(E_ID_NOT_DEFINED);
+	if(typeof(config)!='object') throw new Error(E_CFG_NOT_OBJ+' type:'+typeof(config));
+	if(typeof(id)!='number') throw new Error(E_ID_NOT_NUMBER);
 
-	log.write("running Broker.main().");
-	log.write("ipAddress:  "+config.ipAddress);
-	log.write("ipPort:     "+config.ipPort);
-	log.write("ssl enabled:"+config.ssl);
+	log.write("BrokerServer():{ipAddress:'"+config.ipAddress+"',"
+	         				   +"ipPort:"+config.ipPort+","
+	         				   +"ssl enabled:"+config.ssl
+	         +"}");
 	this.status=0;/*successful spawn.  Return non-zero for error codes.*/
 
 	log.write('Server instances is created. Call server.start() to launch.');
 	log.drawLine();
 
 	this.start=function(){
-
 		log.write('Attempting to start the server...');
 		try {
 			if(config.ssl){
