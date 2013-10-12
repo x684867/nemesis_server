@@ -96,15 +96,15 @@ var app={
 						{
 							code:2,
 							data:{
-									id:id,
-									type:config.data.serverType,
-									config:workerConfig,
-									ssl:{
-										key:config.data.ssl.private_key,
-										cert:config.data.ssl.public_key,
-										ca_cert:config.data.ssl.ca_cert
-									}
+								id:id,
+								type:config.data.serverType,
+								config:workerConfig,
+								ssl:{
+									key:config.data.ssl.private_key,
+									cert:config.data.ssl.public_key,
+									ca_cert:config.data.ssl.ca_cert
 								}
+							}
 						}
 					);
 					pidFile.createNew(child.pid);
