@@ -30,80 +30,67 @@
 			*Begin service development.
 	---------------------------------------------------------------------------------
 */
-console.log("Starting Nemesis...");
 const LOGGER_SOURCE='app.main';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-	
-
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/library/worker.js';
 const PID_WRITER_SCRIPT='/srv/nemesis/app/library/pidWriter.js';
 const VALIDATOR_CLASS='./library/msgValidator.js';
 const CONFIG_CLASS='./library/config.js';
 
-function application(config_filename){
+function applicationClass(){
 	/*Start the logger and show a banner*/
 	var logger=require(LOGGER_CLASS);
 	var log=new logger(LOGGER_SOURCE);
 		log.drawBanner("app.js  PID:["+process.pid+"]");
-
-	var validatorClass=require(VALIDATOR_CLASS);
-	var validator=new validatorClass();
+		this.worker=Array();		/*This array tracks the worker processes.*/
+	this.monitor=Array();
+}
+applicationClass.loadConfiguration=function(config_filename){
 	var configFactory=require(CONFIG_CLASS);
-	var worker=Array();		/*This array tracks the worker processes.*/
-	var monitor=Array();
-
 	var config=new configFactory(config_filename);
 	pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
-
+	return config;
+}
+applicationClass.start=function(config){
 	log.write("config.data.workers.forEach() starting...");
 	config.data.workers.forEach(
 		function(workerConfig,id,array){
 			if(workerConfig.enabled){
 				log.source="app.loop";
 				child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
-				child.send(
-						m={
-							"code":2,
-							"data":{
-									"id":id,
-									"type":config.data.serverType,
-									"config":workerConfig,
-						  			"ssl":{
-						  					"key":config.data.ssl.private_key,
-					   						"cert":config.data.ssl.public_key,
-					   						"ca_cert":config.data.ssl.ca_cert
-					   				}
-					   		}
-						}
+				child.send(m={"code":2,"data":{"id":id,"type":config.data.serverType,
+					"config":workerConfig,"ssl":{"key":config.data.ssl.private_key,
+					"cert":config.data.ssl.public_key,"ca_cert":config.data.ssl.ca_cert}}}
 				);
 				pidFile.createNew(child.pid);
 				log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
 				child.on('message',function(msg){
-				  if(!validator.isValidMsg(msg)) throw("Parent: Rec'd invalid msg object.");
-				  switch(msg.code){
-					case 1:
-						log.write("P:{code:1} from C#"+id);
-						
-						log.write("P:"+JSON.stringify(m)+"to C#"+id);
+					var validatorClass=require(VALIDATOR_CLASS);
+					var validator=new validatorClass();
+				  	if(!validator.isValidMsg(msg)) throw("Parent: Rec'd invalid msg object.");
+				  	switch(msg.code){
+						case 1:
+							log.write("P:{code:1} from C#"+id);					
+							log.write("P:"+JSON.stringify(m)+"to C#"+id);
+							break;
+						case 3:log.write("P:{code:3}from C#"+id);break;
+						case 11:
+							delay=(new Date()).getTime()/1000 - msg.data;
+							if(delay < config.data.monitor.heartbeat.threshold){
+								log.write("P:{code:11} heartbeat worker#"+id+":good");
+								/*Record to stats*/
+							}else{
+								log.write("P:{code:11} heartbeat worker#"+id+":slow");
+								/*Record to stats*/
+							}
+							break;
+						case 13:log.write("{code:13} not implemented");break;
+						case 97:log.write("{code:97} not implemented");break;
+						case 99:log.write("{code:99} not implemented");break;
+						default:
+							throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
 						break;
-					case 3:log.write("P:{code:3}from C#"+id);break;
-					case 11:
-						delay=(new Date()).getTime()/1000 - msg.data;
-						if(delay < config.data.monitor.heartbeat.threshold){
-							log.write("P:{code:11} heartbeat worker#"+id+":good");
-							/*Record to stats*/
-						}else{
-							log.write("P:{code:11} heartbeat worker#"+id+":slow");
-							/*Record to stats*/
-						}
-						break;
-					case 13:log.write("{code:13} not implemented");break;
-					case 97:log.write("{code:97} not implemented");break;
-					case 99:log.write("{code:99} not implemented");break;
-					default:
-						throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
-					break;
-				  }
+				  	}
 				});
 				child.on('error',function(msg){
 					if(!validator.isValidError(msg)){
@@ -118,6 +105,17 @@ function application(config_filename){
 		}
 	});
 }
-application(process.argv[2]);/*Capture command-line arguments*/
-console.log("All workers have been spawned.  Terminating app.js");
-process.exit(0);
+/*
+*/
+console.log("Starting Nemesis...");
+var app=new applicationClass()
+/*Capture command-line arguments*/
+if(app.start(app.loadConfiguration(process.argv[2]))==0){
+	console.log("All workers have been spawned.  Terminating app.js");
+	process.exit(0);
+}else{
+	throw new ("One or more errors occurred during app.start().");
+	process.exit(1);
+}
+
+
