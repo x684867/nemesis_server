@@ -59,7 +59,12 @@ config.data.workers.forEach(
 		if(workerConfig.enabled){
 			log.source="app.loop";
 			try{
-				child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
+				child=require('child_process').spawn
+				worker=child(CHILD_PROCESS_WRAPPER,[parent.pid,child.pid]);
+				worker.stdout.on('data',function(data){console.log(data);});
+				worker.stderr.on('data',function(data){console.log(data);});
+				worker.on('close',function(code){console.log("pid"+child.pid+" exit:"+code)});
+				//child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
 			}catch (e){
 				throw new Error('Error occurred in child.fork() Error:'+e.message);
 			}
