@@ -153,7 +153,6 @@ function config(filename){
 		});
 	}else{
 		console.log(timestamp()+"SSL Verification not required.");
-	}	
-	console.log(timestamp()+"configuration JSON object is valid");
-	console.log(timestamp()+"exit constructor.");
+	}
+	console.log(timestamp()+"exit config constructor.  JSON config is valid.");
 }
