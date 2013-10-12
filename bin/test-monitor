@@ -8,11 +8,10 @@
 
 while true; do
 
-	echo " "
 	echo "$(date)   $(cat /proc/loadavg)"
 	echo " "
 	netstat -plant
-	echo " "
+	echo "-----------------------"
 	netstat -planu
 	sleep 1
 	clear
