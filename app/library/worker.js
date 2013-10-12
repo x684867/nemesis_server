@@ -64,7 +64,7 @@ process.on('message', function(msg){
 			throw new Error(
 							(msg.code==undefined)
 							?E_UNDEFINED_CHILD_PROCESS
-							:(E_INV_CHILD_RECEIVED+":"+msg.code
+							:(E_INV_CHILD_RECEIVED+":"+msg.code)
 			);
 			break;
 	}
