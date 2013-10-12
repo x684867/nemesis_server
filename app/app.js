@@ -146,22 +146,21 @@ var app={
 }
 /*
 */
-(function(){
-	console.log("Starting Nemesis...");
-	if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
-		if(app.start(config)){
-			if(app.startMonitoring(config)){
-				console.log("All services are started.");
-				/*terminates*/
-			}else{
-				throw new Error('monitoring failed');
-			}
+console.log("Starting Nemesis...");
+if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
+	if(app.start(config)){
+		if(app.startMonitoring(config)){
+			console.log("All services are started.");
+			/*terminates*/
 		}else{
-			throw new Error('app.start() failed');
+			throw new Error('monitoring failed');
 		}
 	}else{
-		throw new Error('app.loadconfig() failed to load configuration.');
+		throw new Error('app.start() failed');
 	}
-});
+}else{
+	throw new Error('app.loadconfig() failed to load configuration.');
+}
+
 
 
