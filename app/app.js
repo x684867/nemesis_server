@@ -58,7 +58,6 @@ var app={
 			+"["+(new Date).toISOString()+"]"
 			+"<"+module.filename+">"
 			+"[PID:"+process.pid+"]\n"
-			+"Line:"+__stack[1].getLineNumber()+"\n"
 			+Array(60).join("-")+"\n\n"
 		);
 
@@ -150,7 +149,6 @@ console.log(Array(60).join("-")+"\n"
 			+"["+(new Date).toISOString()+"]"
 			+"<"+module.filename+">"
 			+"[PID:"+process.pid+"]\n"
-			+arguments.callee.name+"()\n"
 			+Array(60).join("-")+"\n\n"
 );
 console.log("Starting Nemesis...");
