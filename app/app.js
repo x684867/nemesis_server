@@ -78,11 +78,12 @@ var app={
 								    ca_cert:config.data.ssl.ca_cert	}}
 					};
 					pidFile.createNew(msg.pid);
-					console.log(+timestamp()+"[PID:"+process.pid+"]-->\n"
+					console.log(timestamp()+"[PID:"+process.pid+"]-->\n"
 						+Array(80).join("-")+"\n"
 						+"message: "+JSON.stringify(msg)+"\n"
 						+Array(80).join("-")+"\n"
 					);
+					console.log(timestamp()+"setup message listener");
 					child.on('message',function(msg){
 						validator=require(VALIDATOR_CLASS);
 		  				if(!validator.isValidMsg(msg)) throw(E_INV_MSG_PARENT);
@@ -108,10 +109,12 @@ var app={
 								break;
 		  				}
 					});
+					console.log(timestamp()+"setup error listener");
 					child.on('error',function(msg){
 						if(!validator.isValidError(msg)) throw new Error(E_INV_MSG_ON_ERROR_EVENT);
 						throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on()");
 					});
+					console.log(timestamp()+"end of worker initializer.");
 				}else{
 					console.log(timestamp()+" worker #"+id+" disabled");
 				}
