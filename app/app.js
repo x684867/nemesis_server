@@ -39,6 +39,7 @@ const CONFIG_CLASS='./library/config.js';
 
 const E_INV_MSG_ON_ERROR_EVENT="Received invalid message object on error event.";
 const E_FEATURE_NOT_IMPLEMENTED="This feature is not implemented.";
+const E_INV_MSG_PARENT="Parent: Rec'd invalid msg object."
 
 var app={
 	logger:require(LOGGER_CLASS),
@@ -48,35 +49,6 @@ var app={
 		var configFactory=require(CONFIG_CLASS);
 		var config=new configFactory(config_filename);
 		return config;
-	},
-	evalIPCmessages:function(msg){
-		return function(msg){
-			this.log=new logger("app(eval)");
-			var validator=new (require(VALIDATOR_CLASS));
-		  	if(!validator.isValidMsg(msg)) throw("Parent: Rec'd invalid msg object.");
-			switch(msg.code){
-				case 1:			
-					log.write("{{P:{code:1},{D:"+JSON.stringify(m)+"},{C:"+id+"}}");
-					break;
-				case 3:log.write("{{P:{code:3}},{C:"+id+"}}");break;
-				case 11:
-					delay=(new Date()).getTime()/1000 - msg.data;
-					if(delay < config.data.monitor.heartbeat.threshold){
-						log.write("P:{code:11} heartbeat worker#"+id+":good");
-						/*Record to stats*/
-					}else{
-						log.write("P:{code:11} heartbeat worker#"+id+":slow");
-						/*Record to stats*/
-					}
-					break;
-				case 13:log.write("{code:13} not implemented");break;
-				case 97:log.write("{code:97} not implemented");break;
-				case 99:log.write("{code:99} not implemented");break;
-				default:
-					throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
-					break;
-		  	}
-		}
 	},
 	evalIPCerrors:function(msg){
 		return function(msg){
@@ -88,8 +60,7 @@ var app={
 		return {"code":c,"data":{"id":i,"type":t,"config":f,"ssl":{"key":k,"cert":r,"ca_cert":a}}};
 	},
 	start:function(config){
-		log=new logger("app(start)");
-		log.drawBanner("app.js  PID:["+process.pid+"]");
+		(log=new logger("app(start)")).drawBanner("PID:["+process.pid+"]");
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 		log.write("config.data.workers.forEach() starting...");
 		config.data.workers.forEach(
@@ -113,7 +84,32 @@ var app={
 					);
 					pidFile.createNew(child.pid);
 					log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
-					child.on('message',this.evalIPCmessages(msg));
+					child.on('message',function(msg){
+						this.log=new logger("app(eval)");
+		  				if(!(new require(VALIDATOR_CLASS)).isValidMsg(msg)) throw(E_INV_MSG_PARENT);
+						switch(msg.code){
+							case 1:			
+								log.write("{{P:{code:1},{D:"+JSON.stringify(m)+"},{C:"+id+"}}");
+								break;
+							case 3:log.write("{{P:{code:3}},{C:"+id+"}}");break;
+							case 11:
+								delay=(new Date()).getTime()/1000 - msg.data;
+								if(delay < config.data.monitor.heartbeat.threshold){
+									log.write("P:{code:11} heartbeat worker#"+id+":good");
+									/*Record to stats*/
+								}else{
+									log.write("P:{code:11} heartbeat worker#"+id+":slow");
+									/*Record to stats*/
+								}
+								break;
+							case 13:log.write("{code:13} not implemented");break;
+							case 97:log.write("{code:97} not implemented");break;
+							case 99:log.write("{code:99} not implemented");break;
+							default:
+								throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
+								break;
+		  				}
+					});
 					child.on('error',this.evalIPCerrors(msg));
 					/*
 					monitorFactory=require('./monitor/monitorFactory.js');

@@ -41,8 +41,12 @@ function BrokerServer(id,config,ssl_config){
 					res.writeHead(200, {'Content-Type': 'text/plain'});
 					res.end('Hello World.  I am broker#'+config.workerId+'\n');
 				});
+			server.on('request',function(req,res){console.log('BrokerServer('+req+','+res+');');}
+			server.on('connection',function(socket){console.log('connection established')});
+			server.on('close',function(){console.log('connection closed')});
+			server.on('connect',function(request,socket,head){console.log('connect('+request+','+socket+','+head+')');});
+			server.on('clientError',function(exception,socket){console.log('clientError('+exception+','+socket+')');});
 			server.on('EADDRINUSE',function(err){throw("BrokerServer():"+err.message);});
-			server.on('connection',function(stream){console.log('connection established')});
 			
 			server.listen(config.ipPort,config.ipAddress);
 			log.write('Server started!');
