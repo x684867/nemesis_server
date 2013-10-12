@@ -131,9 +131,9 @@ var app={
 						console.log(timestamp()+"worker disconnect ("+id+") count:"+pidCount);
 						global.pidCount
 					});
-					console.log(timestamp()+"end of worker initializer. pidCount"+pidCount));
+					console.log(timestamp()+"end of worker initializer. pidCount"+pidCount);
 				}else{
-					console.log(timestamp()+" worker #"+id+" disabled.  pidCount"+pidCount));
+					console.log(timestamp()+" worker #"+id+" disabled.  pidCount"+pidCount);
 				}
 				console.log(timestamp()+" PIDLIST=["+pidList.join()+"]");
 			}
