@@ -81,16 +81,16 @@ var app={
 							case 11:
 								delay=(new Date()).getTime()/1000 - msg.data;
 								if(delay < config.data.monitor.heartbeat.threshold){
-									log.write("{P:11} hbeat w#"+id+":good");
-									/*Record to stats*/
+									console.log("{P:11} hbeat w#"+id+":good");
+									this.pollMonitoring(msg);
 								}else{
-									log.write("{P:11} hbeat w#"+id+":slow");
-									/*Record to stats*/
+									lconsole.log("{P:11} hbeat w#"+id+":slow");
+									this.pollStatistics(msg);
 								}
 								break;
-							case 13:log.write("{P:13} not implemented");break;
-							case 97:log.write("{P:97} not implemented");break;
-							case 99:log.write("{P:99} not implemented");break;
+							case 13:console.log("{P:13} not implemented");break;
+							case 97:console.log("{P:97} not implemented");break;
+							case 99:console.log("{P:99} not implemented");break;
 							default:
 								throw new Error("Unknown/Invalid msg.code: ["+msg.code+"]");
 								break;
@@ -101,12 +101,18 @@ var app={
 						throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on()");
 					});
 				}else{
-					log.write("id#"+id+" worker#"+workerConfig.workerId+" disabled (config).");
+					console.log("id#"+id+" worker#"+workerConfig.workerId+" disabled");
 				}
 			}
 		);
 		return config;
 	},
+	pollMonitoring:function(msg){
+		console.log("Poll for monitoring invoked.");
+	}
+	pollStatistics:function(msg){
+		console.log("Poll for statistics invoked.");
+	}
 	startMonitoring:function(config){
 		/*
 			Spawn process and run with the monitor app.
