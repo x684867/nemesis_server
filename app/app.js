@@ -76,7 +76,7 @@ var app={
 								    ca_cert:config.data.ssl.ca_cert	}}
 					};
 					pidFile.createNew(msg.pid);
-					console.log("["+(new Date).toISOString()+"][PID:"+process.pid+"]\n"
+					console.log("["+(new Date).toISOString()+"][PID:"+process.pid+"]-->\n"
 						+Array(80).join("-")+"\n"
 						+"message: "+JSON.stringify(msg)+"\n"
 						+Array(80).join("-")+"\n"
