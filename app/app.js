@@ -41,14 +41,12 @@ applicationClass={
 	log:(new (require(LOGGER_CLASS))(LOGGER_SOURCE)),
 	worker:[],
 	monitor:[],
-
 	loadconfig:function(config_filename){
 		var configFactory=require(CONFIG_CLASS);
 		var config=new configFactory(config_filename);
-		return config
+		return config;
 	},
-
-	evalmessages:function(msg){
+	evalIPCmessages:function(msg){
 		var validator=new (require(VALIDATOR_CLASS));
 	  	if(!validator.isValidMsg(msg)) throw("Parent: Rec'd invalid msg object.");
 		switch(msg.code){
@@ -74,7 +72,12 @@ applicationClass={
 				break;
 	  	}
 	},
-
+	const E_INV_MSG_ON_ERROR_EVENT="Received invalid message object on error event.";
+	const E_FEATURE_NOT_IMPLEMENTED="This feature is not implemented.";
+	evalIPCerrors:function(msg){
+		if(!validator.isValidError(msg)) throw new Error(E_INV_MSG_ON_ERROR_EVENT);
+		throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on()");
+	}
 	start:function(config){
 		this.log.drawBanner("app.js  PID:["+process.pid+"]");
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
@@ -90,17 +93,10 @@ applicationClass={
 					);
 					pidFile.createNew(child.pid);
 					log.write("w["+id+"]={'type':"+config.data.serverType+",'pid':"+child.pid+"}");
-					child.on('message',function(msg){
-						this.evalmessages(msg)
-					});
-					child.on('error',function(msg){
-						if(!validator.isValidError(msg)){
-							throw new Error("Rec'd invalid msg object on error event.");
-						}
-						throw new Error("worker[index].on('error'...) not implemented.");
+					child.on('message',function(msg){this.evalIPCmessages(msg)});
+					child.on('error',function(msg){this.evalIPCerrors(msg)});
 					monitorFactory=require('./monitor/monitorFactory.js');
-					monitor.push(new monitorFactory(child,config));
-				});
+					monitor.push(new monitorFactory(child,config));	
 			}else{
 				log.write("id#"+id+" worker#"+workerConfig.workerId+" disabled (config).");
 			}
