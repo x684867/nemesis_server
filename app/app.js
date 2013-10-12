@@ -112,7 +112,17 @@ var app={
 					console.log(timestamp()+"setup error listener");
 					child.on('error',function(msg){
 						if(!validator.isValidError(msg)) throw new Error(E_INV_MSG_ON_ERROR_EVENT);
-						throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on()");
+						throw new Error(E_FEATURE_NOT_IMPLEMENTED+":worker.on("+msg+")");
+					});
+					console.log(timestamp()+"setup exit listener");
+					child.on('exit',function(code,signal){
+						console.log(timestamp()+"worker exit ("+id+")("+code+","+signal+")");
+					});
+					child.on('close',function(code,signal){
+						console.log(timestamp()+"worker close ("+id+")("+code+","+signal+")");
+					});
+					child.on('disconnect',function(){
+						console.log(timestamp()+"worker disconnect ("+id+")");
 					});
 					console.log(timestamp()+"end of worker initializer.");
 				}else{
