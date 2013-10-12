@@ -52,7 +52,7 @@ var app={
 						{"key":k,"cert":r,"ca_cert":a}}};
 	},
 	start:function(config){
-		(log=new require(module.filename)).drawBanner("PID:["+process.pid+"]");
+		console.log(Array(60).join("-")+"\nPID:["+process.pid+"]\n"+Array(60).join("-"));
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
@@ -75,16 +75,16 @@ var app={
 						validator=require(VALIDATOR_CLASS);
 		  				if(!validator.isValidMsg(msg)) throw(E_INV_MSG_PARENT);
 						switch(msg.code){
-							case 1:log.write("{P:1}=>{C:2}");break;
-							case 3:log.write("{P:3}=>{STOP}");break;
-							case 4:log.write("{P:4}=>{FAIL}");break;
+							case 1:console.log("{P:1}=>{C:2}");break;
+							case 3:console.log("{P:3}=>{STOP}");break;
+							case 4:console.log("{P:4}=>{FAIL}");break;
 							case 11:
 								delay=(new Date()).getTime()/1000 - msg.data;
 								if(delay < config.data.monitor.heartbeat.threshold){
 									console.log("{P:11} hbeat w#"+id+":good");
 									this.pollMonitoring(msg);
 								}else{
-									lconsole.log("{P:11} hbeat w#"+id+":slow");
+									console.log("{P:11} hbeat w#"+id+":slow");
 									this.pollStatistics(msg);
 								}
 								break;
