@@ -26,10 +26,16 @@ const LOG_CODE2_VALIDATED='Validated {code:2} msg content';
 const LOG_MSG_RECD='worker.js has received a message from parent.';
 const E_BAD_MSG_RECD="Parent: Rec'd invalid msg object.";
 
+function timestamp(){return "["+(new Date).toISOString()+"]";}
+
+
 function workerClass(){
-	var logger=require(LOGGER_CLASS);
-	var log=new logger(LOGGER_SOURCE);	
-		log.drawBanner('worker.js is starting...');
+	console.log(Array(74).join('-')+"\n"
+			   +timestamp()+" <"+module.filename+">\n"
+			   +"config file: "+filename+"\n"
+			   +"Starting worker.js constructor...\n"
+			   +Array(74).join("-")
+	);
 	process.on('message', function(msg){
 		log.write(LOG_MSG_RECD);
 		/* */
@@ -37,10 +43,10 @@ function workerClass(){
 		if(validator.isValidMsg(msg)){
 			switch(msg.code){
 				/**/
-				case 0:	log.write(LOG_CODE0_RECD);process.send({code:1});break;
+				case 0:	console.log(timestamp()+LOG_CODE0_RECD);process.send({code:1});break;
 				/**/
-				case 2: log.write(LOG_CODE2_RECD);
-						log.write(LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
+				case 2: console.log(timestamp()+LOG_CODE2_RECD);
+						console.log(timestamp()+LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
 						serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
 						server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
 						process.send({code:server.start()});
