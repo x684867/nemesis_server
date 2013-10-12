@@ -8,68 +8,64 @@
 	is intended to manage the web services and interact with the parent (master)
 	process operated by app.js.
 */
+module.exports=workerClass
+
+const SERVER_SCRIPT_PATH='/srv/nemesis/app/servers/';
 
 const LOGGER_SOURCE='lib.worker';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 global.logger=require(LOGGER_CLASS);
 
-
-var log=new global.logger(LOGGER_SOURCE);	
-	log.drawBanner('worker.js is starting...');
-
 const TOBJ='object';
 const TSTR='string';
 const TNUM='number';
 
+const E_BAD_IPC_MSG='Worker received an IPC message which is not an object';
+const E_BAD_IPC_MSG_CODE='Worker received an invalid message (code not number';
+const E_BAD_CODE2_MSG_DATA='Invalid {code:2} (msg.data not an object)';
+const E_BAD_CODE2_MSG_DATA_TYPE='Invalid {code:2} (msg.data.type not a string)';
+const E_BAD_CODE2_MSG_DATA_ID='Invalid {code:2} (msg.data.id not a number)';
+const E_BAD_CODE2_MSG_DATA_CFG='Invalid {code:2} (msg.data.config not an object)';
+const E_IPC_CODE_NOT_IMPLEMENTED="msg.code is not implemented";
+const E_UNDEFINED_CHILD_PROCESS="msg.code is undefined when child processed message.";
+const E_INV_CHILD_RECEIVED="Unrecognized/Invalid msg sent to child";
+
+const LOG_CODE0_RECD='Worker received {code:0}.  Replying with {code:1}';
+const LOG_CODE2_RECD='Worker received {code:2}.';
+const LOG_CODE10_RECD='Worker received {code:10}.';
+const LOG_CODE2_VALIDATED='Validated {code:2} msg content';
+
+function workerClass(){
+
+	var log=new global.logger(LOGGER_SOURCE);	
+		log.drawBanner('worker.js is starting...');
+
 process.on('message', function(msg){
 	log.write('worker.js has received a message from parent.');
-	if(typeof(msg)!=TOBJ){
-		throw new Error('Non-object message passed from parent to child process.');
-	}
+	if(typeof(msg)!=TOBJ) throw new Error(E_BAD_IPC_MSG);
+	if(typeof(msg.code)!=TNUM) throw new Error(E_BAD_IPC_MSG_CODE);
 	switch(msg.code){
-		/*Process-Initialization Messages*/
-		case 0:
-				log.write("message {code:0} recieved.  Replying {code:1}");
-				process.send({code:1});
-				break;
-		case 2:
-				log.write("message {code:2} recieved.");
-				if(typeof(msg.data)!=TOBJ) throw new Error('msg.data not object');
-				if(typeof(msg.data.type)!=TSTR) throw new Error('msg.data.type not string');
-				if(typeof(msg.data.id)!=TNUM) throw new Error('msg.data.id not number');
-				if(typeof(msg.data.config)!=TOBJ) throw new Error('msg.data.config not object');
-				log.write(
-					 "validated {code:2} message content:\n"
-					+"\t"+JSON.stringify(msg)+"\n"
-				);
-				log.drawLine();
-				log.write('Loading the server specified in the config.');
-				
-				serverFactory=require('/srv/nemesis/app/servers/'+msg.data.type+'.js');
-				log.write('Instantiating the server.');
+		case 0:	log.write(LOG_CODE0_RECD);process.send({code:1});break;
+		case 2: log.write(LOG_CODE2_RECD);
+				if(typeof(msg.data)!=TOBJ) throw new Error(E_BAD_CODE2_MSG_DATA);
+				if(typeof(msg.data.type)!=TSTR) throw new Error(E_BAD_CODE2_MSG_DATA_TYPE);
+				if(typeof(msg.data.id)!=TNUM) throw new Error(E_BAD_CODE2_MSG_DATA_ID);
+				if(typeof(msg.data.config)!=TOBJ) throw new Error(E_BAD_CODE2_MSG_DATA_CFG);
+				log.write(LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
+				serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
 				server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
-				log.write('Server is instantiated.');
-				
-				log.write("starting process and sending {code:[3,4]} based on return.");
 				process.send({code:server.start()});
-
 				break;
-		/*Process-Monitoring Messages*/
-		case 10:
-				log.write ("{code:10} received");
-				process.send({code:11,data:msg.data});
-				break;
-		case 12:log.write ("msg.code rec'd. Not implemented: {code:12}"); break;
-		/*Process-Management Messages*/
-		case 96:log.write ("msg.code rec'd. Not implemented: {code:96}"); break;
-		case 98:log.write ("msg.code rec'd. Not implemented: {code:98}"); break;
-		/*Catch-all*/
+		case 10:log.write(LOG_CODE10_RECD);process.send({'code':11,'data':msg.data});break;
+		case 12:log.write(E_IPC_CODE_NOT_IMPLEMENTED+":{code:"+msg.code+"}"); break;
+		case 96:log.write(E_IPC_CODE_NOT_IMPLEMENTED+":{code:"+msg.code+"}"); break;
+		case 98:log.write(E_IPC_CODE_NOT_IMPLEMENTED+":{code:"+msg.code+"}"); break;
 		default:
-			if(msg.code==undefined){
-				throw new Error('msg.code is undefined when child processed message.');
-			}else{
-				throw new Error('Unrecognized/Invalid msg ('+msg.code+') sent to child.');
-			}
+			throw new Error(
+							(msg.code==undefined)
+							?E_UNDEFINED_CHILD_PROCESS
+							:(E_INV_CHILD_RECEIVED+":"+msg.code
+			);
 			break;
 	}
 });
