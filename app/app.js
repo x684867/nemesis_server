@@ -181,7 +181,7 @@ var app={
 console.log(Array(80).join("-")+"\n"
 			+timestamp()+"[PID:"+process.pid+" <"+module.filename+">]\n"
 			+Array(80).join("-")+"\n"
-			+"Starting Nemesis...\n\n"
+			+"Starting Nemesis...\n"
 );
 global.procs=Array();
 if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
