@@ -19,24 +19,14 @@ const TOBJ='object';
 
 const logfile='/var/log/nemesis/nemesis.log';
 
-function logger(source){
-
-	this.rawWrite=function(m){
-		(require('fs')).appendFile(logfile,m,function(err){if(err) throw err;});
-		console.log(m);
-	}
-	this.write=function(message){
-		this.rawWrite("["+(new Date).toISOString()+"] "+source+":"+message);
-	}
-	this.drawLine=function(w){
-		this.rawWrite(Array((((w==undefined)||(w<0))?LOG_LINE_WIDTH:w)).join("-"));
-	}
-	this.drawBanner=function(t){
-		this.drawLine(LOG_LINE_WIDTH);
-		this.write(t);
-		this.drawLine(LOG_LINE_WIDTH);
+log={
+	banner:function(m,w){log.line(w);log.write(m);log.line(w);console.log(" ");},
+	line:function(w){console.log(Array(w).join('-'));},
+	write:function(m){console.log(timestamp()+m)},
+	list_pids:function(){
+		for(i=0,p='';i<global.procs.length;i++){p=p+global.procs[i].pid+',';}
+		log.write("   PID_List:["+p.substring(0,p.length-1)+"]");
 	}
 }
-
 
 
