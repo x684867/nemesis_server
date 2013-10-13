@@ -45,10 +45,9 @@ function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 function isUndefined(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 /* */
 
-function validator(){
-
-	this.isValidError=function(m){return (typeof(m)==TOBJ)?true:false;},
-	this.isValidMsg=function(m){
+function validator(){ }
+validator.isValidError=function(m){return (typeof(m)==TOBJ)?true:false;},
+validator.isValidMsg=function(m){
 		typeCheck(m,TOBJ,E_M_NOT_OBJ);
 		isUndefined(m.code,E_M_CD_NOT_SET);
 		typeCheck(m.code,TNUM,E_M_CD_NOT_NUM);
