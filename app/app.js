@@ -70,8 +70,13 @@ var app={
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 		config.data.workers.forEach(
 			function(workerConfig,id,array){
-				if(workerConfig.enabled){
-					var child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
+				if((typeof(workerConfig.enabled)=='boolean')&&(workerConfig.enabled)){
+					var child=void(0);
+					try{
+						child=require('child_process').fork(CHILD_PROCESS_WRAPPER);
+					}catch(e){
+						throw e;
+					}
 					if(child){
 						global.procs.push(child);
 						console.log(timestamp()

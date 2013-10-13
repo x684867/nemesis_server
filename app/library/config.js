@@ -120,6 +120,7 @@ function config(filename){
 	if(typeof(this.data.workers.forEach)!=TFUNC) throw new Error(E_BAD_WRKR_ARR);
 	this.data.workers.forEach(function(w,i,a){
 		if(typeof(w)!=TOBJ) throw new Error(E_BAD_WRKR_OBJ);
+		if(typeof(w.enabled)=='undefined') w.enabled='false'; /*default to false*/
 		if(typeof(w.enabled)!=TBOOL) throw new Error(E_BAD_WRKR_EN);
 		if(typeof(w.workerId)!=TNUM) throw new Error(E_BAD_WRKR_ID);
 		if(typeof(w.ipAddress)!=TSTR) throw new Error(E_BAD_WRKR_IP);
