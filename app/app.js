@@ -146,7 +146,7 @@ var app={
 				}
 				gnLst=function(){
 					var p='';
-					for(i=0;i<=global.procs.length;i++){p=p+global.procs[i].pid+',';}
+					for(i=0;i<=global.procs.length;i++){p=p+global.procs[i]+',';}
 					return p;
 				}
 				console.log(timestamp()+" PIDLIST=["+gnLst()+"]");
