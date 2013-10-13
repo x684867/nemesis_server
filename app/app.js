@@ -30,7 +30,6 @@
 			*Begin service development.
 	---------------------------------------------------------------------------------
 */
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 const CHILD_PROCESS_WRAPPER='/srv/nemesis/app/library/worker.js';
 const PID_WRITER_SCRIPT='/srv/nemesis/app/library/pidWriter.js';
 const VALIDATOR_CLASS='./library/msgValidator.js';
@@ -46,8 +45,14 @@ function Plist(){
 	}
 	return p.substring(0,p.length-1);
 }
-function timestamp(){return "["+(new Date).toISOString()+"]";}
-
+log={
+	write:function(m){
+		function timestamp(){return "["+(new Date).toISOString()+"]";}
+		console.log(timestamp+m);
+	}
+	line:function(w){console.log(Array(w).join('-');}
+	banner:function(m,w){log.line(w);log.write(m);log.line(w);}
+}
 var app={
 	loadconfig:function(config_filename){
 		var configFactory=require(CONFIG_CLASS);
