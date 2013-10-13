@@ -45,6 +45,13 @@ function workerClass(){
 	process.on('message', function(msg){
 		log.write(LOG_MSG_RECD);
 		validator=require(VALIDATOR_CLASS);
+		
+		switch(typeof(validator)){
+			case 'object': console("---DEBUG: validator is an object");break;
+			case 'undefined': console("---DEBUG: validator is undefined");break;
+			default: console("---DEBUG: validator is of type: "+typeof(validator));break;
+		}
+		
 		if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_CHILD);
 		switch(msg.code){
 				
