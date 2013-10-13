@@ -103,9 +103,8 @@ var app={
 						console.log(timestamp()+"setup message listener");
 						child.send({code:0});
 						child.on('message',function(msg){
-		  					if(!(require(VALIDATOR_CLASS).isValidMsg(msg))){
-		  						throw(E_INV_MSG_PARENT);
-							}
+							var validator=require(VALIDATOR_CLASS);
+							if(!((new validator).isValidMsg(msg)))throw(E_INV_MSG_PARENT);
 							switch(msg.code){
 								case 1:console.log(timestamp()+"{P:1}=>{C:2}");break;
 								case 3:console.log(timestamp()+"{P:3}=>{STOP}");break;
