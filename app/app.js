@@ -151,7 +151,6 @@ var app={
 					}
 					return p;
 				}
-				console.dir(global.procs[1]);
 				console.log(timestamp()+" PIDLIST=["+gnLst()+"]");
 			}
 		);
