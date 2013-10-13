@@ -76,6 +76,7 @@ function workerClass(){
 					}
 				   	
 			case 10:
+					log.write("Child:{code:10} rec'd.  Sending {code:11} echo.");
 					process.send({'code':11,'data':msg.data});
 					break;
 					
