@@ -24,7 +24,7 @@ const LOG_CODE2_RECD='Worker received {code:2}.';
 const LOG_CODE10_RECD='Worker received {code:10}.';
 const LOG_CODE2_VALIDATED='Validated {code:2} msg content';
 const LOG_MSG_RECD='worker.js has received a message from parent.';
-const E_BAD_MSG_RECD="Parent: Rec'd invalid msg object.";
+const E_INV_MSG_CHILD="Child rec'd invalid message object from parent.";
 
 function timestamp(){return "["+(new Date).toISOString()+"]";}
 log={
@@ -44,40 +44,40 @@ function workerClass(){
 	process.on('close',function(code){log.write("worker close");});
 	process.on('message', function(msg){
 		log.write(LOG_MSG_RECD);
-		/* */
-		var validator=new require(VALIDATOR_CLASS);
-		if(validator.isValidMsg(msg)){
-			switch(msg.code){
-				case 0:
-						log.write(LOG_CODE0_RECD);
-						process.send({code:1});
-						break;
-						
-				case 2:
-						log.write(LOG_CODE2_RECD);
-					   	log.write(LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
-					   	serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
-					   	server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
-					   	process.send({code:server.start()});
-					   	break;
-					   	
-				case 10:
-						process.send({'code':11,'data':msg.data});
-						break;
-						
-				case 12:break;
-				case 96:break;
-				case 98:break;
-				default:
-					if(msg.code==undefined){
-						throw new Error(E_UNDEFINED_CHILD_PROCESS);
-					}else{
-						throw new Error(E_INV_CHILD_RECEIVED+":"+msg.code);
-					}
+		validator=require(VALIDATOR_CLASS);
+		if(!validator.isValidMsg(msg)) throw(E_INV_MSG_CHILD);
+		switch(msg.code){
+				
+			case 0:/*Parent (code:0) => Child (code:1) => Parent*/
+			
+					log.write(LOG_CODE0_RECD);
+					process.send({code:1});
 					break;
-			}
-		}else{
-			 throw(E_BAD_MSG_RECD);
+						
+			case 2:/*Parent (code:1) => Child (code:2) => Parent (code:[3,4]) */
+			
+					log.write(LOG_CODE2_RECD);
+				   	log.write(LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
+				   	serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
+				   	server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
+				   	process.send({code:server.start()});
+				   	break;
+				   	
+			case 10:
+				
+					process.send({'code':11,'data':msg.data});
+					break;
+					
+			case 12:break;
+			case 96:break;
+			case 98:break;
+			default:
+				if(msg.code==undefined){
+					throw new Error(E_UNDEFINED_CHILD_PROCESS);
+				}else{
+					throw new Error(E_INV_CHILD_RECEIVED+":"+msg.code);
+				}
+				break;
 		}
 	});
 	console.log(timestamp()+"workerClass() terminating");
