@@ -19,7 +19,8 @@ Diary
 	
 *DEVELOPMENT @ 2200 12 OCTOBER 2013:
 	*Created from Master.
-
+	*MsgValidator.js has been fixed.
+	*
 
 
 

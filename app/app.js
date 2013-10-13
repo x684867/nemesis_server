@@ -55,12 +55,6 @@ var app={
 		var config=new configFactory(config_filename);
 		return config;
 	},
-	code2:function(c,i,t,f,k,r,a){
-		return {
-				"code":c,
-				"data":{"id":i,"type":t,"config":f,"ssl":{"key":k,"cert":r,"ca_cert":a} }
-		};
-	},
 	start:function(config){
 		log.banner("[PID:"+process.pid+" <"+module.filename+">]\napp.start()\n",74);
 		
@@ -82,22 +76,10 @@ var app={
 								+"{process_count:"+global.procs.length+"}"
 						);
 						pidFile.createNew(child.pid);
-						msg={code:2,
-							 pid:child.pid,
-							 data:{id:id,
-							 	   type:config.data.serverType,
-								   config:workerConfig,
-								   ssl:{key:config.data.ssl.private_key,
-									    cert:config.data.ssl.public_key,
-									    ca_cert:config.data.ssl.ca_cert
-									}
-							}
-						};
 						console.log(timestamp()
 								   +"{child pid ["+child.pid+"]},"
 								   +"{count:"+global.procs.length+"},"
 								   +"{name:'"+global.procs.title+"'},"
-								   +"{JSON:"+JSON.stringify(msg)+"}\n\n"
 								   +"setup message listener"
 						);
 						child.send({code:0});
@@ -108,7 +90,23 @@ var app={
 							if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_PARENT);
 							switch(msg.code){
 								case 1:
-									log.write("Child {code:1} received by parent.");
+									log.write("Child{code:1}=>Parent.  Send {code:2}");
+									child.send(
+										{
+											code:2,
+							 				pid:child.pid,
+							 				data:{
+							 						id:id,
+							 	   					type:config.data.serverType,
+								   					config:workerConfig,
+								   					ssl:{
+								   						key:config.data.ssl.private_key,
+									    				cert:config.data.ssl.public_key,
+									    				ca_cert:config.data.ssl.ca_cert
+													}
+											}
+										}
+									);
 									/* Update statistics. */
 									break;
 									
