@@ -40,7 +40,12 @@ const E_INV_MSG_ON_ERROR_EVENT="Received invalid message object on error event."
 const E_FEATURE_NOT_IMPLEMENTED="This feature is not implemented.";
 const E_INV_MSG_PARENT="Parent: Rec'd invalid msg object."
 
-function Plist(){for(i=0,p='';i<global.procs.length;i++){p=p+global.procs[i].pid+',';}return p;}
+function Plist(){
+	for(i=0,p='';i<global.procs.length;i++){
+		p=p+global.procs[i].pid+',';
+	}
+	return p.substring(0,p.length-1);
+}
 function timestamp(){return "["+(new Date).toISOString()+"]";}
 
 var app={
