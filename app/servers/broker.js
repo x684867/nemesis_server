@@ -50,19 +50,16 @@ function BrokerServer(id,config,ssl_config){
 			log.write('BrokerServer('+req+','+res+')[request];');
 		});
 		server.on('connection',function(socket){
-			log.write('BrokerServer():connection established')
+			log.write('BrokerServer()[connection established]')
 		});
 		server.on('close',function(){
-			log.write('connection closed')
+			log.write('BrokerServer()[connection closed]')
 		});
 		server.on('connect',function(request,socket,head){
-			log.write('connect('+request+','+socket+','+head+')');
+			log.write('BrokerServer()[connect];
 		});
 		server.on('clientError',function(exception,socket){
 			log.write('clientError('+exception+','+socket+')');
-		});
-		server.on('EADDRINUSE',function(err){
-			throw("BrokerServer():"+err.message);
 		});
 		try{			
 			server.listen(config.ipPort,config.ipAddress);
