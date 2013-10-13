@@ -44,8 +44,7 @@ function isUndefined(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 
 var validator={
 
-	isValidError:function(m){return (typeof(m)==TOBJ)?true:false;}
-
+	isValidError:function(m){return (typeof(m)==TOBJ)?true:false;},
 	isValidMsg:function(m){
 		typeCheck(m,TOBJ,E_M_NOT_OBJ);
 		isUndefined(m.code,E_M_CD_NOT_SET);
