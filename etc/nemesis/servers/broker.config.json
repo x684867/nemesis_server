@@ -19,6 +19,6 @@
 		{ "enabled":true,"workerId":21,"ipAddress":"127.0.2.1","ipPort":80,"ssl":false },
 		{ "enabled":true,"workerId":22,"ipAddress":"127.0.2.2","ipPort":80,"ssl":false },
 		{ "enabled":true,"workerId":23,"ipAddress":"127.0.2.3","ipPort":80,"ssl":false },
-		{ "enabled":true,"workerId":24,"ipAddress":"127.0.2.4","ipPort":80,"ssl":false }
+		{ "enabled":false,"workerId":24,"ipAddress":"127.0.2.4","ipPort":80,"ssl":false }
 	]
 }
