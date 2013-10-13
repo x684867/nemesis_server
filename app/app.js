@@ -44,7 +44,7 @@ log={
 	banner:function(m,w){log.line(w);log.write(m);log.line(w);console.log(" ");},
 	line:function(w){console.log(Array(w).join('-'));},
 	write:function(m){console.log(timestamp()+m)},
-	list_pids=function(){
+	list_pids:function(){
 		for(i=0,p='';i<global.procs.length;i++){p=p+global.procs[i].pid+',';}
 		return p.substring(0,p.length-1);
 	}
