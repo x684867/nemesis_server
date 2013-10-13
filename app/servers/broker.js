@@ -56,7 +56,7 @@ function BrokerServer(id,config,ssl_config){
 			log.write('BrokerServer()[connection closed]')
 		});
 		server.on('connect',function(request,socket,head){
-			log.write('BrokerServer()[connect];
+			log.write('BrokerServer()[connect]');
 		});
 		server.on('clientError',function(exception,socket){
 			log.write('clientError('+exception+','+socket+')');
