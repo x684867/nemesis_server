@@ -107,28 +107,34 @@ var app={
 							var validator=require(VALIDATOR_CLASS);
 							if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_PARENT);
 							switch(msg.code){
-								case 1:console.log(timestamp()+"{P:1}=>{C:2}");break;
-								case 3:console.log(timestamp()+"{P:3}=>{STOP}");break;
-								case 4:console.log(timestamp()+"{P:4}=>{FAIL}");break;
+								case 1:
+									log.write("Child {code:1} received by parent.");
+									/* Update statistics. */
+									break;
+									
+								case 3:
+									log.write("Child {code:3} received. Server: online.");
+									/* Update statistics. */
+									break;
+									
+								case 4:
+									log.write("Child {code:4} received. Server: failed.");
+									/* Update statistics. */
+									break;
+									
 								case 11:
 									delay=(new Date()).getTime()/1000 - msg.data;
 									if(delay < config.data.monitor.heartbeat.threshold){
-										console.log(
-													 timestamp()
-													+"{P:11}beat w#"+id+":good"
-										);
+										log.write("{P:11}beat w#"+id+":good");
 										this.pollMonitoring(msg);
 									}else{
-										console.log(
-													 timestamp()
-													+"{P:11}beat w#"+id+":slow"
-										);
+										log.write("{P:11}beat w#"+id+":slow");
 										this.pollStatistics(msg);
 									}
 									break;
-								case 13:console.log(timestamp()+"{P:13}not impl.");break;
-								case 97:console.log(timestamp()+"{P:97}not impl.");break;
-								case 99:console.log(timestamp()+"{P:99}not impl.");break;
+								case 13:log.write("{P:13}not impl.");break;
+								case 97:log.write("{P:97}not impl.");break;
+								case 99:log.write("{P:99}not impl.");break;
 								default:
 									throw new Error(
 													timestamp()+":Unk/Inv code:"+msg.code
