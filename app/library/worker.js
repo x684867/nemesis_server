@@ -74,6 +74,7 @@ function workerClass(){
 							throw new Error ("Unknown result rec'd from server.start()");
 							break;
 					}
+				   	break;
 				   	
 			case 10:
 					log.write("Child:{code:10} rec'd.  Sending {code:11} echo.");
