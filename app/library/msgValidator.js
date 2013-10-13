@@ -3,11 +3,14 @@
 	/srv/nemesis/app/library/msgValidator.js 
 	(c) 2013 Sam Caldwell.  All Rights Reserved.  
 
-
+	This file establishes a single library (object) which can be used to validate any
+	of the Nemesis IPC messages.  The entire structure of an IPC message is validated
+	by this library.
+	
+	If a message has any issue an exception is thrown.
+	
  */
 module.exports=validator
-const LOGGER_SOURCE='lib.msgValidator';
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
 /* */
 const TOBJ='object';
 const TSTR='string';
