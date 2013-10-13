@@ -147,7 +147,7 @@ var app={
 				gnLst=function(){
 					var p='';
 					for(i=0;i<global.procs.length;i++){
-						p=p+global.procs[i]+',';
+						p=p+global.procs[i].pid+',';
 					}
 					return p;
 				}
