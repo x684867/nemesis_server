@@ -152,7 +152,7 @@ var app={
 				}else{
 					console.log(timestamp()+"worker #"+id+" disabled. pidCount:"+global.procs.length);
 				}
-				log.list_pids());
+				log.list_pids();
 			}
 		);
 		return (global.procs.length>0)?true:false;
