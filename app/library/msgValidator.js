@@ -52,6 +52,8 @@ validator.isValidMsg=function(m){
 	isUndefined(m.code,E_M_CD_NOT_SET);
 	typeCheck(m.code,TNUM,E_M_CD_NOT_NUM);
 	switch(m.code){
+		
+		/*Server Instantiation handshake {Code:[0-4]}*/
 		case 0:return true;break;/*{code:0}*/
 		case 1:return true;break;/*{code:1}*/
 		case 2:
@@ -74,6 +76,7 @@ validator.isValidMsg=function(m){
 			break;		
 		case 3:return true;break;/*{code:3}*/
 		case 4:return true;break;/*{code:4}*/
+		
 		case 5:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
 		case 6:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
 		case 7:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
