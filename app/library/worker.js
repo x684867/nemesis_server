@@ -46,10 +46,12 @@ function workerClass(){
 		log.write(LOG_MSG_RECD);
 		validator=require(VALIDATOR_CLASS);
 		
+		console.log("VALIDATOR_CLASS:"+VALIDATOR_CLASS);
+		
 		switch(typeof(validator)){
-			case 'object': console("---DEBUG: validator is an object");break;
-			case 'undefined': console("---DEBUG: validator is undefined");break;
-			default: console("---DEBUG: validator is of type: "+typeof(validator));break;
+			case 'object': console.log("---DEBUG: validator is an object");break;
+			case 'undefined': console.log("---DEBUG: validator is undefined");break;
+			default: console.log("---DEBUG: validator is of type: "+typeof(validator));break;
 		}
 		
 		if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_CHILD);
