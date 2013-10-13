@@ -182,9 +182,9 @@ var app={
 						timestamp()+"worker #"+id+"/"+(workerList.length-1)+" disabled."
 					);
 				}
-				log.list_pids();
 			}
 		);
+		log.list_pids();
 		return (global.procs.length>0)?true:false;
 	},
 	pollMonitoring:function(msg){
