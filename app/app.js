@@ -50,7 +50,7 @@ log={
 		function timestamp(){return "["+(new Date).toISOString()+"]";}
 		console.log(timestamp+m);
 	},
-	line:function(w){console.log(Array(w).join('-');},
+	line:function(w){console.log(Array(w).join('-'));},
 	banner:function(m,w){log.line(w);log.write(m);log.line(w);}
 }
 var app={
