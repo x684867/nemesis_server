@@ -76,7 +76,6 @@ function workerClass(){
 					}
 				   	
 			case 10:
-				
 					process.send({'code':11,'data':msg.data});
 					break;
 					

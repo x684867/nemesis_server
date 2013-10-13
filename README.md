@@ -20,7 +20,8 @@ Diary
 *DEVELOPMENT @ 2200 12 OCTOBER 2013:
 	*Created from Master.
 	*MsgValidator.js has been fixed.
-	*
+	*app.js is now sending {code:2}...this was breaking the server startup.
+	
 
 
 
