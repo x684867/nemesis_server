@@ -28,7 +28,6 @@ const E_BAD_MSG_RECD="Parent: Rec'd invalid msg object.";
 
 function timestamp(){return "["+(new Date).toISOString()+"]";}
 
-
 function workerClass(){
 	console.log(Array(74).join('-')+"\n"
 			   +timestamp()+" <"+module.filename+">\n"

@@ -61,10 +61,18 @@ var app={
 		return config;
 	},
 	code2:function(c,i,t,f,k,r,a){
-		return {"code":c,"data":
-					{"id":i,"type":t,"config":f,"ssl":
-						{"key":k,"cert":r,"ca_cert":a}
-					}
+		return {
+				"code":c,
+				"data":{
+						"id":i,
+						"type":t,
+						"config":f,
+						"ssl":{
+							"key":k,
+							"cert":r,
+							"ca_cert":a
+						}
+				}
 		};
 	},
 	start:function(config){
@@ -86,9 +94,12 @@ var app={
 					if(child){
 						global.procs.push(child);
 						console.log(timestamp()
-							      +"spawn worker #"+id
-							      +" pid#"+child.pid
-							      +" proc_count:"+global.procs.length
+								+"spawn worker:{"
+									+"parent_pid:"+process.pid+","
+									+"id:"+id+","
+									+"child_pid:"+child.pid
+								+"},"
+								+"{process_count:"+global.procs.length+"}"
 						);
 						pidFile.createNew(child.pid);
 						msg={code:2,
