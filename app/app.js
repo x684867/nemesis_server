@@ -235,7 +235,6 @@ if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
 	if(app.start(config)){
 		if((app.startMonitoring(config)) && (app.startStats(config))){
 			console.log(timestamp()+"All services are started.");
-			process.exit(0);/*Terminate app.js...children should keep going.*/
 		}else{
 			log.write('monitoring/stats failed');
 			process.exit(1);
