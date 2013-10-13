@@ -39,18 +39,28 @@ function BrokerServer(id,config,ssl_config){
 	this.start=function(){
 		var server=(config.ssl)
 			?require('https').createServer(ssl_config,function(req,res){
-				res.writeHead(200, {'Content-Type': 'text/plain'});
-				res.end('Hello World.  I am broker#'+config.workerId+'\n');
+
 			})
 			:require('http').createServer(function(req,res){
-				res.writeHead(200, {'Content-Type': 'text/plain'});
-				res.end('Hello World.  I am broker#'+config.workerId+'\n');
+
 			});
 		server.on('request',function(req,res){
 			log.write('BrokerServer('+req+','+res+')[request];');
+			*
+				Update statistics (request data)
+			*/
+			/*
+				Process the client request
+			*/
+			res.writeHead(200, {'Content-Type': 'text/plain'});
+			res.end('Hello World.  I am broker#'+config.workerId+'\n');
 		});
 		server.on('connection',function(socket){
 			log.write('BrokerServer()[connection established]')
+			/*
+				Update statistics (connections opened)
+			 */
+			
 		});
 		server.on('close',function(){
 			log.write('BrokerServer()[connection closed]')
