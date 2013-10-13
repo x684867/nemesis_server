@@ -45,10 +45,11 @@ function Plist(){
 	}
 	return p.substring(0,p.length-1);
 }
+function timestamp(){return "["+(new Date).toISOString()+"]";}
 log={
 	write:function(m){
 		
-		console.log("["+(new Date).toISOString()+"]"+m);
+		console.log(timestamp()+m);
 	},
 	line:function(w){console.log(Array(w).join('-'));},
 	banner:function(m,w){log.line(w);log.write(m);log.line(w);}
