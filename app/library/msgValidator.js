@@ -31,7 +31,7 @@ const E_M_CD2_CFG_PORT_UNDEF='{code:2,data:{config.ipPort:<non-number>}}';
 const E_M_CD2_CFG_ID_NAN='{code:2,data:{config.workerId:<not number>}}';
 const E_M_CD2_CFG_IP_NSTR='{code:2,data:{config.ipAddress:<not string>}}';
 const E_M_CD2_CFG_PORT_NAN='{code:2,data:{config.ipPort:<not number>}}';
-const E_M_CD11_D_NON_OBJ='{code:11,data:<not number>}';
+const E_M_CD11_D_NAN='{code:11,data:<not number>}';
 const E_M_CD11_D_UNDEF='{code:11,data:<undefined>}';
 const E_M_CD13_D_NOT_OBJ="Msg {code:13} data property is non-array.";
 const E_M_CD13_D_UNDEF="Msg {code:13} lacks data property.";
@@ -79,12 +79,15 @@ validator.isValidMsg=function(m){
 		case 7:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
 		case 8:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
 		case 9:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-		case 10:return true;break;
-		case 11:
+
+		/* {code:[10-11]} heartbeat.  p(10)->c(11)->p */
+		case 10:return true;break;/*{code:10}*/
+		case 11:/*code:11,data:<timestamp>*/
 			isUndefined(m.data,E_M_CD11_D_UNDEF);
-			typeCheck(m.data,TNUM,E_M_CD11_D_NON_OBJ);
+			typeCheck(m.data,TNUM,E_M_CD11_D_NAN);
 			return true;
-		break;					
+			break;				
+
 		case 12:return true;break;
 		case 13:
 			isUndefined(m.data,E_M_CD13_D_UNDEF);
