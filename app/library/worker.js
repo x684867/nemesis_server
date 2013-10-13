@@ -53,13 +53,27 @@ function workerClass(){
 					process.send({code:1});
 					break;
 						
-			case 2:			
-					log.write(LOG_CODE2_RECD);
-				   	log.write(LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
-				   	serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
-				   	server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
-				   	process.send({code:server.start()});
-				   	break;
+			case 2:	
+					var serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');		   	
+				   	var server=new serverFactory(
+				   									msg.data.id,
+				   									msg.data.config,
+				   									msg.data.ssl
+				   	);
+					switch(server.start()){
+						case 0: 
+								log.write("Child:{code:2} rec'd.  Sending {code:3}");
+								process.send({code:3});
+								break;
+						case 1: 
+								log.write("Child:{code:2} rec'd.  Sending {code:4}");
+								process.send({code:4});
+								break;
+						default:
+							log.write("Child:{code:2} rec'd.  A fatal error occurred.");
+							throw new Error ("Unknown result rec'd from server.start()");
+							break;
+					}
 				   	
 			case 10:
 				
