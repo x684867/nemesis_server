@@ -100,10 +100,11 @@ var app={
 								   +"{JSON:"+JSON.stringify(msg)+"}\n\n"
 								   +"setup message listener"
 						);
-						console.log(timestamp()+"setup message listener");
 						child.send({code:0});
+						log.write("{code:0} sent Parent => Child ["+child.pid+"]");
+						log.write(timestamp()+"setup message listener");
 						child.on('message',function(msg){
-							validator=require(VALIDATOR_CLASS);
+							var validator=require(VALIDATOR_CLASS);
 							if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_PARENT);
 							switch(msg.code){
 								case 1:console.log(timestamp()+"{P:1}=>{C:2}");break;
