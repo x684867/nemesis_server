@@ -145,10 +145,7 @@ var app={
 					console.log(timestamp()+"worker #"+id+" disabled.  pidCount"+global.procs.length);
 				}
 				gnLst=function(){
-					var p='';
-					for(i=0;i<global.procs.length;i++){
-						p=p+global.procs[i].pid+',';
-					}
+					for(i=0,p='';i<global.procs.length;i++){p=p+global.procs[i].pid+',';}
 					return p;
 				}
 				console.log(timestamp()+" PIDLIST=["+gnLst()+"]");
