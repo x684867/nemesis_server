@@ -44,7 +44,7 @@ function workerClass(){
 	process.on('close',function(code){log.write("worker close");});
 	process.on('message', function(msg){
 		log.write(LOG_MSG_RECD);
-		validator=require(VALIDATOR_CLASS);
+		validator=new (require(VALIDATOR_CLASS));
 		
 		console.log("VALIDATOR_CLASS:"+VALIDATOR_CLASS);
 		
@@ -53,7 +53,6 @@ function workerClass(){
 			case 'undefined': console.log("---DEBUG: validator is undefined");break;
 			default: console.log("---DEBUG: validator is of type: "+typeof(validator));break;
 		}
-		
 		if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_CHILD);
 		switch(msg.code){
 				
