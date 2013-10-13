@@ -19,7 +19,7 @@ const TOBJ='object';
 
 const logfile='/var/log/nemesis/nemesis.log';
 
-log={
+logger={
 	banner:function(m,w){log.line(w);log.write(m);log.line(w);console.log(" ");},
 	line:function(w){console.log(Array(w).join('-'));},
 	write:function(m){console.log(timestamp()+m)},

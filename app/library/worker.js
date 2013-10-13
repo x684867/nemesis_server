@@ -48,14 +48,12 @@ function workerClass(){
 		if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_CHILD);
 		switch(msg.code){
 				
-			case 0:/*Parent (code:0) => Child (code:1) => Parent*/
-			
-					log.write(LOG_CODE0_RECD);
+			case 0:
+					log.write("Child rec'd {code:0}.  Sending {code:1}");
 					process.send({code:1});
 					break;
 						
-			case 2:/*Parent (code:1) => Child (code:2) => Parent (code:[3,4]) */
-			
+			case 2:			
 					log.write(LOG_CODE2_RECD);
 				   	log.write(LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
 				   	serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
