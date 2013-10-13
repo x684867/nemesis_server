@@ -44,7 +44,7 @@ function workerClass(){
 	process.on('close',function(code){log.write("worker close");});
 	process.on('message', function(msg){
 		log.write(LOG_MSG_RECD);
-		validator=new (require(VALIDATOR_CLASS));
+		var validator=require(VALIDATOR_CLASS);
 		
 		console.log("VALIDATOR_CLASS:"+VALIDATOR_CLASS);
 		
