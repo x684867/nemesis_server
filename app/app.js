@@ -103,7 +103,6 @@ var app={
 						console.log(timestamp()+"setup message listener");
 						child.send({code:0});
 						child.on('message',function(msg){
-							validator=;
 		  					if(!(require(VALIDATOR_CLASS).isValidMsg(msg))){
 		  						throw(E_INV_MSG_PARENT);
 							}
