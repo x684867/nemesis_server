@@ -146,7 +146,13 @@ var app={
 				}
 				console.log(
 					timestamp()
-					+" PIDLIST=["+global.procs.forEach(function(p,i,a){return p.pid;})+"]"
+					+" PIDLIST=["+function(){
+							return (
+										p=p+global.procs.forEach(
+												function(p,i,a){return p.pid;}
+											)
+									)
+					}+"]"
 				);
 			}
 		);
