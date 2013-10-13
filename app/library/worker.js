@@ -13,7 +13,7 @@ module.exports=workerClass
 const SERVER_SCRIPT_PATH='/srv/nemesis/app/servers/';
 const LOGGER_SOURCE='lib.worker';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-const VALIDATOR_CLASS='./library/msgValidator.js';
+const VALIDATOR_CLASS='/srv/nemesis/app/library/msgValidator.js';
 
 const TOBJ='object';
 const TSTR='string';
