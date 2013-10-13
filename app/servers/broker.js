@@ -46,7 +46,7 @@ function BrokerServer(id,config,ssl_config){
 			});
 		server.on('request',function(req,res){
 			log.write('BrokerServer('+req+','+res+')[request];');
-			*
+			/*
 				Update statistics (request data)
 			*/
 			/*
