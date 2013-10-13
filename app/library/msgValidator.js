@@ -42,10 +42,10 @@ function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 function isUndefined(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 /* */
 
-validator={
-	isValidError:function(m){
-		return (typeof(m)==TOBJ)?true:false;
-	}
+var validator={
+
+	isValidError:function(m){return (typeof(m)==TOBJ)?true:false;}
+
 	isValidMsg:function(m){
 		typeCheck(m,TOBJ,E_M_NOT_OBJ);
 		isUndefined(m.code,E_M_CD_NOT_SET);
