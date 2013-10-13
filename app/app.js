@@ -146,9 +146,12 @@ var app={
 				}
 				gnLst=function(){
 					var p='';
-					for(i=0;i<=global.procs.length;i++){p=p+global.procs[i]+',';}
+					for(i=0;i<global.procs.length;i++){
+						p=p+global.procs[i]+',';
+					}
 					return p;
 				}
+				console.dir(global.procs);
 				console.log(timestamp()+" PIDLIST=["+gnLst()+"]");
 			}
 		);
