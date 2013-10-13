@@ -60,7 +60,7 @@ function workerClass(){
 				   									msg.data.config,
 				   									msg.data.ssl
 				   	);
-					switch(server.start()){
+					switch(c=server.start()){
 						case 0: 
 								log.write("Child:{code:2} rec'd.  Sending {code:3}");
 								process.send({code:3});
@@ -70,7 +70,7 @@ function workerClass(){
 								process.send({code:4});
 								break;
 						default:
-							log.write("Child:{code:2} rec'd.  A fatal error occurred.");
+							log.write("Child:{code:2} rec'd. Fatal error. code:"+c);
 							throw new Error ("Unknown result rec'd from server.start()");
 							break;
 					}
