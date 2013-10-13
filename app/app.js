@@ -66,7 +66,7 @@ var app={
 		
 		pidFile=new (require(PID_WRITER_SCRIPT))(config.data.pidDirectory);
 		config.data.workers.forEach(
-			function(workerConfig,id,array){
+			function(workerConfig,id,workerList){
 				if((typeof(workerConfig.enabled)=='boolean')&&(workerConfig.enabled)){
 					var child=void(0);
 					try{
@@ -150,7 +150,9 @@ var app={
 		  				console.log(timestamp()+"child process failed to spawn.");
 		  			}
 				}else{
-					console.log(timestamp()+"worker #"+id+" disabled. pidCount:"+global.procs.length);
+					console.log(
+						timestamp()+"worker #"+id+"/"+workerList.length+" disabled."
+					);
 				}
 				log.list_pids();
 			}
