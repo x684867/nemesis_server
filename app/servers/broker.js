@@ -7,9 +7,6 @@
 */
 module.exports=BrokerServer;
 
-
-global.logger=require(LOGGER_CLASS);
-
 /*Return codes for server.start()*/
 const SERVER_OK=3
 const SERVER_FAIL=4
