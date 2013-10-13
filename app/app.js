@@ -144,16 +144,12 @@ var app={
 				}else{
 					console.log(timestamp()+"worker #"+id+" disabled.  pidCount"+global.procs.length);
 				}
-				console.log(
-					timestamp()
-					+" PIDLIST=["+function(){
-							return (
-										p=p+global.procs.forEach(
-												function(p,i,a){return p.pid;}
-											)
-									)
-					}+"]"
-				);
+				gnLst=function(a){
+					var p='';
+					for(i=0;i<=a.length;i++){p=p+a[i].pid+',';}
+					return p;
+				}
+				console.log(timestamp()+" PIDLIST=["+gnLst(global.procs)+"]");
 			}
 		);
 		return (global.procs.length>0)?true:false;
