@@ -10,7 +10,7 @@
 	If a message has any issue an exception is thrown.
 	
  */
-module.exports=validator
+module.exports=validator;
 /* */
 const TOBJ='object';
 const TSTR='string';
@@ -45,10 +45,10 @@ function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 function isUndefined(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 /* */
 
-var validator={
+function validator(){
 
-	isValidError:function(m){return (typeof(m)==TOBJ)?true:false;},
-	isValidMsg:function(m){
+	this.isValidError=function(m){return (typeof(m)==TOBJ)?true:false;},
+	this.isValidMsg=function(m){
 		typeCheck(m,TOBJ,E_M_NOT_OBJ);
 		isUndefined(m.code,E_M_CD_NOT_SET);
 		typeCheck(m.code,TNUM,E_M_CD_NOT_NUM);
