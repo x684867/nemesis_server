@@ -8,8 +8,8 @@
 module.exports=BrokerServer;
 
 /*Return codes for server.start()*/
-const SERVER_OK=3
-const SERVER_FAIL=4
+const SERVER_OK=0
+const SERVER_FAIL=1
 
 const E_CFG_NOT_DEFINED='BrokerServer(): config is not defined.';
 const E_ID_NOT_DEFINED='BrokerServer(): id parameter not defined.';
