@@ -59,6 +59,7 @@ const E_MISSING_SSL_CRT='Missing file (public_key)';
 const E_MISSING_SSL_CA='Missing file (ca_cert)';
 const E_BAD_PID_DIR='Missing PID Directory (pidDirectory) in configuration file.';
 const E_MISSING_PID_DIR='Missing PID Directory specified in the configuration file.';
+const E_UNK_SRVR_TYPE='Unknown server type (expected audit, broker, cipher or keys).';
 
 function timestamp(){return "["+(new Date).toISOString()+"]";}
 	
@@ -98,6 +99,9 @@ function config(filename){
 	if(typeof(this.data)!=TOBJ) throw new Error(E_BAD_OBJ);
 	/*Verify root properties.*/
 	if(typeof(this.data.serverType)!=TSTR) throw new Error(E_BAD_SRVR_TYPE);
+	if(['audit','broker','cipher','keys'].indexOf(this.data.serverType)==-1){
+		throw new Error(E_UNK_SRVR_TYPE);
+	}
 	if(typeof(this.data.pidDirectory)!=TSTR) throw new Error(E_BAD_PID_DIR);
 	
 	/*Verify that pidDirectory exists in file system.*/
