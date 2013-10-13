@@ -46,7 +46,7 @@ log={
 	write:function(m){console.log(timestamp()+m)},
 	list_pids:function(){
 		for(i=0,p='';i<global.procs.length;i++){p=p+global.procs[i].pid+',';}
-		log.write("PID_List:["+p.substring(0,p.length-1)+"]");
+		log.write("   PID_List:["+p.substring(0,p.length-1)+"]");
 	}
 }
 var app={
@@ -152,7 +152,7 @@ var app={
 				}else{
 					console.log(timestamp()+"worker #"+id+" disabled. pidCount:"+global.procs.length);
 				}
-				console.log(timestamp()+log.list_pids());
+				log.list_pids());
 			}
 		);
 		return (global.procs.length>0)?true:false;
