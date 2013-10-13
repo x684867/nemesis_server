@@ -19,11 +19,11 @@ const TOBJ='object';
 
 const logfile='/var/log/nemesis/nemesis.log';
 
-logger={
-	banner:function(m,w){log.line(w);log.write(m);log.line(w);console.log(" ");},
-	line:function(w){console.log(Array(w).join('-'));},
-	write:function(m){console.log(timestamp()+m)},
-	list_pids:function(){
+function logger(){
+	this.banner=function(m,w){log.line(w);log.write(m);log.line(w);console.log(" ");},
+	this.line=function(w){console.log(Array(w).join('-'));},
+	this.write=function(m){console.log(timestamp()+m)},
+	this.list_pids=function(){
 		for(i=0,p='';i<global.procs.length;i++){p=p+global.procs[i].pid+',';}
 		log.write("   PID_List:["+p.substring(0,p.length-1)+"]");
 	}

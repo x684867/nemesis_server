@@ -7,8 +7,7 @@
 */
 module.exports=BrokerServer;
 
-const LOGGER_SOURCE='server.broker';
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
+
 global.logger=require(LOGGER_CLASS);
 
 /*Return codes for server.start()*/
@@ -20,8 +19,18 @@ const E_ID_NOT_DEFINED='BrokerServer(): id parameter not defined.';
 const E_CFG_NOT_OBJ='BrokerServer(): config is not an object.';
 const E_ID_NOT_NUMBER='BrokerServer(): id parameter must be a number';
 
+function timestamp(){return "["+(new Date).toISOString()+"]";}
+log={
+	banner:function(m,w){log.line(w);log.write(m);log.line(w);console.log(" ");},
+	line:function(w){console.log(Array(w).join('-'));},
+	write:function(m){console.log(timestamp()+m)},
+	list_pids:function(){
+		for(i=0,p='';i<global.procs.length;i++){p=p+global.procs[i].pid+',';}
+		log.write("   PID_List:["+p.substring(0,p.length-1)+"]");
+	}
+}
+
 function BrokerServer(id,config,ssl_config){	
-	var log=new global.logger(LOGGER_SOURCE);	
 	if(typeof(config)=='undefined') throw new Error(E_CFG_NOT_DEFINED);
 	if(typeof(id)=='undefined') throw new Error(E_ID_NOT_DEFINED);
 	if(typeof(config)!='object') throw new Error(E_CFG_NOT_OBJ+' type:'+typeof(config));
