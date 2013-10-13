@@ -39,20 +39,15 @@ const E_INV_MSG_ON_ERROR_EVENT="Received invalid message object on error event."
 const E_FEATURE_NOT_IMPLEMENTED="This feature is not implemented.";
 const E_INV_MSG_PARENT="Parent: Rec'd invalid msg object."
 
-function Plist(){
-	for(i=0,p='';i<global.procs.length;i++){
-		p=p+global.procs[i].pid+',';
-	}
-	return p.substring(0,p.length-1);
-}
 function timestamp(){return "["+(new Date).toISOString()+"]";}
 log={
-	write:function(m){
-		
-		console.log(timestamp()+m);
-	},
+	banner:function(m,w){log.line(w);log.write(m);log.line(w);console.log(" ");},
 	line:function(w){console.log(Array(w).join('-'));},
-	banner:function(m,w){log.line(w);log.write(m);log.line(w);console.log(" ");}
+	write:function(m){console.log(timestamp()+m)},
+	list_pids=function(){
+		for(i=0,p='';i<global.procs.length;i++){p=p+global.procs[i].pid+',';}
+		return p.substring(0,p.length-1);
+	}
 }
 var app={
 	loadconfig:function(config_filename){
