@@ -235,15 +235,18 @@ if(config=app.loadconfig(process.argv[2])){/*Capture command-line arguments*/
 	if(app.start(config)){
 		if((app.startMonitoring(config)) && (app.startStats(config))){
 			console.log(timestamp()+"All services are started.");
-			/*terminates*/
+			process.exit(0);/*Terminate app.js...children should keep going.*/
 		}else{
-			throw new Error('monitoring/stats failed');
+			log.write('monitoring/stats failed');
+			process.exit(1);
 		}
 	}else{
-		throw new Error('app.start() failed');
+		log.write('app.start() failed');
+		process.exit(2);
 	}
 }else{
-	throw new Error('app.loadconfig() failed to load configuration.');
+	log.write('app.loadconfig() failed to load configuration.');
+	process.exit(3);
 }
 
 
