@@ -27,30 +27,44 @@ const LOG_MSG_RECD='worker.js has received a message from parent.';
 const E_BAD_MSG_RECD="Parent: Rec'd invalid msg object.";
 
 function timestamp(){return "["+(new Date).toISOString()+"]";}
+log={
+	banner:function(m,w){log.line(w);log.write(m);log.line(w);console.log(" ");},
+	line:function(w){console.log(Array(w).join('-'));},
+	write:function(m){console.log(timestamp()+m)},
+	list_pids:function(){
+		for(i=0,p='';i<global.procs.length;i++){p=p+global.procs[i].pid+',';}
+		log.write("   PID_List:["+p.substring(0,p.length-1)+"]");
+	}
+}
 
 function workerClass(){
-	console.log(Array(74).join('-')+"\n"
-			   +timestamp()+" <"+module.filename+">\n"
-			   +"Starting workerClass()...\n"
-			   +Array(74).join("-")
-	);
-	console.log(timestamp()+"workerClass():setup IPC message listener")
-	process.on('exit',function(code){console.log(timestamp()+"worker exit");});
-	process.on('close',function(code){console.log(timestamp()+"worker close");});
+	log.banner(" <"+module.filename+">\nStarting workerClass()...\n",74);
+	log.write("workerClass():setup IPC message listener");
+	process.on('exit',function(code){log.write("worker exit");});
+	process.on('close',function(code){log.write("worker close");});
 	process.on('message', function(msg){
-		console.log(timestamp()+LOG_MSG_RECD);
+		log.write(LOG_MSG_RECD);
 		/* */
 		var validator=new require(VALIDATOR_CLASS);
 		if(validator.isValidMsg(msg)){
 			switch(msg.code){
-				case 0:console.log(timestamp()+LOG_CODE0_RECD);process.send({code:1});break;
-				case 2:console.log(timestamp()+LOG_CODE2_RECD);
-					   console.log(timestamp()+LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
-					   serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
-					   server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
-					   process.send({code:server.start()});
-					   break;
-				case 10:process.send({'code':11,'data':msg.data});break;
+				case 0:
+						log.write(LOG_CODE0_RECD);
+						process.send({code:1});
+						break;
+						
+				case 2:
+						log.write(LOG_CODE2_RECD);
+					   	log.write(LOG_CODE2_VALIDATED+':'+JSON.stringify(msg));
+					   	serverFactory=require(SERVER_SCRIPT_PATH+msg.data.type+'.js');
+					   	server=new serverFactory(msg.data.id,msg.data.config,msg.data.ssl);
+					   	process.send({code:server.start()});
+					   	break;
+					   	
+				case 10:
+						process.send({'code':11,'data':msg.data});
+						break;
+						
 				case 12:break;
 				case 96:break;
 				case 98:break;
