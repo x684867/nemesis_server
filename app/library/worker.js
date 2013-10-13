@@ -44,7 +44,7 @@ function workerClass(){
 	process.on('close',function(code){log.write("worker close");});
 	process.on('message', function(msg){
 		log.write(LOG_MSG_RECD);
-		if(!(require(VALIDATOR_CLASS).isValidMsg(msg))){
+		if(!((new require(VALIDATOR_CLASS)).isValidMsg(msg))){
 			throw(E_INV_MSG_CHILD);
 		}
 		switch(msg.code){
