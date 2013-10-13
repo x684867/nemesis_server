@@ -45,7 +45,7 @@ function workerClass(){
 	process.on('message', function(msg){
 		log.write(LOG_MSG_RECD);
 		validator=require(VALIDATOR_CLASS);
-		if(!((validator).isValidMsg(msg)))throw(E_INV_MSG_CHILD);
+		if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_CHILD);
 		switch(msg.code){
 				
 			case 0:/*Parent (code:0) => Child (code:1) => Parent*/

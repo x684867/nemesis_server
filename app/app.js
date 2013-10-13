@@ -104,7 +104,7 @@ var app={
 						child.send({code:0});
 						child.on('message',function(msg){
 							validator=require(VALIDATOR_CLASS);
-							if(!((validator).isValidMsg(msg)))throw(E_INV_MSG_PARENT);
+							if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_PARENT);
 							switch(msg.code){
 								case 1:console.log(timestamp()+"{P:1}=>{C:2}");break;
 								case 3:console.log(timestamp()+"{P:3}=>{STOP}");break;
