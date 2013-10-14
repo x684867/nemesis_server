@@ -85,6 +85,17 @@ var app={
 						child.send({code:0});
 						log.write("{code:0} sent Parent => Child ["+child.pid+"]");
 						log.write(timestamp()+"setup message listener");
+						child.on('uncaughtException', function(err) {
+							console.log( "\n\n"
+										+Array(74).join("-")
+										+"Process PID:"+child.pid+"\n"
+										+"An Uncaught Exception has been thrown:\n\n"
+										+err+"\n"
+										+"sending SIGKILL to child.\n"
+										+Array(74).join("-")
+							);
+							child.send({code:95});/*{code:95} is a child suicide msg.*/
+						})
 						child.on('message',function(msg){
 							var validator=require(VALIDATOR_CLASS);
 							if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_PARENT);
