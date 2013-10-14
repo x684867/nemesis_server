@@ -9,7 +9,24 @@ Branching
 Diary
 --------------------------------------------------------------------------------------
 
+*MASTER @ 1121 12 OCTOBER 2013:
+	*Work is in the Development branch but this branch will
+	 only deploy servers and setup a foundation for the 
+	 application.
 
+  	*This is part of my DevOps-first philosophy, where the 
+  	 beginning of any project should be establishing a very
+  	 solid and reproducible platform before developing the 
+  	 application.  By doing this, the project is guaranteed
+  	 to maintain synchronization between dev, qa, stage and
+  	 prod environments over time--reducing the amount of 
+  	 problems during the project lifetime.
+
+*DEVELOPMENT @ 0110 13 OCTOBER 2013:
+	*MsgValidator.js has been fixed.
+	*app.js is now sending {code:2}...this was breaking the server startup.
+	*We are back in action.  The servers are spawning without error.
+	*Started the routing code for broker (as a template for the other servers).
 
 *MASTER @ 2200 12 OCTOBER 2013:
 	*Application spawns worker threads
@@ -19,9 +36,6 @@ Diary
 	
 *DEVELOPMENT @ 2200 12 OCTOBER 2013:
 	*Created from Master.
-	*MsgValidator.js has been fixed.
-	*app.js is now sending {code:2}...this was breaking the server startup.
-	
 
 
 
