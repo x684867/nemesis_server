@@ -223,7 +223,16 @@ var app={
 		return true;
 	}	
 }
+process.on('uncaughtException', function(err) {
+	console.log( "\n\n"
+				+Array(74).join("-")
+				+"An Uncaught Exception has been thrown:\n\n"
+				+err+"\n"
+				+Array(74).join("-")
+	);
+})
 /*
+	main routine
 */
 console.log(Array(80).join("=")+"\n"
 			+timestamp()+"[PID:"+process.pid+" <"+module.filename+">]\n"
