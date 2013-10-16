@@ -1,14 +1,16 @@
-module.exports={
-	"_name":"app.json",
-	"_desc":"Nemesis Application Configuration File",
-	"_author":"Sam Caldwell <mail@samcaldwell.net>",
-	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
-	
+/*
+ 	Nemesis Application Configuration File
+ 	/srv/nemesis/etc/nemesis/app.json
+ 	(c) 2013 Sam Caldwell.  All Rights Reserved.
+ */
+module.exports=function(){/*do nothing*/
+
+root.config={
 	"language":"en-us",
-	
 	"modules":{
 		"app":{
-			"bootstrap":"/srv/nemesis/app/app.js",
+			"bootstrap":"/srv/nemesis/app/app.bootstrap.js",
+			
 			"main":"/srv/nemesis/app/app.main.js",
 			"start":"/srv/nemesis/app/app.startServices.js",
 			"process":"/srv/nemesis/app/app.process.js",
@@ -40,6 +42,12 @@ module.exports={
 				"server":"/srv/nemesis/app/lib/web/webServer.js"
 			}
 		},
+		"services":{
+			"audit":"/srv/nemesis/etc/nemesis/servers/audit.config.json",
+			"broker":"/srv/nemesis/etc/nemesis/servers/broker.config.json",
+			"cipher":"/srv/nemesis/etc/nemesis/servers/cipher.config.json",
+			"key":"/srv/nemesis/etc/nemesis/servers/key.config.json",
+		}
 		"worker":"/srv/nemesis/app/lib/worker.js",
 		
 	

@@ -1,7 +1,9 @@
 /*
-	/srv/nemesis/app/app.js
+	/srv/nemesis/app/app.bootstrap.js
 	Nemesis Web Services Master Process Script
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
+	
+	root.app
 	
 	This is the master process (app.js) for the Nemesis web services.
 	Each of the four (4) web services (audit,broker,cipher,keys) are 
@@ -19,16 +21,21 @@
 	
 	---------------------------------------------------------------------------------
 */
-/*
-	init.js defines the root tree with configuration data.
-*/
-require('/srv/nemesis/app/app.init.js');
-/*
-	Once the init.js script configures the system, this script
-	defines the application as part of the root object. 
-*/	
+require('/srv/nemesis/etc/nemesis/app.conf');/*Initialize root.config*/
+
+/*Load the appropriate service config*/
+switch(process.argv[2]){
+	case "audit": 	root.config.service=require(root.config.modules.services.audit);break;
+	case "broker":	root.config.service=require(root.config.modules.services.audit);break;
+	case "cipher":	root.config.service=require(root.config.modules.services.audit);break;
+	case "key":		root.config.service=require(root.config.modules.services.audit);break;
+	default: 
+		throw new Error('An unknown parameter was passed at the command line.');
+		process.exit(1);
+		break;
+	}
+
 root.app={
-	process:require(root.config.modules.app.process),
 	log:new logger(module.filename,process.pid),
 	main:require(root.config.modules.app.main),
 	startService:require(root.config.modules.app.start),
@@ -37,5 +44,9 @@ root.app={
 		statistics:require(root.config.modules.lib.monitor.statistics),
 	}	
 }
+root.services=require(root.config.modules.app.process);
+
 /*  -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- */
+
+/*Execute app.main() to launch the application.*/
 root.app.main();

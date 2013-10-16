@@ -3,13 +3,12 @@
 	/srv/nemesis/app/app.init.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 */
-modules.export=function(){/* do nothing*/};
+module.export=function(){/* do nothing*/};
 
-/* Load Configuration */
-const CONF_DIR='/srv/nemesis/etc/nemesis/';
 
-root.config=require(CONF_DIR+'app.conf');
-root.config.service=require(process.argv[2]);
+
+
+
 root.error=require(CONF_DIR+'errors/errors-'+root.config.language+'.conf');
 root.message=require(CONF_DIR+'messages/messages-'+root.config.language+'.conf');
 
