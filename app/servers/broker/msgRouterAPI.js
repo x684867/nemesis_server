@@ -6,7 +6,30 @@
  	This file exports the functions needed by msgRouter.js
  
  */
- 
+
+const WEBSTATSCLASS='/srv/nemesis/app/server/web/webStats.js';
+const OBJECT_VERIFY_CLASS='/srv/nemesis/app/library/objectVerify.js';
+const UUID_VERIFY_CLASS='/srv/nemesis/app/library/uuidVerify.js';
+
+const TOBJ='object';
+const TSTR='string';
+const TNUM='number';
+const TBOOL='boolean';
+const TFUNC='function';
+
+const E_INV_ACCOUNTID=400;
+const E_INV_OBJECTID=400;
+const E_INV_POLICYID=400;
+const E_INV_AUDIT_ID=400;
+
+const E_INV_ACCTDATA=400;
+const E_INV_OBJECTDATA=400;
+const E_INV_POLICYDATA=400;
+const E_INV_EVENTDATA=400;
+
+const E_INV_POLICYDATA='Error: Invalid PolicyData object';
+const E_INV_EVENT_DATA='Error: Invalid Event Data Object.';
+
 function timestamp(){return "["+(new Date).toISOString()+"]";}
 log={
 	banner:function(m,w){log.line(w);log.write(m);log.line(w);console.log(" ");},
@@ -17,8 +40,6 @@ log={
 		log.write("   PID_List:["+p.substring(0,p.length-1)+"]");
 	}
 }
-
-module.exports=webSend;
 function webSend(res,response){
 	if(typeof(response)=='object'){
 		res.writeHead(	response.code,
@@ -32,14 +53,15 @@ function webSend(res,response){
 		throw new Error(E_INV_WEBSEND_RESPONSE);
 	}
 }
-
-module.exports=sendErrorMsg;
 function sendErrorMsg(res,c){
 	webSend(res,c,{"code":c,"message":require('http').STATUS_CODE[c];});
 }
 
-module.exports=api_create_account;
-function api_create_account(c){
+module.exports=unknownRoute;
+function unknownRoute(c){sendErrorMsg(c.res,400);}
+
+module.exports=create_account;
+function create_account(c){
 	if( require(OBJECT_VERIFY_CLASS).isDataValid('account',c.message) ){
 		webSend( c.res , require(c.msgProcFile).createNewAccountObject(c.message) );
 	}else{
@@ -47,8 +69,8 @@ function api_create_account(c){
 	}
 }
 
-module.exports=api_create_object;
-function api_create_object(c){
+module.exports=create_object;
+function create_object(c){
 	if( require(UUID_VERIFY_CLASS).isValidUUID('account',c.message) ){
 		if( require(OBJECT_VERIFY_CLASS).isDataValid('object',c.message) ){
 			webSend( c.res , require(c.msgProcFile).createNewDataObject(c.message) );
@@ -60,8 +82,8 @@ function api_create_object(c){
 	}
 }
 
-module.exports=api_create_policy;
-function api_create_policy(c){	
+module.exports=create_policy;
+function create_policy(c){	
 	var uv=require(UUID_VERIFY_CLASS);	
 	if(uv.isValidUUID('account',c.message)){
 		if(uv.isValidUUID('object',c.message)){
@@ -78,8 +100,8 @@ function api_create_policy(c){
 	}
 }
 
-module.exports=api_create_policy;
-function api_create_policy(c){
+module.exports=create_policy;
+function create_policy(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('object',c.message)){
 		if(require(OBJECT_VERIFY_CLASS).isDataValid('event',c.message)){
 			webSend( c.res , require(c.msgProcFile).createNewAuditEvent(c.message) );
@@ -91,8 +113,8 @@ function api_create_policy(c){
 	}		
 }
 
-module.exports=api_read_account;
-function api_read_account(c){
+module.exports=read_account;
+function read_account(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('account',c.message)){
 		webSend(c.res,require(c.msgProcFile).readAccountData(c.message));
 	}else{
@@ -100,8 +122,8 @@ function api_read_account(c){
 	}
 }
 
-module.exports=api_read_object;
-function api_read_object(c){
+module.exports=read_object;
+function read_object(c){
 	var uv=require(UUID_VERIFY_CLASS);
 	if(uv.isValidUUID('account',c.message)){
 		if(uv.isValidUUID('object',c.message)){
@@ -114,8 +136,8 @@ function api_read_object(c){
 	}
 }
 
-module.exports=api_read_policy;
-function api_read_policy(c){
+module.exports=read_policy;
+function read_policy(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('policy',c.message)){
 		webSend(c.res,require(c.msgProcFile).readPolicyData(c.message));
 	}else{
@@ -123,8 +145,8 @@ function api_read_policy(c){
 	}
 }
 
-module.exports=api_read_audit_events;
-function api_read_audit_event(c){
+module.exports=read_audit_events;
+function read_audit_event(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('audit',message)){
 		webSend(c.res,require(c.msgProcFile).readEventData(c.message));
 	}else{
@@ -132,8 +154,8 @@ function api_read_audit_event(c){
 	}
 }
 
-module.exports=api_read_policy_list;
-function api_read_policy_list(c){
+module.exports=read_policy_list;
+function read_policy_list(c){
 	var uv=require(UUID_VERIFY_CLASS);
 	if(uv.isValidUUID('account',c.message)){
 		if(uv.isValidUUID('object',c.message){
@@ -146,8 +168,8 @@ function api_read_policy_list(c){
 	}
 }
 
-module.exports=api_update_account
-function api_update_account(c){
+module.exports=update_account
+function update_account(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('account',c.message)){
 		if(require(OBJECT_VERIFY_CLASS).isDataValid('account',c.message)){
 			webSend(c.res,require(c.msgProcFile).updateAccount(c.message));
@@ -159,8 +181,8 @@ function api_update_account(c){
 	}
 }
 
-module.exports=api_update_object
-function api_update_object(c){
+module.exports=update_object
+function update_object(c){
 	var uv=require(UUID_VERIFY_CLASS);
 	if(uv.isValidUUID('account',c.message)){
 		if(uv.isValidUUID('object',c.message)){
@@ -177,8 +199,8 @@ function api_update_object(c){
 	}
 }
 
-module.exports=api_update_policy
-function api_update_policy(c){
+module.exports=update_policy
+function update_policy(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('policy',c.message)){
 		if(require(OBJECT_VERIFY_CLASS).isDataValid('policy',c.message)){
 			webSend(c.res,require(c.msgProcFile).updatePolicyObject(c.message));
@@ -190,8 +212,8 @@ function api_update_policy(c){
 	}
 }
 
-module.exports=api_delete_object
-function api_delete_object(c){
+module.exports=delete_object
+function delete_object(c){
 	var uv=require(UUID_VERIFY_CLASS);
 	if(uv.isValidUUID('account',c.message)){
 
@@ -201,8 +223,8 @@ function api_delete_object(c){
 	}
 }
 
-module.exports=api_delete_policy
-function api_delete_policy(c){
+module.exports=delete_policy
+function delete_policy(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('policy',c.message)){
 		webSend(c.res,require(c.msgProcFile).deletePolicyObject(c.message));
 	}else{

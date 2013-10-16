@@ -61,6 +61,8 @@ function BrokerServer(id,config,ssl_config){
 	if(typeof(config.ssl)!='boolean') throw new Error(E_SSL_NOT_BOOL);
 	this.config={
 		"id"	:config.workerId,
+		"msgRouter":BROKER_MSGROUTER,
+		"msgProc":BROKER_MSGPROCESSOR,
 		"net"	:{
 			"port"	:config.ipPort,
 			"ip"	:config.ipAddress
@@ -90,7 +92,7 @@ function BrokerServer(id,config,ssl_config){
 		*/
 		log.write("BrokerServer::start() has been invoked.
 		var wsc=require('/srv/nemesis/app/server/web/webServer.js');
-		var webServer=new wsc(this.config,BROKER_MSGROUTER,BROKER_MSGPROCESSOR);
+		var webServer=new wsc(this.config);
 		log.write("BrokerServer::start() has instantiated the webServerClass");
 		if(webServer.launch()){
 			log.write("BrokerServer::start() has launched the webServer and it is online.");
