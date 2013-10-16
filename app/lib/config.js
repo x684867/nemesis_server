@@ -27,11 +27,7 @@
 */
 module.exports=config;
 
-const TOBJ='object';
-const TSTR='string';
-const TNUM='number';
-const TFUNC='function';
-const TBOOL='boolean';
+
 
 const E_CFG_FILE_NOT_FOUND='Configuration file not found';
 const E_BAD_OBJ='Invalid configuration object';

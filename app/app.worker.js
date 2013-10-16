@@ -26,17 +26,6 @@ const LOG_CODE2_VALIDATED='Validated {code:2} msg content';
 const LOG_MSG_RECD='worker.js has received a message from parent.';
 const E_INV_MSG_CHILD="Child rec'd invalid message object from parent.";
 
-function timestamp(){return "["+(new Date).toISOString()+"]";}
-log={
-	banner:function(m,w){log.line(w);log.write(m);log.line(w);console.log(" ");},
-	line:function(w){console.log(Array(w).join('-'));},
-	write:function(m){console.log(timestamp()+m)},
-	list_pids:function(){
-		for(i=0,p='';i<global.procs.length;i++){p=p+global.procs[i].pid+',';}
-		log.write("   PID_List:["+p.substring(0,p.length-1)+"]");
-	}
-}
-
 function workerClass(){
 	log.banner(" <"+module.filename+">\nStarting workerClass()...\n",74);
 	log.write("workerClass():setup IPC message listener");

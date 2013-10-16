@@ -1,0 +1,61 @@
+module.exports={
+	"_name":"app.conf",
+	"_desc":"Nemesis Application Configuration File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+	
+	"language":"en-us",
+	
+	"success":{
+		"code":0,
+		"message":"success"
+	},
+	
+	"failure":{
+		"code":1,
+		"message":"failure"
+	},
+	
+	"unknown":{
+		"code":2,
+		"message":"An unknown error has occurred in Nemesis."
+	},
+
+	"notImplemented":{
+		"code":3,
+		"message":"This feature has not been implemented."
+	},
+
+	
+	"app":{
+		"code":100,
+		"main":{
+			"code":110,
+			"success":{
+				"code":111,
+				"message":"All Services have started successfully."
+			},
+			"monitorHeartbeatFailed":{
+			"root.app.monitor.heartbeat.start() failed"
+			}
+			"monitorStatisticsFailed":{
+			"root.app.monitor.statistics.start() failed"
+			}
+			"servicesFailed":{
+			"root.app.start() failed to start services."
+			}
+		}
+		"start":{
+		}
+	},
+	
+	
+	
+	"ipc":{
+		"_desc":"this section is for interprocess communication errors.",
+		
+		invalidObject:"An invalid IPC Message Object was Encountered.",
+		
+		
+}

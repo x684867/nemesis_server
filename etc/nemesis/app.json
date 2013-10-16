@@ -1,0 +1,47 @@
+module.exports={
+	"_name":"app.json",
+	"_desc":"Nemesis Application Configuration File",
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+	
+	"language":"en-us",
+	
+	"modules":{
+		"app":{
+			"bootstrap":"/srv/nemesis/app/app.js",
+			"main":"/srv/nemesis/app/app.main.js",
+			"start":"/srv/nemesis/app/app.startServices.js",
+			"process":"/srv/nemesis/app/app.process.js",
+			"servers":{
+				"audit":"/srv/nemesis/app/servers/audit.js",
+				"broker":"/srv/nemesis/app/servers/broker.js",
+				"cipher":"/srv/nemesis/app/servers/cipher.js",
+				"key":"/srv/nemesis/app/servers/keys.js"
+			}
+		},
+		"lib":{
+			"config":"/srv/nemesis/app/lib/config.js",
+			"logger":"/srv/nemesis/app/lib/logger.js",
+			"msgValidator":"/srv/nemesis/app/lib/msgValidator.js",
+			"pidTracker":"/srv/nemesis/app/lib/pidTracker.js",
+			"uuidVerify":"/srv/nemesis/app/lib/uuidverify.js",
+			"monitor":{
+				"heartbeat":"/srv/nemesis/app/lib/monitor/heartbeat.js",
+				"statistics":"/srv/nemesis/app/lib/monitor/statistics.js"
+			},
+			"store":{
+				"client":"/srv/nemesis/app/lib/store/storeClient.js",
+				"server":"/srv/nemesis/app/lib/store/storeServer.js",
+				"marco":"/srv/nemesis/app/lib/store/marco.js",
+				"polo":"/srv/nemesis/app/lib/store/polo.js"
+			},
+			"web":{
+				"client":"/srv/nemesis/app/lib/web/webClient.js",
+				"server":"/srv/nemesis/app/lib/web/webServer.js"
+			}
+		},
+		"worker":"/srv/nemesis/app/lib/worker.js",
+		
+	
+	}
+}
