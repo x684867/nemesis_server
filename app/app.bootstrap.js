@@ -21,7 +21,7 @@
 	
 	---------------------------------------------------------------------------------
 */
-require('/srv/nemesis/etc/nemesis/app.conf');/*Initialize root.config*/
+require('/srv/nemesis/etc/nemesis/app.json');/*Initialize root.config*/
 
 /*Load the appropriate service config*/
 switch(process.argv[2]){
