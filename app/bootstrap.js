@@ -27,11 +27,14 @@ root.conf_dir='/srv/nemesis/etc/nemesis';
 /*
 	Load the main configuration file.
 */
+console.log("Loading the main configuration file.");
 root.config=require(root.conf_dir+'/app.conf.json');
+console.log("Loading the localized messages.");
 root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'.json');
 /*
 	Load the Modules defined in root.config.modules
 */
+console.log("Loading the modules.");
 require(root.config.core.modules).load_modules();
 /*
 	Define the application
