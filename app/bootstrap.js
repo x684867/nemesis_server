@@ -38,9 +38,9 @@ require(root.config.core.modules).load_modules();
 */
 root.app={
 	log:new root.modules.logger(module.filename,process.pid),
-	main:require(root.config.),
+	main:require(root.config.modules.core.main),
 	
-	startService:require(root.config.modules.app.start),
+	startService:require(root.config.modules.core.start),
 	monitor:{
 		heartbeat:require(root.config.modules.lib.monitor.heartbeat),
 		statistics:require(root.config.modules.lib.monitor.statistics),
