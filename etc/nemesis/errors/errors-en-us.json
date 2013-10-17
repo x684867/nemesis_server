@@ -7,26 +7,14 @@ module.exports={
 	
 	"language":"en-us",
 	
-	"success":{
-		"code":0,
-		"message":"success"
-	},
+	"success":"success",
+	"failure":"failure",
+	"unknown":"An unknown error has occurred in Nemesis.",
+	"notImplemented":"This feature has not been implemented.",
 	
-	"failure":{
-		"code":1,
-		"message":"failure"
+	"bootstrap":{
+		"invalidArgument":"An unknown parameter was passed at the command line."
 	},
-	
-	"unknown":{
-		"code":2,
-		"message":"An unknown error has occurred in Nemesis."
-	},
-
-	"notImplemented":{
-		"code":3,
-		"message":"This feature has not been implemented."
-	},
-
 	
 	"app":{
 		"code":100,

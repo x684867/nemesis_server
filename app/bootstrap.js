@@ -25,6 +25,8 @@
 	Load the main configuration file.
 */
 root.config=require('/srv/nemesis/etc/nemesis/app.conf.json');
+root.messages:require(CONF_DIR+'messages/messages-'+root.config.language+'.json');
+root.messages.error:require(CONF_DIR+'errors/errors-'+root.config.language+'.json');
 /*
 	Load the appropriate service configuration file.
 */
@@ -34,7 +36,7 @@ switch(process.argv[2]){
 	case "cipher":	root.config.service=require(root.config.modules.svc_cfg.audit);break;
 	case "key":		root.config.service=require(root.config.modules.svc_cfg.audit);break;
 	default: 
-		throw new Error('An unknown parameter was passed at the command line.');
+		throw new Error(root.messages.error.bootstrap.invalidArgument);
 		process.exit(1);
 		break;
 }

@@ -11,47 +11,43 @@
 		"app":{
 			"bootstrap":"/srv/nemesis/app/bootstrap.js",
 		},
-		"lib":{
-			"core":{
-				"main":"/srv/nemesis/app/lib/core/core.main.js",
-				"start":"/srv/nemesis/app/lib/core/core.start.js",
-				"process":"/srv/nemesis/app/lib/core/core.process.js",
-				"worker":"/srv/nemesis/app/lib/core/core.worker.js",
-				"servers":{
-					"audit":"/srv/nemesis/app/servers/audit.js",
-					"broker":"/srv/nemesis/app/servers/broker.js",
-					"cipher":"/srv/nemesis/app/servers/cipher.js",
-					"key":"/srv/nemesis/app/servers/keys.js"
-				}
-			}				
-				
-			"config":"/srv/nemesis/app/lib/config.js",
+		"core":{
+			"config":"/srv/nemesis/app/core/config.js",
 			"logger":"/srv/nemesis/app/lib/logger.js",
+			"main":"/srv/nemesis/app/core/core.main.js",
 			"msgValidator":"/srv/nemesis/app/lib/msgValidator.js",
-			"pidTracker":"/srv/nemesis/app/lib/pidTracker.js",
-			"uuidVerify":"/srv/nemesis/app/lib/uuidverify.js",
 			"monitor":{
-				"heartbeat":"/srv/nemesis/app/lib/monitor/heartbeat.js",
-				"statistics":"/srv/nemesis/app/lib/monitor/statistics.js"
+				"heartbeat":"/srv/nemesis/app/core/monitor/heartbeat.js",
+				"statistics":"/srv/nemesis/app/core/monitor/statistics.js"
 			},
+			"pidTracker":"/srv/nemesis/app/core/pidTracker.js",
+			"process":"/srv/nemesis/app/core/core.process.js",
+			"start":"/srv/nemesis/app/core/core.start.js",
 			"store":{
-				"client":"/srv/nemesis/app/lib/store/storeClient.js",
-				"server":"/srv/nemesis/app/lib/store/storeServer.js",
-				"marco":"/srv/nemesis/app/lib/store/marco.js",
-				"polo":"/srv/nemesis/app/lib/store/polo.js"
+				"client":"/srv/nemesis/app/core/store/storeClient.js",
+				"server":"/srv/nemesis/app/core/store/storeServer.js",
+				"marco":"/srv/nemesis/app/core/store/marco.js",
+				"polo":"/srv/nemesis/app/core/store/polo.js"
 			},
+			"uuidVerify":"/srv/nemesis/app/core/uuidverify.js",
 			"web":{
-				"client":"/srv/nemesis/app/lib/web/webClient.js",
-				"server":"/srv/nemesis/app/lib/web/webServer.js"
+				"client":"/srv/nemesis/app/core/web/webClient.js",
+				"server":"/srv/nemesis/app/core/web/webServer.js"
 			}
+			"worker":"/srv/nemesis/app/core/core.worker.js",
 		},
-		"svc_cfg":{
-			"audit":"/srv/nemesis/etc/nemesis/servers/audit.config.json",
-			"broker":"/srv/nemesis/etc/nemesis/servers/broker.config.json",
-			"cipher":"/srv/nemesis/etc/nemesis/servers/cipher.config.json",
-			"key":"/srv/nemesis/etc/nemesis/servers/key.config.json",
+		"servers":{
+			"audit":"/srv/nemesis/app/servers/audit.js",
+			"broker":"/srv/nemesis/app/servers/broker.js",
+			"cipher":"/srv/nemesis/app/servers/cipher.js",
+			"key":"/srv/nemesis/app/servers/keys.js"
 		}
 		
-	
+	},
+	"svc_cfg":{
+		"audit":"/srv/nemesis/etc/nemesis/servers/audit.config.json",
+		"broker":"/srv/nemesis/etc/nemesis/servers/broker.config.json",
+		"cipher":"/srv/nemesis/etc/nemesis/servers/cipher.config.json",
+		"key":"/srv/nemesis/etc/nemesis/servers/key.config.json",
 	}
 }

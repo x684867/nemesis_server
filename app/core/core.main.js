@@ -1,10 +1,5 @@
 module.exports=function(){
 	/*
-		Define the language specific messages
-	*/
-	root.messages:require(CONF_DIR+'messages/messages-'+root.config.language+'.conf');
-	root.messages.error:require(CONF_DIR+'errors/errors-'+root.config.language+'.conf');
-	/*
 		Load the application modules (based on app.config.json)
 	*/
 	root.modules:{
