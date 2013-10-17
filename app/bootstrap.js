@@ -21,7 +21,8 @@
 	
 	---------------------------------------------------------------------------------
 */
-root_config=require('/srv/nemesis/etc/nemesis/app.conf.json');
+root.config=require('/srv/nemesis/etc/nemesis/app.conf.json');
+
 
 switch(process.argv[2]){
 	case "audit": 	root.config.service=require(root.config.modules.services.audit);break;
@@ -32,16 +33,18 @@ switch(process.argv[2]){
 		throw new Error('An unknown parameter was passed at the command line.');
 		process.exit(1);
 		break;
-	}
+}
+
+root.process=require(root.config.modules.app.process);
 
 root.app={
 	log:new logger(module.filename,process.pid),
-	main:require(root.config.modules.app.main),
+	root.app.main=require(),
+	
 	startService:require(root.config.modules.app.start),
 	monitor:{
 		heartbeat:require(root.config.modules.lib.monitor.heartbeat),
 		statistics:require(root.config.modules.lib.monitor.statistics),
 	}	
 }
-root.services=require(root.config.modules.app.process);
 root.app.main();

@@ -5,10 +5,6 @@
 */
 module.export=function(){/* do nothing*/};
 
-
-
-
-
 root.error=require(CONF_DIR+'errors/errors-'+root.config.language+'.conf');
 root.message=require(CONF_DIR+'messages/messages-'+root.config.language+'.conf');
 

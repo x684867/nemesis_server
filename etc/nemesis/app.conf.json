@@ -9,7 +9,7 @@
 	
 	"modules":{
 		"app":{
-			"bootstrap":"/srv/nemesis/app/app.bootstrap.js",
+			"bootstrap":"/srv/nemesis/app/bootstrap.js",
 			
 			"main":"/srv/nemesis/app/app.main.js",
 			"start":"/srv/nemesis/app/app.startServices.js",
@@ -22,6 +22,11 @@
 			}
 		},
 		"lib":{
+			"core":{
+				"init":"/srv/nemesis/app/lib/core/core.init.js",
+				"main":"
+				
+				
 			"config":"/srv/nemesis/app/lib/config.js",
 			"logger":"/srv/nemesis/app/lib/logger.js",
 			"msgValidator":"/srv/nemesis/app/lib/msgValidator.js",

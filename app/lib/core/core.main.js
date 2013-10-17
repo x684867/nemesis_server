@@ -1,12 +1,8 @@
-/*
-	Nemesis Application Main Method
-	/srv/nemesis/app/app.main.js
-	(c) 2013 Sam Caldwell.  All Rights Reserved.
- */
+module.exports=function(){
 
-module.exports=function(){/*do nothing*/};
-
-root.app.main={
+	root.error:require(CONF_DIR+'errors/errors-'+root.config.language+'.conf');
+	root.message:require(CONF_DIR+'messages/messages-'+root.config.language+'.conf');
+	
 	root.app.log.screenBanner(root.message.app.starting);
 	root.app.process.init();
 	/*Launch the application*/	
@@ -24,4 +20,3 @@ root.app.main={
 		root.app.log.error(root.error.app.main.servicesFailed);
 	}
 }
-
