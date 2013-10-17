@@ -35,7 +35,8 @@ root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'
 	Load the Modules defined in root.config.modules
 */
 console.log("Loading the modules.");
-require(root.config.moduleLoader).load_modules();
+load_modules=require(root.config.moduleLoader);
+load_modules();
 /*
 	Define the application
 */
