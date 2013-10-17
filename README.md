@@ -9,6 +9,14 @@ Branching
 Diary
 --------------------------------------------------------------------------------------
 
+*DEVELOPMENT @ 1456 17 OCTOBER 2013:
+	*Work is continuing in the development branch as the underlying framework is 
+	 now being re-designed for a more object-oriented approach.  This approach will
+	 make the application more self-consistent and extensible over time.
+	 
+	*A global application configuration file has been added (app.conf.json) and the 
+	 components of the application have become run-time modules identified in this file.
+
 *MASTER @ 1121 12 OCTOBER 2013:
 	*Work is in the Development branch but this branch will
 	 only deploy servers and setup a foundation for the 

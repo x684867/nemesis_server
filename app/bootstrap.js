@@ -30,10 +30,9 @@ root.conf_dir='/srv/nemesis/etc/nemesis';
 root.config=require(root.conf_dir+'/app.conf.json');
 root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'.json');
 /*
-	Load the Modules.
+	Load the Modules defined in root.config.modules
 */
 require(root.config.core.modules).load_modules();
-
 /*
 	Define the application
 */
