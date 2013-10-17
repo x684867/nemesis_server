@@ -21,7 +21,7 @@
 	
 	---------------------------------------------------------------------------------
 */
-require('/srv/nemesis/etc/nemesis/app.conf.json');
+root_config=require('/srv/nemesis/etc/nemesis/app.conf.json');
 
 switch(process.argv[2]){
 	case "audit": 	root.config.service=require(root.config.modules.services.audit);break;

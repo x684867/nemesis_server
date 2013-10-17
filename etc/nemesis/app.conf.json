@@ -1,6 +1,10 @@
-module.exports=function(){/*do nothing*/}
+{
+	"_name":'app.conf.json',
+	"_desc":'Nemesis Application Configuration File',
 
-root.config={
+	"_author":'Sam Caldwell <mail@samcaldwell.net>',
+	"_copyright":'(c) 2013 Sam Caldwell.  All Rights Reserved.',
+	
 	"language":"en-us",
 	"modules":{
 		"app":{
