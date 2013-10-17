@@ -28,7 +28,7 @@ root.conf_dir='/srv/nemesis/etc/nemesis';
 	Load the main configuration file.
 */
 root.config=require(root.conf_dir+'/app.conf.json');
-root.messages:require(root.conf_dir+'/messages/messages-'+root.config.language+'.json');
+root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'.json');
 root.error=require(root.config.modules.core.errors);
 /*
 	Load the appropriate service configuration file.
