@@ -1,8 +1,3 @@
-/*
- 	Nemesis Application Configuration File
- 	/srv/nemesis/etc/nemesis/app.json
- 	(c) 2013 Sam Caldwell.  All Rights Reserved.
- */
 module.exports=function(){/*do nothing*/}
 
 root.config={
