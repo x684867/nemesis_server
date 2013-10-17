@@ -8,11 +8,25 @@
  
 module.exports=load_modules;
 
+function fileNotExists(fname){return require('fs').lstatSync(fname).isFile()}
+
 function load_modules(){
 		var o={}
 		root.config.modules.forEach(
 		function(m,i,a){
 			if(typeof(m)=='object'){
+				if(typeof(m.group)!='string'){
+					throw new Error(root.error.messages.bootstrap.invModuleGroup.text);
+				}
+				if(typeof(m.name)!='string'){
+					throw new Error(root.error.messages.bootstrap.invModuleName.text);
+				}
+				if(typeof(m.file)!='string'){
+					throw new Error(root.error.messages.bootstrap.invModuleFile.text);
+				}
+				if(fileNotExists(m.file)){
+					throw new Error(root.error.messages.bootstrap.missingModuleFile.text);
+				}
 			
 				init_object=function(o){ if(typeof(o)==undefined) o={} };
 				
