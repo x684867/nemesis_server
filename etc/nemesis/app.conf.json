@@ -13,6 +13,7 @@
 		},
 		"core":{
 			"config":"/srv/nemesis/app/core/config.js",
+			"errors":"/srv/nemesis/app/core/core.error.js",
 			"logger":"/srv/nemesis/app/lib/logger.js",
 			"main":"/srv/nemesis/app/core/core.main.js",
 			"msgValidator":"/srv/nemesis/app/lib/msgValidator.js",

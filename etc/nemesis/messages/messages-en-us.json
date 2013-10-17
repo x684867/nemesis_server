@@ -1,4 +1,4 @@
-module.exports={
+{
 	"_name":'app.conf',
 	"_desc":'Nemesis Application Configuration File',
 

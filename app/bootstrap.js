@@ -21,12 +21,15 @@
 	
 	---------------------------------------------------------------------------------
 */
+root.title="Nemesis"
+root.version="2013.10
+root.conf_dir='/srv/nemesis/etc/nemesis';
 /*
 	Load the main configuration file.
 */
-root.config=require('/srv/nemesis/etc/nemesis/app.conf.json');
-root.messages:require(CONF_DIR+'messages/messages-'+root.config.language+'.json');
-root.messages.error:require(CONF_DIR+'errors/errors-'+root.config.language+'.json');
+root.config=require(root.conf_dir+'/app.conf.json');
+root.messages:require(root.conf_dir+'/messages/messages-'+root.config.language+'.json');
+root.error=require(root.config.modules.core.errors);
 /*
 	Load the appropriate service configuration file.
 */
@@ -36,8 +39,8 @@ switch(process.argv[2]){
 	case "cipher":	root.config.service=require(root.config.modules.svc_cfg.audit);break;
 	case "key":		root.config.service=require(root.config.modules.svc_cfg.audit);break;
 	default: 
-		throw new Error(root.messages.error.bootstrap.invalidArgument);
-		process.exit(1);
+		throw new Error(root.error.messages.bootstrap.invalidArgument.text);
+		process.exit(root.error.messages.bootstrap.invalidArgument.code);
 		break;
 }
 /*
