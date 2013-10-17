@@ -23,7 +23,7 @@
 */
 root.title="Nemesis"
 root.version="2013.10.17.12.52"; /*Update when pushing to master branch.*/
-root.conf_dir='/srv/nemesis/etc/nemesis';
+root.conf_dir='/srv/nemesis/app/config';
 /*
 	Load the main configuration file.
 */
