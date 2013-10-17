@@ -6,6 +6,8 @@
 		
 	"language"	:"en-us",
 
+	"moduleLoader":"file":"/srv/nemesis/core/core.modules.js"
+
 	"modules":[
 		{"group":"app",		"name":"bootstrap",		"file":"/srv/nemesis/app/bootstrap.js"			},
 		{"group":"core",	"name":"errors",		"file":"/srv/nemesis/core/core.error.js"		},
