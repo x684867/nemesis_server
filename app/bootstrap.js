@@ -35,7 +35,7 @@ switch(process.argv[2]){
 		break;
 }
 
-root.process=require(root.config.modules.app.process);
+
 
 root.app={
 	log:new logger(module.filename,process.pid),
