@@ -5,13 +5,13 @@
 	
 	root.app
 	
-	This is the master process (app.js) for the Nemesis web services.
-	Each of the four (4) web services (audit,broker,cipher,keys) are 
-	launched using this app.js script, passing in a path and filename
-	to the specific web service's configuration file.  These config 
-	files contain a general description of the environment to be 
-	established for the web service(s) and the configuration data for
-	each service's workers.
+	This is the master process (app.bootstrap.js) for the Nemesis web services.
+	
+	Each of the four (4) web services (audit,broker,cipher,keys) are launched
+	using this app.js script, passing in a path and filename to the specific 
+	web service's configuration file.  These config files contain a general 
+	description of the environment to be established for the web service(s) 
+	and the configuration data for each service's workers.
 
 	This process is the command and control for all processes spawned
 	as workers for the given web service.  The mission of this app.js
