@@ -6,7 +6,7 @@
 		root.config.modules (defined by bootstrap.js).
  */
  
-module.export=function(){
+module.exports=function(){
 
 	load_modules=function(){
 		var o={}
