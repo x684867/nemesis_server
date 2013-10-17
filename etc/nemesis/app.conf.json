@@ -7,35 +7,91 @@
 	
 	"language":"en-us",
 	
-	"modules":{
-		"app":{
-			"bootstrap":"/srv/nemesis/app/bootstrap.js",
-		},
-		"core":{
-			"config":"/srv/nemesis/app/core/config.js",
-			"errors":"/srv/nemesis/app/core/core.error.js",
-			"logger":"/srv/nemesis/app/lib/logger.js",
-			"main":"/srv/nemesis/app/core/core.main.js",
-			"msgValidator":"/srv/nemesis/app/lib/msgValidator.js",
-			"monitor":{
-				"heartbeat":"/srv/nemesis/app/core/monitor/heartbeat.js",
-				"statistics":"/srv/nemesis/app/core/monitor/statistics.js"
+	"core":{
+		"errors":"/srv/nemesis/app/core/core.error.js",
+		"logger":"/srv/nemesis/app/core/core.logger.js",
+		"main":"/srv/nemesis/app/core/core.main.js",
+		"process":"/srv/nemesis/app/core/core.process.js",
+		"start":"/srv/nemesis/app/core/core.start.js",
+	}
+	"modules":[
+			{
+				"group":"app",
+				"name":"bootstrap",
+				"file":"/srv/nemesis/app/bootstrap.js",
+				"desc":"This file will launch the application."
 			},
-			"pidTracker":"/srv/nemesis/app/core/pidTracker.js",
-			"process":"/srv/nemesis/app/core/core.process.js",
-			"start":"/srv/nemesis/app/core/core.start.js",
-			"store":{
-				"client":"/srv/nemesis/app/core/store/storeClient.js",
-				"server":"/srv/nemesis/app/core/store/storeServer.js",
-				"marco":"/srv/nemesis/app/core/store/marco.js",
-				"polo":"/srv/nemesis/app/core/store/polo.js"
+			{
+				"group":"monitor",
+				"name":	"heartbeat",
+				"file":	"/srv/nemesis/app/core/monitor/heartbeat.js",
+				"desc":"This file operates the worker heartbeat."
 			},
-			"uuidVerify":"/srv/nemesis/app/core/uuidverify.js",
-			"web":{
-				"client":"/srv/nemesis/app/core/web/webClient.js",
-				"server":"/srv/nemesis/app/core/web/webServer.js"
+			{
+				"group":"monitor",
+				"name":"statistics",
+				"file":"/srv/nemesis/app/core/monitor/statistics.js",
+				"desc":"This file operates the worker statistics."
+			},
+			{
+				"group":"checker",
+				"name":"config",
+				"file":"/srv/nemesis/app/core/config.js",
+				"desc":"This module validates the worker config."
+			},
+			{
+				"group":"checker",
+				"name":"msgValidator",
+				"file":"/srv/nemesis/app/lib/msgValidator.js",
+				"desc":"This module validates message objects."
+			},
+			{
+				"group":"checker",
+				"name":"uuidVerify",
+				"file":"/srv/nemesis/app/core/uuidverify.js",
+				"desc":"this module verifies UUID integrity."
+		{
+				"group":"process",
+				"name":"pidTracker",
+				"file":"/srv/nemesis/app/core/pidTracker.js",
+				"desc":"This module creates/manages PID files."
+			},
+		{
+				"group":"store",
+				"name":"client",
+				"file":"/srv/nemesis/app/core/store/storeClient.js",
+				"desc":"This module provides a store client."
+			},
+			{
+				"group":"store",
+				"name":"server",
+				"file":"/srv/nemesis/app/core/store/storeServer.js",
+				"desc":"This module provides a local store server."
+			},
+			{
+				"group":"store",
+				"name":"marco",
+				"file":"/srv/nemesis/app/core/store/marco.js",
+				"desc":"This module replicates local data to a remote polo process."
+			},
+			{
+				"group":"store",
+				"name":"polo",
+				"file":"/srv/nemesis/app/core/store/polo.js",
+				"desc":"This module receives replicated data from a remote marco process."
+			},
+			{
+				"group":"web",
+				"name":"client",
+				"file":"/srv/nemesis/app/core/web/webClient.js",
+				"desc":"This module provides an HTTP(/S) web client for outbound calls."
+			},
+			{
+				"group":"web",
+				"name":"server",
+				"file":"/srv/nemesis/app/core/web/webServer.js",
+				"desc":"This module provides an HTTP(/S) web server for the app services."
 			}
-			"worker":"/srv/nemesis/app/core/core.worker.js",
 		},
 		"servers":{
 			"audit":"/srv/nemesis/app/servers/audit.js",
