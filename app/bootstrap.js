@@ -21,22 +21,26 @@
 	
 	---------------------------------------------------------------------------------
 */
+/*
+	Load the main configuration file.
+*/
 root.config=require('/srv/nemesis/etc/nemesis/app.conf.json');
-
-
+/*
+	Load the appropriate service configuration file.
+*/
 switch(process.argv[2]){
-	case "audit": 	root.config.service=require(root.config.modules.services.audit);break;
-	case "broker":	root.config.service=require(root.config.modules.services.audit);break;
-	case "cipher":	root.config.service=require(root.config.modules.services.audit);break;
-	case "key":		root.config.service=require(root.config.modules.services.audit);break;
+	case "audit": 	root.config.service=require(root.config.modules.svc_cfg.audit);break;
+	case "broker":	root.config.service=require(root.config.modules.svc_cfg.audit);break;
+	case "cipher":	root.config.service=require(root.config.modules.svc_cfg.audit);break;
+	case "key":		root.config.service=require(root.config.modules.svc_cfg.audit);break;
 	default: 
 		throw new Error('An unknown parameter was passed at the command line.');
 		process.exit(1);
 		break;
 }
-
-
-
+/*
+	Define the application
+*/
 root.app={
 	log:new logger(module.filename,process.pid),
 	root.app.main=require(),
@@ -47,4 +51,7 @@ root.app={
 		statistics:require(root.config.modules.lib.monitor.statistics),
 	}	
 }
+/*
+	Launch the application
+*/
 root.app.main();

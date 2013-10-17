@@ -13,10 +13,10 @@
 		},
 		"lib":{
 			"core":{
-				"init":"/srv/nemesis/app/lib/core/core.init.js",
-				"main":"/srv/nemesis/app/app.main.js",
-				"start":"/srv/nemesis/app/app.startServices.js",
-				"process":"/srv/nemesis/app/app.process.js",
+				"main":"/srv/nemesis/app/lib/core/core.main.js",
+				"start":"/srv/nemesis/app/lib/core/core.start.js",
+				"process":"/srv/nemesis/app/lib/core/core.process.js",
+				"worker":"/srv/nemesis/app/lib/core/core.worker.js",
 				"servers":{
 					"audit":"/srv/nemesis/app/servers/audit.js",
 					"broker":"/srv/nemesis/app/servers/broker.js",
@@ -51,7 +51,6 @@
 			"cipher":"/srv/nemesis/etc/nemesis/servers/cipher.config.json",
 			"key":"/srv/nemesis/etc/nemesis/servers/key.config.json",
 		}
-		"worker":"/srv/nemesis/app/lib/worker.js",
 		
 	
 	}
