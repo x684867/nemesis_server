@@ -21,9 +21,8 @@
 	
 	---------------------------------------------------------------------------------
 */
-require('/srv/nemesis/etc/nemesis/app.json');/*Initialize root.config*/
+require('/srv/nemesis/etc/nemesis/app.conf.json');
 
-/*Load the appropriate service config*/
 switch(process.argv[2]){
 	case "audit": 	root.config.service=require(root.config.modules.services.audit);break;
 	case "broker":	root.config.service=require(root.config.modules.services.audit);break;
@@ -45,8 +44,4 @@ root.app={
 	}	
 }
 root.services=require(root.config.modules.app.process);
-
-/*  -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- -+- */
-
-/*Execute app.main() to launch the application.*/
 root.app.main();
