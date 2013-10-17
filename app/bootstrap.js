@@ -29,7 +29,6 @@ root.conf_dir='/srv/nemesis/etc/nemesis';
 */
 root.config=require(root.conf_dir+'/app.conf.json');
 root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'.json');
-root.error=require(root.config.modules.core.errors);
 /*
 	Load the Modules.
 */
@@ -40,7 +39,7 @@ require(root.config.core.modules).load_modules();
 */
 root.app={
 	log:new root.modules.logger(module.filename,process.pid),
-	root.app.main:require(),
+	main:require(root.config.),
 	
 	startService:require(root.config.modules.app.start),
 	monitor:{

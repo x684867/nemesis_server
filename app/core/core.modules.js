@@ -24,9 +24,8 @@ modules.export=function(){
 					root.config.modules[m.group][m.name]=require(m.file);
 					
 				}else{
-				
-					root.error.throw(root.error.messages.bootstrap.invalidModule);
-					
+					console.log("In "+module.filename+" root.errors is not yet defined.");
+					throw new Error(root.error.messages.bootstrap.invalidModule.text);
 				}
 			}
 		);

@@ -8,9 +8,7 @@
 	"language":"en-us",
 	
 	"core":{
-		"errors":"/srv/nemesis/app/core/core.error.js",
-		"logger":"/srv/nemesis/app/core/core.logger.js",
-		"main":"/srv/nemesis/app/core/core.main.js",
+		"errors":"",
 		"process":"/srv/nemesis/app/core/core.process.js",
 		"start":"/srv/nemesis/app/core/core.start.js",
 	}
@@ -20,6 +18,35 @@
 				"name":"bootstrap",
 				"file":"/srv/nemesis/app/bootstrap.js",
 				"desc":"This file will launch the application."
+			},
+			{
+				"group":"core",
+				"name":"errors",
+				"file":"/srv/nemesis/app/core/core.error.js",
+				"desc":""
+			},
+			{
+				"group":"core",
+				"name":"process",
+				"file":"/srv/nemesis/app/core/core.process.js",
+				"desc":"This file provides process management"
+			},
+			{
+				"group":"core",
+				"name":"start",
+				"file":"/srv/nemesis/app/core/core.start.js",
+				"desc":"This file provides the start() method of root.app"
+			{
+				"group":"core",
+				"name":"main",
+				"file":"/srv/nemesis/app/core/core.main.js",
+				"desc":"This file defines the main method for root.app."
+			},
+			{
+				"group":"core",
+				"name":"logger"
+				"file":"/srv/nemesis/app/core/core.logger.js",
+				"desc":"This file defines the logger object for SYSLOG functionality."
 			},
 			{
 				"group":"monitor",
