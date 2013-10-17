@@ -1,126 +1,36 @@
 {
-	"_name":"app.conf.json",
-	"_desc":"Nemesis Application Configuration File",
-
-	"_author":"Sam Caldwell <mail@samcaldwell.net>",
-	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+"_name":"app.conf.json",
+"_desc":"Nemesis Application Configuration File",
+"_author":"Sam Caldwell <mail@samcaldwell.net>",
+"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 	
-	"language":"en-us",
+"language":"en-us",
 
-	"modules":[
-		{
-			"group":"app",
-			"name":"bootstrap",
-			"file":"/srv/nemesis/app/bootstrap.js",
-			"desc":"This file will launch the application."
-		},
-		{
-			"group":"core",
-			"name":"errors",
-			"file":"/srv/nemesis/app/core/core.error.js",
-			"desc":""
-		},
-		{
-			"group":"core",
-			"name":"process",
-			"file":"/srv/nemesis/app/core/core.process.js",
-			"desc":"This file provides process management"
-		},
-		{
-			"group":"core",
-			"name":"start",
-			"file":"/srv/nemesis/app/core/core.start.js",
-			"desc":"This file provides the start() method of root.app"
-		{
-			"group":"core",
-			"name":"main",
-			"file":"/srv/nemesis/app/core/core.main.js",
-			"desc":"This file defines the main method for root.app."
-		},
-		{
-			"group":"core",
-			"name":"logger"
-			"file":"/srv/nemesis/app/core/core.logger.js",
-			"desc":"This file defines the logger object for SYSLOG functionality."
-		},
-		{
-			"group":"monitor",
-			"name":	"heartbeat",
-			"file":	"/srv/nemesis/app/core/monitor/heartbeat.js",
-			"desc":"This file operates the worker heartbeat."
-		},
-		{
-			"group":"monitor",
-			"name":"statistics",
-			"file":"/srv/nemesis/app/core/monitor/statistics.js",
-			"desc":"This file operates the worker statistics."
-		},
-		{
-			"group":"checker",
-			"name":"config",
-			"file":"/srv/nemesis/app/core/config.js",
-			"desc":"This module validates the worker config."
-		},
-		{
-			"group":"checker",
-			"name":"msgValidator",
-			"file":"/srv/nemesis/app/lib/msgValidator.js",
-			"desc":"This module validates message objects."
-		},
-		{
-			"group":"checker",
-			"name":"uuidVerify",
-			"file":"/srv/nemesis/app/core/uuidverify.js",
-			"desc":"this module verifies UUID integrity."
-		},
-		{
-			"group":"process",
-			"name":"pidTracker",
-			"file":"/srv/nemesis/app/core/pidTracker.js",
-			"desc":"This module creates/manages PID files."
-		},
-		{
-			"group":"store",
-			"name":"client",
-			"file":"/srv/nemesis/app/core/store/storeClient.js",
-			"desc":"This module provides a store client."
-		},
-		{
-			"group":"store",
-			"name":"server",
-			"file":"/srv/nemesis/app/core/store/storeServer.js",
-			"desc":"This module provides a local store server."
-		},
-		{
-			"group":"store",
-			"name":"marco",
-			"file":"/srv/nemesis/app/core/store/marco.js",
-			"desc":"This module replicates local data to a remote polo process."
-		},
-		{
-			"group":"store",
-			"name":"polo",
-			"file":"/srv/nemesis/app/core/store/polo.js",
-			"desc":"This module receives replicated data from a remote marco process."
-		},
-		{
-			"group":"web",
-			"name":"client",
-			"file":"/srv/nemesis/app/core/web/webClient.js",
-			"desc":"This module provides an HTTP(/S) web client for outbound calls."
-		},
-		{
-			"group":"web",
-			"name":"server",
-			"file":"/srv/nemesis/app/core/web/webServer.js",
-			"desc":"This module provides an HTTP(/S) web server for the app services."
-		}
-	],
+"modules":[
+	{"group":"app","name":"bootstrap","file":"/srv/nemesis/app/bootstrap.js"},
+	{"group":"core","name":"errors","file":"/srv/nemesis/core/core.error.js"},
+	{"group":"core","name":"process","file":"/srv/nemesis/core/core.process.js"},
+	{"group":"core","name":"start","file":"/srv/nemesis/core/core.start.js"},
+	{"group":"core","name":"main","file":"/srv/nemesis/core/core.main.js"},
+	{"group":"core","name":"logger""file":"/srv/nemesis/core/core.logger.js"},
+	{"group":"monitor","name":"watchdog","file":"/srv/nemesis/core/monitor.watchdog.js"},
+	{"group":"monitor","name":"stats","file":"/srv/nemesis/core/monitor.stats.js"},
+	{"group":"checker","name":"config","file":"/srv/nemesis/core/config.js"},
+	{"group":"checker","name":"msgValidator","file":"/srv/nemesis/core/msgValidator.js"},
+	{"group":"checker","name":"uuidVerify","file":"/srv/nemesis/core/uuidverify.js"},
+	{"group":"process","name":"pidTracker","file":"/srv/nemesis/core/pidTracker.js"},
+	{"group":"store","name":"client","file":"/srv/nemesis/core/store/storeClient.js"},
+	{"group":"store","name":"server","file":"/srv/nemesis/core/store/storeServer.js"},
+	{"group":"store","name":"marco","file":"/srv/nemesis/core/store/marco.js"},
+	{"group":"store","name":"polo","file":"/srv/nemesis/core/store/polo.js"},
+	{"group":"web","name":"client","file":"/srv/nemesis/core/web/webClient.js"},
+	{"group":"web","name":"server","file":"/srv/nemesis/core/web/webServer.js"}
+],
 	"servers":{
-		"audit":"/srv/nemesis/app/servers/audit.js",
-		"broker":"/srv/nemesis/app/servers/broker.js",
-		"cipher":"/srv/nemesis/app/servers/cipher.js",
-		"key":"/srv/nemesis/app/servers/keys.js"
+		"audit":"/srv/nemesis/servers/audit.js",
+		"broker":"/srv/nemesis/servers/broker.js",
+		"cipher":"/srv/nemesis/servers/cipher.js",
+		"key":"/srv/nemesis/servers/keys.js"
 	},
 	"svc_cfg":{
 		"audit":"/srv/nemesis/etc/nemesis/servers/audit.config.json",
