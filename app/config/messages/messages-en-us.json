@@ -1,11 +1,11 @@
 {
-	"_name":'app.conf',
-	"_desc":'Nemesis Application Configuration File',
+	"_name":"app.conf",
+	"_desc":"Nemesis Application Configuration File",
 
-	"_author":'Sam Caldwell <mail@samcaldwell.net>',
-	"_copyright":'(c) 2013 Sam Caldwell.  All Rights Reserved.',
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 	
-	"language":'en-us',
+	"language":"en-us",
 	
 	"starting":"Starting",
 	
