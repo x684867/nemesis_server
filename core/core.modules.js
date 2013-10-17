@@ -8,7 +8,7 @@
  
 module.exports=function(){
 
-	load_modules=function(){
+	this.load_modules=function(){
 		var o={}
 
 			root.config.modules.forEach(
