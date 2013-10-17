@@ -10,22 +10,20 @@
 	"modules":{
 		"app":{
 			"bootstrap":"/srv/nemesis/app/bootstrap.js",
-			
-			"main":"/srv/nemesis/app/app.main.js",
-			"start":"/srv/nemesis/app/app.startServices.js",
-			"process":"/srv/nemesis/app/app.process.js",
-			"servers":{
-				"audit":"/srv/nemesis/app/servers/audit.js",
-				"broker":"/srv/nemesis/app/servers/broker.js",
-				"cipher":"/srv/nemesis/app/servers/cipher.js",
-				"key":"/srv/nemesis/app/servers/keys.js"
-			}
 		},
 		"lib":{
 			"core":{
 				"init":"/srv/nemesis/app/lib/core/core.init.js",
-				"main":"
-				
+				"main":"/srv/nemesis/app/app.main.js",
+				"start":"/srv/nemesis/app/app.startServices.js",
+				"process":"/srv/nemesis/app/app.process.js",
+				"servers":{
+					"audit":"/srv/nemesis/app/servers/audit.js",
+					"broker":"/srv/nemesis/app/servers/broker.js",
+					"cipher":"/srv/nemesis/app/servers/cipher.js",
+					"key":"/srv/nemesis/app/servers/keys.js"
+				}
+			}				
 				
 			"config":"/srv/nemesis/app/lib/config.js",
 			"logger":"/srv/nemesis/app/lib/logger.js",
@@ -47,7 +45,7 @@
 				"server":"/srv/nemesis/app/lib/web/webServer.js"
 			}
 		},
-		"services":{
+		"svc_cfg":{
 			"audit":"/srv/nemesis/etc/nemesis/servers/audit.config.json",
 			"broker":"/srv/nemesis/etc/nemesis/servers/broker.config.json",
 			"cipher":"/srv/nemesis/etc/nemesis/servers/cipher.config.json",
