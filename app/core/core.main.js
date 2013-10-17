@@ -1,28 +1,18 @@
-module.exports=function(){
+module.exports=function(operatingMode){
 	/*
-		Load the application modules (based on app.config.json)
+		Load the appropriate service configuration file.
 	*/
-	root.modules:{
-		child_process:require('child_process'),
-		logger:require(root.config.modules.lib.logger),
-		pidTracker:require(root.config.modules.lib.pidTracker),
-		msgValidator:require(root.config.modules.lib.msgValidator),
-		uuidVerifiy:require(root.config.modules.lib.uuidVerify),
-		monitor:{
-			heartbeat:require(root.config.modules.lib.monitor.heartbeat),
-			statistics:require(root.config.modules.lib.monitor.statistics)
-		},
-		store:{
-			client:require(root.config.modules.lib.store.client),
-			server:require(root.config.modules.lib.store.server),
-			marco:require(root.config.modules.lib.store.marco),/*replication sender*/
-			polo:require(root.config.modules.lib.store.polo) /*replication receiver*/
-		},
-		web:{
-			client:require(root.config.modules.lib.web.client),
-			server:require(root.config.modules.lib.web.server)
-		}
+	switch(operatingMode){
+		case "audit": 	root.config.service=require(root.config.svc_cfg.audit);break;
+		case "broker":	root.config.service=require(root.config.svc_cfg.audit);break;
+		case "cipher":	root.config.service=require(root.config.svc_cfg.audit);break;
+		case "key":		root.config.service=require(root.config.svc_cfg.audit);break;
+		default: 
+			root.error.throw(root.error.messages.bootstrap.invalidArgument);
+			break;
 	}
+	
+
 	/*
 		Show the application banner	
 	*/

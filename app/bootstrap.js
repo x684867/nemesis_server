@@ -31,32 +31,24 @@ root.config=require(root.conf_dir+'/app.conf.json');
 root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'.json');
 root.error=require(root.config.modules.core.errors);
 /*
-	Load the appropriate service configuration file.
+	Load the Modules.
 */
-switch(process.argv[2]){
-	case "audit": 	root.config.service=require(root.config.modules.svc_cfg.audit);break;
-	case "broker":	root.config.service=require(root.config.modules.svc_cfg.audit);break;
-	case "cipher":	root.config.service=require(root.config.modules.svc_cfg.audit);break;
-	case "key":		root.config.service=require(root.config.modules.svc_cfg.audit);break;
-	default: 
-		throw new Error(root.error.messages.bootstrap.invalidArgument.text);
-		process.exit(root.error.messages.bootstrap.invalidArgument.code);
-		break;
-}
+require(root.config.core.modules).load_modules();
+
 /*
 	Define the application
 */
 root.app={
-	log:new logger(module.filename,process.pid),
-	root.app.main=require(),
+	log:new root.modules.logger(module.filename,process.pid),
+	root.app.main:require(),
 	
 	startService:require(root.config.modules.app.start),
 	monitor:{
 		heartbeat:require(root.config.modules.lib.monitor.heartbeat),
 		statistics:require(root.config.modules.lib.monitor.statistics),
-	}	
+	}
 }
 /*
 	Launch the application
 */
-root.app.main();
+root.app.main(process.argv[2]);

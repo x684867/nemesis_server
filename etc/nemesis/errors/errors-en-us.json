@@ -7,29 +7,43 @@
 	
 	"language":"en-us",
 	
+	"_range":"0-99 are general error codes",
+	
 	"success":{
 		"code":0,
-		"text":"success"
+		"text":"success",
+		"fatal":false
 	},
 	"failure":{
 		"code":1,
-		"text":"failure"
+		"text":"failure",
+		"fatal":true
 	},
 	"unknown":{
 		"code":2,
-		"text":"An unknown error has occurred in Nemesis."
+		"text":"An unknown error has occurred in Nemesis.",
+		"fatal":true
 	},
 	"notImplemented":{
 		"code":3,
-		"text":"This feature has not been implemented."
+		"text":"This feature has not been implemented.",
+		"fatal":false
 	},
 	"bootstrap":{
-		"code":100
-		"invalidArgument":"An unknown parameter was passed at the command line."
+		"_range":"100-199 reserved for bootstrap",
+		"invalidArgument":{
+			"code":100,
+			"text":"An unknown parameter was passed at the command line.",
+			"fatal":true
+		},
+		"invalidModule":{
+			"code":101,
+			"text":"An invalid module was detected in the modules array (app.conf.json).",
+			"fatal":true
+		}
 	},
 	
 	"app":{
-		"code":100,
 		"main":{
 			"code":110,
 			"success":{
