@@ -70,17 +70,9 @@
 				"text":"root.app.start() failed to start services.",
 				"fatal":true,
 			}
-		}
+		},
+		
 		"start":{
 		}
-	},
-	
-	
-	
-	"ipc":{
-		"_desc":"this section is for interprocess communication errors.",
-		
-		invalidObject:"An invalid IPC Message Object was Encountered.",
-		
-		
+	}		
 }
