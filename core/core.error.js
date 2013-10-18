@@ -10,7 +10,9 @@ function readConfigFile(fname){
 	data=require('fs').readFileSync(fname)
 	json=JSON.parse(data);
 	console.log("RAW OUTPUT:"+data+"\n"+Array(50).join('-'));
-	console.log("JSON:"+json+"\n"+Array(50).join('-'));
+	console.log("JSON:");
+	console.dir(json);
+	console.log(Array(50).join('-'));
 	return json; 
 }
 
