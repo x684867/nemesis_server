@@ -40,7 +40,7 @@ function process_manager(){
 	root.process.logProcess=function(localLog,id,parent,child){
 		log.write(
 			'{'
-				+'"id":'+id','
+				+'"id":'+id+','
 			 	+'"parentPID":'+parent+','
 			 	+'"childPID":'+child+','
 			 	+'"count":'+root.process.pool.length
