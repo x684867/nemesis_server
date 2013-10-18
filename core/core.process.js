@@ -18,9 +18,7 @@ function process_manager(){
 	
 	root.process.pidlist=function(){
 		var p='';
-		for(i=0;i<root.app.process.pool.length;i++){
-			p=p+root.app.process.pool[i].pid+',';
-		}
+		for(i=0;i<root.app.process.pool.length;i++) p=p+root.app.process.pool[i].pid+',';
 		return "["+p.substring(0,p.length-1)+"]";
 	},
 

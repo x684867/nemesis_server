@@ -17,8 +17,9 @@
 		{"group":"core",	"load":false,"type":"preload",	"name":"moduleLoader",	"file":"/srv/nemesis/core/core.modules.js"		},
 		
 		{"group":"core",	"load":false,"type":"process",	"name":"worker",		"file":"/srv/nemesis/core/core.worker.js"		},
-		
+
 		{"group":"core",	"load":true,"type":"module",	"name":"process",		"file":"/srv/nemesis/core/core.process.js"		},
+		{"group":"core",	"load":true,"type":"module",	"name":"childProcess",	"file":"/srv/nemesis/core/core.childprocess.js"	},
 		{"group":"core",	"load":true,"type":"module",	"name":"start",			"file":"/srv/nemesis/core/core.start.js"		},
 		{"group":"core",	"load":true,"type":"module",	"name":"main",			"file":"/srv/nemesis/core/core.main.js"			},
 		{"group":"core",	"load":true,"type":"module",	"name":"logger",		"file":"/srv/nemesis/core/core.logger.js"		},
