@@ -7,7 +7,7 @@ module.exports=process_manager
 
 function process_manager(){/*do nothing*/};
 
-root.app.process={
+root.process={
 	pool:Array(),
 
 	list:function(){
