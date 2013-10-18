@@ -37,7 +37,6 @@ function app_start(){
 						}
 						switch(msg.code){
 							case root.ipc.code.workerAlive:
-								log.write("root.ipc.code.workerAlive rec'd.  Send root.ipc.code.configureWorker");
 								child.send(
 									root.ipc.message.configureWorker(
 										child.pid,
@@ -53,12 +52,10 @@ function app_start(){
 								break;
 								
 							case root.ipc.code.workerOnline:
-								log.write("root.ipc.code.workerOnline rec'd.");
 								/* Update statistics. */
 								break;
 								
 							case root.ipc.code.workerFailed:
-								log.write("root.ipc.code.workerFailed rec'd.");
 								/* Update statistics. */
 								break;
 								
@@ -73,7 +70,9 @@ function app_start(){
 								}
 								break;
 							
-							case root.ipc.code.workerStatsReply:log.write("root.ipc.code.workerStatsReply not impl.");break;
+							case root.ipc.code.workerStatsReply:
+								log.write("root.ipc.code.workerStatsReply not impl.");
+								break;
 							
 							case root.ipc.code.childSuicideRequest:
 								child.kill('SIGKILL');
@@ -84,9 +83,7 @@ function app_start(){
 								break;
 				
 							default:
-								throw new Error(
-												timestamp()+":Unk/Inv code:"+msg.code
-								);
+								root.error.raise(root.error.messages.invalidMessageEncountered);
 								break;
 						}
 		  			});
