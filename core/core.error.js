@@ -13,7 +13,8 @@ function error_handler(){
 		data=require('fs').readFileSync(localizedErrors)
 		json=JSON.parse(data);
 		
-		console.log("RAW OUTPUT:"+json
+		console.log("RAW OUTPUT:"+data+"\n"+Array(50).join('-'));
+		console.log("JSON:"+json+"\n"+Array(50).join('-'));
 		
 		return json; 
 	}
