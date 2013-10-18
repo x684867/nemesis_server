@@ -1,32 +1,69 @@
 /*
-	General Message Validator
+	Nemesis Interprocess Message Helper
 	/srv/nemesis/core/core.messages.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.  
-
-	This file establishes a single library (object) which can be used to validate any
-	of the Nemesis IPC messages.  The entire structure of an IPC message is validated
-	by this library.
 	
-	If a message has any issue an exception is thrown.
 	
  */
-module.exports=validator;
+module.exports=message_handler;
 /* */
-const TOBJ='object';
-const TSTR='string';
-const TNUM='number';
+
 /* */
 function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 function isUndefined(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 /* */
 
-function validator(){ }
-validator.isValidError=function(m){return (typeof(m)==TOBJ)?true:false;},
-validator.isValidMsg=function(m){
-	typeCheck(m,TOBJ,E_M_NOT_OBJ);
-	isUndefined(m.code,E_M_CD_NOT_SET);
-	typeCheck(m.code,TNUM,E_M_CD_NOT_NUM);
-	switch(m.code){
+function message_handler(){ }
+
+	root.ipc.code={
+		startWorker:0,
+		workerAlive:1,
+		configureWorker:2,
+		workerOnline:3,
+		workerFailed:4,
+		
+		watchdogPingRequest:10,
+		workerPingReply:11,
+		statsRequest:12,
+		workerStatsReply:13,
+		
+		childSuicideRequest:95,
+		parentKillNotice:98,
+		childKillReply:99		
+	}
+
+
+
+	/*Nemesis IPC Message Generators*/
+	root.ipc.message=
+		startWorker:function(){return {code:root.ipc.code.startWorker};},
+		workerAlive:function(){return {code:root.ipc.code.workerAlive1};}
+		configureWorker:function(child_pid,data_id,data_type,data_config,
+								 ssl_key,ssl_cert,ssl_ca
+		){
+			return {"code":root.ipc.code.configureWorker,"pid":child_pid,
+					"data":{"id":data_id,"type":data_type,"config":data_config,
+						"ssl":{"key":ssl_key,"cert":ssl_cert,"ca_cert":ssl_ca}
+						}
+					}
+		},
+		workerOnline:function(){return {code:root.ipc.code.workerOnline};}
+		workerFailed:function(){return {code:root.ipc.code.workerFailed};}
+		watchdogPingRequest:function(){
+			return code:root.ipc.code.watchdogPingRequest,data:(new Data).getTime();
+	}
+
+	root.ipc.message.childSuicide=function(){return {code:95};}
+	
+	
+	/*Nemesis IPC Message Validators*/
+	
+	validator.isValidError=function(m){return (typeof(m)==TOBJ)?true:false;},
+	validator.isValidMsg=function(m){
+		typeCheck(m,TOBJ,E_M_NOT_OBJ);
+		isUndefined(m.code,E_M_CD_NOT_SET);
+		typeCheck(m.code,TNUM,E_M_CD_NOT_NUM);
+		switch(m.code){
 		
 		/*Server Instantiation handshake {Code:[0-4]}*/
 		case 0:return true;break;/*{code:0}*/

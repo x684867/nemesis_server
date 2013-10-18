@@ -18,7 +18,7 @@ function app_start(){
 					root.app.process.pool.push(child);
 					root.process.logProcess(root.app.log,id,process.pid,child.pid);
 					pidFile.createNew(child.pid);
-					child.send({code:0});
+					child.send(root.ipc.message.startWorker(););
 					
 					root.app.log.write("{code:0} sent Parent => Child ["+child.pid+"]");
 					root.app.log.write(timestamp()+"setup message listener");
@@ -28,44 +28,41 @@ function app_start(){
 							+"pid:"+child.pid+","
 							+"error:"+err
 						);
-						child.send({code:95});/*{code:95} is a child suicide msg.*/
+						child.send(root.ipc.message.childSuicide());
 					})
 					child.on('message',function(msg){
-						v=new root.modules.checker.msgValidator
-						if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_PARENT);
+
+						if(!(root.modules.core.messages.isValidMsg(msg))){
+							root.error.raise(root.error.messages.app.start.invalidMessageEncountered);
+						}
 						switch(msg.code){
-							case 1:
-								log.write("Child{code:1}=>Parent.  Send {code:2}");
+							case root.ipc.code.workerAlive:
+								log.write("root.ipc.code.workerAlive rec'd.  Send root.ipc.code.configureWorker");
 								child.send(
-									{
-										code:2,
-						 				pid:child.pid,
-						 				data:{
-						 						id:id,
-						 	   					type:root.config.service.data.serverType,
-							   					config:config,
-							   					ssl:{
-							   						key:root.config.service.data.ssl.private_key,
-								    				cert:root.config.service.data.ssl.public_key,
-								    				ca_cert:root.config.service.data.ssl.ca_cert
-												}
-									}
-									}
+									root.ipc.message.configureWorker(
+										child.pid,
+										id,
+										root.config.service.data.serverType,
+										config,
+										root.config.service.data.ssl.private_key,
+										root.config.service.data.ssl.public_key,
+										root.config.service.data.ssl.ca_cert
+									)
 								);
 								/* Update statistics. */
 								break;
 								
-							case 3:
-								log.write("Child {code:3} received. Server: online.");
+							case root.ipc.code.workerOnline:
+								log.write("root.ipc.code.workerOnline rec'd.");
 								/* Update statistics. */
 								break;
 								
-							case 4:
-								log.write("Child {code:4} received. Server: failed.");
+							case root.ipc.code.workerFailed:
+								log.write("root.ipc.code.workerFailed rec'd.");
 								/* Update statistics. */
 								break;
 								
-							case 11:
+							case root.ipc.code.workerPingReply:
 								delay=(new Date()).getTime()/1000 - msg.data;
 								if(delay < root.config.service.data.monitor.heartbeat.threshold){
 									log.write("{P:11}beat w#"+id+":good");
@@ -76,7 +73,7 @@ function app_start(){
 								}
 								break;
 							
-							case 13:log.write("{P:13}not impl.");break;
+							case root.ipc.code.workerStatsReply:log.write("{P:13}not impl.");break;
 							case 97:log.write("{P:97}not impl.");break;
 							case 99:log.write("{P:99}not impl.");break;
 							default:

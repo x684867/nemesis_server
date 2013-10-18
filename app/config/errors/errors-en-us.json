@@ -75,6 +75,11 @@
 				"code":201,
 				"fatal":false,
 				"text":"An uncaught exception occurred in a child process."
+			},
+			"invalidMessageEncountered":{
+				"code":202,
+				"fatal":false,
+				"text":"An invalid IPC message was encountered by app.start() which core.messages did not catch."
 			}
 		}
 	},
