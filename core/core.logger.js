@@ -35,7 +35,7 @@ function logger(source,pid,w){
 
 	this.error(errorJSON,errorObj){
 		this.write("["+errorJSON.code+"]:"+errorJSON.message);
-		if(typeof(errorObj)=='object'){
+		if(data.type.isObject(errorObj)){
 			this.write(
 				 "EXCEPTION:\n"
 				+"\n\t["+exceptionObject.code+"]:"

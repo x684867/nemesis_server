@@ -15,6 +15,11 @@ function isUndefined(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 
 function message_handler(){ }
 
+	root.ipc.exit_code={
+		success:0,
+		sigkill:9
+	}
+
 	root.ipc.code={
 		startWorker:0,
 		workerAlive:1,

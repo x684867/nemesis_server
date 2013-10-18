@@ -29,6 +29,7 @@ root.conf_dir='/srv/nemesis/app/config';
 */
 root.config=require(root.conf_dir+'/app.conf.json');
 root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'.json');
+root.types=require(root.config.coreTypes);
 /*
 	Load the modules
 */

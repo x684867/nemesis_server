@@ -9,12 +9,15 @@ function app_start(){
 	root.app.log("app.start() executing.")
 
 	var pidFile=new root.modules.core.pidTracker(config.data.pidDirectory);
-
+	/*
+		For each worker in the server configuration file, spawn a worker process
+		and configure the server to operate within our expectations.
+	*/
 	root.config.service.data.workers.forEach(
 		function(workerConfig,id,workerList){
 			if((typeof(workerConfig.enabled)=='boolean')&&(workerConfig.enabled)){
-				var child=root.app.process.fork(root.modules.worker);
-				if(child){
+				var child=root.process.fork(root.modules.core.worker);
+				if(root.types.isObject(child)){
 					root.app.process.pool.push(child);
 					root.process.logProcess(root.app.log,id,process.pid,child.pid);
 					pidFile.createNew(child.pid);
@@ -65,17 +68,24 @@ function app_start(){
 							case root.ipc.code.workerPingReply:
 								delay=(new Date()).getTime()/1000 - msg.data;
 								if(delay < root.config.service.data.monitor.heartbeat.threshold){
-									log.write("{P:11}beat w#"+id+":good");
+									log.write("root.ipc.code.workerPingReply w#"+id+":good");
 									this.pollMonitoring(msg);
 								}else{
-									log.write("{P:11}beat w#"+id+":slow");
+									log.write("root.ipc.code.workerPingReply w#"+id+":slow");
 									this.pollStatistics(msg);
 								}
 								break;
 							
-							case root.ipc.code.workerStatsReply:log.write("{P:13}not impl.");break;
-							case 97:log.write("{P:97}not impl.");break;
-							case 99:log.write("{P:99}not impl.");break;
+							case root.ipc.code.workerStatsReply:log.write("root.ipc.code.workerStatsReply not impl.");break;
+							
+							case root.ipc.code.childSuicideRequest:
+								child.kill('SIGKILL');
+								break;
+								
+							case root.ipc.code.childKillReply:
+								child.kill('SIGKILL');
+								break;
+				
 							default:
 								throw new Error(
 												timestamp()+":Unk/Inv code:"+msg.code
@@ -83,7 +93,7 @@ function app_start(){
 								break;
 						}
 		  			});
-		  			console.log(timestamp()+"++setup error listener");
+
 					child.on('error',function(m){
 						if(!validator.isValidError(m)){ 
 							throw new Error(E_INV_MSG_ON_ERROR_EVENT);

@@ -16,7 +16,7 @@ function load_modules(){
 	var o={}
 	root.config.modules.forEach(function(m,i,a){
 		if(typeof(m)=='object'){
-			if((typeof(m.load)=='boolean') && m.load==true && (m.type!='preload')){
+			if((typeof(m.load)=='boolean') && m.load==true && (m.type=='module')){
 				if(typeof(m.group)!='string'){
 					root.error.raise(
 						root.error.messages.bootstrap.invModuleGroup,

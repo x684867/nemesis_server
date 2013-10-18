@@ -29,11 +29,13 @@ function error_handler(){
 					process.exit(e.code);
 				}
 				break;
+				
 			case "string":
 			case "number":
 			case "boolean":
 				util.log("   MESSAGE:"+e);
 				break;
+				
 			default:
 				util.log("   UNEXPECTED ERROR TYPE:"+typeof(e));
 				util.log("   MESSAGE:"+e);
