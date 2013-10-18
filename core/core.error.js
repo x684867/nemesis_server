@@ -9,7 +9,6 @@
 module.exports=error_handler;
 
 function error_handler(){
-	console.log('error_handler() executing.');
 
 	root.error.messages=require(root.conf_dir+"/errors/errors-"+root.config.language+".json");
 	root.error.raise=function(e){	
@@ -39,5 +38,4 @@ function error_handler(){
 				break;
 		}
 	}
-	console.log('error_handler() terminating.');
 }
