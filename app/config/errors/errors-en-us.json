@@ -64,6 +64,18 @@
 				"fatal":true,
 				"text":"root.app.start() failed to start services."
 			}
+		},
+		"start":{
+			"success":{
+				"code":200,
+				"fatal":false,
+				"text":"root.app.start() executed successfully"
+			},
+			"uncaughtException":{
+				"code":201,
+				"fatal":false,
+				"text":"An uncaught exception occurred in a child process."
+			}
 		}
 	}		
 }
