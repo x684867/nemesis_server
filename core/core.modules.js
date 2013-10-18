@@ -1,12 +1,14 @@
 /*
 		Nemesis Application Core Module Loader
+		/srv/nemesis/core/core.modules.js
 		(c) Sam Caldwell.  All Rights Reserved.
 		
 		This file exports an object used to load the modules defined in 
 		root.config.modules (defined by bootstrap.js).
  */
- 
 module.exports=load_modules;
+
+const DEBUG=true;
 
 function fileNotExists(fname){return require('fs').lstatSync(fname).isFile()}
 function isUndefined(o){return (typeof(o)=='undefined')?true:false;}

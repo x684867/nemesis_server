@@ -1,3 +1,8 @@
+/*
+	Nemesis Application Main Method
+	/srv/nemesis/core/core.main.js
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
+ */
 module.exports=function(operatingMode){
 	/*
 		Load the appropriate service configuration file.
@@ -11,8 +16,6 @@ module.exports=function(operatingMode){
 			root.error.throw(root.error.messages.bootstrap.invalidArgument);
 			break;
 	}
-	
-
 	/*
 		Show the application banner	
 	*/

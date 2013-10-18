@@ -1,8 +1,11 @@
 /*
+	Nemesis Application Start Method
+	/srv/nemesis/core/core.start.js
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
  */
-module.exports=start;
+module.exports=app_start;
 
-function start(){
+function app_start(){
 	root.app.log("app.start() executing.")
 
 	pidFile=new root.modules.pidTracker(config.data.pidDirectory);

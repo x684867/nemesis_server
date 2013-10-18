@@ -1,5 +1,5 @@
 /*
-	/srv/nemsis/app/logger/logger.js
+	/srv/nemsis/core/core.logger.js
 	Nemesis Logger
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	
