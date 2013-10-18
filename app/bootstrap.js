@@ -36,9 +36,14 @@ root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'
 */
 root.error=require(root.config.errorHandler)();
 /**/
-console.log(Array(50).join('-')+"\nError Handler loaded");
-console.dir(root.error);
-console.log(Array(50).join('='));
+
+	console.log(Array(50).join('-'));
+	console.log("Dump root.error.messages in "+module.filename+":");
+	console.log(Array(50).join('-'));
+	console.dir(root.error);
+	console.log(Array(50).join('-')+"\nError Handler loaded");
+	console.dir(root.error);
+	console.log(Array(50).join('='));
 /**/
 load_modules=require(root.config.moduleLoader);
 load_modules();
