@@ -15,7 +15,7 @@ function error_handler(){
 	root.error.messages=require(root.conf_dir+"/errors/errors-"+root.config.language+".json");
 	
 	console.log(Array(50).join('-'));
-	console.dir(root.error);
+	console.dir(root.error.messages);
 	console.log(Array(50).join('-'));
 	
 	
