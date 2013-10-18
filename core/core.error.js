@@ -6,18 +6,18 @@
 */
 module.exports=error_handler;
 
+function readConfigFile(fname){
+	data=require('fs').readFileSync(fname)
+	json=JSON.parse(data);
+	console.log("RAW OUTPUT:"+data+"\n"+Array(50).join('-'));
+	console.log("JSON:"+json+"\n"+Array(50).join('-'));
+	return json; 
+}
+
 function error_handler(){
 	console.log(module.filename+"  loading error messages");
-	messages=function(){
-		var localizedErrors=root.conf_dir+'/errors/errors-'+root.config.language+'.json'
-		data=require('fs').readFileSync(localizedErrors)
-		json=JSON.parse(data);
-		
-		console.log("RAW OUTPUT:"+data+"\n"+Array(50).join('-'));
-		console.log("JSON:"+json+"\n"+Array(50).join('-'));
-		
-		return json; 
-	}
+	root.error.messages=readConfigFile(root.conf_dir+'/errors/errors-'+root.config.language+'.json');
+	
 	console.log("...messages loaded.");
 	
 	raise=function(e){	
