@@ -18,14 +18,6 @@ function error_handler(){
 	var rawData=require('fs').readFileSync(fname);
 	root.error.messages=JSON.parse(rawData);
 	
-	if(DEBUG){
-		console.log("JSON DATA:");
-		console.dir(root.error);
-		console.log(Array(50).join('-'));
-	}
-
-	if(DEBUG)console.log("...messages loaded.");
-	
 	raise=function(e){	
 		require('util');
 		util.log(Array(60).join('=')+"\nERROR:");
@@ -53,5 +45,10 @@ function error_handler(){
 				break;
 		}
 	}
-
+	if(DEBUG){
+		console.log("JSON DATA:");
+		console.dir(root.error);
+		console.log(Array(50).join('-'));
+	}
+	console.log("...messages loaded.");
 }
