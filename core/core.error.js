@@ -8,11 +8,12 @@
 */
 module.exports=error_handler;
 
-root.error={};
-root.error.messages=require(root.conf_dir+"/errors/errors-"+root.config.language+".json");
 
 function error_handler(){
 	console.log('error_handler() executing.');
+	root.error={};
+	root.error.messages=require(root.conf_dir+"/errors/errors-"+root.config.language+".json");
+
 	raise=function(e){	
 		require('util');
 		util.log(Array(60).join('=')+"\nERROR:");
