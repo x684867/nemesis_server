@@ -8,7 +8,7 @@ error=function(){
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 	*/
-	messages:require(root.conf_dir+'/errors/errors-'+root.config.language+'.json');
+	messages=require(root.conf_dir+'/errors/errors-'+root.config.language+'.json');
 	raise=function(e){	
 		require('util');
 		util.log(Array(60).join('=')+"\nERROR:");
