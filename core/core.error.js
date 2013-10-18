@@ -10,22 +10,18 @@ module.exports=error_handler;
 
 const DEBUG=true;
 
-function r(fname){
-	data=require('fs').readFileSync(fname)
-	if(DEBUG) console.log("RAW OUTPUT:"+data+"\n"+Array(50).join('-'));
-	json=JSON.parse(data);
-	if(DEBUG){
-		console.log("JSON:");
-		console.dir(json);
-		console.log(Array(50).join('-'));
-	}
-	return json; 
-}
-
 function error_handler(){
 	if(DEBUG)console.log(module.filename+"  loading error messages");
 	root.error={};
-	root.error.messages=r(root.conf_dir+"/errors/errors-"+root.config.language+".json");
+	
+	var fname=root.conf_dir+"/errors/errors-"+root.config.language+".json";
+	data=require('fs').readFileSync(fname);
+	root.error.messages=JSON.parse(data);
+	if(DEBUG){
+		console.log("RAW DATA:");
+		console.dir(data);
+		console.log(Array(50).join('-'));
+	}
 
 	if(DEBUG)console.log("...messages loaded.");
 	
