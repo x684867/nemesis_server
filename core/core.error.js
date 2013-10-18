@@ -10,7 +10,7 @@ module.exports=error_handler;
 
 const DEBUG=true;
 
-function readCfg(fname){
+function r(fname){
 	data=require('fs').readFileSync(fname)
 	if(DEBUG) console.log("RAW OUTPUT:"+data+"\n"+Array(50).join('-'));
 	json=JSON.parse(data);
@@ -25,7 +25,7 @@ function readCfg(fname){
 function error_handler(){
 	if(DEBUG)console.log(module.filename+"  loading error messages");
 	root.error={};
-	root.error.messages=readCfg(root.conf_dir+"/errors/errors-"+root.config.language+".json");
+	root.error.messages=r(root.conf_dir+"/errors/errors-"+root.config.language+".json");
 
 	if(DEBUG)console.log("...messages loaded.");
 	
