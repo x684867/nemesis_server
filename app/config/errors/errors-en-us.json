@@ -5,10 +5,6 @@
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 	
-	"language":"en-us",
-	
-	"_range":"0-99 are general error codes",
-	
 	"success":{
 		"code":0,
 		"text":"success",
@@ -31,7 +27,6 @@
 	},
 	
 	"bootstrap":{
-		"_range":"100-199 reserved for bootstrap",
 		"invalidArgument":{
 			"code":100,
 			"text":"An unknown parameter was passed at the command line.",
@@ -59,12 +54,12 @@
 				"code":112,
 				"text":"root.app.monitor.heartbeat.start() failed",
 				"fatal":true
-			}
+			},
 			"monitorStatisticsFailed":{
 				"code":113,
 				"text":"root.app.monitor.statistics.start() failed",
 				"fatal":true
-			}
+			},
 			"servicesFailed":{
 				"code":114,
 				"text":"root.app.start() failed to start services.",
