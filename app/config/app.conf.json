@@ -6,11 +6,11 @@
 		
 	"language"	:"en-us",
 
+	"errorHandler":"/srv/nemesis/core/core.error.js",
 	"moduleLoader":"/srv/nemesis/core/core.modules.js",
 
 	"modules":[
 		{"group":"app",		"name":"bootstrap",		"file":"/srv/nemesis/app/bootstrap.js"			},
-		{"group":"core",	"name":"errors",		"file":"/srv/nemesis/core/core.error.js"		},
 		{"group":"core",	"name":"process",		"file":"/srv/nemesis/core/core.process.js"		},
 		{"group":"core",	"name":"start",			"file":"/srv/nemesis/core/core.start.js"		},
 		{"group":"core",	"name":"main",			"file":"/srv/nemesis/core/core.main.js"			},
