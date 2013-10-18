@@ -15,7 +15,7 @@ function app_start(){
 	*/
 	root.config.service.data.workers.forEach(
 		function(workerConfig,id,workerList){
-			if((typeof(workerConfig.enabled)=='boolean')&&(workerConfig.enabled)){
+			if(root.type.isTrue(workerConfig.enabled)){
 				var child=root.process.fork(root.modules.core.worker);
 				if(root.types.isObject(child)){
 					root.app.process.pool.push(child);

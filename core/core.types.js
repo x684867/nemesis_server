@@ -22,7 +22,9 @@ function core_types(){
 		isFunction:function(o){	return (typeof(o)=='function')?true:false;				},
 		isNumber:function(o){	return (typeof(o)=='number')?true:false;				},
 		isObject:function(o){	return (typeof(o)=='object')?true:false;				},
-		isString:function(o){	return (typeof(o)=='string')?true:false;				}
+		isString:function(o){	return (typeof(o)=='string')?true:false;				},
+		isTrue:function(o){		return (root.type.isBoolean(o) && (o==true))?true:false;},
+		isFalse:function(o){	return !root.type.isTrue(o);							}
 	
 	}
 	
