@@ -21,20 +21,17 @@ function app_start(){
 					root.app.process.pool.push(child);
 					root.process.logProcess(root.app.log,id,process.pid,child.pid);
 					pidFile.createNew(child.pid);
-					child.send(root.ipc.message.startWorker(););
-					
-					root.app.log.write("{code:0} sent Parent => Child ["+child.pid+"]");
-					root.app.log.write(timestamp()+"setup message listener");
+					child.send(root.ipc.message.startWorker());
+										
 					child.on('uncaughtException', function(err) {
 						root.error.raise(
 							 root.error.messages.app.start.uncaughtException,
-							+"pid:"+child.pid+","
-							+"error:"+err
+							 "pid:"+child.pid+","+error:"+err
 						);
 						child.send(root.ipc.message.childSuicide());
 					})
+					
 					child.on('message',function(msg){
-
 						if(!(root.modules.core.messages.isValidMsg(msg))){
 							root.error.raise(root.error.messages.app.start.invalidMessageEncountered);
 						}

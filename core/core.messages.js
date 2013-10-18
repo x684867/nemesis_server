@@ -14,12 +14,9 @@ function isUndefined(d,e){if(typeof(d)=='undefined') throw new Error(e);}
 /* */
 
 function message_handler(){ }
-
-	root.ipc.exit_code={
-		success:0,
-		sigkill:9
-	}
-
+	/*
+		IPC Code values.
+	*/
 	root.ipc.code={
 		startWorker:0,
 		workerAlive:1,
@@ -36,29 +33,63 @@ function message_handler(){ }
 		parentKillNotice:98,
 		childKillReply:99		
 	}
-
-
-
-	/*Nemesis IPC Message Generators*/
-	root.ipc.message=
-		startWorker:function(){return {code:root.ipc.code.startWorker};},
-		workerAlive:function(){return {code:root.ipc.code.workerAlive1};}
-		configureWorker:function(child_pid,data_id,data_type,data_config,
-								 ssl_key,ssl_cert,ssl_ca
-		){
-			return {"code":root.ipc.code.configureWorker,"pid":child_pid,
-					"data":{"id":data_id,"type":data_type,"config":data_config,
-						"ssl":{"key":ssl_key,"cert":ssl_cert,"ca_cert":ssl_ca}
+	/*
+		Nemesis IPC Message Generators
+	*/
+	root.ipc.message={
+	
+		startWorker:function(){
+			return {
+						"code":root.ipc.code.startWorker
+				};
+		},
+		
+		workerAlive:function(){
+			return {
+						"code":root.ipc.code.workerAlive1
+				};
+		},
+		
+		configureWorker:function(child_pid,data_id,data_type,data_config,ssl_key,ssl_cert,ssl_ca){
+			return {
+					"code":root.ipc.code.configureWorker,
+					"pid":child_pid,
+					"data":{
+						"id":data_id,
+						"type":data_type,
+						"config":data_config,
+						"ssl":{
+							"key":ssl_key,
+							"cert":ssl_cert,
+							"ca_cert":ssl_ca
 						}
 					}
+				}
 		},
-		workerOnline:function(){return {code:root.ipc.code.workerOnline};}
-		workerFailed:function(){return {code:root.ipc.code.workerFailed};}
+		
+		workerOnline:function(){
+			return {
+						"code":root.ipc.code.workerOnline
+				};
+		}
+		workerFailed:function(){
+			return {
+					"code":root.ipc.code.workerFailed
+				};
+		}
 		watchdogPingRequest:function(){
-			return code:root.ipc.code.watchdogPingRequest,data:(new Data).getTime();
+			return {
+					"code":root.ipc.code.watchdogPingRequest,
+					"data":(new Data).getTime()
+				};
+		},
+		childSuicide=function(){
+			return {
+					"code":95
+				};
+		}
 	}
 
-	root.ipc.message.childSuicide=function(){return {code:95};}
 	
 	
 	/*Nemesis IPC Message Validators*/
