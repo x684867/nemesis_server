@@ -29,6 +29,7 @@
 		"text":"This feature has not been implemented.",
 		"fatal":false
 	},
+	
 	"bootstrap":{
 		"_range":"100-199 reserved for bootstrap",
 		"invalidArgument":{
@@ -49,19 +50,25 @@
 	
 	"app":{
 		"main":{
-			"code":110,
 			"success":{
-				"code":111,
-				"message":"All Services have started successfully."
+				"code":110,
+				"message":"All Services have started successfully.",
+				"fatal":false
 			},
 			"monitorHeartbeatFailed":{
-			"root.app.monitor.heartbeat.start() failed"
+				"code":112,
+				"text":"root.app.monitor.heartbeat.start() failed",
+				"fatal":true
 			}
 			"monitorStatisticsFailed":{
-			"root.app.monitor.statistics.start() failed"
+				"code":113,
+				"text":"root.app.monitor.statistics.start() failed",
+				"fatal":true
 			}
 			"servicesFailed":{
-			"root.app.start() failed to start services."
+				"code":114,
+				"text":"root.app.start() failed to start services.",
+				"fatal":true,
 			}
 		}
 		"start":{
