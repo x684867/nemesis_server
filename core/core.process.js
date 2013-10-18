@@ -3,9 +3,11 @@
 	/srv/nemesis/app/app.process.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
  */
-module.exports=function(){/*do nothing*/};
+module.exports=process_manager
 
-this.app.process={
+function process_manager(){/*do nothing*/};
+
+root.app.process={
 	pool:Array();
 
 	list:function(){
