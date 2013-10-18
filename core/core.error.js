@@ -7,7 +7,7 @@
 	
 */
 module.exports=error_handler;
-require('util');
+var util=require('util');
 
 function error_handler(){
 
