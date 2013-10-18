@@ -40,7 +40,7 @@ console.log(Array(50).join('-')+"\nError Handler loaded");
 console.dir(root.error)
 console.log(Array(50).join('='));
 
-load_modules=require(root.config.moduleLoader);
+load_modules=new require(root.config.moduleLoader);
 load_modules();
 /*
 	Define the application
