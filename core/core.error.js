@@ -19,7 +19,7 @@ function readCfg(fname){
 function error_handler(){
 	console.log(module.filename+"  loading error messages");
 	root.error={
-		messages:readCfg(root.conf_dir+'/errors/errors-'+root.config.language+'.json');
+		messages:readCfg(root.conf_dir+"/errors/errors-"+root.config.language+".json")
 	}
 	console.log("...messages loaded.");
 	
