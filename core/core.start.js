@@ -8,7 +8,7 @@ module.exports=app_start;
 function app_start(){
 	root.app.log("app.start() executing.")
 
-	pidFile=new root.modules.pidTracker(config.data.pidDirectory);
+	var pidFile=new root.modules.core.pidTracker(config.data.pidDirectory);
 
 	root.config.service.data.workers.forEach(
 		function(workerConfig,id,workerList){
@@ -16,23 +16,14 @@ function app_start(){
 				var child=root.app.process.fork(root.modules.worker);
 				if(child){
 					root.app.process.pool.push(child);
-					log.write("spawn worker:{id:"+id+",child_pid:"+child.pid+","
-								+"parent_pid:"+process.pid
-								+"},"
-							+"{process_count:"+global.procs.length+"}"
-					);
+					root.process.logProcess(root.app.log,id,process.pid,child.pid);
 					pidFile.createNew(child.pid);
-					console.log(timestamp()
-							   +"{child pid ["+child.pid+"]},"
-							   +"{count:"+global.procs.length+"},"
-								   +"{name:'"+global.procs.title+"'},"
-								   +"setup message listener"
-					);
 					child.send({code:0});
-					log.write("{code:0} sent Parent => Child ["+child.pid+"]");
-					log.write(timestamp()+"setup message listener");
+					
+					root.app.log.write("{code:0} sent Parent => Child ["+child.pid+"]");
+					root.app.log.write(timestamp()+"setup message listener");
 					child.on('uncaughtException', function(err) {
-						console.log( "\n\n"
+						root.app.write( "\n\n"
 									+Array(74).join("-")
 									+"Process PID:"+child.pid+"\n"
 									+"An Uncaught Exception has been thrown:\n\n"
