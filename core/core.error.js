@@ -10,7 +10,7 @@ module.exports=error_handler;
 
 function error_handler(){
 	console.log('error_handler() executing.');
-	root.error={};
+
 	root.error.messages=require(root.conf_dir+"/errors/errors-"+root.config.language+".json");
 
 	console.log(Array(50).join('-'));
