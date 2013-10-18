@@ -37,12 +37,12 @@ function process_manager(){
 		root.log.write("{parent:"+p+",child:"+c+",count:"+n+"}");
 	},
 	
-	root.process.logProcess=function(localLog,id,process.pid,child.pid){
+	root.process.logProcess=function(localLog,id,parent,child){
 		log.write(
 			'{'
 				+'"id":'+id','
-			 	+'"parentPID":'+process.pid+','
-			 	+'"childPID":'+child.pid','
+			 	+'"parentPID":'+parent+','
+			 	+'"childPID":'+child+','
 			 	+'"count":'+root.process.pool.length
 		   +'}'
 		);
