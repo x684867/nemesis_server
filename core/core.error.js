@@ -1,6 +1,6 @@
-module.exports=error;
+module.exports=error_handler;
 
-error=function(){
+error_handler=function(){
 	/*
 	"_name":"core.error.js",
 	"_desc":"Nemesis Error Handler",
