@@ -1,10 +1,11 @@
 {
+	/*
 	"_name":"core.error.js",
 	"_desc":"Nemesis Error Handler",
 
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
-
+	*/
 	messages:require(root.conf_dir+'/errors/errors-'+root.config.language+'.json');
 	throw:function(e){	
 		require('util');
