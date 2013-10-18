@@ -15,42 +15,43 @@ function load_modules(){
 	var o={}
 	root.config.modules.forEach(function(m,i,a){
 		if(typeof(m)=='object'){
-			if(typeof(m.group)!='string'){
-				root.error.raise(
-					root.error.messages.bootstrap.invModuleGroup,
-					"Group:"+m.group
-				);
-			}
-			if(typeof(m.name)!='string'){
-				root.error.raise(
-					root.error.messages.bootstrap.invModuleName,
-					"Name:"+m.name
-				);
-			}
-			if(typeof(m.file)!='string'){
-				root.error.raise(
-					root.error.messages.bootstrap.invModuleFile,
-					"File:"+m.file
-				);
-			}
-			if(fileNotExists(m.file)){
-				root.error.raise(
-					root.error.messages.bootstrap.missingModuleFile,
-					"File:"+m.file
-				);
+			if((typeof(m.load)=='boolean') && m.load==true){
+				if(typeof(m.group)!='string'){
+					root.error.raise(
+						root.error.messages.bootstrap.invModuleGroup,
+						"Group:"+m.group
+					);
+				}
+				if(typeof(m.name)!='string'){
+					root.error.raise(
+						root.error.messages.bootstrap.invModuleName,
+						"Name:"+m.name
+					);
+				}
+				if(typeof(m.file)!='string'){
+					root.error.raise(
+						root.error.messages.bootstrap.invModuleFile,
+						"File:"+m.file
+					);
+				}
+				if(fileNotExists(m.file)){
+					root.error.raise(
+						root.error.messages.bootstrap.missingModuleFile,
+						"File:"+m.file
+					);
+				}			
+				if(isUndefined(root.config.modules)){
+					root.config.modules={};
+				}
+				if(isUndefined(root.config.modules[m.group])){
+					root.config.modules[m.group]={};
+				}
+				if(isUndefined(root.config.modules[m.group][m.name])){
+					root.config.modules[m.group][m.name]={};
+				}
+				
+				root.config.modules[m.group][m.name]=require(m.file);
 			}			
-			if(isUndefined(root.config.modules)){
-				root.config.modules={};
-			}
-			if(isUndefined(root.config.modules[m.group])){
-				root.config.modules[m.group]={};
-			}
-			if(isUndefined(root.config.modules[m.group][m.name])){
-				root.config.modules[m.group][m.name]={};
-			}
-			
-			root.config.modules[m.group][m.name]=require(m.file);
-			
 		}else{
 			console.log("In "+module.filename+" root.errors is not yet defined.");
 			root.error.raise(root.error.messages.bootstrap.invalidModule);
