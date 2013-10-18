@@ -8,16 +8,11 @@
 */
 module.exports=error_handler;
 
-const DEBUG=true;
+root.error={};
+root.error.messages=require("root.conf_dir+"/errors/errors-"+root.config.language+".json");
 
 function error_handler(){
-	if(DEBUG)console.log(module.filename+"  loading error messages");
-	root.error={};
-	
-	var fname=root.conf_dir+"/errors/errors-"+root.config.language+".json";
-	var rawData=require('fs').readFileSync(fname);
-	root.error.messages=JSON.parse(rawData);
-	
+
 	raise=function(e){	
 		require('util');
 		util.log(Array(60).join('=')+"\nERROR:");
@@ -45,10 +40,4 @@ function error_handler(){
 				break;
 		}
 	}
-	if(DEBUG){
-		console.log("JSON DATA:");
-		console.dir(root.error);
-		console.log(Array(50).join('-'));
-	}
-	console.log("...messages loaded.");
 }
