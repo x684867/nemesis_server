@@ -1,27 +1,33 @@
 /*
-"_name":"core.error.js",
-"_desc":"Nemesis Error Handler",
-"_author":"Sam Caldwell <mail@samcaldwell.net>",
-"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+	Nemesis Error Handling Constructor
+	/srv/nemesis/core/core.error.js
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
+	
+	This file will establish error handling as root.error.{messages,raise()}
+	
 */
 module.exports=error_handler;
 
+const DEBUG=true;
+
 function readCfg(fname){
 	data=require('fs').readFileSync(fname)
-	console.log("RAW OUTPUT:"+data+"\n"+Array(50).join('-'));
+	if(DEBUG) console.log("RAW OUTPUT:"+data+"\n"+Array(50).join('-'));
 	json=JSON.parse(data);
-	console.log("JSON:");
-	console.dir(json);
-	console.log(Array(50).join('-'));
+	if(DEBUG){
+		console.log("JSON:");
+		console.dir(json);
+		console.log(Array(50).join('-'));
+	}
 	return json; 
 }
 
 function error_handler(){
-	console.log(module.filename+"  loading error messages");
+	if(DEBUG)console.log(module.filename+"  loading error messages");
 	root.error={
 		messages:readCfg(root.conf_dir+"/errors/errors-"+root.config.language+".json")
 	}
-	console.log("...messages loaded.");
+	if(DEBUG)console.log("...messages loaded.");
 	
 	raise=function(e){	
 		require('util');
