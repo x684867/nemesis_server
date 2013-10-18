@@ -16,7 +16,8 @@ function error_handler(){
 	
 	var fname=root.conf_dir+"/errors/errors-"+root.config.language+".json";
 	var rawData=require('fs').readFileSync(fname);
-	root.error.messages=JSON.parse(data);
+	root.error.messages=JSON.parse(rawData);
+	
 	if(DEBUG){
 		console.log("RAW DATA:");
 		console.dir(rawData);
