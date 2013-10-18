@@ -41,7 +41,7 @@ load_modules();
 	Define the application
 */
 root.app={
-	log:new root.modules.logger(module.filename,process.pid),
+	log:new root.modules.core.logger("bootstrap",module.filename,process.pid),
 	main:require(root.config.modules.core.main),
 	
 	startService:require(root.config.modules.core.start),

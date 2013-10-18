@@ -1,6 +1,6 @@
 /*
 	General Message Validator
-	/srv/nemesis/app/library/msgValidator.js 
+	/srv/nemesis/core/core.messages.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.  
 
 	This file establishes a single library (object) which can be used to validate any
@@ -15,31 +15,6 @@ module.exports=validator;
 const TOBJ='object';
 const TSTR='string';
 const TNUM='number';
-/* */
-const E_M_CD_NOT_SET='Message code is undefined {msg.code}';
-const E_M_CD_NOT_NUM='Message code is not a number {msg.code}';
-const E_M_CD2_NON_OBJ='{code:2,data:<non-object>}';
-const E_M_CD2_D_ID_UNDEF='{code:2,data:{id:<undefined>}}';
-const E_M_CD2_D_TYPE_UNDEF='{code:2,data:{type:<undefined>}}';
-const E_M_CD2_D_CFG_UNDEF='{code:2,data:{config:<undefined>}}';
-const E_M_CD2_D_ID_NAN='{code:2,data:{id:<non-number>}}';
-const E_M_CD2_D_TYPE_NSTR='{code:2,data:{type:<non-string>}}';
-const E_M_CD2_CFG_NAO='{code:2,data:{type:<non-object>}}';
-const E_M_CD2_CFG_WID_UNDEF='{code:2,data:{config.workerId:<undefined>}}';
-const E_M_CD2_CFG_IP_UNDEF='{code:2,data:{config.ipAddress:<non-string>}}';
-const E_M_CD2_CFG_PORT_UNDEF='{code:2,data:{config.ipPort:<non-number>}}';
-const E_M_CD2_CFG_ID_NAN='{code:2,data:{config.workerId:<not number>}}';
-const E_M_CD2_CFG_IP_NSTR='{code:2,data:{config.ipAddress:<not string>}}';
-const E_M_CD2_CFG_PORT_NAN='{code:2,data:{config.ipPort:<not number>}}';
-const E_M_CD11_D_NAN='{code:11,data:<not number>}';
-const E_M_CD11_D_UNDEF='{code:11,data:<undefined>}';
-const E_M_CD13_D_NOT_OBJ="Msg {code:13} data property is non-array.";
-const E_M_CD13_D_UNDEF="Msg {code:13} lacks data property.";
-const E_M_UNKNOWN_CODE="Unknown msg code encountered.";
-const E_M_NOT_OBJ='Message is not an object';
-const E_M_NOT_IMPLEMENTED='Unimplemented message encountered.';
-/* */
-const MSG_CD2_D_CORRECT='{code:2,data:<object>} is correctly formatted.';
 /* */
 function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 function isUndefined(d,e){if(typeof(d)=='undefined') throw new Error(e);}

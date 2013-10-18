@@ -12,7 +12,6 @@ const DEBUG=true;
 
 function fileNotExists(fname){return require('fs').lstatSync(fname).isFile()}
 function isUndefined(o){return (typeof(o)=='undefined')?true:false;}
-
 function load_modules(){
 	var o={}
 	root.config.modules.forEach(function(m,i,a){
@@ -42,16 +41,13 @@ function load_modules(){
 						"File:"+m.file
 					);
 				}			
-				if(isUndefined(root.config.modules)){
-					root.config.modules={};
-				}
+				if(isUndefined(root.config.modules)){root.config.modules={};}
 				if(isUndefined(root.config.modules[m.group])){
 					root.config.modules[m.group]={};
 				}
 				if(isUndefined(root.config.modules[m.group][m.name])){
 					root.config.modules[m.group][m.name]={};
 				}
-				
 				root.config.modules[m.group][m.name]=require(m.file);
 			}			
 		}else{

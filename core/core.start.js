@@ -23,18 +23,15 @@ function app_start(){
 					root.app.log.write("{code:0} sent Parent => Child ["+child.pid+"]");
 					root.app.log.write(timestamp()+"setup message listener");
 					child.on('uncaughtException', function(err) {
-						root.app.write( "\n\n"
-									+Array(74).join("-")
-									+"Process PID:"+child.pid+"\n"
-									+"An Uncaught Exception has been thrown:\n\n"
-									+err+"\n"
-									+"sending SIGKILL to child.\n"
-									+Array(74).join("-")
+						root.error.raise(
+							 root.error.messages.app.start.uncaughtException,
+							+"pid:"+child.pid+","
+							+"error:"+err
 						);
 						child.send({code:95});/*{code:95} is a child suicide msg.*/
 					})
 					child.on('message',function(msg){
-						var validator=require(VALIDATOR_CLASS);
+						v=new root.modules.checker.msgValidator
 						if(!(validator.isValidMsg(msg)))throw(E_INV_MSG_PARENT);
 						switch(msg.code){
 							case 1:
