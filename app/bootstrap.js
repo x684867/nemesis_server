@@ -31,6 +31,9 @@ console.log("Loading the main configuration file.");
 root.config=require(root.conf_dir+'/app.conf.json');
 console.log("Loading the localized messages.");
 root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'.json');
+console.log("Messages loaded:")
+console.dir(root.messages);
+console.log(Array(40).join("-"));
 /*
 	Load the Modules defined in root.config.modules
 */
