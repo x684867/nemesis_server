@@ -12,14 +12,6 @@ function fileNotExists(fname){return require('fs').lstatSync(fname).isFile()}
 function isUndefined(o){return (typeof(o)=='undefined')?true:false;}
 
 function load_modules(){
-
-
-	console.log(Array(50).join('-'));
-	console.log("Dump root.error.messages in "+module.filename+":");
-	console.log(Array(50).join('-'));
-	console.dir(root.error);
-	console.log(Array(50).join('-'));
-
 	var o={}
 	root.config.modules.forEach(function(m,i,a){
 		if(typeof(m)=='object'){
