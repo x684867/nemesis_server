@@ -140,7 +140,7 @@
 					"code":1011,
 					"fatal":false,
 					"text":"An IPC {code:2} message has an invalid data.config.ipaddress"
-				},
+				}
 			}
 		}	
 	}	
