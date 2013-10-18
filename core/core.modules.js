@@ -16,16 +16,16 @@ function load_modules(){
 	root.config.modules.forEach(function(m,i,a){
 		if(typeof(m)=='object'){
 			if(typeof(m.group)!='string'){
-				throw new Error(root.error.messages.bootstrap.invModuleGroup.text);
+				root.error.raise(root.error.messages.bootstrap.invModuleGroup);
 			}
 			if(typeof(m.name)!='string'){
-				throw new Error(root.error.messages.bootstrap.invModuleName.text);
+				root.error.raise(root.error.messages.bootstrap.invModuleName);
 			}
 			if(typeof(m.file)!='string'){
-				throw new Error(root.error.messages.bootstrap.invModuleFile.text);
+				root.error.raise(root.error.messages.bootstrap.invModuleFile);
 			}
 			if(fileNotExists(m.file)){
-				throw new Error(root.error.messages.bootstrap.missingModuleFile.text);
+				root.error.raise(root.error.messages.bootstrap.missingModuleFile);
 			}			
 			if(isUndefined(root.config.modules)){
 				root.config.modules={};
@@ -41,7 +41,7 @@ function load_modules(){
 			
 		}else{
 			console.log("In "+module.filename+" root.errors is not yet defined.");
-			throw new Error(root.error.messages.bootstrap.invalidModule.text);
+			root.error.raise(root.error.messages.bootstrap.invalidModule);
 		}
 	});
 	if(root.debug){
