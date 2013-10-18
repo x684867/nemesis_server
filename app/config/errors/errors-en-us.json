@@ -13,5 +13,6 @@
 	"bootstrap":{
 		"invalidArgument":{		"code":100,"text":"An unknown parameter was passed at the command line.",					"fatal":true},
 		"invalidModule":{		"code":101,"text":"An invalid module was detected in the modules array (app.conf.json).",	"fatal":true},
-		"missingModuleFile":{	"code":102,"text":"root.core.modules failed.  Module file is defined but missing.",			"fatal":true}		
+		"missingModuleFile":{	"code":102,"text":"root.core.modules failed.  Module file is defined but missing.",			"fatal":true}
+	}	
 }
