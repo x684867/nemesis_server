@@ -5,66 +5,20 @@
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 	
-	"success":{
-		"code":0,
-		"text":"success",
-		"fatal":false
-	},
-	"failure":{
-		"code":1,
-		"text":"failure",
-		"fatal":true
-	},
-	"unknown":{
-		"code":2,
-		"text":"An unknown error has occurred in Nemesis.",
-		"fatal":true
-	},
-	"notImplemented":{
-		"code":3,
-		"text":"This feature has not been implemented.",
-		"fatal":false
-	},
-	
+	"success":{			"code":0,"fatal":false,	"text":"success"	},
+	"failure":{			"code":1,"fatal":true,	"text":"failure"	},
+	"unknown":{			"code":2,"fatal":true,	"text":"An unknown error has occurred in Nemesis."	},
+	"notImplemented":{	"code":3,"fatal":false,	"text":"This feature has not been implemented."		},
 	"bootstrap":{
-		"invalidArgument":{
-			"code":100,
-			"text":"An unknown parameter was passed at the command line.",
-			"fatal":true
-		},
-		"invalidModule":{
-			"code":101,
-			"text":"An invalid module was detected in the modules array (app.conf.json).",
-			"fatal":true
-		},
-		"missingModuleFile":{
-			"code":102,
-			"text":"root.core.modules failed.  Module file is defined but missing.",
-			"fatal":true
-	},
-	
+		"invalidArgument":{	 "code":100,"fatal":true,"text":"An unknown parameter was passed at the command line."},
+		"invalidModule":{	 "code":101,"fatal":true,"text":"An invalid module was detected in the modules array (app.conf.json)."},
+		"missingModuleFile":{"code":102,"false":true,"text":"root.core.modules failed.  Module file is defined but missing."},
 	"app":{
 		"main":{
-			"success":{
-				"code":110,
-				"message":"All Services have started successfully.",
-				"fatal":false
-			},
-			"monitorHeartbeatFailed":{
-				"code":112,
-				"text":"root.app.monitor.heartbeat.start() failed",
-				"fatal":true
-			},
-			"monitorStatisticsFailed":{
-				"code":113,
-				"text":"root.app.monitor.statistics.start() failed",
-				"fatal":true
-			},
-			"servicesFailed":{
-				"code":114,
-				"text":"root.app.start() failed to start services.",
-				"fatal":true
-			}
+			"success":{					"code":110,"fatal":false,	"text":"All Services have started successfully."},
+			"monitorWatchdogFailed":{	"code":112,"fatal":true,	"text":"root.app.monitor.heartbeat.start() failed"},
+			"monitorStatsFailed":{		"code":113,"fatal":true,	"text":"root.app.monitor.statistics.start() failed"},
+			"servicesFailed":{			"code":114,"fatal":true,	"text":"root.app.start() failed to start services."}
 		}
 	}		
 }
