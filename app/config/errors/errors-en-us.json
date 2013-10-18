@@ -65,9 +65,6 @@
 				"text":"root.app.start() failed to start services.",
 				"fatal":true,
 			}
-		},
-		
-		"start":{
 		}
 	}		
 }
