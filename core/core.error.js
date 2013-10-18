@@ -15,11 +15,11 @@ function error_handler(){
 	root.error={};
 	
 	var fname=root.conf_dir+"/errors/errors-"+root.config.language+".json";
-	data=require('fs').readFileSync(fname);
+	var rawData=require('fs').readFileSync(fname);
 	root.error.messages=JSON.parse(data);
 	if(DEBUG){
 		console.log("RAW DATA:");
-		console.dir(data);
+		console.dir(rawData);
 		console.log(Array(50).join('-'));
 	}
 
