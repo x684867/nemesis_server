@@ -63,7 +63,7 @@
 			"servicesFailed":{
 				"code":114,
 				"text":"root.app.start() failed to start services.",
-				"fatal":true,
+				"fatal":true
 			}
 		}
 	}		
