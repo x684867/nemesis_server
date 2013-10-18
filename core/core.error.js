@@ -9,7 +9,7 @@
 module.exports=error_handler;
 
 root.error={};
-root.error.messages=require("root.conf_dir+"/errors/errors-"+root.config.language+".json");
+root.error.messages=require(root.conf_dir+"/errors/errors-"+root.config.language+".json");
 
 function error_handler(){
 
