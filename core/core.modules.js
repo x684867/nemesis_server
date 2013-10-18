@@ -17,7 +17,7 @@ function load_modules(){
 	console.log(Array(50).join('-'));
 	console.log("Dump root.error.messages:");
 	console.log(Array(50).join('-'));
-	console.dir(root.error.messages);
+	console.dir(root.error);
 	console.log(Array(50).join('-'));
 
 	var o={}
