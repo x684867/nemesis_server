@@ -39,7 +39,7 @@
 		"missingModuleFile":{
 			"code":102,
 			"false":true,
-			"text":"root.core.modules failed.  Module file is defined but missing."
+			"text":"root.core.modules failed.  Module file missing or corrupt."
 		}
 	},
 	"app":{
