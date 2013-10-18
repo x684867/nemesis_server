@@ -16,16 +16,28 @@ function load_modules(){
 	root.config.modules.forEach(function(m,i,a){
 		if(typeof(m)=='object'){
 			if(typeof(m.group)!='string'){
-				root.error.raise(root.error.messages.bootstrap.invModuleGroup);
+				root.error.raise(
+					root.error.messages.bootstrap.invModuleGroup,
+					"Group:"+m.group
+				);
 			}
 			if(typeof(m.name)!='string'){
-				root.error.raise(root.error.messages.bootstrap.invModuleName);
+				root.error.raise(
+					root.error.messages.bootstrap.invModuleName,
+					"Name:"+m.name
+				);
 			}
 			if(typeof(m.file)!='string'){
-				root.error.raise(root.error.messages.bootstrap.invModuleFile);
+				root.error.raise(
+					root.error.messages.bootstrap.invModuleFile,
+					"File:"+m.file
+				);
 			}
 			if(fileNotExists(m.file)){
-				root.error.raise(root.error.messages.bootstrap.missingModuleFile);
+				root.error.raise(
+					root.error.messages.bootstrap.missingModuleFile,
+					"File:"+m.file
+				);
 			}			
 			if(isUndefined(root.config.modules)){
 				root.config.modules={};

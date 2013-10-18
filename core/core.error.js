@@ -12,13 +12,14 @@ var util=require('util');
 function error_handler(){
 
 	root.error.messages=require(root.conf_dir+"/errors/errors-"+root.config.language+".json");
-	root.error.raise=function(e){	
+	root.error.raise=function(e,detail){	
 		
 		util.log(Array(60).join('=')+"\nERROR:");
 		switch(typeof(e)){
 			case "object":
 				util.log("      CODE:"+e.code);
 				util.log("   MESSAGE:"+e.text);
+				if(typeof(detail)=='string') util.log("    DETAIL:"+detail);  
 				if((typeof(e.code.fatal)=='boolean') && e.code.fatal ){
 					util.log("----STACK TRACE----");
 					console.trace();
