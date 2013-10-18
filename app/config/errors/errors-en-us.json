@@ -77,5 +77,78 @@
 				"text":"An uncaught exception occurred in a child process."
 			}
 		}
-	}		
+	},
+	"modules":{
+		"core":{
+			"messages":{
+				"success":{
+					"code":1000,
+					"fatal":false,
+					"text":"root.modules.core.messages returns success."
+				},
+				"msgCodeNotSet":{
+					"code":1001,
+					"fatal":false,
+					"text":"An IPC Message has an undefined message code {msg.code}."
+				},
+				"msgCodeNotNum":{
+					"code":1002,
+					"fatal":false,
+					"text":"An IPC Message has a non-numeric message code {msg.code}."
+				},
+				"msgCode2nonObject":{
+					"code":1003,
+					"fatal":false,
+					"text":"An IPC {code:2} message has a non object data property."
+				},
+				"msgCode2invDataId":{
+					"code":1004,
+					"fatal":false,
+					"text":"An IPC {code:2} message has an undefined data.id property."
+				},
+				"msgCode2invDataType":{
+					"code":1005,
+					"fatal":false,
+					"text":"An IPC {code:2} message has an undefined data.type property."
+				},
+				"msgCode2invDataConfig":{
+					"code":1006,
+					"fatal":false,
+					"text":"An IPC {code:2} message has an undefined data.config property."
+				},
+				"msgCode2invDataIdNotNum":{
+					"code":1007,
+					"fatal":false,
+					"text":"An IPC {code:2} message has a non-numeric data.id property."
+				},
+				"msgCode2DataTypeNotString":{
+					"code":1008,
+					"fatal":false,
+					"text":"An IPC {code:2} message has a non-string data.type property."
+				},
+				"msgCode2DataConfigNotObject":{
+					"code":1009,
+					"fatal":false,
+					"text":"An IPC {code:2} message has a non-object data.config property."
+				},
+				"msgCode2invWorkerId":{
+					"code":1010,
+					"fatal":false,
+					"text":"An IPC {code:2} message has an invalid Worker.id property."
+				},
+				"msgCode2invIPAddress":{
+					"code":1011,
+					"fatal":false,
+					"text":"An IPC {code:2} message has an invalid data.config.ipaddress"
+				},
+			}
+		}	
+	}	
+	
+	
+	
+	
+	
+	
+	
 }
