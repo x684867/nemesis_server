@@ -37,7 +37,7 @@ root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'
 root.error=require(root.config.errorHandler)();
 
 console.log(Array(50).join('-')+"\nError Handler loaded");
-console.dir(root.error)
+console.dir(root.error.messages)
 console.log(Array(50).join('='));
 
 load_modules=require(root.config.moduleLoader);
