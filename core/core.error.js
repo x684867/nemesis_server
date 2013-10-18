@@ -10,7 +10,11 @@ function error_handler(){
 	console.log(module.filename+"  loading error messages");
 	messages=function(){
 		var localizedErrors=root.conf_dir+'/errors/errors-'+root.config.language+'.json'
-		json=JSON.parse(require('fs').readFileSync(localizedErrors));
+		data=require('fs').readFileSync(localizedErrors)
+		json=JSON.parse(data);
+		
+		console.log("RAW OUTPUT:"+json
+		
 		return json; 
 	}
 	console.log("...messages loaded.");
