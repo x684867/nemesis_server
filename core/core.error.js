@@ -19,8 +19,8 @@ function error_handler(){
 	root.error.messages=JSON.parse(rawData);
 	
 	if(DEBUG){
-		console.log("RAW DATA:");
-		console.dir(rawData);
+		console.log("JSON DATA:");
+		console.dir(root.error);
 		console.log(Array(50).join('-'));
 	}
 
