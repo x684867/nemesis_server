@@ -26,7 +26,7 @@ function app_start(){
 					child.on('uncaughtException', function(err) {
 						root.error.raise(
 							 root.error.messages.app.start.uncaughtException,
-							 "pid:"+child.pid+","+error:"+err
+							 "pid:"+child.pid+",error:"+err
 						);
 						child.send(root.ipc.message.childSuicide());
 					})
