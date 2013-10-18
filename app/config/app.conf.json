@@ -6,27 +6,33 @@
 		
 	"language"	:"en-us",
 
+	"coreTypes":"/srv/nemesis/core/core.types.js",
 	"errorHandler":"/srv/nemesis/core/core.error.js",
 	"moduleLoader":"/srv/nemesis/core/core.modules.js",
 
 	"modules":[
-		{"group":"app",		"load":false,	"name":"bootstrap",		"file":"/srv/nemesis/app/bootstrap.js"			},
-		{"group":"core",	"load":true,	"name":"process",		"file":"/srv/nemesis/core/core.process.js"		},
-		{"group":"core",	"load":true,	"name":"start",			"file":"/srv/nemesis/core/core.start.js"		},
-		{"group":"core",	"load":true,	"name":"main",			"file":"/srv/nemesis/core/core.main.js"			},
-		{"group":"core",	"load":true,	"name":"logger",		"file":"/srv/nemesis/core/core.logger.js"		},
-		{"group":"core",	"load":true,	"name":"pidTracker",	"file":"/srv/nemesis/core/pidTracker.js"		},
-		{"group":"core",	"load":true,	"name":"messages",		"file":"/srv/nemesis/core/core.messages.js"		},
-		{"group":"monitor",	"load":true,	"name":"watchdog",		"file":"/srv/nemesis/core/monitor.watchdog.js"	},
-		{"group":"monitor",	"load":true,	"name":"stats",			"file":"/srv/nemesis/core/monitor.stats.js"		},
-		{"group":"checker",	"load":true,	"name":"config",		"file":"/srv/nemesis/core/config.js"			},
-		{"group":"checker",	"load":true,	"name":"uuidVerify",	"file":"/srv/nemesis/core/uuidverify.js"		},
-		{"group":"store",	"load":true,	"name":"client",		"file":"/srv/nemesis/core/store/storeClient.js"	},
-		{"group":"store",	"load":true,	"name":"server",		"file":"/srv/nemesis/core/store/storeServer.js"	},
-		{"group":"store",	"load":true,	"name":"marco",			"file":"/srv/nemesis/core/store/marco.js"		},
-		{"group":"store",	"load":true,	"name":"polo",			"file":"/srv/nemesis/core/store/polo.js"		},
-		{"group":"web",		"load":true,	"name":"client",		"file":"/srv/nemesis/core/web/webClient.js"		},
-		{"group":"web",		"load":true,	"name":"server",		"file":"/srv/nemesis/core/web/webServer.js"		}
+		{"group":"app",		"load":false,"type":"preload",	"name":"bootstrap",		"file":"/srv/nemesis/app/bootstrap.js"			},
+		{"group":"core",	"load":false,"type":"preload",	"name":"coreTypes",		"file":"/srv/nemesis/core/core.types.js"		},
+		{"group":"core",	"load":false,"type":"preload",	"name":"errorHandler",	"file":"/srv/nemesis/core/core.error.js"		},
+		{"group":"core",	"load":false,"type":"preload",	"name":"moduleLoader",	"file":"/srv/nemesis/core/core.modules.js"		},
+		
+		
+		{"group":"core",	"load":true,"type":"module",	"name":"process",		"file":"/srv/nemesis/core/core.process.js"		},
+		{"group":"core",	"load":true,"type":"module",	"name":"start",			"file":"/srv/nemesis/core/core.start.js"		},
+		{"group":"core",	"load":true,"type":"module",	"name":"main",			"file":"/srv/nemesis/core/core.main.js"			},
+		{"group":"core",	"load":true,"type":"module",	"name":"logger",		"file":"/srv/nemesis/core/core.logger.js"		},
+		{"group":"core",	"load":true,"type":"module",	"name":"pidTracker",	"file":"/srv/nemesis/core/pidTracker.js"		},
+		{"group":"core",	"load":true,"type":"module",	"name":"messages",		"file":"/srv/nemesis/core/core.messages.js"		},
+		{"group":"monitor",	"load":true,"type":"module",	"name":"watchdog",		"file":"/srv/nemesis/core/monitor.watchdog.js"	},
+		{"group":"monitor",	"load":true,"type":"module",	"name":"stats",			"file":"/srv/nemesis/core/monitor.stats.js"		},
+		{"group":"checker",	"load":true,"type":"module",	"name":"config",		"file":"/srv/nemesis/core/config.js"			},
+		{"group":"checker",	"load":true,"type":"module",	"name":"uuidVerify",	"file":"/srv/nemesis/core/uuidverify.js"		},
+		{"group":"store",	"load":true,"type":"module",	"name":"client",		"file":"/srv/nemesis/core/store/storeClient.js"	},
+		{"group":"store",	"load":true,"type":"module",	"name":"server",		"file":"/srv/nemesis/core/store/storeServer.js"	},
+		{"group":"store",	"load":true,"type":"module",	"name":"marco",			"file":"/srv/nemesis/core/store/marco.js"		},
+		{"group":"store",	"load":true,"type":"module",	"name":"polo",			"file":"/srv/nemesis/core/store/polo.js"		},
+		{"group":"web",		"load":true,"type":"module",	"name":"client",		"file":"/srv/nemesis/core/web/webClient.js"		},
+		{"group":"web",		"load":true,"type":"module",	"name":"server",		"file":"/srv/nemesis/core/web/webServer.js"		}
 	],
 	"servers":{
 		"audit":"/srv/nemesis/servers/audit.js",
