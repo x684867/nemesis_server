@@ -7,12 +7,13 @@
 	
 */
 module.exports=error_handler;
+require('util');
 
 function error_handler(){
 
 	root.error.messages=require(root.conf_dir+"/errors/errors-"+root.config.language+".json");
 	root.error.raise=function(e){	
-		require('util');
+		
 		util.log(Array(60).join('=')+"\nERROR:");
 		switch(typeof(e)){
 			case "object":
