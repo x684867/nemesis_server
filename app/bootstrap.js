@@ -27,9 +27,7 @@ root.conf_dir='/srv/nemesis/app/config';
 /*
 	Load the main configuration file.
 */
-console.log("Loading the main configuration file.");
 root.config=require(root.conf_dir+'/app.conf.json');
-console.log("Loading the localized messages.");
 root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'.json');
 /*
 	Load the modules
