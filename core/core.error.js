@@ -8,7 +8,11 @@ module.exports=error_handler;
 
 function error_handler(){
 	console.log(module.filename+"  loading error messages");
-	messages=require(root.conf_dir+'/errors/errors-'+root.config.language+'.json');
+	messages=function(){
+		var localizedErrors=root.conf_dir+'/errors/errors-'+root.config.language+'.json'
+		json=JSON.parse(require('fs').readFileSync(localizedErrors));
+		return json; 
+	}
 	console.log("...messages loaded.");
 	
 	raise=function(e){	
