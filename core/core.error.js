@@ -1,4 +1,6 @@
-{
+module.exports=error;
+
+error=function(){
 	/*
 	"_name":"core.error.js",
 	"_desc":"Nemesis Error Handler",
@@ -7,7 +9,7 @@
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 	*/
 	messages:require(root.conf_dir+'/errors/errors-'+root.config.language+'.json');
-	raise:function(e){	
+	raise=function(e){	
 		require('util');
 		util.log(Array(60).join('=')+"\nERROR:");
 		switch(typeof(e)){
