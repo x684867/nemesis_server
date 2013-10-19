@@ -31,25 +31,20 @@ root.app={};root.config={};root.error={};root.messages={};root.modules={};root.i
 /* Load application configuration data*/
 root.config.app=require(root.conf_dir+'/app.conf.json');
 
-root.modules.loader=require(root.config.preload.moduleLoader)();
+root.modules.init=require(root.config.moduleLoader)();
 
-root.modules.load(root.modules.types,root.config.preload.coreTypes);
-root.modules.load(root.modules.error,root.config.preload.errorHandler);
-root.modules.load(root.modules.ipc,root.config.preload.ipc);
+root.modules.preload("types");
+root.modules.preload("error");
+root.modules.preload("ipc");
 root.modules.loadall();
 /*
 	Define the application
 */
-root.app={
-	log:root.modules.logger.create("bootstrap",module.filename,process.pid),
-	main:root.modules.load(root.config.preload.main),
-	start:root.modules.load(root.config.preload.start),
-	root.app.monitor={
-		watchdog:root.modules.watchdog,
-		stats:root.modules.stats
-	}
-}
-/*
-	Launch the application
-*/
+root.app.log=root.modules.logger.init("bootstrap",module.filename,process.pid),
+root.app.main=root.modules.main.init();
+root.app.start=root.modules.start.init();
+root.app.monitor={};
+root.app.monitor.watchdog=root.modules.watchdog.init();
+root.app.monitor.stats=root.modules.stats.init();
+
 root.app.main(process.argv[2]);

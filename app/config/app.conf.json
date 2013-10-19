@@ -4,15 +4,9 @@
 	"_author"	:"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 		
-	"language"	:"en-us",
+	"language"	:"en-US.UTF-8",
+	
+	"moduleLoader":"/srv/nemesis/app/moduleLoader.js",
 
-	"preload":{
-		"coreTypes":"/srv/nemesis/modules/types/",
-		"errorHandler":"/srv/nemesis/modules/error/",
-		"moduleLoader":"/srv/nemesis/modules/modules/",
-		"ipc":"/srv/nemesis/modules/ipc/",
-		"main":"/srv/nemesis/modules/main/",
-		"start":"/srv/nemesis/modules/start/"		
-	},
-	modules:"/srv/nemesis/modules/"
+	"modules":"/srv/nemesis/modules/"
 }
