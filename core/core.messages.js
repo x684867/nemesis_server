@@ -86,7 +86,7 @@ function message_handler(){ }
 				};
 		},
 		
-		childSuicide=function(){
+		childSuicide:function(){
 			return {
 					"code":95
 				};
