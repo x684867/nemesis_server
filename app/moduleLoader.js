@@ -26,8 +26,15 @@ function init(){
 	}
 	
 	root.modules={};
-	root.modules.load=function(modName){modInspect(modName,'noPreload');}
-	root.modules.preload=function(modName){modInspect(modName,'preload');}
+	root.modules.load=function(modName){
+		console.log('loading '+modName);
+		modInspect(modName,'noPreload');
+		
+	}
+	root.modules.preload=function(modName){
+		console.log('preloading '+modName);
+		modInspect(modName,'preload');
+	}
 }
 /*
 
