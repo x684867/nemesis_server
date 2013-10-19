@@ -54,20 +54,24 @@ function modInspect(modName,context){
 	var module_manifest=module_path+"manifest.json";
 	if( fs.statSync(module_manifest).isFile() ) {
 		try{
+
 			root.modules[modName].manifest=require(module_manifest);
+
 		}catch(e){
-			console.log(fileReadSync(module_manifest));
+
 			throw new Error('manifest.json failed to load');
 		}
 	}else{
+	
 		throw new Error('manifest.json not found');
+		
 	}
 	/*Validate manifest JSON*/
 	if(typeof(root.modules[modName].manifest)!='object')
 		throw new Error('Invalid manifest detected for module '+modName);
 	if(typeof(root.modules[modName].manifest.name)!='string')
 		throw new Error('Invalid manifest name (expected string)  module:'+modName);
-	if(typeof(root.modules[modName].manifest.group)!='group')
+	if(typeof(root.modules[modName].manifest.group)!='string')
 		throw new Error('Invalid manifest group (expected string) module:'+modName);
 	if(typeof(root.modules[modName].manifest.loader)!='object')
 		throw new Error('Invalid manifest loader object.  module:'+modName);
