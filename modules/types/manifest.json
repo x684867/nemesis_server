@@ -12,7 +12,7 @@
 		"bootstrap":true,
 		"preload":true,
 		"dependencies":[]
-	}
+	},
 
 	"main":"/srv/nemesis/modules/types/main.js",
 	"config":"/srv/nemesis/modules/types/config.json"
