@@ -67,35 +67,35 @@ function modInspect(modName,context){
 		
 	}
 	/*Validate manifest JSON*/
-	if(typeof(root.modules[modName].manifest)!='object')
+	if(typeof( root.modules[modName].manifest )!='object' )
 		throw new Error('Invalid manifest detected for module '+modName);
-	if(typeof(root.modules[modName].manifest.name)!='string')
+	if(typeof( root.modules[modName].manifest.name )!='string' )
 		throw new Error('Invalid manifest name (expected string)  module:'+modName);
-	if(typeof(root.modules[modName].manifest.group)!='string')
+	if(typeof( root.modules[modName].manifest.group )!='string' )
 		throw new Error('Invalid manifest group (expected string) module:'+modName);
-	if(typeof(root.modules[modName].manifest.loader)!='object')
+	if(typeof( root.modules[modName].manifest.loader )!='object' )
 		throw new Error('Invalid manifest loader object.  module:'+modName);
-	if(typeof(root.modules[modName].manifest.loader.bootstrap)!='boolean')
+	if(typeof( root.modules[modName].manifest.loader.bootstrap )!='boolean' )
 		throw new Error('Invalid manifest bootstrap (expect boolean).  module:'+modName);
-	if(typeof(root.modules[modName].manifest.loader.preload)!='boolean')
+	if(typeof( root.modules[modName].manifest.loader.preload )!='boolean' )
 		throw new Error('Invalid manifest preload (expected boolean).  module:'+modName);
-	if(typeof(root.modules[modName].manifest.main)!='string')
+	if(typeof( root.modules[modName].manifest.main )!='string' )
 		throw new Error('Invalid manifest main (expected string).  module:'+modName);
-	if(typeof(root.modules[modName].manifest.config)!='string')
+	if(typeof( root.modules[modName].manifest.config )!='string' )
 		throw new Error('Invalid manifest config (expected string).  module:'+modName);
-	if(typeof(root.modules[modName].manifest.errors)!='string')
+	if(typeof( root.modules[modName].manifest.errors )!='string' )
 		throw new Error('Invalid manifest errors (expected string).  module:'+modName);
 	if(root.modules[modName].manifest.loader.preload){
 		if(context.toLowerCase()=='preload'){
 			load_my_module(modName);		
 		}else{
-			console.log('Not loading module ['+modName+'] not marked as preload.');
+			console.log('Not loading module [' + modName + '] not marked as preload.');
 		}
 	}else{
 		if(context.toLowerCase()=='nopreload'){
 			load_my_module(modName);
 		}else{
-			console.log('Not loading module ['+modName+'] marked as preload.');
+			console.log('Not loading module [' + modName + '] marked as preload.');
 		}
 	}	
 }
@@ -140,9 +140,9 @@ function load_my_module(modName){
 		root.config[modName]=require(config_file);
 		
 	}else{
-	
+
 		throw new Error ('config file not found: '+config_file);
-		
+
 	}
 	
 	var main_file=root.modules[modName].manifest.main;
