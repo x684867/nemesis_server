@@ -29,7 +29,6 @@ function init(){
 	root.modules.load=function(modName){
 		console.log('loading '+modName);
 		modInspect(modName,'noPreload');
-		
 	}
 	root.modules.preload=function(modName){
 		console.log('preloading '+modName);
