@@ -124,36 +124,49 @@ function message_handler(){ }
 				
 				case root.ipc.code.configureWorker:
 					switch(true){
-						case (!isObject(m.data)):
+						case ( !root.type.isObject(message.data) ):
 							root.error.raise(
-								root.error.messages.modules.core.ipc.code2nonObjectData,
-								typeof(m.data)
+								root.error.messages.ipc.configureWorker.nonObjectData,
+								typeof(message.data)
 							);
-						case (!isNumber(m.data.id)):
+						case ( !root.type.isNumber(message.data.id) ):
 							root.error.raise(
-								root.error.messages.modules.core.ipc.code2nonNumberId,
-								typeof(m.data.id)
+								root.error.messages.ipc.configureWorker.nonNumberId,
+								typeof(message.data.id)
 							);
-						case (!isString(m.data.type)):
+						case ( !root.type.isString(message.data.type) ):
 							root.error.raise(
-								root.error.messages.modules.core.ipc.code2nonStringType,
+								root.error.messages.ipc.configureWorker.nonStringType,
+								typeof(message.data.type)
+							);
+						case ( !root.type.isString(message.data.config) ):
+							root.error.raise(
+								root.error.messages.ipc.configureWorker.nonObjectConfig,
+								typeof(message.data.config)
+							);
+						case (!root.type.isNumber(message.data.config.workerId)):
+							root.error.raise(
+								root.error.messages.ipc.configureWorker.nonNumberWorkerId,
+								typeof(message.data.config.workerId)
+							);
+						case (!root.type.isIPaddress(message.data.config.ipAddress)):
+							root.error.raise(
+								root.error.messages.ipc.configureWorker.invalidIPaddress,
+								typeof(message.data.config.ipAddress)
+								+" ["+message.data.config.ipAddress+"]")
+							);
+						case (!root.type.isNetworkPort(message.data.config.ipPort)):
+							root.error.raise(
+								root.error.messages.ipc.configureWorker.invalidIPport,
+								typeof(message.data.config.ipPort)
+							);
+							return false;
+							break;
+						default:
+							return true;
+							break;
 								
-				
-				if(
-			
-				if(isObject(m.data)) root.error.raise(root.error.ipc.modules.core.messsages.   );
-				isUndefined(m.data.id,E_M_CD2_D_ID_UNDEF);
-				isUndefined(m.data.type,E_M_CD2_D_TYPE_UNDEF);
-				isUndefined(m.data.config,E_M_CD2_D_CFG_UNDEF);
-				typeCheck(m.data.id,TNUM,E_M_CD2_D_ID_NAN);
-				typeCheck(m.data.type,TSTR,E_M_CD2_D_TYPE_NSTR);
-				typeCheck(m.data.config,TOBJ,E_M_CD2_CFG_NAO);
-				isUndefined(m.data.config.workerId,E_M_CD2_CFG_WID_UNDEF);
-				isUndefined(m.data.config.ipAddress,E_M_CD2_CFG_IP_UNDEF);
-				isUndefined(m.data.config.ipPort,E_M_CD2_CFG_PORT_UNDEF);
-				typeCheck(m.data.config.workerId,TNUM,E_M_CD2_CFG_ID_NAN);
-				typeCheck(m.data.config.ipAddress,TSTR,E_M_CD2_CFG_IP_NSTR);
-				typeCheck(m.data.config.ipPort,TNUM,E_M_CD2_CFG_PORT_NAN);
+
 				log.write(MSG_CD2_D_CORRECT);
 				return true;
 				break;

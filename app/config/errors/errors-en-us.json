@@ -94,35 +94,34 @@
 			"fatal":false,
 			"text":"An IPC Message has a non-numeric message code {msg.code}."
 		},
-		"code0":{
+		"startWorker":{
 		
 		},
-		"code1":{
+		"workerAlive":{
 			
 		},
-		"code2":{
-		"code2nonObjectData":{
-			"code":1200,
-			"fatal":false,
-			"text":"An IPC {code:2} message has a non object data property."
-		},
-		"code2nonNumberId":{
-			"code":1201,
-			"fatal":false,
-			"text":"An IPC {code:2} message has a non-numeric data.id property."
-		},
-		"code2nonStringType":{
-			"code":1202,
-			"fatal":false,
-			"text":"An IPC {code:2} message has a non-string data.type property."
-		},
-		"nonObjectConfig":{
-			"code":1203,
-			"fatal":false,
-			"text":"An IPC {code:2} message has a non-object data.config property."
-		},
-
-		"msgCode2invDataIdNotNum":{
+		"configureWorker":{
+			"code2nonObjectData":{
+				"code":1200,
+				"fatal":false,
+				"text":"An IPC {code:2} message has a non object data property."
+			},
+			"code2nonNumberId":{
+				"code":1201,
+				"fatal":false,
+				"text":"An IPC {code:2} message has a non-numeric data.id property."
+			},
+			"code2nonStringType":{
+				"code":1202,
+				"fatal":false,
+				"text":"An IPC {code:2} message has a non-string data.type property."
+			},
+			"nonObjectConfig":{
+				"code":1203,
+				"fatal":false,
+				"text":"An IPC {code:2} message has a non-object data.config property."
+			},
+			"msgCode2invDataIdNotNum":{
 					"code":1007,
 					"fatal":false,
 					"text":"An IPC {code:2} message has a non-numeric data.id property."
