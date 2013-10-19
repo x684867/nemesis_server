@@ -7,7 +7,31 @@
 		root.config.modules (defined by bootstrap.js).
  */
 module.exports=init;
+/*
 
+ */
+function init(){
+	if(typeof(root.config)!='object'){
+		throw new Error('root.config not defined as object');
+	}
+	if(typeof(root.config.app)!='object'){
+		throw new Error('root.config.app not defined as object');
+	}
+	if(typeof(root.config.app.modules)!='string'){
+		throw new Error('root.config.app.modules not defined as string');
+	}
+	fs=require('fs');
+	if( !fs.statSync(root.config.app.modules).isDirectory() ){
+		throw new Error('root.config.app.modules is not a valid directory');
+	}
+	
+	root.modules={};
+	root.modules.load=function(modName){modInspect(modName,'noPreload');}
+	root.modules.preload=function(modName){modInspect(modName,'preload');}
+}
+/*
+
+ */
 function missingDependencies(modName){
 	if( (typeof(root.modules[modName].manifest.loader.dependencies)=='object') &&
 		(typeof(root.modules[modName].manifest.loader.dependencies.forEach)=='function')){
@@ -33,8 +57,43 @@ function missingDependencies(modName){
 		}	
 	}
 }
+/*
 
-function modLoad(modName,context){
+ */
+function load_my_module(modName){
+ 	
+ 	if(missingDependencies(modName)){
+		throw new Error('module '+modName+' is missing one or more dependencies.');
+	}		
+
+	var config_file=root.modules[modName].manifest.config;
+	if(fs.statSync(config_file)) {
+		root.config[modName]=require(config_file);
+	}else{
+		throw new Error ('config file not found: '+config_file);}
+	}
+	
+	var main_file=root.modules[modName].manifest.main;
+	if( fs.statSync(main_file) ) {
+		root.config[modName]=require(main_file);
+	}else{
+		throw new Error ('main file not found: '+main_file);
+	}
+	
+	var error_file=root.modules[modName].manifest.errors;
+	if( fs.statSync(error_file ) {
+		root.config[modName]=require(error_file);
+	}else{
+		throw new Error ('error file not found: '+error_file);
+	}
+	/*
+		Add more objects from the manifest here.
+	 */
+}
+/*
+
+ */
+function modInspect(modName,context){
 
 	fs=require('fs');
 		
@@ -78,81 +137,18 @@ function modLoad(modName,context){
 	if(typeof(root.modules[modName].manifest.errors)!='string')
 		throw new Error('Invalid manifest errors (expected string).  module:'+modName);
 	
-	var config_file=root.modules[modName].manifest.config;
-	if( !fs.statSync(config_file) ) {throw new Error ('config file not found: '+config_file);}
-	
-	var main_file=root.modules[modName].manifest.main;
-	if( !fs.statSync(main_file) ) {throw new Error ('main file not found: '+main_file);}
-	
-	var error_file=root.modules[modName].manifest.errors;
-	if( !fs.statSync(error_file ) {throw new Error ('error file not found: '+error_file);}
 	
 	if(root.modules[modName].manifest.loader.preload){
 		if(context.toLowerCase()=='preload'){
-			root.config[modName]=require(config_file);
-			root.modules[modName].main=require(main_file);
-			root.error[modName]=require(error_file);
-					
+			load_my_module(modName);		
 		}else{
-			/*Don't load the module.  It is a preload module.*/
+			console.log('Not loading module ['+modName+'] not marked as preload.');
 		}
 	}else{
 		if(context.toLowerCase()=='nopreload'){
-			/*Load the module.*/
+			load_my_module(modName);
 		}else{
-			/*Don't load the module.  It is a preload module.*/
+			console.log('Not loading module ['+modName+'] marked as preload.');
 		}
-	}
-			
-			
-			}else{
-				console.log("Cannot preload module ["+modName+"].  It is not flagged for preload.");
-			}
-		case 'nopreload':
-			if(root.modules[modName].manifest.loader.preload==false){
-				
-			}else{
-			}
-		default:
-	}
-		/*Check for dependencies.*/
-		if(missingDependencies(modName)){
-			throw new Error('module '+modName+' is missing one or more dependencies');
-		}
-		
-	
-		
-		var error=path+"errors-"+root.config.app.language+".json";
-		if( !fs.statSync(error) ) {throw new Error ('error.json not found');}
-		
-		var messages=path+"messages-"+root.config.app.language+".json";
-		if( !fs.statSync(messages) ) {throw new Error ('messages.json not found');}
-		
-		var main=path+"main.js";
-		if( !fs.statSync(main) ) {throw new Error ('main.json not found');}			
-	
 	}	
-
-
-function init(){
-	if(typeof(root.config)!='object'){
-		throw new Error('root.config not defined as object');
-	}
-	if(typeof(root.config.app)!='object'){
-		throw new Error('root.config.app not defined as object');
-	}
-	if(typeof(root.config.app.modules)!='string'){
-		throw new Error('root.config.app.modules not defined as string');
-	}
-	fs=require('fs');
-	if( !fs.statSync(root.config.app.modules).isDirectory() ){
-		throw new Error('root.config.app.modules is not a valid directory');
-	}
-	
-	root.modules={};
-	root.modules.load=function(modName){modLoad(modName,'noPreload');}
-	
-	root.modules.preload=function(modName){modLoad(modName,'preload');}
-	
-
 }
