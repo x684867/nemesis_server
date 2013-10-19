@@ -21,6 +21,8 @@
 
 	"main":"/srv/nemesis/modules/types/main.js",
 	
-	"config":"/srv/nemesis/modules/types/config.json"
+	"config":"/srv/nemesis/modules/types/config.json",
+	
+	"errors":"/srv/nemesis/modules/types/errors.json"
 	
 }
