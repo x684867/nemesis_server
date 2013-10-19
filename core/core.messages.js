@@ -18,7 +18,7 @@ function message_handler(){ }
 		IPC Code values.
 	*/
 	root.ipc={
-		code={
+		code:{
 			startWorker:0,
 			workerAlive:1,
 			configureWorker:2,
@@ -34,7 +34,7 @@ function message_handler(){ }
 			parentKillNotice:98,
 			childKillReply:99		
 		},
-		message={
+		message:{
 	
 			startWorker:function(){
 				return {
