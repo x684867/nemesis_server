@@ -40,7 +40,7 @@ function processChildMessagesRecd(msg){
 			);
 			/* Update statistics. */
 			break;
-				
+
 		case root.ipc.code.workerOnline:
 			/* Update statistics. */
 			break;
@@ -57,22 +57,24 @@ function processChildMessagesRecd(msg){
 			}else{
 			log.write("root.ipc.code.workerPingReply w#"+id+":slow");
 							this.pollStatistics(msg);
-						}
-						break;
+			}
+			break;
 			
-					case root.ipc.code.workerStatsReply:
-						log.write("root.ipc.code.workerStatsReply not impl.");
-						break;
+		case root.ipc.code.workerStatsReply:
+			log.write("root.ipc.code.workerStatsReply not impl.");
+			break;
 			
-					case root.ipc.code.childSuicideRequest:
-						c.kill('SIGKILL');
-						break;
-				
-					case root.ipc.code.childKillReply:
-						c.kill('SIGKILL');
-						break;
+		case root.ipc.code.childSuicideRequest:
+			c.kill('SIGKILL');
+			break;
+			
+		case root.ipc.code.childKillReply:
+			c.kill('SIGKILL');
+			break;
 		
-					default:
-						root.error.raise(root.error.messages.invalidMessageEncountered);
-						break;
-				}
+		default:
+			root.error.raise(root.error.messages.invalidMessageEncountered);
+			break;
+	}
+	
+}
