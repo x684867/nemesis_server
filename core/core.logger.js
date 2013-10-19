@@ -33,7 +33,7 @@ function logger(source,pid,w){
 	};
 	this.write=function(m){util.log(m);};
 
-	this.error(errorJSON,errorObj){
+	this.error=function(errorJSON,errorObj){
 		this.write("["+errorJSON.code+"]:"+errorJSON.message);
 		if(data.type.isObject(errorObj)){
 			this.write(
