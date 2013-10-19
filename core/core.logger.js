@@ -19,9 +19,9 @@ function logger(source,pid,w){
 	
 	this.screen={
 	
-		print:function(text){util.log("["+source+":"+pid+"]"+text);}
-		line:function(){util.log(Array(logger.width).join("-"));}
-		doubleLine:function(){util.log(Array(logger.width).join("="));}
+		print:function(text){util.log("["+source+":"+pid+"]"+text);},
+		line:function(){util.log(Array(logger.width).join("-"));},
+		doubleLine:function(){util.log(Array(logger.width).join("="));},
 
 		banner:function(text){
 				console.log(" ");
@@ -30,8 +30,8 @@ function logger(source,pid,w){
 				logger.screen.doubleLine();
 				console.log(" ");
 		}	
-	}
-	this.write=function(m){util.log(m);},
+	};
+	this.write=function(m){util.log(m);};
 
 	this.error(errorJSON,errorObj){
 		this.write("["+errorJSON.code+"]:"+errorJSON.message);
