@@ -47,7 +47,7 @@ function modInspect(modName,context){
 	/*init module object.*/
 	root.modules[modName]={}
 	
-	var module_path=root.config.app.modules+"/"+modName;
+	var module_path=root.config.app.modules+modName+"/";
 	
 	if( !fs.statSync(module_path).isDirectory() ) throw new Error('module ('+modName+') not found');
 
