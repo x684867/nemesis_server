@@ -15,11 +15,13 @@ function child_process_init(){
 				c.send(root.ipc.message.childSuicide());
 			});
 		},
-		messageEvent:function(c){c.on('message',function(msg){processChildMessagesRecd(msg);});},
+		messageEvent:function(c){c.on('message',processChildMessagesRecd);},
 		errorEvent:function(c){c.on('error',function(m){root.error.raise(root.error.messages.childProcess.invalidMessageOnError,m);});},
 		exitEvent:function(c){c.on('exit',function(code,signal){process.deleteChildFromPool(id)});},
 	}
 }
+
+
 
 function processChildMessagesRecd(msg){
 	if(!(root.modules.core.messages.isValidMsg(msg))){
@@ -76,5 +78,4 @@ function processChildMessagesRecd(msg){
 			root.error.raise(root.error.messages.invalidMessageEncountered);
 			break;
 	}
-	
 }
