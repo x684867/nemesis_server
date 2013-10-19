@@ -24,7 +24,8 @@ function core_types(){
 		isObject:function(o){	return (typeof(o)=='object')?true:false;				},
 		isString:function(o){	return (typeof(o)=='string')?true:false;				},
 		isTrue:function(o){		return (root.type.isBoolean(o) && (o==true))?true:false;},
-		isFalse:function(o){	return !root.type.isTrue(o);							}
+		isFalse:function(o){	return !root.type.isTrue(o);							},
+		isUndefined:function(o){return (typeof(o)=='undefined')?true:false;				}
 	
 	}
 	

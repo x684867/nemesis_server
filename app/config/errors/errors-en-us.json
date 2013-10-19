@@ -83,45 +83,46 @@
 			}
 		}
 	},
-	"modules":{
-		"core":{
-			"messages":{
-				"success":{
-					"code":1000,
-					"fatal":false,
-					"text":"root.modules.core.messages returns success."
-				},
-				"msgCodeNotSet":{
-					"code":1001,
-					"fatal":false,
-					"text":"An IPC Message has an undefined message code {msg.code}."
-				},
-				"msgCodeNotNum":{
-					"code":1002,
-					"fatal":false,
-					"text":"An IPC Message has a non-numeric message code {msg.code}."
-				},
-				"msgCode2nonObject":{
-					"code":1003,
-					"fatal":false,
-					"text":"An IPC {code:2} message has a non object data property."
-				},
-				"msgCode2invDataId":{
-					"code":1004,
-					"fatal":false,
-					"text":"An IPC {code:2} message has an undefined data.id property."
-				},
-				"msgCode2invDataType":{
-					"code":1005,
-					"fatal":false,
-					"text":"An IPC {code:2} message has an undefined data.type property."
-				},
-				"msgCode2invDataConfig":{
-					"code":1006,
-					"fatal":false,
-					"text":"An IPC {code:2} message has an undefined data.config property."
-				},
-				"msgCode2invDataIdNotNum":{
+	"ipc":{
+		"notSet":{
+			"code":1000,
+			"fatal":false,
+			"text":"An IPC Message has an undefined message code {msg.code}."
+		},
+		"codeNotNum":{
+			"code":1001,
+			"fatal":false,
+			"text":"An IPC Message has a non-numeric message code {msg.code}."
+		},
+		"code0":{
+		
+		},
+		"code1":{
+			
+		},
+		"code2":{
+		"code2nonObjectData":{
+			"code":1200,
+			"fatal":false,
+			"text":"An IPC {code:2} message has a non object data property."
+		},
+		"code2nonNumberId":{
+			"code":1201,
+			"fatal":false,
+			"text":"An IPC {code:2} message has a non-numeric data.id property."
+		},
+		"code2nonStringType":{
+			"code":1202,
+			"fatal":false,
+			"text":"An IPC {code:2} message has a non-string data.type property."
+		},
+		"nonObjectConfig":{
+			"code":1203,
+			"fatal":false,
+			"text":"An IPC {code:2} message has a non-object data.config property."
+		},
+
+		"msgCode2invDataIdNotNum":{
 					"code":1007,
 					"fatal":false,
 					"text":"An IPC {code:2} message has a non-numeric data.id property."
