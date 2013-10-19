@@ -56,6 +56,7 @@ function modInspect(modName,context){
 		try{
 			root.modules[modName].manifest=require(modules_manifest);
 		}catch(e){
+			console.log(fileReadSync(modules_manifest));
 			throw new Error('manifest.json failed to load');
 		}
 	}else{
