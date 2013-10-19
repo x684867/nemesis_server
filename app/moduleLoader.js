@@ -81,7 +81,7 @@ function load_my_module(modName){
 	}
 	
 	var error_file=root.modules[modName].manifest.errors;
-	if( fs.statSync(error_file ) {
+	if( fs.statSync(error_file ) ){
 		root.config[modName]=require(error_file);
 	}else{
 		throw new Error ('error file not found: '+error_file);
