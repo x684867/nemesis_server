@@ -31,7 +31,7 @@ function message_handler(){ }
 			
 			childSuicideRequest:95,
 			parentKillNotice:98,
-			childKillReply:99		
+			childKillReply:99	
 		},
 		message:{
 	
@@ -162,47 +162,59 @@ function message_handler(){ }
 							);
 							return false;
 							break;
+							/*
+								Add the SSL information.
+							*/
 						default:
 							return true;
 							break;
-								
-
-				log.write(MSG_CD2_D_CORRECT);
+					}
+					break;			
+						
+			case workerOnline:
 				return true;
 				break;
-						
-			case 3:return true;break;/*{code:3}*/
-			case 4:return true;break;/*{code:4}*/
-			
-			case 5:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 6:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 7:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 8:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 9:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-	
-			/* {code:[10-11]} heartbeat.  p(10)->c(11)->p */
-			case 10:return true;break;/*{code:10}*/
-			case 11:/*code:11,data:<timestamp>*/
+				
+			case workerFailed:
+				return true;
+				break;
+
+			case watchdogPingRequest:
+				return true;
+				break;
+				
+			case workerPingReply:
 				isUndefined(m.data,E_M_CD11_D_UNDEF);
 				typeCheck(m.data,TNUM,E_M_CD11_D_NAN);
 				return true;
 				break;				
 	
-			case 12:return true;break;
-			case 13:
+			case statsRequest:
+				return true;
+				break;
+				
+			case workerStatsReply:
 				isUndefined(m.data,E_M_CD13_D_UNDEF);
 				typeCheck(m.data,TOBJ,E_M_CD13_D_NOT_OBJ);
 				return true;
 				break;
-			case 95:return true;break;
-			case 96:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 97:throw new Error(E_M_NOT_IMPLEMENTED+":msg="+m);return false;break;
-			case 98:return true;break;
-			case 99:return true;break;
+				
+			case childSuicideRequest:
+				return true;
+				break;			
+			
+			case parentKillNotice:
+				return true;
+				break;
+				
+			case childKillReply:
+				return true;
+				break;
+				
 			default:
 				throw new Error(E_M_UNKNOWN_CODE);
 				return false;
 				break;
-		}/*end of switch()*/
+		}
 	}	
 }

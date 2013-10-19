@@ -121,31 +121,35 @@
 				"fatal":false,
 				"text":"An IPC {code:2} message has a non-object data.config property."
 			},
-			"msgCode2invDataIdNotNum":{
-					"code":1007,
-					"fatal":false,
-					"text":"An IPC {code:2} message has a non-numeric data.id property."
-				},
-				"msgCode2DataTypeNotString":{
-					"code":1008,
-					"fatal":false,
-					"text":"An IPC {code:2} message has a non-string data.type property."
-				},
-				"msgCode2DataConfigNotObject":{
-					"code":1009,
-					"fatal":false,
-					"text":"An IPC {code:2} message has a non-object data.config property."
-				},
-				"msgCode2invWorkerId":{
-					"code":1010,
-					"fatal":false,
-					"text":"An IPC {code:2} message has an invalid Worker.id property."
-				},
-				"msgCode2invIPAddress":{
-					"code":1011,
-					"fatal":false,
-					"text":"An IPC {code:2} message has an invalid data.config.ipaddress"
-				}
+			"nonNumberId":{
+				"code":1007,
+				"fatal":false,
+				"text":"An IPC {code:2} message has a non-numeric data.id property."
+			},
+			"nonStringType":{
+				"code":1008,
+				"fatal":false,
+				"text":"An IPC {code:2} message has a non-string data.type property."
+			},
+			"nonObjectConfig":{
+				"code":1009,
+				"fatal":false,
+				"text":"An IPC {code:2} message has a non-object data.config property."
+			},
+			"nonNumberWorkerId":{
+				"code":1010,
+				"fatal":false,
+				"text":"An IPC {code:2} message has an invalid Worker.id property."
+			},
+			"invalidIPaddress":{
+				"code":1011,
+				"fatal":false,
+				"text":"An IPC {code:2} message has an invalid data.config.ipAddress"
+			},
+			"invalidIPport":{
+				"code":1012,
+				"fatal":false,
+				"text":"An IPC {code:2} message has an invalid data.config.ipPort"
 			}
 		}	
 	},
