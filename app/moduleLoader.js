@@ -70,7 +70,7 @@ function load_my_module(modName){
 	if(fs.statSync(config_file)) {
 		root.config[modName]=require(config_file);
 	}else{
-		throw new Error ('config file not found: '+config_file);}
+		throw new Error ('config file not found: '+config_file);
 	}
 	
 	var main_file=root.modules[modName].manifest.main;
