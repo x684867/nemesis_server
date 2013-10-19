@@ -31,7 +31,7 @@ root.app={};root.config={};root.error={};root.messages={};root.modules={};root.i
 /* Load application configuration data*/
 root.config.app=require(root.conf_dir+'/app.conf.json');
 
-root.modules.init=require(root.config.moduleLoader)();
+root.modules.init=require(root.config.app.moduleLoader)();
 
 root.modules.preload("types");
 root.modules.preload("error");
