@@ -40,9 +40,8 @@ function modInspect(modName,context){
 
 	fs=require('fs');
 		
-	if(typeof(root.modules[modName])!=undefined){
+	if(typeof(root.modules[modName])!='undefined'){
 		console.log('module ['+modName+'] exists.  Cannot load duplicate.');
-		console.log('   typeof(root.modules.'+modName+')='+typeof(root.modules[modName]));
 		return false;
 	}
 	/*init module object.*/
