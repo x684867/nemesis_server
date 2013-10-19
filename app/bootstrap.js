@@ -24,31 +24,29 @@
 root.title="Nemesis"
 root.version="2013.10.17.12.52"; /*Update when pushing to master branch.*/
 root.conf_dir='/srv/nemesis/app/config';
-/*
-	Load the main configuration file.
-*/
-root.config=require(root.conf_dir+'/app.conf.json');
-root.messages=require(root.conf_dir+'/messages/messages-'+root.config.language+'.json');
-root.types=require(root.config.coreTypes);
-/*
-	Load the modules
-*/
-root.error={};
-root.error.handler=require(root.config.errorHandler)();
-/**/
-load_modules=require(root.config.moduleLoader);
-load_modules();
+
+/* Initialize the framework object tree*/
+root.app={};root.config={};root.error={};root.messages={};root.modules={};root.ipc={};
+
+/* Load application configuration data*/
+root.config.app=require(root.conf_dir+'/app.conf.json');
+
+root.modules.loader=require(root.config.preload.moduleLoader)();
+
+root.modules.load(root.modules.types,root.config.preload.coreTypes);
+root.modules.load(root.modules.error,root.config.preload.errorHandler);
+root.modules.load(root.modules.ipc,root.config.preload.ipc);
+root.modules.loadall();
 /*
 	Define the application
 */
 root.app={
-	log:new root.modules.core.logger("bootstrap",module.filename,process.pid),
-	main:require(root.config.modules.core.main),
-	
-	startService:require(root.config.modules.core.start),
-	monitor:{
-		heartbeat:require(root.config.modules.lib.monitor.heartbeat),
-		statistics:require(root.config.modules.lib.monitor.statistics),
+	log:root.modules.logger.create("bootstrap",module.filename,process.pid),
+	main:root.modules.load(root.config.preload.main),
+	start:root.modules.load(root.config.preload.start),
+	root.app.monitor={
+		watchdog:root.modules.watchdog,
+		stats:root.modules.stats
 	}
 }
 /*

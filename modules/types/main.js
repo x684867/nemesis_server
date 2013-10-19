@@ -5,9 +5,9 @@
 	
 	This file provides type-checking and type-management functionality.
 */
-module.exports=core_types;
+module.exports=init;
 
-function core_types(){
+function init(){
 	
 	root.type={
 	
@@ -25,7 +25,13 @@ function core_types(){
 		isString:function(o){	return (typeof(o)=='string')?true:false;				},
 		isTrue:function(o){		return (root.type.isBoolean(o) && (o==true))?true:false;},
 		isFalse:function(o){	return !root.type.isTrue(o);							},
-		isUndefined:function(o){return (typeof(o)=='undefined')?true:false;				}
+		isUndefined:function(o){return (typeof(o)=='undefined')?true:false;				},
+		isIPaddress:function(o){return false; /*NEEDS WORK*/							},
+		isNetPort:function(o){return (isNumber(o) && ((o>0) && (o<65536)))?true:false;	},
+		isUUID:function(o){
+			return test(new RegExp(/\X[0-9a-f]{3}\-[0-9a-f]{4}\-[0-9a-f]{4}/));
+			/*Needs work to check and see if the UUID exists in the index.*/
+		},
 	
 	}
 	
