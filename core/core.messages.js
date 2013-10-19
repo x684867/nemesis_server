@@ -71,18 +71,21 @@ function message_handler(){ }
 			return {
 						"code":root.ipc.code.workerOnline
 				};
-		}
+		},
+		
 		workerFailed:function(){
 			return {
 					"code":root.ipc.code.workerFailed
 				};
-		}
+		},
+		
 		watchdogPingRequest:function(){
 			return {
 					"code":root.ipc.code.watchdogPingRequest,
 					"data":(new Data).getTime()
 				};
 		},
+		
 		childSuicide=function(){
 			return {
 					"code":95
