@@ -16,8 +16,8 @@ function child_process_init(){
 			});
 		},
 		messageEvent:function(c){c.on('message',function(msg){processChildMessagesRecd(msg);});},
-		errorEvent:function(c){c.on('error',function(m){root.error.raise(root.error.messages.w Error(E_INV_MSG_ON_ERROR_EVENT));});},
-		exitEvent:function(c){c.on('exit',function(code,signal){process.deleteChildFromPool(id)},
+		errorEvent:function(c){c.on('error',function(m){root.error.raise(root.error.messages.childProcess.invalidMessageOnError,m);});}
+			exitEvent:function(c){c.on('exit',function(code,signal){process.deleteChildFromPool(id)},
 	}
 }
 
