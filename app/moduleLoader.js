@@ -8,7 +8,6 @@
  */
 module.exports=init;
 /*
-
  */
 function init(){
 	if(typeof(root.config)!='object'){
@@ -36,68 +35,6 @@ function init(){
 	}
 }
 /*
-
- */
-function missingDependencies(modName){
-	if( (typeof(root.modules[modName].manifest.loader.dependencies)=='object') &&
-		(typeof(root.modules[modName].manifest.loader.dependencies.forEach)=='function')){
-		
-		if(root.modules[modName].manifest.loader.dependencies.length == 0){
-			return false; /*No dependencies specified.*/
-		}else{
-			root.modules[modName].manifest.loader.dependencies.forEach(function(d,i,a){
-				if(typeof(d)!='string') 
-					throw new Error('Bad dependency definition (expected string): '+d);
-				if(typeof(root.modules[d])=='undefined'){
-					return true;/*Missing dependency.*/
-				}else{
-					return false;/*This dependency is loaded.*/
-				}
-			});
-		}		
-	}else{
-		if(typeof(root.modules[modName].manifest.loader.dependencies)=='undefined'){
-			return false; /*No dependencies specified.*/
-		}else{
-			throw new Error('module ['+modName+'] manifest is missing dependency array.')
-		}	
-	}
-}
-/*
-
- */
-function load_my_module(modName){
- 	
- 	if(missingDependencies(modName)){
-		throw new Error('module '+modName+' is missing one or more dependencies.');
-	}		
-
-	var config_file=root.modules[modName].manifest.config;
-	if(fs.statSync(config_file)) {
-		root.config[modName]=require(config_file);
-	}else{
-		throw new Error ('config file not found: '+config_file);
-	}
-	
-	var main_file=root.modules[modName].manifest.main;
-	if( fs.statSync(main_file) ) {
-		root.config[modName]=require(main_file);
-	}else{
-		throw new Error ('main file not found: '+main_file);
-	}
-	
-	var error_file=root.modules[modName].manifest.errors;
-	if( fs.statSync(error_file ) ){
-		root.config[modName]=require(error_file);
-	}else{
-		throw new Error ('error file not found: '+error_file);
-	}
-	/*
-		Add more objects from the manifest here.
-	 */
-}
-/*
-
  */
 function modInspect(modName,context){
 
@@ -105,11 +42,13 @@ function modInspect(modName,context){
 		
 	if(typeof(root.modules[modName])!=undefined){
 		console.log('module ['+modName+'] exists.  Cannot load duplicate.');
+		console.log('   typeof(root.modules.'+modName+')='+typeof(root.modules[modName]));
+		return false;
 	}
 	/*init module object.*/
 	root.modules[modName]={}
 	
-	var module_path=root.config.app.modules+modName;
+	var module_path=root.config.app.modules+"/"+modName;
 	
 	if( !fs.statSync(module_path).isDirectory() ) throw new Error('module ('+modName+') not found');
 
@@ -155,4 +94,63 @@ function modInspect(modName,context){
 			console.log('Not loading module ['+modName+'] marked as preload.');
 		}
 	}	
+}
+/*
+ */
+function missingDependencies(modName){
+	if( (typeof(root.modules[modName].manifest.loader.dependencies)=='object') &&
+		(typeof(root.modules[modName].manifest.loader.dependencies.forEach)=='function')){
+		
+		if(root.modules[modName].manifest.loader.dependencies.length == 0){
+			return false; /*No dependencies specified.*/
+		}else{
+			root.modules[modName].manifest.loader.dependencies.forEach(function(d,i,a){
+				if(typeof(d)!='string') 
+					throw new Error('Bad dependency definition (expected string): '+d);
+				if(typeof(root.modules[d])=='undefined'){
+					return true;/*Missing dependency.*/
+				}else{
+					return false;/*This dependency is loaded.*/
+				}
+			});
+		}		
+	}else{
+		if(typeof(root.modules[modName].manifest.loader.dependencies)=='undefined'){
+			return false; /*No dependencies specified.*/
+		}else{
+			throw new Error('module ['+modName+'] manifest is missing dependency array.')
+		}	
+	}
+}
+/*
+ */
+function load_my_module(modName){
+ 	
+ 	if(missingDependencies(modName)){
+		throw new Error('module '+modName+' is missing one or more dependencies.');
+	}		
+
+	var config_file=root.modules[modName].manifest.config;
+	if(fs.statSync(config_file)) {
+		root.config[modName]=require(config_file);
+	}else{
+		throw new Error ('config file not found: '+config_file);
+	}
+	
+	var main_file=root.modules[modName].manifest.main;
+	if( fs.statSync(main_file) ) {
+		root.config[modName]=require(main_file);
+	}else{
+		throw new Error ('main file not found: '+main_file);
+	}
+	
+	var error_file=root.modules[modName].manifest.errors;
+	if( fs.statSync(error_file ) ){
+		root.config[modName]=require(error_file);
+	}else{
+		throw new Error ('error file not found: '+error_file);
+	}
+	/*
+		Add more objects from the manifest here.
+	 */
 }
