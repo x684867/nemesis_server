@@ -1,0 +1,16 @@
+{
+	"_name":"start/messages-en_US.UTF-8.json",
+	"_desc":"Nemesis Bootstrap Start Method Messages Localization File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+	"success":{
+		"code":0,
+		"text":"Message"
+	},
+	"failure":{
+		"code":1,
+		"text":"General Message"
+	}
+}

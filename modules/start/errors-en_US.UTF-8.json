@@ -1,0 +1,18 @@
+{
+	"_name":"start/errors-en_US.UTF-8.json",
+	"_desc":"Nemesis Error Localization File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+	"success":{
+		"code":0,
+		"type":"success",
+		"text":"Success"
+	},
+	"failure":{
+		"code":1,
+		"type":"warning",
+		"text":"General Failure"
+	}
+}

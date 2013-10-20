@@ -1,6 +1,6 @@
 {
 	"_name":"process/config.json",
-	"_desc":"Nemesis Bootstrap Main Method Module Configuration",
+	"_desc":"Nemesis Process Manager Module Configuration",
 	
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
