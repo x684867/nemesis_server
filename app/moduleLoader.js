@@ -18,17 +18,21 @@ function init(){
 	root.modules.load=function(modName){	modInspect(modName,'standard');	}
 	root.modules.preload=function(modName){	modInspect(modName,'preload');	}
 	root.modules.loadall=function(){
-		var fs=require('fs');
-		console.log(Array(80).join('='));
-		console.log('loading standard loadTime modules in ('+root.config.app.modules+').');
-		console.log(Array(80).join('-'));
-		require('fs').readdirSync(root.config.app.modules).forEach(
-			function(m,i,a){
-					console.log('loadall() is opening...'+m);
-					modInspect(m,'standard');
-			}
-		);
-		console.log(Array(80).join('=')+'\nDone Loading [loadall()]\n'+Array(80).join('='));
+		if(typeof(root.modules[modName])=='undefined'){
+			var fs=require('fs');
+			console.log(Array(80).join('='));
+			console.log('loading standard loadTime modules in ('+root.config.app.modules+').');
+			console.log(Array(80).join('-'));
+			require('fs').readdirSync(root.config.app.modules).forEach(
+				function(m,i,a){
+						console.log('loadall() is opening...'+m);
+						modInspect(m,'standard');
+				}
+			);
+			console.log(Array(80).join('=')+'\nDone Loading [loadall()]\n'+Array(80).join('='));
+		}else{
+			console.log('Module ['+modName+'] loaded already...skipping');
+		}
 	}
 }
 /*
@@ -37,11 +41,6 @@ function modInspect(modName,loadTime){
 	fs=require('fs');
 	
 	if( (loadTime!='preload') && (loadTime!='standard') ) throw new Error('invalid loadTime parameter passed to modInspect()');
-
-	if(typeof(root.modules[modName])!='undefined'){
-		console.log('module ['+modName+'] exists.  Cannot load duplicate.');
-		return false;
-	}
 	/*
 		init module object.
 	*/
