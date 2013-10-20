@@ -14,25 +14,29 @@ function init(){
 	if(typeof(root.config.app)!='object') throw new Error('root.config.app not defined as object');
 	if(typeof(root.config.app.modules)!='string') throw new Error('root.config.app.modules not defined as string');
 	if( !require('fs').statSync(root.config.app.modules).isDirectory() ) throw new Error('root.config.app.modules is not a valid directory');
+	
 	root.modules={};
+	
 	root.modules.load=function(modName){	modInspect(modName,'standard');	}
+	
 	root.modules.preload=function(modName){	modInspect(modName,'preload');	}
+	
 	root.modules.loadall=function(){
-		if(typeof(root.modules[modName])=='undefined'){
 			var fs=require('fs');
 			console.log(Array(80).join('='));
 			console.log('loading standard loadTime modules in ('+root.config.app.modules+').');
 			console.log(Array(80).join('-'));
 			require('fs').readdirSync(root.config.app.modules).forEach(
-				function(m,i,a){
-						console.log('loadall() is opening...'+m);
-						modInspect(m,'standard');
+				function(modName,index,array){
+						if(root.modules[modName]=='undefined'){
+							console.log('loadall() is opening...'+modName);
+							modInspect(modName,'standard');
+						}else{
+							console.log('Module ['+modName+'] loaded already...skipping');
+						}
 				}
 			);
 			console.log(Array(80).join('=')+'\nDone Loading [loadall()]\n'+Array(80).join('='));
-		}else{
-			console.log('Module ['+modName+'] loaded already...skipping');
-		}
 	}
 }
 /*
