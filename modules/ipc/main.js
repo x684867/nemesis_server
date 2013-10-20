@@ -153,7 +153,7 @@ function init(){ }
 							root.error.raise(
 								root.error.messages.ipc.configureWorker.invalidIPaddress,
 								typeof(message.data.config.ipAddress)
-								+" ["+message.data.config.ipAddress+"]")
+								+" ["+message.data.config.ipAddress+"]"
 							);
 						case (!root.type.isNetworkPort(message.data.config.ipPort)):
 							root.error.raise(

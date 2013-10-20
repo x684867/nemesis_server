@@ -19,7 +19,7 @@
 		
 	},
 
-	"main":"/srv/nemesis/modules/error/error.js",
+	"main":"/srv/nemesis/modules/error/main.js",
 	
 	"config":"/srv/nemesis/modules/error/config.json"
 	
