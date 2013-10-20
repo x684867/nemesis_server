@@ -28,8 +28,8 @@ function init(){
 			console.log(Array(80).join('-'));
 			require('fs').readdirSync(root.config.app.modules).forEach(
 				function(modName,index,array){
-						if(root.modules[modName]=='undefined'){
-							console.log('loadall() is opening...'+modName);
+						if(typeof(root.modules[modName])=='undefined'){
+							console.log('Module ['+modName+'] loading    [loadall()]');
 							modInspect(modName,'standard');
 						}else{
 							console.log('Module ['+modName+'] loaded already...skipping');
