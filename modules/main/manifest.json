@@ -1,0 +1,19 @@
+{
+	"_name":"main/manifest.json",
+	"_desc":"Nemesis Bootstrap Main Method Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+
+	"name":"main",
+	"group":"core",
+	"loader":{
+		"bootstrap":false,
+		"preload":true,
+		"dependencies":["error","types","logger","audit","broker","cipher","key"]
+	},
+
+	"main":"/srv/nemesis/modules/childprocess/main.js",
+	"config":"/srv/nemesis/modules/childprocess/config.json"
+}

@@ -9,9 +9,9 @@ module.exports=function(operatingMode){
 	*/
 	switch(operatingMode){
 		case "audit": 	root.config.service=require(root.config.svc_cfg.audit);break;
-		case "broker":	root.config.service=require(root.config.svc_cfg.audit);break;
-		case "cipher":	root.config.service=require(root.config.svc_cfg.audit);break;
-		case "key":		root.config.service=require(root.config.svc_cfg.audit);break;
+		case "broker":	root.config.service=require(root.config.svc_cfg.broker);break;
+		case "cipher":	root.config.service=require(root.config.svc_cfg.cipher);break;
+		case "key":		root.config.service=require(root.config.svc_cfg.key);break;
 		default: 
 			root.error.throw(root.error.messages.bootstrap.invalidArgument);
 			break;

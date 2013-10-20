@@ -10,7 +10,7 @@
 	"group":"core",
 	"loader":{
 		"bootstrap":false,
-		"preload":true,
+		"preload":false,
 		"dependencies":["main","start","error","ipc","logger","worker","types","process"]
 	},
 
