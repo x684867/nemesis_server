@@ -12,7 +12,7 @@
 		"bootstrap":false,
 		"preload":true,
 		"dependencies":["main","start","error","ipc","logger","worker","types","process"]
-	}
+	},
 
 	"main":"/srv/nemesis/modules/childprocess/main.js",
 	"config":"/srv/nemesis/modules/childprocess/config.json"
