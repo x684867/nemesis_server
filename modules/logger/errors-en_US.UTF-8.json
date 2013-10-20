@@ -30,6 +30,6 @@
 			"code":4,
 			"type":"fatal"
 			"text":"Invalid options object passed to init().  Expected JSON object."
-		},
+		}
 	}
 }

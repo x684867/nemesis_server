@@ -22,8 +22,10 @@ function init(source,pid,options){
 		root.error.raise(root.error.logger.init.invalidOptions);
 	
 	var hasConsole=(isBoolean(options.hasConsole) && (options.hasConsole))?true:false;
-	
+		hasConsole=(isUndefined(options.hasConsole))?true:hasConsole;
+		
 	var hasSyslog=(isBoolean(options.hasSyslog) && (options.hasSyslog))?true:false;
+		hasSyslog=(isUndefined(options.hasSyslog))?false:hasSyslog;
 	
 	c=hasConsole?new ConsoleWriter():undefined,
 	s=hasSyslog?new SyslogWriter():undefined
