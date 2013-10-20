@@ -72,7 +72,7 @@ function modInspect(modName,context){
 		}catch(e){
 			throw new Error('Error Reading manifest.json');
 		}
-		console.log("     Manifest file read (raw)."
+		console.log("     Manifest file read (raw).");
 		console.log("     JSON:"+rawJSON);
 		console.log("     Parsing...");
 		try{
