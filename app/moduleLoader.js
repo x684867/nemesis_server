@@ -33,6 +33,18 @@ function init(){
 		console.log('preloading '+modName);
 		modInspect(modName,'preload');
 	}
+	root.modules.loadall(){
+		console.log('loading all non-preload modules.');
+		require('fs').readdir(root.config.app.modules,function(err,list){
+			if(err){
+				throw('could not load modules.  '
+					 +'Error reading modDir ['+root.config.app.modules+']'
+				);
+			}else{
+				list.forEach(function(m,i,a){modInspect(m,'noPreload');});
+			}
+		});
+	}
 }
 /*
  */
