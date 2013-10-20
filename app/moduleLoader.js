@@ -39,14 +39,7 @@ function init(){
 	root.modules.loadall=function(){
 		var fs=require('fs');
 		console.log('loading all non-preload modules in ('+root.config.app.modules+').');
-		fs.readdir(root.config.app.modules,function(err,list){
-			if(err){
-				throw('could not load modules.  '
-					 +'Error reading modDir ['+root.config.app.modules+']'
-				);
-			}else{
-				console.log('     list={'+list+'}');
-				list.forEach(function(m,i,a){
+		fs.readdirSync(root.config.app.modules).forEach(function(m,i,a){
 					console.log('     loadall() is loading '+m);
 					modInspect(m,'noPreload');
 				});
