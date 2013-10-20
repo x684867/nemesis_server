@@ -7,12 +7,12 @@
 
 	"success":{
 		"code":0,
-		"type":root.error.types.success,
+		"type":root.error.type.success,
 		"text":"Success"
 	},
 	"failure":{
 		"code":1,
-		"type":root.error.types.failure,
+		"type":root.error.type.failure,
 		"text":"General Failure"
 	}
 }

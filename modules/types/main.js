@@ -8,8 +8,13 @@
 module.exports=init;
 
 function init(){
+	root.error.type.success=0,
+	root.error.type.failure=1,
+	
 	
 	root.type={
+	
+
 	
 		tobj:'object',
 		tstr:'string',
