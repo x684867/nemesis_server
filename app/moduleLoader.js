@@ -43,8 +43,7 @@ function init(){
 					console.log('     loadall() is loading '+m);
 					modInspect(m,'noPreload');
 				});
-			}
-		});
+		}
 	}
 }
 /*
