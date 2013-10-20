@@ -35,6 +35,7 @@ root.modules.init=require(root.config.app.moduleLoader)();
 
 console.log('bootstrap loading types: ');root.modules.preload("types");
 console.log('bootstrap loading error: ');root.modules.preload("error");
+console.log('bootstrap loading logger: ');root.modules.preload("logger");
 console.log('bootstrap loading ipc: ');root.modules.preload("ipc");
 console.log('bootstrap loading all modules: ');root.modules.loadall();
 /*
