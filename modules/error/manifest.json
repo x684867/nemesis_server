@@ -10,7 +10,7 @@
 	"group":"core",
 	
 	"loader":{
-		"loadTime":"standard",
+		"loadTime":"preload",
 		"dependencies":["types"]
 		
 	},
