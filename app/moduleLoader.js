@@ -54,14 +54,15 @@ function init(){
 function modInspect(modName,context){
 
 	fs=require('fs');
-		
+
 	if(typeof(root.modules[modName])!='undefined'){
 		console.log('module ['+modName+'] exists.  Cannot load duplicate.');
 		return false;
 	}
-	/*init module object.*/
+	/*
+		init module object.
+	*/
 	root.modules[modName]={}
-	
 	var module_path=root.config.app.modules+modName+"/";
 	
 	if( !fs.statSync(module_path).isDirectory() ) throw new Error('module ('+modName+') not found');
@@ -71,14 +72,11 @@ function modInspect(modName,context){
 		try{
 			console.log("     Loading manifest file ["+modName+"]: "+module_manifest);
 			root.modules[modName].manifest=require(module_manifest);
-
 		}catch(e){
 			throw new Error('manifest.json failed to load');
 		}
 	}else{
-	
 		throw new Error('manifest.json not found');
-		
 	}
 	/*Validate manifest JSON*/
 	if(typeof( root.modules[modName].manifest )!='object' )
