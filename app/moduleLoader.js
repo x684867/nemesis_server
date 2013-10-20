@@ -15,7 +15,7 @@ function init(){
 	if(typeof(root.config.app.modules)!='string') throw new Error('root.config.app.modules not defined as string');
 	if( !require('fs').statSync(root.config.app.modules).isDirectory() ) throw new Error('root.config.app.modules is not a valid directory');
 	root.modules={};
-	root.modules.load=function(modName){	modName);modInspect(modName,'standard');	}
+	root.modules.load=function(modName){	modInspect(modName,'standard');	}
 	root.modules.preload=function(modName){	modInspect(modName,'preload');	}
 	root.modules.loadall=function(){
 		var fs=require('fs');
