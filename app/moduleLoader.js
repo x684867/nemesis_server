@@ -97,7 +97,13 @@ function modInspect(modName,context){
 		}else{
 			console.log('Not loading module [' + modName + '] marked as preload.');
 		}
-	}	
+	}
+	var error_file=module_path+"/errors-"+process.env.LANG+".json"
+	if( fs.statSync(error_file ) ){
+		root.config[modName]=require(error_file);
+	}else{
+		throw new Error ('error file not found: '+error_file);
+	}
 }
 /*
  */
@@ -117,7 +123,7 @@ function missingDependencies(modName){
 					return false;/*This dependency is loaded.*/
 				}
 			});
-		}		
+		}
 	}else{
 		if(typeof(root.modules[modName].manifest.loader.dependencies)=='undefined'){
 			return false; /*No dependencies specified.*/
@@ -129,7 +135,7 @@ function missingDependencies(modName){
 /*
  */
 function load_my_module(modName){
- 	
+
  	if(missingDependencies(modName)){
 		throw new Error('module '+modName+' is missing one or more dependencies.');
 	}		
@@ -144,19 +150,12 @@ function load_my_module(modName){
 		throw new Error ('config file not found: '+config_file);
 
 	}
-	
+
 	var main_file=root.modules[modName].manifest.main;
 	if( fs.statSync(main_file) ) {
 		root.config[modName]=require(main_file);
 	}else{
 		throw new Error ('main file not found: '+main_file);
-	}
-	
-	var error_file=root.modules[modName].manifest.errors;
-	if( fs.statSync(error_file ) ){
-		root.config[modName]=require(error_file);
-	}else{
-		throw new Error ('error file not found: '+error_file);
 	}
 	/*
 		Add more objects from the manifest here.
