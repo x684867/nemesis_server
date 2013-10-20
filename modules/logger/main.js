@@ -9,19 +9,35 @@
 	encrypted communications over TLS (TCP).
 */
 
-module.exports=logger;
+module.exports=init;
 
 require('util');
 
-function logger(source,pid,w){
+function init(source,pid,options){
+	if(typeof(soruce)!='string') root.error
 
-	this.width=(w==undefined)?60:w;
+}
 	
-	this.screen={
+	root.modules.logger.screen={
 	
-		print:function(text){util.log("["+source+":"+pid+"]"+text);},
-		line:function(){util.log(Array(logger.width).join("-"));},
-		doubleLine:function(){util.log(Array(logger.width).join("="));},
+		print:function(text){
+			util.log(
+				"["+source+":"+pid+"]"+text
+			);
+		},
+		
+		line:function(){
+			util.log(
+				Array(
+					root.config.logger.width).join("-")
+				);
+		},
+		
+		doubleLine:function(){
+			util.log(
+				Array(root.config.logger.width).join("=")
+			);
+		},
 
 		banner:function(text){
 				console.log(" ");

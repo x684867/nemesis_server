@@ -1,0 +1,21 @@
+{
+	"_name":"logger/config.json",
+	"_desc":"Nemesis Syslog Module Configuration",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+	"width":60,
+	
+	"syslog":{
+		"serverIp":"127.0.0.1",
+		"serverPort":514,
+		"serverProto":"tcp",
+		"serverTLS":{
+			"enabled":true,
+			"key":"/etc/ssl/private/syslog_client.key",
+			"cert":"/etc/ssl/certs/syslog_client.cert",
+			"ca":"/etc/ssl/certs/syslog_server.ca.cert"
+		}
+	}
+}

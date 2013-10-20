@@ -1,0 +1,19 @@
+{
+	"_name":"childprocess/manifest.json",
+	"_desc":"Nemesis Child Process Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+
+	"name":"childprocess",
+	"group":"core",
+	"loader":{
+		"bootstrap":false,
+		"preload":true,
+		"dependencies":["error","types"]
+	},
+
+	"main":"/srv/nemesis/modules/childprocess/main.js",
+	"config":"/srv/nemesis/modules/childprocess/config.json"
+}
