@@ -5,18 +5,13 @@
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 
-
 	"name":"audit",
 	"group":"server",
 	"loader":{
 		"bootstrap":false,
 		"preload":false,
-		"dependencies":[
-			"main","start","error","ipc","logger","worker",
-			"types","process","childprocess","web"
-		]
+		"dependencies":["main","start","error","ipc","logger","worker","types","process","childprocess","web"]
 	},
-
 	"main":"/srv/nemesis/modules/childprocess/main.js",
 	"config":"/srv/nemesis/modules/childprocess/config.json"
 }
