@@ -25,15 +25,18 @@ function init(){
 	}
 	
 	root.modules={};
+	
 	root.modules.load=function(modName){
 		console.log('loading '+modName);
 		modInspect(modName,'noPreload');
 	}
+	
 	root.modules.preload=function(modName){
 		console.log('preloading '+modName);
 		modInspect(modName,'preload');
 	}
-	root.modules.loadall(){
+	
+	root.modules.loadall=function(){
 		console.log('loading all non-preload modules.');
 		require('fs').readdir(root.config.app.modules,function(err,list){
 			if(err){
