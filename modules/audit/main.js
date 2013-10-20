@@ -4,3 +4,9 @@
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	
 */
+module.exports=init;
+
+function init(){
+
+
+}

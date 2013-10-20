@@ -68,16 +68,7 @@ function modInspect(modName,context){
 	if( fs.statSync(module_manifest).isFile() ) {
 		console.log("     Loading manifest file ["+modName+"]: "+module_manifest);
 		try{
-			var rawJSON=fs.readFileSync(module_manifest);
-		}catch(e){
-			throw new Error('Error Reading manifest.json');
-		}
-		console.log("     Manifest file read (raw).");
-		console.log("     JSON:"+rawJSON);
-		console.log("     Parsing...");
-		try{
-			root.modules[modName].manifest=JSON.parse(rawJSON);
-			//root.modules[modName].manifest=require(module_manifest);
+			root.modules[modName].manifest=require(module_manifest);
 		}catch(e){
 			console.log("-----------------------------------------");
 			console.log("Module:"+modName);
