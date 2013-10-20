@@ -1,0 +1,19 @@
+{
+	"_name":"watchdog/manifest.json",
+	"_desc":"Nemesis Monitoring Watchdog Module Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+
+	"name":"watchdog",
+	"group":"monitor",
+	"loader":{
+		"bootstrap":false,
+		"preload":false,
+		"dependencies":["error","types"]
+	},
+
+	"main":"/srv/nemesis/modules/watchdog/main.js",
+	"config":"/srv/nemesis/modules/watchdog/config.json"
+}

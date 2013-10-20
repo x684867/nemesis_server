@@ -7,7 +7,7 @@
 
 
 	"name":"stats",
-	"group":"core",
+	"group":"monitor",
 	"loader":{
 		"bootstrap":false,
 		"preload":true,

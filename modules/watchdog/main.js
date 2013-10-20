@@ -6,8 +6,7 @@
 */
 module.exports=monitorFactory;
 
-const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';
-global.logger=require(LOGGER_CLASS);
+
 
 
 function monitorFactory(process,config){

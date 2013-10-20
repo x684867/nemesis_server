@@ -1,6 +1,6 @@
 /*
-	/srv/nemesis/app/worker.js
-	Child-Process Wrapper Script
+	Worker Process Wrapper Script
+	/srv/nemesis/modules/worker.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	
 	This script is used by app.js to fork a new process where the Nemesis

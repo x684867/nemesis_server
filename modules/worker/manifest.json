@@ -1,0 +1,19 @@
+{
+	"_name":"worker/manifest.json",
+	"_desc":"Nemesis Worker Process Wrapper Module Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+
+	"name":"worker",
+	"group":"process",
+	"loader":{
+		"bootstrap":false,
+		"preload":true,
+		"dependencies":["error","types"]
+	},
+
+	"main":"/srv/nemesis/modules/worker/main.js",
+	"config":"/srv/nemesis/modules/worker/config.json"
+}
