@@ -10,8 +10,7 @@
 	
 	"loader":{
 		"bootstrap":false,
-		"preload":false,
-		"dependencies":["main"]
+		"preload":false
 	},
 	"main":"/srv/nemesis/modules/childprocess/main.js",
 	"config":"/srv/nemesis/modules/childprocess/config.json"
