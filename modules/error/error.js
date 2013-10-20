@@ -6,10 +6,10 @@
 	This file will establish error handling as root.error.{messages,raise()}
 	
 */
-module.exports=error_handler;
+module.exports=init;
 var util=require('util');
 
-function error_handler(){
+function init(){
 
 	root.error.messages=require(root.conf_dir+"/errors/errors-"+root.config.language+".json");
 	root.error.raise=function(e,detail){	
