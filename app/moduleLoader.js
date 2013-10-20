@@ -28,6 +28,7 @@ function init(){
 					modInspect(m,'standard');
 			}
 		);
+		console.log(Array(80).join('=')+'\nDone Loading [loadall()]\n'+Array(80).join('='));
 	}
 }
 /*
