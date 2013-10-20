@@ -140,7 +140,7 @@ function isManifestValid(manifest){
 					if(typeof( manifest.config )=='string' )
 						if(typeof( manifest.loader )=='object' )
 							if(typeof( manifest.loader.loadTime )=='string' )
-								if((manifest.loader.loadTime=='standard') || (manifest.loader.loadTime=='preload')))
+								if((manifest.loader.loadTime=='standard') || (manifest.loader.loadTime=='preload'))
 									return true;
 								else
 									throw new Error('Invalid loader.loadTime value.  Expected {"preload" or "standard"}.  module:'+modName);
