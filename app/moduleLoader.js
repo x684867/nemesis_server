@@ -39,11 +39,12 @@ function init(){
 	root.modules.loadall=function(){
 		var fs=require('fs');
 		console.log('loading all non-preload modules in ('+root.config.app.modules+').');
-		fs.readdirSync(root.config.app.modules).forEach(function(m,i,a){
+		fs.readdirSync(root.config.app.modules).forEach(
+			function(m,i,a){
 					console.log('     loadall() is loading '+m);
 					modInspect(m,'noPreload');
-				});
-		}
+			}
+		);
 	}
 }
 /*
