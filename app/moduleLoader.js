@@ -96,7 +96,7 @@ function modInspect(modName,context){
 			console.log('Not loading module [' + modName + '] marked as preload.');
 		}
 	}
-	var error_file=module_path+"/errors-"+process.env.LANG+".json"
+	var error_file=module_path+"errors-"+process.env.LANG+".json"
 	if( fs.statSync(error_file ) ){
 		console.log("     error_file ["+modName+"]: "+error_file);
 		root.config[modName]=require(error_file);
