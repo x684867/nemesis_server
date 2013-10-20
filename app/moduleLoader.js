@@ -37,7 +37,7 @@ function init(){
 	}
 	
 	root.modules.loadall=function(){
-		console.log('loading all non-preload modules.');
+		console.log('loading all non-preload modules in ('+root.config.app.modules+').');
 		require('fs').readdir(root.config.app.modules,function(err,list){
 			if(err){
 				throw('could not load modules.  '
