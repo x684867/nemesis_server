@@ -67,7 +67,7 @@ function modInspect(modName,context){
 	var module_manifest=module_path+"manifest.json";
 	if( fs.statSync(module_manifest).isFile() ) {
 		try{
-			console.dir("     Loading manifest file ["+modName+"]: "+module_manifest);
+			console.log("     Loading manifest file ["+modName+"]: "+module_manifest);
 			root.modules[modName].manifest=require(module_manifest);
 
 		}catch(e){
