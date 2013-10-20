@@ -23,6 +23,6 @@
 	
 	"config":"/srv/nemesis/modules/types/config.json",
 	
-	"errors":"/srv/nemesis/modules/types/errors.json"
+	"errors":"/srv/nemesis/modules/types/errors"+process.env.LANG+".json"
 	
 }
