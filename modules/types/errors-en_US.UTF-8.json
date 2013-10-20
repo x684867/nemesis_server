@@ -7,12 +7,14 @@
 
 	"success":{
 		"code":0,
-		"type":root.error.type.success,
-		"text":"Success"
+		"type":0,
+		"text":"Success",
+		"_note":"The type is hard-coded 0 since types are not initialized."
 	},
 	"failure":{
 		"code":1,
-		"type":root.error.type.failure,
-		"text":"General Failure"
+		"type":1,
+		"text":"General Failure",
+		"_note":"The type is hard-coded 1 since types are not initialized."
 	}
 }
