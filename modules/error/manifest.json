@@ -1,0 +1,26 @@
+{
+	"_name":"error/manifest.json",
+	"_desc":"Nemesis Error Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+	"name":"error",
+	
+	"group":"core",
+	
+	"loader":{
+	
+		"bootstrap":true,
+		
+		"preload":true,
+		
+		"dependencies":["types"]
+		
+	},
+
+	"main":"/srv/nemesis/modules/types/main.js",
+	
+	"config":"/srv/nemesis/modules/types/config.json"
+	
+}
