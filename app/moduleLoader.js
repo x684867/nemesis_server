@@ -98,6 +98,7 @@ function modInspect(modName,context){
 	}
 	var error_file=module_path+"/errors-"+process.env.LANG+".json"
 	if( fs.statSync(error_file ) ){
+		console.log("     error_file ["+modName+"]: "+error_file;
 		root.config[modName]=require(error_file);
 	}else{
 		throw new Error ('error file not found: '+error_file);
