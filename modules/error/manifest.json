@@ -10,11 +10,7 @@
 	"group":"core",
 	
 	"loader":{
-	
-		"bootstrap":true,
-		
-		"preload":true,
-		
+		"loadTime":"standard",
 		"dependencies":["types"]
 		
 	},

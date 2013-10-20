@@ -9,8 +9,7 @@
 	"group":"server",
 	
 	"loader":{
-		"bootstrap":false,
-		"preload":false,
+		"loadTime":"standard",
 		"dependencies":[
 			"main","start","error","ipc","logger",
 			"worker","types","process","web"

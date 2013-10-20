@@ -10,35 +10,19 @@ module.exports=init;
 /*
  */
 function init(){
-	if(typeof(root.config)!='object'){
-		throw new Error('root.config not defined as object');
-	}
-	if(typeof(root.config.app)!='object'){
-		throw new Error('root.config.app not defined as object');
-	}
-	if(typeof(root.config.app.modules)!='string'){
-		throw new Error('root.config.app.modules not defined as string');
-	}
-	fs=require('fs');
-	if( !fs.statSync(root.config.app.modules).isDirectory() ){
-		throw new Error('root.config.app.modules is not a valid directory');
-	}
+	if(typeof(root.config)!='object'){throw new Error('root.config not defined as object');}
+	if(typeof(root.config.app)!='object'){throw new Error('root.config.app not defined as object');}
+	if(typeof(root.config.app.modules)!='string'){throw new Error('root.config.app.modules not defined as string');}
+	if( !require('fs').statSync(root.config.app.modules).isDirectory() ){throw new Error('root.config.app.modules is not a valid directory');}
 	root.modules={};
-	
-	root.modules.load=function(modName){
-		console.log('loading '+modName);
-		modInspect(modName,'noPreload');
-	}
-	root.modules.preload=function(modName){
-		console.log('preloading '+modName);
-		modInspect(modName,'preload');
-	}
+	root.modules.load=function(modName){	console.log('loading '+modName);modInspect(modName,'noPreload');	}
+	root.modules.preload=function(modName){	console.log('preloading '+modName);modInspect(modName,'preload');	}
 	root.modules.loadall=function(){
 		var fs=require('fs');
 		console.log(Array(80).join('='));
 		console.log('loading all non-preload modules in ('+root.config.app.modules+').');
 		console.log(Array(80).join('-'));
-		fs.readdirSync(root.config.app.modules).forEach(
+		require('fs').readdirSync(root.config.app.modules).forEach(
 			function(m,i,a){
 					console.log('loadall() is loading '+m);
 					modInspect(m,'noPreload');

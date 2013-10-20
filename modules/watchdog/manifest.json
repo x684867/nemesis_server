@@ -9,8 +9,7 @@
 	"name":"watchdog",
 	"group":"monitor",
 	"loader":{
-		"bootstrap":false,
-		"preload":false,
+		"loadTime":"standard",
 		"dependencies":["error","types"]
 	},
 

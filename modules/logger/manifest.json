@@ -9,8 +9,7 @@
 	"name":"logger",
 	"group":"core",
 	"loader":{
-		"bootstrap":false,
-		"preload":true,
+		"loadTime":"standard",
 		"dependencies":["error","types"]
 	},
 

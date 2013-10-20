@@ -11,8 +11,6 @@ function init(){
 	root.error.type.success="success",
 	root.error.type.failure="fatal",
 	
-	
-	
 	root.type={
 	
 		success:"success",
