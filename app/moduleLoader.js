@@ -40,7 +40,7 @@ function init(){
 		console.log(Array(80).join('-'));
 		fs.readdirSync(root.config.app.modules).forEach(
 			function(m,i,a){
-					console.log('     loadall() is loading '+m);
+					console.log('loadall() is loading '+m);
 					modInspect(m,'noPreload');
 			}
 		);
