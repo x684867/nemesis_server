@@ -20,6 +20,16 @@
 			"code":2,
 			"type":"fatal",
 			"text":"Invalid source parameter passed to init().  Expected string."
-		}
+		},
+		"invalidPID":{
+			"code":3,
+			"type":"fatal",
+			"text":"Invalid PID parameter passed to init().  Expected number."
+		},
+		"invalidOptions":{
+			"code":4,
+			"type":"fatal"
+			"text":"Invalid options object passed to init().  Expected JSON object."
+		},
 	}
 }
