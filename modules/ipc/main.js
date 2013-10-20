@@ -5,14 +5,14 @@
 	
 	
  */
-module.exports=message_handler;
+module.exports=init;
 /* */
 
 /* */
 function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 /* */
 
-function message_handler(){ }
+function init(){ }
 	/*
 		IPC Code values.
 	*/
