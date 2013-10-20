@@ -71,7 +71,8 @@ function modInspect(modName,context){
 	if( fs.statSync(module_manifest).isFile() ) {
 		console.log("     Loading manifest file ["+modName+"]: "+module_manifest);
 		try{
-			root.modules[modName].manifest=require(module_manifest);
+			root.modules[modName].manifest=JSON.parse(fs.readFileSync(module_manifest));
+			//root.modules[modName].manifest=require(module_manifest);
 		}catch(e){
 			console.log("-----------------------------------------");
 			console.log("Module:"+modName);
