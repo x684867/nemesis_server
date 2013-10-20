@@ -83,8 +83,6 @@ function modInspect(modName,context){
 		throw new Error('Invalid manifest main (expected string).  module:'+modName);
 	if(typeof( root.modules[modName].manifest.config )!='string' )
 		throw new Error('Invalid manifest config (expected string).  module:'+modName);
-	if(typeof( root.modules[modName].manifest.errors )!='string' )
-		throw new Error('Invalid manifest errors (expected string).  module:'+modName);
 	if(root.modules[modName].manifest.loader.preload){
 		if(context.toLowerCase()=='preload'){
 			load_my_module(modName);		
