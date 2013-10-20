@@ -23,19 +23,16 @@ function init(){
 	if( !fs.statSync(root.config.app.modules).isDirectory() ){
 		throw new Error('root.config.app.modules is not a valid directory');
 	}
-	
 	root.modules={};
 	
 	root.modules.load=function(modName){
 		console.log('loading '+modName);
 		modInspect(modName,'noPreload');
 	}
-	
 	root.modules.preload=function(modName){
 		console.log('preloading '+modName);
 		modInspect(modName,'preload');
 	}
-	
 	root.modules.loadall=function(){
 		var fs=require('fs');
 		console.log(Array(80).join('='));
@@ -75,7 +72,9 @@ function modInspect(modName,context){
 		}catch(e){
 			throw new Error('Error Reading manifest.json');
 		}
-		console.log("     Manifest file read (raw).  Parsing...");
+		console.log("     Manifest file read (raw)."
+		console.log("     JSON:"+rawJSON);
+		console.log("     Parsing...");
 		try{
 			root.modules[modName].manifest=JSON.parse(rawJSON);
 			//root.modules[modName].manifest=require(module_manifest);
