@@ -37,7 +37,7 @@ function init(source,pid,options){
 /*
 */
 function ConsoleWriter(){
-	this.write=function(timestamp,text){console.log('['+timestamp']:'+text);};
+	this.write=function(timestamp,text){console.log('['+timestamp+']:'+text);};
 }
 /*
 */
