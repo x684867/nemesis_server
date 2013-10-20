@@ -14,7 +14,7 @@ module.exports=init;
 require('util');
 
 function init(source,pid,options){
-	if(typeof(soruce)!='string') root.error
+	if(typeof(source)!='string') root.error.raise(root.error.logger.invalidSourceInput);
 
 }
 	
