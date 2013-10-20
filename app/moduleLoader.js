@@ -69,11 +69,11 @@ function modInspect(modName,context){
 
 	var module_manifest=module_path+"manifest.json";
 	if( fs.statSync(module_manifest).isFile() ) {
+		console.log("     Loading manifest file ["+modName+"]: "+module_manifest);
 		try{
-			console.log("     Loading manifest file ["+modName+"]: "+module_manifest);
 			root.modules[modName].manifest=require(module_manifest);
 		}catch(e){
-			throw new Error('manifest.json failed to load');
+			throw new Error('manifest.json failed to load.  ERROR='+e);
 		}
 	}else{
 		throw new Error('manifest.json not found');
