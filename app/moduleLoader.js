@@ -73,6 +73,11 @@ function modInspect(modName,context){
 		try{
 			root.modules[modName].manifest=require(module_manifest);
 		}catch(e){
+			console.log("-----------------------------------------");
+			console.log("Module:"+modName);
+			console.log("   PROBLEM: manifest.json failed to load.");
+			console.log("   ERROR:   "+e.message);
+			console.log("-----------------------------------------");
 			throw new Error('manifest.json failed to load.  ERROR='+e);
 		}
 	}else{
