@@ -14,6 +14,6 @@
 		"dependencies":["error","types","logger","audit","broker","cipher","key"]
 	},
 
-	"main":"/srv/nemesis/modules/childprocess/main.js",
-	"config":"/srv/nemesis/modules/childprocess/config.json"
+	"main":"/srv/nemesis/modules/main/main.js",
+	"config":"/srv/nemesis/modules/main/config.json"
 }

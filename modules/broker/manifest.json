@@ -13,7 +13,7 @@
 		"preload":false,
 		"dependencies":[
 			"main","start","error","ipc","logger",
-			"worker","types","process","childprocess","web"
+			"worker","types","process","web"
 		]
 	},
 	"main":"/srv/nemesis/modules/broker/main.js",

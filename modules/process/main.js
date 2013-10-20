@@ -1,6 +1,6 @@
 /*
 	Nemesis Application Process Manager
-	/srv/nemesis/core/core.process.js
+	/srv/nemesis/modules/process/main.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
  */
 module.exports=process_manager;

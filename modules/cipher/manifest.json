@@ -1,0 +1,21 @@
+{
+	"_name":"cipher/manifest.json",
+	"_desc":"Nemesis CipherStore Server Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+	"name":"cipher",
+	"group":"server",
+	
+	"loader":{
+		"bootstrap":false,
+		"preload":false,
+		"dependencies":[
+			"main","start","error","ipc","logger",
+			"worker","types","process","web"
+		]
+	},
+	"main":"/srv/nemesis/modules/cipher/main.js",
+	"config":"/srv/nemesis/modules/cipher/config.json"
+}

@@ -1,12 +1,12 @@
 {
-	"_name":"childprocess/manifest.json",
-	"_desc":"Nemesis Child Process Manifest File",
+	"_name":"logger/manifest.json",
+	"_desc":"Nemesis SysLog Module Manifest File",
 	
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 
 
-	"name":"childprocess",
+	"name":"logger",
 	"group":"core",
 	"loader":{
 		"bootstrap":false,
@@ -14,6 +14,6 @@
 		"dependencies":["error","types"]
 	},
 
-	"main":"/srv/nemesis/modules/childprocess/main.js",
-	"config":"/srv/nemesis/modules/childprocess/config.json"
+	"main":"/srv/nemesis/modules/logger/main.js",
+	"config":"/srv/nemesis/modules/logger/config.json"
 }

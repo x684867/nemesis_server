@@ -1,6 +1,6 @@
 /*
 	Nemesis Interprocess Message Helper
-	/srv/nemesis/core/core.messages.js
+	/srv/nemesis/modules/ipc/main.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.  
 	
 	

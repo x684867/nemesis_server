@@ -1,0 +1,21 @@
+{
+	"_name":"key/manifest.json",
+	"_desc":"Nemesis KeyStore Server Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+	"name":"key",
+	"group":"server",
+	
+	"loader":{
+		"bootstrap":false,
+		"preload":false,
+		"dependencies":[
+			"main","start","error","ipc","logger",
+			"worker","types","process","web"
+		]
+	},
+	"main":"/srv/nemesis/modules/key/main.js",
+	"config":"/srv/nemesis/modules/key/config.json"
+}
