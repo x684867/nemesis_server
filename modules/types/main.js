@@ -8,13 +8,16 @@
 module.exports=init;
 
 function init(){
-	root.error.type.success=0,
-	root.error.type.failure=1,
+	root.error.type.success="success",
+	root.error.type.failure="fatal",
+	
 	
 	
 	root.type={
 	
-
+		success:"success",
+		warning:"warning",
+		failure:"fatal",
 	
 		tobj:'object',
 		tstr:'string',
