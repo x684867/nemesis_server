@@ -44,7 +44,10 @@ function init(){
 					 +'Error reading modDir ['+root.config.app.modules+']'
 				);
 			}else{
-				list.forEach(function(m,i,a){modInspect(m,'noPreload');});
+				list.forEach(function(m,i,a){
+					console.log('     loadall() is loading '+m);
+					modInspect(m,'noPreload');
+				});
 			}
 		});
 	}
