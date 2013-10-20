@@ -75,6 +75,7 @@ function modInspect(modName,context){
 		}catch(e){
 			throw new Error('Error Reading manifest.json');
 		}
+		console.log("     Manifest file read (raw).");
 		try{
 			root.modules[modName].manifest=JSON.parse(rawJSON);
 			//root.modules[modName].manifest=require(module_manifest);
