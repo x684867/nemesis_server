@@ -66,15 +66,10 @@ function modInspect(modName,context){
 
 	var module_manifest=module_path+"manifest.json";
 	if( fs.statSync(module_manifest).isFile() ) {
-		console.log("     Loading manifest file ["+modName+"]: "+module_manifest);
+		console.log("     module_manifest ["+modName+"]: "+module_manifest);
 		try{
 			root.modules[modName].manifest=require(module_manifest);
 		}catch(e){
-			console.log("-----------------------------------------");
-			console.log("Module:"+modName);
-			console.log("   PROBLEM: manifest.json failed to load.");
-			console.log("   ERROR:   "+e.message);
-			console.log("-----------------------------------------");
 			throw new Error('manifest.json failed to load.  ERROR='+e);
 		}
 	}else{
@@ -148,24 +143,19 @@ function missingDependencies(modName){
 /*
  */
 function load_my_module(modName){
-
  	if(missingDependencies(modName)){
 		throw new Error('module '+modName+' is missing one or more dependencies.');
-	}		
-
+	}
 	var config_file=root.modules[modName].manifest.config;
 	if( fs.statSync(config_file) ) {
-	
+		console.log("     config_file ["+modName+"]: "+config_file);
 		root.config[modName]=require(config_file);
-		
 	}else{
-
 		throw new Error ('config file not found: '+config_file);
-
 	}
-
 	var main_file=root.modules[modName].manifest.main;
 	if( fs.statSync(main_file) ) {
+		console.log("     main_file ["+modName+"]: "+main_file);
 		root.config[modName]=require(main_file);
 	}else{
 		throw new Error ('main file not found: '+main_file);
