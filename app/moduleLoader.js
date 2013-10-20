@@ -38,9 +38,9 @@ function init(){
 	
 	root.modules.loadall=function(){
 		var fs=require('fs');
-		console.log(Array(40).join('='));
+		console.log(Array(64).join('='));
 		console.log('loading all non-preload modules in ('+root.config.app.modules+').');
-		console.log(Array(40).join('-'));
+		console.log(Array(64).join('-'));
 		fs.readdirSync(root.config.app.modules).forEach(
 			function(m,i,a){
 					console.log('     loadall() is loading '+m);
