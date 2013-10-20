@@ -44,6 +44,7 @@ function init(){
 					 +'Error reading modDir ['+root.config.app.modules+']'
 				);
 			}else{
+				console.log('     list={'+list+'}');
 				list.forEach(function(m,i,a){
 					console.log('     loadall() is loading '+m);
 					modInspect(m,'noPreload');
