@@ -72,6 +72,10 @@ function modInspect(modName,context){
 		console.log("     Loading manifest file ["+modName+"]: "+module_manifest);
 		try{
 			var rawJSON=fs.readFileSync(module_manifest);
+		}catch(e){
+			throw new Error('Error Reading manifest.json');
+		}
+		try{
 			root.modules[modName].manifest=JSON.parse(rawJSON);
 			//root.modules[modName].manifest=require(module_manifest);
 		}catch(e){
