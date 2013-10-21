@@ -3,11 +3,12 @@
 	"_desc":"Nemesis Bootstrap Main Method Module Configuration",
 	
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
-	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved."
-
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 
 	"serverType":"broker",
+
 	"pidDirectory":"/var/run/nemesis/broker",
+
 	"monitor":{
 		"heartbeat":{
 			"interval":3600,
