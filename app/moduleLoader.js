@@ -19,46 +19,45 @@ function init(){
 	/*Initialize root.modules where modules will be loaded.*/
 	root.modules={};
 
-}
-
-root.modules.load=function(modName){
-	var fs=require('fs');
-	console.log( 
+	root.modules.load=function(modName){
+		var fs=require('fs');
+		console.log( 
 			 Array(80).join('=')+"\n"
 			+'loading standard loadTime modules in ('+root.config.app.modules+').\n'
 			+Array(80).join('-')
-	);
+		);
 
-	require('fs').readdirSync(root.config.app.modules).forEach(function(modName){
-		if(typeof(root.modules[modName])=='undefined'){
-			/*Module is not loaded*/
-			console.log('Module ['+modName+'] loading...\t\t\t[loadall()]');
-			var module_path=root.config.app.modules+modName+"/";
-			if(fs.statSync(module_path).isDirectory()){
-				/*Module directory exists*/
-				var module_manifest=module_path+"manifest.json";
-				if(fs.statSync(module_manifest).isFile()){
-					/*The module manifest file is found.*/
-					console.log("     loading module ["+module_manifest+"] manifest.");
-					root.modules[modName].manifest=require(module_manifest);
-					if (isManifestValid(root.modules[modName].manifest)){
-						/*Satisfy the dependencies*/
-						root.modules[modName].manifest.dependencies.forEach(function(dependencies,index,array){load_module_files(module_path,dependencies);});
-						/*Then load the module in question*/
-						load_module_files(module_path,modName);
+		require('fs').readdirSync(root.config.app.modules).forEach(function(modName){
+			if(typeof(root.modules[modName])=='undefined'){
+				/*Module is not loaded*/
+				console.log('Module ['+modName+'] loading...\t\t\t[loadall()]');
+				var module_path=root.config.app.modules+modName+"/";
+				if(fs.statSync(module_path).isDirectory()){
+					/*Module directory exists*/
+					var module_manifest=module_path+"manifest.json";
+					if(fs.statSync(module_manifest).isFile()){
+						/*The module manifest file is found.*/
+						console.log("     loading module ["+module_manifest+"] manifest.");
+						root.modules[modName].manifest=require(module_manifest);
+						if (isManifestValid(root.modules[modName].manifest)){
+							/*Satisfy the dependencies*/
+							root.modules[modName].manifest.dependencies.forEach(function(dependencies,index,array){load_module_files(module_path,dependencies);});
+							/*Then load the module in question*/
+							load_module_files(module_path,modName);
+						}else{
+							throw new Error('     Module('+modName+') manifest file is invalid.');
+						}
 					}else{
-						throw new Error('     Module('+modName+') manifest file is invalid.');
+						throw new Error('     Module ('+modName+') manifest file not found.  Check ('+module_manifest+')');
 					}
 				}else{
-					throw new Error('     Module ('+modName+') manifest file not found.  Check ('+module_manifest+')');
+					throw new Error('module ('+modName+') not found.  Check ('+module_path+')');
 				}
 			}else{
-				throw new Error('module ('+modName+') not found.  Check ('+module_path+')');
+				console.log('Module ['+modName+'] loaded already...skipping');
 			}
-		}else{
-			console.log('Module ['+modName+'] loaded already...skipping');
-		}
-	});
+		});
+	}
 }
 /* */
 function load_module_files(module_path,modName){
