@@ -32,7 +32,6 @@ root.modules.load=function(modName){
 		if(typeof(root.modules[modName])=='undefined'){
 			/*Module is not loaded*/
 			console.log('Module ['+modName+'] loading...\t\t\t[loadall()]');
-
 			var module_path=root.config.app.modules+modName+"/";
 			if(fs.statSync(module_path).isDirectory()){
 				/*Module directory exists*/
@@ -46,18 +45,14 @@ root.modules.load=function(modName){
 						root.modules[modName].manifest.dependencies.forEach(function(dependencies,index,array){load_module_files(module_path,dependencies);});
 						/*Then load the module in question*/
 						load_module_files(module_path,modName);
-					}else{
+					}else
 						throw new Error('     Module('+modName+') manifest file is invalid.');
-					}
-				}else{
-					throw new Error('     Module ('+modName+') manifest file not found.  Check ('+module_manifest+')'
-				}
-			}else{
+				}else
+					throw new Error('     Module ('+modName+') manifest file not found.  Check ('+module_manifest+')');
+			}else
 				throw new Error('module ('+modName+') not found.  Check ('+module_path+')');
-			}
-		}else{
+		}else
 			console.log('Module ['+modName+'] loaded already...skipping');
-		}
 	});
 }
 /* */
