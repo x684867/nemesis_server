@@ -141,19 +141,19 @@ function isManifestValid(manifest){
 								if(['preload','standard','postload'].indexOf(manifest.loader.loadTime)==-1)
 									return true;
 								else
-									throw new Error('Invalid loader.loadTime value.  Expected {"preload" or "standard"}.  module:'+modName);
+									throw new Error('Invalid loader.loadTime value.  Expected {"preload" or "standard"}.');
 							else						
-								throw new Error('Invalid loader.loadTime.  Expected string.  module:'+modName);
+								throw new Error('Invalid loader.loadTime.  Expected string.');
 						else
-							throw new Error('Invalid manifest loader object.  module:'+modName);
+							throw new Error('Invalid manifest loader object.');
 					else
-						throw new Error('Invalid manifest config (expected string).  module:'+modName);
+						throw new Error('Invalid manifest config (expected string).');
 				else
-					throw new Error('Invalid manifest main (expected string).  module:'+modName);
+					throw new Error('Invalid manifest main (expected string).');
 			else
-				throw new Error('Invalid manifest group.  Expected string. module:'+modName);
+				throw new Error('Invalid manifest group.  Expected string.');
 		else
-			throw new Error('Invalid manifest name.  Expected string.  module:'+modName);
+			throw new Error('Invalid manifest name.  Expected string.');
 	else
-		throw new Error('Invalid manifest detected for module.  Expected object.'+modName);
+		throw new Error('Invalid manifest detected for module.  Expected object.');
 }
