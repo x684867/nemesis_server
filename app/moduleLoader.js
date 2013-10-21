@@ -42,10 +42,9 @@ function init(){
 function modInspect(modName,loadTime){
 	fs=require('fs');
 	
-	if( (loadTime!='preload') && (loadTime!='standard') ) throw new Error('invalid loadTime parameter passed to modInspect()');
-	/*
-		init module object.
-	*/
+	if(['preload','standard','postload'].indexOf(loadTime)==-1) throw new Error('invalid loadTime parameter passed to modInspect().');
+
+	/* init module object. */
 	root.modules[modName]={}
 	var module_path=root.config.app.modules+modName+"/";
 	
@@ -64,8 +63,7 @@ function modInspect(modName,loadTime){
 	}
 	
 	if (isManifestValid(root.modules[modName].manifest)&&(root.modules[modName].manifest.loader.loadTime==loadTime)){
-			if(loadTime=='preload') load_my_module(modName);
-			if(loadTime=='standard') load_my_module(modName);
+		load_my_module(modName); break;			
 	}else{
 		console.log(
 		     '     Not loading module [' + modName + '].'
@@ -140,7 +138,7 @@ function isManifestValid(manifest){
 					if(typeof( manifest.config )=='string' )
 						if(typeof( manifest.loader )=='object' )
 							if(typeof( manifest.loader.loadTime )=='string' )
-								if((manifest.loader.loadTime=='standard') || (manifest.loader.loadTime=='preload'))
+								if(['preload','standard','postload'].indexOf(manifest.loader.loadTime)==-1)
 									return true;
 								else
 									throw new Error('Invalid loader.loadTime value.  Expected {"preload" or "standard"}.  module:'+modName);
