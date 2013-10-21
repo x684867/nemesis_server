@@ -138,10 +138,10 @@ function isManifestValid(manifest){
 					if(typeof( manifest.config )=='string' )
 						if(typeof( manifest.loader )=='object' )
 							if(typeof( manifest.loader.loadTime )=='string' )
-								if(['preload','standard','postload'].indexOf(manifest.loader.loadTime)==-1)
+								if(['preload','standard','postload'].indexOf(manifest)==-1)
 									return true;
 								else
-									throw new Error('Invalid loader.loadTime value.  Expected {"preload" or "standard"}.');
+									throw new Error('Invalid loader.loadTime value.  Expected {"preload," "postload" or "standard"}.');
 							else						
 								throw new Error('Invalid loader.loadTime.  Expected string.');
 						else
