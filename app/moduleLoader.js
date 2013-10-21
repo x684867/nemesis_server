@@ -21,16 +21,10 @@ function init(){
 
 	root.modules.load=function(modName){
 		var fs=require('fs');
-		console.log( 
-			 Array(80).join('=')+"\n"
-			+'loading standard loadTime modules in ('+root.config.app.modules+').\n'
-			+Array(80).join('-')
-		);
-
 		require('fs').readdirSync(root.config.app.modules).forEach(function(modName){
 			if(typeof(root.modules[modName])=='undefined'){
 				/*Module is not loaded*/
-				console.log('Module ['+modName+'] loading...\t\t\t[loadall()]');
+				console.log('Module ['+modName+'] loading...');
 				var module_path=root.config.app.modules+modName+"/";
 				if(fs.statSync(module_path).isDirectory()){
 					/*Module directory exists*/
