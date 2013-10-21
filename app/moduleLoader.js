@@ -77,24 +77,20 @@ function isManifestValid(manifest){
 			if( typeof( manifest.group )=='string' )
 				if( typeof( manifest.main )=='string' )
 					if( typeof( manifest.config )=='string' )
-						if( typeof( manifest.loader )=='object' )
-							if( typeof( manifest.loader.loadTime )=='string' )
-								if( [ 'preload' , 'standard' , 'postload' ].indexOf( manifest ) == -1 )
-									return true;
-								else
-									throw new Error('Invalid loader.loadTime value.  Expected {"preload," "postload" or "standard"}.');
-							else						
-								throw new Error('Invalid loader.loadTime.  Expected string.');
+						if( ( typeof( manifest.dependencies ) == 'object' ) && 
+							( typeof( manifest.dependencies.forEach ) == 'function' ) 
+						)						
+							return true;
 						else
-							throw new Error('Invalid manifest loader object.');
+							throw new Error('Invalid manifest.dependencies.  Expected Array.');						
 					else
-						throw new Error('Invalid manifest config (expected string).');
+						throw new Error('Invalid manifest.config (expected string).');
 				else
-					throw new Error('Invalid manifest main (expected string).');
+					throw new Error('Invalid manifest.main (expected string).');
 			else
-				throw new Error('Invalid manifest group.  Expected string.');
+				throw new Error('Invalid manifest.group.  Expected string.');
 		else
-			throw new Error('Invalid manifest name.  Expected string.');
+			throw new Error('Invalid manifest.name.  Expected string.');
 	else
 		throw new Error('Invalid manifest detected for module.  Expected object.');
 }
