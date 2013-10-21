@@ -37,6 +37,9 @@ function init(){
 						if(typeof(root.modules[modName].manifest)!='object'){
 							throw new Error('ERROR! Failed to load module manifest ['+modName+']');
 						}
+						console.log("dumping module....");
+						console.dir(root.modules[modName]);
+						console.log("-----------------------------------");
 						
 						if (isManifestValid(root.modules[modName].manifest)){
 							/*Satisfy the dependencies*/
