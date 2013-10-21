@@ -41,7 +41,7 @@ console.log('bootstrap loading all modules: ');root.modules.loadall();
 /*
 	Define the application
 */
-root.app.log=root.modules.logger.init(module.filename,process.pid,{"console":true,"syslog":true}),
+root.app.log=root.modules.logger.init(module.filename,process.pid,{"console":true,"syslog":true});
 root.app.main=root.modules.main.init();
 root.app.start=root.modules.start.init();
 root.app.monitor={};

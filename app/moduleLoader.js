@@ -15,11 +15,8 @@ function init(){
 	if( !require('fs').statSync(root.config.app.modules).isDirectory() ) throw new Error('root.config.app.modules is not a valid directory');
 	
 	root.modules={};
-	
-	root.modules.load=function(modName){	modInspect(modName,'standard');	}
-	
+	root.modules.load=function(modName){	modInspect(modName,'standard'); modInspect(modName,'postload');	}
 	root.modules.preload=function(modName){	modInspect(modName,'preload');	}
-	
 	root.modules.loadall=function(){
 		var fs=require('fs');
 		console.log(Array(80).join('='));

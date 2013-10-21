@@ -3,7 +3,9 @@
 	/srv/nemesis/core/core.main.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
  */
-module.exports=function(operatingMode){
+module.exports=init;
+
+function init(operatingMode){
 	/*
 		Load the appropriate service configuration file.
 	*/
