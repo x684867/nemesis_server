@@ -9,7 +9,7 @@
 	"name":"start",
 	"group":"core",
 	"loader":{
-		"loadTime":"preload",
+		"loadTime":"postload",
 		"dependencies":["types","error","logger","process","audit","broker","cipherStore","keyStore","ipc","worker","web"]
 	},
 
