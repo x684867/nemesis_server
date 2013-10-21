@@ -1,5 +1,5 @@
 /*
-	Nemesis Broker Server Module
+	Nemesis Web Services Broker Server Module
 	/srv/nemesis/modules/broker/main.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	

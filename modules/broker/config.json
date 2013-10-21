@@ -1,6 +1,6 @@
 {
-	"_name":"main/config.json",
-	"_desc":"Nemesis Bootstrap Main Method Module Configuration",
+	"_name":"broker/config.json",
+	"_desc":"Nemesis Broker Web Services Module Configuration",
 	
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",

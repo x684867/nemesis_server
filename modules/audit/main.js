@@ -1,5 +1,5 @@
 /*
-	Nemesis Audit Server Module
+	Nemesis Audit Web Services Module
 	/srv/nemesis/modules/audit/main.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	

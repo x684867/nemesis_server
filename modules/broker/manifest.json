@@ -1,6 +1,6 @@
 {
 	"_name":"broker/manifest.json",
-	"_desc":"Nemesis Broker Server Manifest File",
+	"_desc":"Nemesis Broker Web Services Manifest File",
 	
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",

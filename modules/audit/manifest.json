@@ -1,6 +1,6 @@
 {
 	"_name":"audit/manifest.json",
-	"_desc":"Nemesis Audit Server Manifest File",
+	"_desc":"Nemesis Audit Web Services Manifest File",
 	
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
