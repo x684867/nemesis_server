@@ -19,6 +19,8 @@ function init(){
 	/*Initialize root.modules where modules will be loaded.*/
 	root.modules={};
 
+}
+
 root.modules.load=function(modName){
 	var fs=require('fs');
 	console.log( 
@@ -44,14 +46,18 @@ root.modules.load=function(modName){
 						root.modules[modName].manifest.dependencies.forEach(function(dependencies,index,array){load_module_files(module_path,dependencies);});
 						/*Then load the module in question*/
 						load_module_files(module_path,modName);
-					}else
+					}else{
 						throw new Error('     Module('+modName+') manifest file is invalid.');
-				}else
+					}
+				}else{
 					throw new Error('     Module ('+modName+') manifest file not found.  Check ('+module_manifest+')');
-			}else
+				}
+			}else{
 				throw new Error('module ('+modName+') not found.  Check ('+module_path+')');
-		}else
+			}
+		}else{
 			console.log('Module ['+modName+'] loaded already...skipping');
+		}
 	});
 }
 /* */
