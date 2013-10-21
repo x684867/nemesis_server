@@ -66,14 +66,14 @@ function load_module_files(module_path,modName){
 /* */
 function isManifestValid(manifest){
 	/*Validate manifest JSON*/
-	if(typeof( manifest )=='object' )
-		if(typeof( manifest.name )=='string' )
-			if(typeof( manifest.group )=='string' )
-				if(typeof( manifest.main )=='string' )
-					if(typeof( manifest.config )=='string' )
-						if(typeof( manifest.loader )=='object' )
-							if(typeof( manifest.loader.loadTime )=='string' )
-								if(['preload','standard','postload'].indexOf(manifest)==-1)
+	if( typeof( manifest )=='object' )
+		if( typeof( manifest.name )=='string' )
+			if( typeof( manifest.group )=='string' )
+				if( typeof( manifest.main )=='string' )
+					if( typeof( manifest.config )=='string' )
+						if( typeof( manifest.loader )=='object' )
+							if( typeof( manifest.loader.loadTime )=='string' )
+								if( [ 'preload' , 'standard' , 'postload' ].indexOf( manifest ) == -1 )
 									return true;
 								else
 									throw new Error('Invalid loader.loadTime value.  Expected {"preload," "postload" or "standard"}.');
