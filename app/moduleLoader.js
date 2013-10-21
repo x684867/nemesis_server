@@ -63,7 +63,7 @@ function modInspect(modName,loadTime){
 	}
 	
 	if (isManifestValid(root.modules[modName].manifest)&&(root.modules[modName].manifest.loader.loadTime==loadTime)){
-		load_my_module(modName); break;			
+		load_my_module(modName);			
 	}else{
 		console.log(
 		     '     Not loading module [' + modName + '].'
