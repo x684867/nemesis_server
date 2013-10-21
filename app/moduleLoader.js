@@ -34,6 +34,10 @@ function init(){
 						console.log("     loading module ["+module_manifest+"] manifest.");
 						root.modules[modName]={};
 						root.modules[modName].manifest=require(module_manifest);
+						if(typeof(root.modules[modName].manifest)!='object'){
+							throw new Error('ERROR! Failed to load module manifest ['+modName+']');
+						}
+						
 						if (isManifestValid(root.modules[modName].manifest)){
 							/*Satisfy the dependencies*/
 							root.modules[modName].manifest.dependencies.forEach(function(dependencies,index,array){load_module_files(module_path,dependencies);});
