@@ -11,7 +11,7 @@
 	
 	"loader":{
 		"loadTime":"preload",
-		"dependencies":["types","error"]
+		"dependencies":["types","error","logger"]
 		
 	},
 

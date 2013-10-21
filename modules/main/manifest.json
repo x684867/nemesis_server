@@ -10,7 +10,7 @@
 	"group":"core",
 	"loader":{
 		"loadTime":"preload",
-		"dependencies":["error","types","logger","audit","broker","cipher","key"]
+		"dependencies":["types","error","logger","process","audit","broker","cipherStore","keyStore"]
 	},
 
 	"main":"/srv/nemesis/modules/main/main.js",

@@ -1,8 +1,36 @@
 {
-	"_name":"cipher/config.json",
-	"_desc":"Nemesis CipherStore Server Module Configuration",
+	"_name":"main/config.json",
+	"_desc":"Nemesis Bootstrap Main Method Module Configuration",
 	
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved."
-	
+
+
+	"serverType":"broker",
+	"heartbeat":{
+				"interval":3600,
+				"maxDelay":100
+	},
+	"workers":[
+				{
+					"workerId":31,
+					"ipAddress":"127.0.3.1",
+					"ipPort":80
+				},
+				{
+					"workerId":32,
+					"ipAddress":"127.0.3.2",
+					"ipPort":80
+				},
+				{
+					"workerId":33,
+					"ipAddress":"127.0.3.3",
+					"ipPort":80
+				},
+				{
+					"workerId":34,
+					"ipAddress":"127.0.3.4",
+					"ipPort":80
+				}					
+	]
 }

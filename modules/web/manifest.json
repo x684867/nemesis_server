@@ -10,7 +10,7 @@
 	"group":"core",
 	"loader":{
 		"loadTime":"standard",
-		"dependencies":["error","types"]
+		"dependencies":["ipc","types","error","logger"]
 	},
 
 	"main":"/srv/nemesis/modules/web/main.js",

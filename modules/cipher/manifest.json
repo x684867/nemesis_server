@@ -10,10 +10,7 @@
 	
 	"loader":{
 		"loadTime":"standard",
-		"dependencies":[
-			"main","start","error","ipc","logger",
-			"worker","types","process","web"
-		]
+		"dependencies":["types","error","logger","ipc","process","web","worker"]
 	},
 	"main":"/srv/nemesis/modules/cipher/main.js",
 	"config":"/srv/nemesis/modules/cipher/config.json"

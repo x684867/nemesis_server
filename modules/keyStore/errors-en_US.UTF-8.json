@@ -1,16 +1,18 @@
 {
-	"_name":"key/messages-en_US.UTF-8.json",
-	"_desc":"Nemesis Message Localization File",
+	"_name":"keyStore/errors-en_US.UTF-8.json",
+	"_desc":"Nemesis Error Localization File",
 	
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 
 	"success":{
 		"code":0,
-		"text":"This is a message"
+		"type":"success",
+		"text":"Success"
 	},
 	"failure":{
 		"code":1,
-		"text":"This is another message"
+		"type":"warning",
+		"text":"General Failure"
 	}
 }

@@ -1,5 +1,12 @@
 {
-	"serverType":"broker",
+	"_name":"keyStore/config.json",
+	"_desc":"Nemesis KeyStore Server Module Configuration",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved."
+
+	"serverType":"keyStore",
+	
 	"heartbeat":{
 				"interval":3600,
 				"maxDelay":100

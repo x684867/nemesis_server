@@ -10,7 +10,7 @@
 	"group":"monitor",
 	"loader":{
 		"loadTime":"standard",
-		"dependencies":["error","types"]
+		"dependencies":["types","error","logger","ipc","process","web","worker"]
 	},
 
 	"main":"/srv/nemesis/modules/stats/main.js",

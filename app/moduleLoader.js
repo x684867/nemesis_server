@@ -22,21 +22,21 @@ function init(){
 	root.modules.preload=function(modName){	modInspect(modName,'preload');	}
 	
 	root.modules.loadall=function(){
-			var fs=require('fs');
-			console.log(Array(80).join('='));
-			console.log('loading standard loadTime modules in ('+root.config.app.modules+').');
-			console.log(Array(80).join('-'));
-			require('fs').readdirSync(root.config.app.modules).forEach(
-				function(modName,index,array){
-						if(typeof(root.modules[modName])=='undefined'){
-							console.log('Module ['+modName+'] loading    [loadall()]');
-							modInspect(modName,'standard');
-						}else{
-							console.log('Module ['+modName+'] loaded already...skipping');
-						}
+		var fs=require('fs');
+		console.log(Array(80).join('='));
+		console.log('loading standard loadTime modules in ('+root.config.app.modules+').');
+		console.log(Array(80).join('-'));
+		require('fs').readdirSync(root.config.app.modules).forEach(
+			function(modName,index,array){
+				if(typeof(root.modules[modName])=='undefined'){
+					console.log('Module ['+modName+'] loading...\t\t\t[loadall()]');
+					modInspect(modName,'standard');
+				}else{
+					console.log('Module ['+modName+'] loaded already...skipping');
 				}
-			);
-			console.log(Array(80).join('=')+'\nDone Loading [loadall()]\n'+Array(80).join('='));
+			}
+		);
+		console.log(Array(80).join('=')+'\nDone Loading [loadall()]\n'+Array(80).join('='));
 	}
 }
 /*
