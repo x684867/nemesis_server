@@ -7,7 +7,7 @@
 
 
 	"name":"main",
-	"group":"core",
+
 	"loader":{
 		"loadTime":"postload",
 		"dependencies":["types","error","logger","process","audit","broker","cipherStore","keyStore","watchdog","stats","marco","polo","storeServer"]

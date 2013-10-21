@@ -9,121 +9,65 @@
 module.exports=init;
 /* */
 function init(){
+
+	/*Inspect the root.config object to validate the Application configuration.*/
 	if(typeof(root.config)!='object') throw new Error('root.config not defined as object');
 	if(typeof(root.config.app)!='object') throw new Error('root.config.app not defined as object');
 	if(typeof(root.config.app.modules)!='string') throw new Error('root.config.app.modules not defined as string');
+	/*Verify that the modules directory (provided by root.config.app.modules) exists.*/
 	if( !require('fs').statSync(root.config.app.modules).isDirectory() ) throw new Error('root.config.app.modules is not a valid directory');
-	
+	/*Initialize root.modules where modules will be loaded.*/
 	root.modules={};
-	root.modules.load=function(modName){	modInspect(modName,'standard'); modInspect(modName,'postload');	}
-	root.modules.preload=function(modName){	modInspect(modName,'preload');	}
-	root.modules.loadall=function(){
-		var fs=require('fs');
-		console.log(Array(80).join('='));
-		console.log('loading standard loadTime modules in ('+root.config.app.modules+').');
-		console.log(Array(80).join('-'));
-		require('fs').readdirSync(root.config.app.modules).forEach(
-			function(modName,index,array){
-				if(typeof(root.modules[modName])=='undefined'){
-					console.log('Module ['+modName+'] loading...\t\t\t[loadall()]');
-					modInspect(modName,'standard');
+}
+
+root.modules.load=function(modName){
+	var fs=require('fs');
+	console.log( 
+			 Array(80).join('=')+"\n"
+			+'loading standard loadTime modules in ('+root.config.app.modules+').\n'
+			+Array(80).join('-')
+	);
+
+	require('fs').readdirSync(root.config.app.modules).forEach(function(modName){
+		if(typeof(root.modules[modName])=='undefined'){
+			/*Module is not loaded*/
+			console.log('Module ['+modName+'] loading...\t\t\t[loadall()]');
+
+			var module_path=root.config.app.modules+modName+"/";
+			if(fs.statSync(module_path).isDirectory()){
+				/*Module directory exists*/
+				var module_manifest=module_path+"manifest.json";
+				if(fs.statSync(module_manifest).isFile()){
+					/*The module manifest file is found.*/
+					console.log("     loading module ["+module_manifest+"] manifest."
+					root.modules[modName].manifest=require(module_manifest);
+					if (isManifestValid(root.modules[modName].manifest)){
+						/*Satisfy the dependencies*/
+						root.modules[modName].manifest.dependencies.forEach(function(dependencies,index,array){load_module_files(module_path,dependencies);});
+						/*Then load the module in question*/
+						load_module_files(module_path,modName);
+					}else{
+						throw new Error('     Module('+modName+') manifest file is invalid.');
+					}
 				}else{
-					console.log('Module ['+modName+'] loaded already...skipping');
+					throw new Error('     Module ('+modName+') manifest file not found.  Check ('+module_manifest+')'
 				}
+			}else{
+				throw new Error('module ('+modName+') not found.  Check ('+module_path+')');
 			}
-		);
-		console.log(Array(80).join('=')+'\nDone Loading [loadall()]\n'+Array(80).join('='));
-	}
-}
-/* */
-function modInspect(modName,loadTime){
-	fs=require('fs');
-	
-	if(['preload','standard','postload'].indexOf(loadTime)==-1) throw new Error('invalid loadTime parameter passed to modInspect().');
-
-	/* init module object. */
-	root.modules[modName]={}
-	var module_path=root.config.app.modules+modName+"/";
-	
-	if( !fs.statSync(module_path).isDirectory() ) throw new Error('module ('+modName+') not found.  Check ('+module_path+')');
-
-	var module_manifest=module_path+"manifest.json";
-	if( fs.statSync(module_manifest).isFile() ) {
-		console.log("     module_manifest ["+modName+"]: "+module_manifest);
-		try{
-			root.modules[modName].manifest=require(module_manifest);
-		}catch(e){
-			throw new Error('manifest.json failed to load.  ERROR='+e);
-		}
-	}else{
-		throw new Error('manifest.json not found');
-	}
-	
-	if (isManifestValid(root.modules[modName].manifest)&&(root.modules[modName].manifest.loader.loadTime==loadTime)){
-		load_my_module(modName);			
-	}else{
-		console.log(
-		     '     Not loading module [' + modName + '].'
-			+'       Module loadTime=' + root.modules[modName].manifest.loader.loadTime 
-			+'       Expected '+loadTime
-		);
-	}
-	var error_file=module_path+"errors-"+process.env.LANG+".json"
-	if( fs.statSync(error_file ) ){
-		console.log("     error_file ["+modName+"]: "+error_file);
-		root.config[modName]=require(error_file);
-	}else{
-		throw new Error ('error file not found: '+error_file);
-	}
-}
-/* */
-function missingDependencies(modName){
-	if( (typeof(root.modules[modName].manifest.loader.dependencies)=='object') &&
-		(typeof(root.modules[modName].manifest.loader.dependencies.forEach)=='function')){
-		
-		if(root.modules[modName].manifest.loader.dependencies.length == 0){
-			return false; /*No dependencies specified.*/
 		}else{
-			root.modules[modName].manifest.loader.dependencies.forEach(function(d,i,a){
-				if(typeof(d)!='string') 
-					throw new Error('Bad dependency definition (expected string): '+d);
-				if(typeof(root.modules[d])=='undefined'){
-					return true;/*Missing dependency.*/
-				}else{
-					return false;/*This dependency is loaded.*/
-				}
-			});
+			console.log('Module ['+modName+'] loaded already...skipping');
 		}
-	}else{
-		if(typeof(root.modules[modName].manifest.loader.dependencies)=='undefined'){
-			return false; /*No dependencies specified.*/
-		}else{
-			throw new Error('module ['+modName+'] manifest is missing dependency array.')
-		}	
-	}
+	});
 }
 /* */
-function load_my_module(modName){
- 	if(missingDependencies(modName)){
-		throw new Error('module '+modName+' is missing one or more dependencies.');
-	}
-	var config_file=root.modules[modName].manifest.config;
-	if( fs.statSync(config_file) ) {
-		console.log("     config_file ["+modName+"]: "+config_file);
-		root.config[modName]=require(config_file);
-	}else{
-		throw new Error ('config file not found: '+config_file);
-	}
-	var main_file=root.modules[modName].manifest.main;
-	if( fs.statSync(main_file) ) {
-		console.log("     main_file ["+modName+"]: "+main_file);
-		root.config[modName]=require(main_file);
-	}else{
-		throw new Error ('main file not found: '+main_file);
-	}
-	/*
-		Add more objects from the manifest here.
-	 */
+function load_module_files(module_path,modName){
+	/*Load the module configuration*/
+	root.config[modName]=require(root.modules[modName].manifest.config);
+	/*Load the module error localization file*/
+	root.error[modName]=require(module_path+"errors"+process.env.LANG+".json");
+	root.messages[modName]=require(module_path+"messages"+process.env.LANG+".json");
+	root.modules[modName].main=require(root.modules[modName].manifest.main);
 }
 /* */
 function isManifestValid(manifest){
