@@ -7,8 +7,7 @@
 		root.config.modules (defined by bootstrap.js).
  */
 module.exports=init;
-/*
- */
+/* */
 function init(){
 	if(typeof(root.config)!='object') throw new Error('root.config not defined as object');
 	if(typeof(root.config.app)!='object') throw new Error('root.config.app not defined as object');
@@ -39,8 +38,7 @@ function init(){
 		console.log(Array(80).join('=')+'\nDone Loading [loadall()]\n'+Array(80).join('='));
 	}
 }
-/*
- */
+/* */
 function modInspect(modName,loadTime){
 	fs=require('fs');
 	
@@ -83,8 +81,7 @@ function modInspect(modName,loadTime){
 		throw new Error ('error file not found: '+error_file);
 	}
 }
-/*
- */
+/* */
 function missingDependencies(modName){
 	if( (typeof(root.modules[modName].manifest.loader.dependencies)=='object') &&
 		(typeof(root.modules[modName].manifest.loader.dependencies.forEach)=='function')){
@@ -110,8 +107,7 @@ function missingDependencies(modName){
 		}	
 	}
 }
-/*
- */
+/* */
 function load_my_module(modName){
  	if(missingDependencies(modName)){
 		throw new Error('module '+modName+' is missing one or more dependencies.');
@@ -134,7 +130,7 @@ function load_my_module(modName){
 		Add more objects from the manifest here.
 	 */
 }
-
+/* */
 function isManifestValid(manifest){
 	/*Validate manifest JSON*/
 	if(typeof( manifest )=='object' )

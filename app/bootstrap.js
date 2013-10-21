@@ -47,5 +47,5 @@ root.app.start=root.modules.start.init();
 root.app.monitor={};
 root.app.monitor.watchdog=root.modules.watchdog.init();
 root.app.monitor.stats=root.modules.stats.init();
-
+/*Initialize then launch the application with the specified service (using arg[2])*/
 root.app.main(process.argv[2]);

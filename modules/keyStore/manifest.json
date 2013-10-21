@@ -10,7 +10,7 @@
 	
 	"loader":{
 		"loadTime":"standard",
-		"dependencies":["types","error","logger","ipc","process","web","worker"]
+		"dependencies":["types","error","logger","ipc","process","web","worker","storeClient"]
 	},
 	"main":"/srv/nemesis/modules/key/main.js",
 	"config":"/srv/nemesis/modules/key/config.json"
