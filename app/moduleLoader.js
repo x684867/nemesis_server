@@ -38,6 +38,7 @@ function init(){
 					if(fs.statSync(module_manifest).isFile()){
 						/*The module manifest file is found.*/
 						console.log("     loading module ["+module_manifest+"] manifest.");
+						root.modules[modName]={};
 						root.modules[modName].manifest=require(module_manifest);
 						if (isManifestValid(root.modules[modName].manifest)){
 							/*Satisfy the dependencies*/
