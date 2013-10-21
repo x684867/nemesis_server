@@ -8,10 +8,11 @@
 
 	"name":"main",
 
-	"loader":{
-		"loadTime":"postload",
-		"dependencies":["types","error","logger","process","audit","broker","cipherStore","keyStore","watchdog","stats","marco","polo","storeServer"]
-	},
+	"dependencies":[
+		"types","error","logger","process","audit","broker",
+		"cipherStore","keyStore","watchdog","stats","marco",
+		"polo","storeServer"
+	],
 
 	"main":"/srv/nemesis/modules/main/main.js",
 	"config":"/srv/nemesis/modules/main/config.json"

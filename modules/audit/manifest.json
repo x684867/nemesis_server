@@ -8,10 +8,7 @@
 	"name":"audit",
 	"group":"server",
 	
-	"loader":{
-		"loadTime":"standard",
-		"dependencies":["types","error","logger","ipc","process","web","worker","storeClient"]
-	},
+	"dependencies":["types","error","logger","ipc","process","web","worker","storeClient"],
 	"main":"/srv/nemesis/modules/audit/main.js",
 	"config":"/srv/nemesis/modules/audit/config.json"
 }

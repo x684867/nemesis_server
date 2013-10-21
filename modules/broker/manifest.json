@@ -8,10 +8,7 @@
 	"name":"broker",
 	"group":"server",
 	
-	"loader":{
-		"loadTime":"standard",
-		"dependencies":["types","error","logger","ipc","process","web","worker","storeClient"]
-	},
+	"dependencies":["types","error","logger","ipc","process","web","worker","storeClient"],
 	"main":"/srv/nemesis/modules/broker/main.js",
 	"config":"/srv/nemesis/modules/broker/config.json"
 }

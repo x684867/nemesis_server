@@ -8,12 +8,7 @@
 	"name":"error",
 	
 	"group":"core",
-	
-	"loader":{
-		"loadTime":"preload",
-		"dependencies":["types"]
-		
-	},
+	"dependencies":["types"],
 
 	"main":"/srv/nemesis/modules/error/main.js",
 	

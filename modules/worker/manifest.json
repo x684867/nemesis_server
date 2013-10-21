@@ -8,11 +8,7 @@
 
 	"name":"worker",
 	"group":"process",
-	"loader":{
-		"loadTime":"standard",
-		"dependencies":["error","types"]
-	},
-
+	"dependencies":["error","types"],
 	"main":"/srv/nemesis/modules/worker/main.js",
 	"config":"/srv/nemesis/modules/worker/config.json"
 }

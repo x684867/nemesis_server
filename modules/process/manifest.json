@@ -8,10 +8,7 @@
 
 	"name":"process",
 	"group":"core",
-	"loader":{
-		"loadTime":"preload",
-		"dependencies":["error","types","logger","ipc"]
-	},
+	"dependencies":["error","types","logger","ipc"],
 
 	"main":"/srv/nemesis/modules/process/main.js",
 	"config":"/srv/nemesis/modules/process/config.json"

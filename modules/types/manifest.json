@@ -9,11 +9,7 @@
 	
 	"group":"core",
 	
-	"loader":{
-		"loadTime":"preload",
-		"dependencies":[]
-		
-	},
+	"dependencies":[],
 
 	"main":"/srv/nemesis/modules/types/main.js",
 	

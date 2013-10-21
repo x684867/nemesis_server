@@ -8,10 +8,8 @@
 
 	"name":"web",
 	"group":"core",
-	"loader":{
-		"loadTime":"standard",
-		"dependencies":["ipc","types","error","logger"]
-	},
+
+	"dependencies":["ipc","types","error","logger"],
 
 	"main":"/srv/nemesis/modules/web/main.js",
 	"config":"/srv/nemesis/modules/web/config.json"

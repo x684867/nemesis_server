@@ -8,10 +8,7 @@
 
 	"name":"start",
 	"group":"core",
-	"loader":{
-		"loadTime":"postload",
-		"dependencies":["types","error","logger","process","audit","broker","cipherStore","keyStore","ipc","worker","web"]
-	},
+	"dependencies":["types","error","logger","process","audit","broker","cipherStore","keyStore","ipc","worker","web"],
 
 	"main":"/srv/nemesis/modules/start/main.js",
 	"config":"/srv/nemesis/modules/start/config.json"
