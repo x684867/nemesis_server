@@ -6,12 +6,13 @@
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 
 	"name":"keyStore",
-	"group":"server",
 
 	"dependencies":[
 			"types","error","logger","ipc",
 			"process","web","worker","storeClient"
 	],
+	
 	"main":"/srv/nemesis/modules/keyStore/main.js",
+	
 	"config":"/srv/nemesis/modules/keyStore/config.json"
 }

@@ -6,10 +6,10 @@
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 
 	"name":"ipc",
-	
-	"group":"core",
-	
-	"dependencies":["types","error","logger"],
+		
+	"dependencies":[
+		"types","error","logger"
+	],
 
 	"main":"/srv/nemesis/modules/ipc/main.js",
 	

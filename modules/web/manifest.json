@@ -5,12 +5,14 @@
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 
-
 	"name":"web",
-	"group":"core",
 
-	"dependencies":["ipc","types","error","logger"],
+	"dependencies":[
+		"ipc","types",
+		"error","logger"
+	],
 
 	"main":"/srv/nemesis/modules/web/main.js",
+	
 	"config":"/srv/nemesis/modules/web/config.json"
 }

@@ -5,11 +5,14 @@
 	"_author":"Sam Caldwell <mail@samcaldwell.net>",
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 
-
 	"name":"stats",
-	"group":"monitor",
-	"dependencies":["types","error","logger","ipc","process","web","worker"],
+	
+	"dependencies":[
+		"types","error","logger",
+		"ipc","process","web","worker"
+	],
 
 	"main":"/srv/nemesis/modules/stats/main.js",
+	
 	"config":"/srv/nemesis/modules/stats/config.json"
 }

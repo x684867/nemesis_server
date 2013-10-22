@@ -6,9 +6,14 @@
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 
 	"name":"watchdog",
-	"group":"monitor",
-	"dependencies":["types","error","logger","ipc","process","web","worker","watchdog","stats","marco","polo","storeServer"],
+	
+	"dependencies":[
+		"types","error","logger","ipc","process",
+		"web","worker","watchdog","stats","marco",
+		"polo","storeServer"
+	],
 
 	"main":"/srv/nemesis/modules/watchdog/main.js",
+	
 	"config":"/srv/nemesis/modules/watchdog/config.json"
 }

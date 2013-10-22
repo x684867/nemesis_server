@@ -7,9 +7,12 @@
 
 
 	"name":"logger",
-	"group":"core",
-	"dependencies":["error","types"],
+	
+	"dependencies":[
+		"error","types"
+	],
 
 	"main":"/srv/nemesis/modules/logger/main.js",
+	
 	"config":"/srv/nemesis/modules/logger/config.json"
 }

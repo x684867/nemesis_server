@@ -6,9 +6,14 @@
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 
 	"name":"audit",
-	"group":"server",
+		
+	"dependencies":[
+		"types","error","logger","ipc","process",
+		"web","worker","storeClient"
+	],
 	
-	"dependencies":["types","error","logger","ipc","process","web","worker","storeClient"],
 	"main":"/srv/nemesis/modules/audit/main.js",
+	
 	"config":"/srv/nemesis/modules/audit/config.json"
+	
 }

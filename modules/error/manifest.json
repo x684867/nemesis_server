@@ -7,8 +7,9 @@
 
 	"name":"error",
 	
-	"group":"core",
-	"dependencies":["types"],
+	"dependencies":[
+		"types"
+	],
 
 	"main":"/srv/nemesis/modules/error/main.js",
 	

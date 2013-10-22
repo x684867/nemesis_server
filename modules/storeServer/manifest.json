@@ -6,7 +6,6 @@
 	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
 
 	"name":"audit",
-	"group":"server",
 	
 	"dependencies":[
 		"main","start","error","ipc","logger",
