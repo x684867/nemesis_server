@@ -8,7 +8,7 @@
 	is intended to manage the web services and interact with the parent (master)
 	process operated by app.js.
 */
-package.exports=workerClass
+module.exports=init
 
 const SERVER_SCRIPT_PATH='/srv/nemesis/app/servers/';
 const LOGGER_SOURCE='lib.worker';
@@ -26,7 +26,7 @@ const LOG_CODE2_VALIDATED='Validated {code:2} msg content';
 const LOG_MSG_RECD='worker.js has received a message from parent.';
 const E_INV_MSG_CHILD="Child rec'd invalid message object from parent.";
 
-function workerClass(){
+function init(){
 	log.banner(" <"+package.filename+">\nStarting workerClass()...\n",74);
 	log.write("workerClass():setup IPC message listener");
 	process.on('exit',function(code){log.write("worker exit");});

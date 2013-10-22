@@ -5,7 +5,7 @@
 	
 	
  */
-package.exports=init;
+module.exports=init;
 /* */
 
 /* */

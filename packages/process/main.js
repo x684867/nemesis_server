@@ -3,7 +3,7 @@
 	/srv/nemesis/packages/process/main.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
  */
-package.exports=process_manager;
+module.exports=process_manager;
 
 function process_manager(){
 

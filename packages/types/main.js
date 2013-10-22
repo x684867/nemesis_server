@@ -5,7 +5,7 @@
 	
 	This file provides type-checking and type-management functionality.
 */
-package.exports=init;
+module.exports=init;
 
 function init(){
 	root.error.type.success="success",

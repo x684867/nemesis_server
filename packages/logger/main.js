@@ -8,7 +8,7 @@
 	Currently only TCP connections are supported.  This will go production with 
 	encrypted communications over TLS (TCP).
 */
-package.exports=init;
+module.exports=init;
 
 require('util');
 /*

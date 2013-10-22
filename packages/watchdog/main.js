@@ -4,7 +4,7 @@
 	
 	This file creates a class for monitoring the Nemesis worker processes.
 */
-package.exports=monitorFactory;
+module.exports=monitorFactory;
 
 
 

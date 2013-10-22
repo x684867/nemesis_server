@@ -6,7 +6,7 @@
 	This file will establish error handling as root.error.{messages,raise()}
 	
 */
-package.exports=init;
+module.exports=init;
 var util=require('util');
 
 function init(){

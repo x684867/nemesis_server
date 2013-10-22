@@ -3,7 +3,7 @@
 	/srv/nemesis/core/core.start.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
  */
-package.exports=app_start;
+module.exports=app_start;
 
 function app_start(){
 	root.app.log("app.start() executing.")

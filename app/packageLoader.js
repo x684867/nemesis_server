@@ -6,7 +6,7 @@
 		This file exports an object used to load the packages defined in 
 		root.config.packages (defined by bootstrap.js).
  */
-package.exports=init;
+module.exports=init;
 /* */
 function init(){
 

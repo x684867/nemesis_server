@@ -3,7 +3,7 @@
 	/srv/nemesis/core/core.main.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
  */
-package.exports=init;
+module.exports=init;
 
 function init(operatingMode){
 	/*
