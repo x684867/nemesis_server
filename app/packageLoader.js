@@ -45,19 +45,19 @@ function init(){
 			}
 		});
 	}
-	root.packages.loadManifest(pkgName){
+	root.packages.loadManifest=function(pkgName){
 		root.packages[pkgName].manifest=require(root.config.app.packages+pkgName + "/manifest.json");
 	}
-	root.packages.loadConfig(pkgName){
+	root.packages.loadConfig=function(pkgName){
 	root.config[pkgName].config=require(root.config.app.packages+pkgName + "/config.json");
 	}
-	root.packages.loadErrors(pkgName){
+	root.packages.loadErrors=function(pkgName){
 		root.error[pkgName]=require(root.config.app.packages+pkgName + "/errors-"+process.env.LANG+".json);
 	}
-	root.messages.loadMessages(pkgName){
+	root.messages.loadMessages=function(pkgName){
 		root.messages[pkgName]=require(root.config.app.packages+pkgName + "/messages-"+process.env.LANG+".json);
 	}
-	root.messages.LoadMain(pkgName){
+	root.messages.LoadMain=function(pkgName){
 		root.packages[pkgName].main=require(root.config.app.packages+pkgName + "/main.js");
 	}
 }
