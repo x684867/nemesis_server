@@ -1,7 +1,7 @@
 // npm edit <pkg>[@<version>]
 // open the package folder in the $EDITOR
 
-module.exports = edit
+package.exports = edit
 edit.usage = "npm edit <pkg>"
 
 edit.completion = require("./utils/completion/installed-shallow.js")
@@ -19,8 +19,8 @@ function edit (args, cb) {
   if (!e) return cb(new Error(
     "No editor set.  Set the 'editor' config, or $EDITOR environ."))
   p = p.split("/")
-       .join("/node_modules/")
-       .replace(/(\/node_modules)+/, "/node_modules")
+       .join("/node_packages/")
+       .replace(/(\/node_packages)+/, "/node_packages")
   var f = path.resolve(npm.dir, p)
   fs.lstat(f, function (er) {
     if (er) return cb(er)

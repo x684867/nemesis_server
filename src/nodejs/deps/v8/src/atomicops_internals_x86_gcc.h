@@ -33,7 +33,7 @@
 namespace v8 {
 namespace internal {
 
-// This struct is not part of the public API of this module; clients may not
+// This struct is not part of the public API of this package; clients may not
 // use it.
 // Features of this x86.  Values may not be correct before main() is run,
 // but are set conservatively.

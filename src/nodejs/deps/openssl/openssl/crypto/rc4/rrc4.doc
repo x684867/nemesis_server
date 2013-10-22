@@ -22,7 +22,7 @@ On Saturday morning an anonymous cypherpunk wrote:
    SUBJECT:  RC4 Source Code
  
  
-   I've tested this.  It is compatible with the RC4 object module
+   I've tested this.  It is compatible with the RC4 object package
    that comes in the various RSA toolkits.  
  
    /* rc4.h */

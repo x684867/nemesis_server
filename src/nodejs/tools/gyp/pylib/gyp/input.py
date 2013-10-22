@@ -6,7 +6,7 @@ from compiler.ast import Const
 from compiler.ast import Dict
 from compiler.ast import Discard
 from compiler.ast import List
-from compiler.ast import Module
+from compiler.ast import package
 from compiler.ast import Node
 from compiler.ast import Stmt
 import compiler
@@ -26,7 +26,7 @@ from gyp.common import GypError
 
 
 # A list of types that are treated as linkable.
-linkable_types = ['executable', 'shared_library', 'loadable_module']
+linkable_types = ['executable', 'shared_library', 'loadable_package']
 
 # A list of sections that contain links to other targets.
 dependency_sections = ['dependencies', 'export_dependent_settings']
@@ -158,7 +158,7 @@ def CheckedEval(file_contents):
   """
 
   ast = compiler.parse(file_contents)
-  assert isinstance(ast, Module)
+  assert isinstance(ast, package)
   c1 = ast.getChildren()
   assert c1[0] is None
   assert isinstance(c1[1], Stmt)
@@ -837,22 +837,22 @@ def ExpandVariables(input, phase, variables, build_file):
         replacement = ''
 
         if command_string == 'pymod_do_main':
-          # <!pymod_do_main(modulename param eters) loads |modulename| as a
-          # python module and then calls that module's DoMain() function,
-          # passing ["param", "eters"] as a single list argument. For modules
+          # <!pymod_do_main(packagename param eters) loads |packagename| as a
+          # python package and then calls that package's DoMain() function,
+          # passing ["param", "eters"] as a single list argument. For packages
           # that don't load quickly, this can be faster than
-          # <!(python modulename param eters). Do this in |build_file_dir|.
+          # <!(python packagename param eters). Do this in |build_file_dir|.
           oldwd = os.getcwd()  # Python doesn't like os.open('.'): no fchdir.
           os.chdir(build_file_dir)
           try:
 
             parsed_contents = shlex.split(contents)
             try:
-              py_module = __import__(parsed_contents[0])
+              py_package = __import__(parsed_contents[0])
             except ImportError as e:
               raise GypError("Error importing pymod_do_main"
-                             "module (%s): %s" % (parsed_contents[0], e))
-            replacement = str(py_module.DoMain(parsed_contents[1:])).rstrip()
+                             "package (%s): %s" % (parsed_contents[0], e))
+            replacement = str(py_package.DoMain(parsed_contents[1:])).rstrip()
           finally:
             os.chdir(oldwd)
           assert replacement != None
@@ -1603,11 +1603,11 @@ class DependencyGraphNode(object):
         dependencies.append(self.ref)
       return dependencies
 
-    # Executables and loadable modules are already fully and finally linked.
+    # Executables and loadable packages are already fully and finally linked.
     # Nothing else can be a link dependency of them, there can only be
     # dependencies in the sense that a dependent target might run an
-    # executable or load the loadable_module.
-    if not initial and target_type in ('executable', 'loadable_module'):
+    # executable or load the loadable_package.
+    if not initial and target_type in ('executable', 'loadable_package'):
       return dependencies
 
     # The target is linkable, add it to the list of link dependencies.
@@ -2311,7 +2311,7 @@ def ValidateTargetType(target, target_dict):
 
   Raises an exception on error.
   """
-  VALID_TARGET_TYPES = ('executable', 'loadable_module',
+  VALID_TARGET_TYPES = ('executable', 'loadable_package',
                         'static_library', 'shared_library',
                         'none')
   target_type = target_dict.get('type', None)
@@ -2327,7 +2327,7 @@ def ValidateTargetType(target, target_dict):
 
 
 def ValidateSourcesInTarget(target, target_dict, build_file):
-  # TODO: Check if MSVC allows this for loadable_module targets.
+  # TODO: Check if MSVC allows this for loadable_package targets.
   if target_dict.get('type', None) not in ('static_library', 'shared_library'):
     return
   sources = target_dict.get('sources', [])

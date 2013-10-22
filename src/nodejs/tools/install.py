@@ -86,7 +86,7 @@ def update_shebang(path, shebang):
   open(path, 'w').write(s)
 
 def npm_files(action):
-  target_path = 'lib/node_modules/npm/'
+  target_path = 'lib/node_packages/npm/'
 
   # don't install npm if the target path is a symlink, it probably means
   # that a dev version of npm is installed there
@@ -104,7 +104,7 @@ def npm_files(action):
   if action == uninstall:
     action([link_path], 'bin/npm')
   elif action == install:
-    try_symlink('../lib/node_modules/npm/bin/npm-cli.js', link_path)
+    try_symlink('../lib/node_packages/npm/bin/npm-cli.js', link_path)
     if os.environ.get('PORTABLE'):
       # This crazy hack is necessary to make the shebang execute the copy
       # of node relative to the same directory as the npm script. The precompiled

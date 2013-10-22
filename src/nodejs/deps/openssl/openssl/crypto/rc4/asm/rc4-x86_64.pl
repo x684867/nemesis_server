@@ -2,7 +2,7 @@
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -14,7 +14,7 @@
 # coefficient. It turned out that eliminating RC4_CHAR from config
 # line results in ~40% improvement (yes, even for C implementation).
 # Presumably it has everything to do with AMD cache architecture and
-# RAW or whatever penalties. Once again! The module *requires* config
+# RAW or whatever penalties. Once again! The package *requires* config
 # line *without* RC4_CHAR! As for coding "secret," I bet on partial
 # register arithmetics. For example instead of 'inc %r8; and $255,%r8'
 # I simply 'inc %r8b'. Even though optimization manual discourages
@@ -84,7 +84,7 @@
 # some of the ideas even in attempt to optmize the original RC4_INT
 # code path... Current performance in cycles per processed byte (less
 # is better) and improvement coefficients relative to previous
-# version of this module are:
+# version of this package are:
 #
 # Opteron	5.3/+0%(*)
 # P4		6.5

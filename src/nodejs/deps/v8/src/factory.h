@@ -185,8 +185,8 @@ class Factory {
   Handle<Context> NewGlobalContext(Handle<JSFunction> function,
                                    Handle<ScopeInfo> scope_info);
 
-  // Create a module context.
-  Handle<Context> NewModuleContext(Handle<ScopeInfo> scope_info);
+  // Create a package context.
+  Handle<Context> NewpackageContext(Handle<ScopeInfo> scope_info);
 
   // Create a function context.
   Handle<Context> NewFunctionContext(int length, Handle<JSFunction> function);
@@ -307,8 +307,8 @@ class Factory {
   Handle<JSObject> NewJSObjectFromMapForDeoptimizer(
       Handle<Map> map, PretenureFlag pretenure = NOT_TENURED);
 
-  // JS modules are pretenured.
-  Handle<JSModule> NewJSModule(Handle<Context> context,
+  // JS packages are pretenured.
+  Handle<JSpackage> NewJSpackage(Handle<Context> context,
                                Handle<ScopeInfo> scope_info);
 
   // JS arrays are pretenured when allocated by the parser.

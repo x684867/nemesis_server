@@ -656,4 +656,4 @@ void Initialize(Handle<Object> target,
 }  // namespace Buffer
 }  // namespace node
 
-NODE_MODULE_CONTEXT_AWARE(node_buffer, node::Buffer::Initialize)
+NODE_package_CONTEXT_AWARE(node_buffer, node::Buffer::Initialize)

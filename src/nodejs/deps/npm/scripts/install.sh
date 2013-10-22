@@ -227,8 +227,8 @@ cd "$TMP" \
   && rm "$cacert" \
   && cd "$TMP"/* \
   && (req=`"$node" bin/read-package-json.js package.json engines.node`
-      if [ -d node_modules ]; then
-        "$node" node_modules/semver/bin/semver -v "$node_version" -r "$req"
+      if [ -d node_packages ]; then
+        "$node" node_packages/semver/bin/semver -v "$node_version" -r "$req"
         ret=$?
       else
         "$node" bin/semver.js -v "$node_version" -r "$req"
@@ -244,8 +244,8 @@ cd "$TMP" \
       isnpm10=0
       if [ $ret -eq 0 ]; then
         req=`"$node" bin/read-package-json.js package.json engines.node`
-        if [ -d node_modules ]; then
-          if "$node" node_modules/semver/bin/semver -v "$ver" -r "1"
+        if [ -d node_packages ]; then
+          if "$node" node_packages/semver/bin/semver -v "$ver" -r "1"
           then
             isnpm10=1
           fi

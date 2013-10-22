@@ -2,7 +2,7 @@
 // Packs the specified package into a .tgz file, which can then
 // be installed.
 
-module.exports = pack
+package.exports = pack
 
 var npm = require("./npm.js")
   , install = require("./install.js")

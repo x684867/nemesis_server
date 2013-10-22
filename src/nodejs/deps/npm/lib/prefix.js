@@ -1,4 +1,4 @@
-module.exports = prefix
+package.exports = prefix
 
 var npm = require("./npm.js")
 

@@ -24,8 +24,8 @@ var events = require('events');
 var EventEmitter = events.EventEmitter;
 var inherits = util.inherits;
 
-// communicate with events module, but don't require that
-// module to have to load this one, since this module has
+// communicate with events package, but don't require that
+// package to have to load this one, since this package has
 // a few side effects.
 events.usingDomains = true;
 

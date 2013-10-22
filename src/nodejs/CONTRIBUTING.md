@@ -25,8 +25,8 @@ API/ABI or affect the run-time behavior of applications get rejected.
 The rules for the master branch are less strict; consult the
 [stability index page][] for details.
 
-In a nutshell, modules are at varying levels of API stability.  Bug fixes are
-always welcome but API or behavioral  changes to modules at stability level 3
+In a nutshell, packages are at varying levels of API stability.  Bug fixes are
+always welcome but API or behavioral  changes to packages at stability level 3
 and up are off-limits.
 
 Node.js has several bundled dependencies in the deps/ and the tools/

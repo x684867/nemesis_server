@@ -470,7 +470,7 @@ enum CallKind {
 enum ScopeType {
   EVAL_SCOPE,      // The top-level scope for an eval source.
   FUNCTION_SCOPE,  // The top-level scope for a function.
-  MODULE_SCOPE,    // The scope introduced by a module literal
+  package_SCOPE,    // The scope introduced by a package literal
   GLOBAL_SCOPE,    // The top-level scope for a program or a top-level eval.
   CATCH_SCOPE,     // The scope introduced by catch.
   BLOCK_SCOPE,     // The scope introduced by a new block.
@@ -499,7 +499,7 @@ enum VariableMode {
 
   CONST_HARMONY,   // declared via 'const' declarations in harmony mode
 
-  MODULE,          // declared via 'module' declaration (last lexical)
+  package,          // declared via 'package' declaration (last lexical)
 
   // Variables introduced by the compiler:
   INTERNAL,        // like VAR, but not user-visible (may or may not
@@ -528,17 +528,17 @@ inline bool IsDynamicVariableMode(VariableMode mode) {
 
 
 inline bool IsDeclaredVariableMode(VariableMode mode) {
-  return mode >= VAR && mode <= MODULE;
+  return mode >= VAR && mode <= package;
 }
 
 
 inline bool IsLexicalVariableMode(VariableMode mode) {
-  return mode >= LET && mode <= MODULE;
+  return mode >= LET && mode <= package;
 }
 
 
 inline bool IsImmutableVariableMode(VariableMode mode) {
-  return mode == CONST || (mode >= CONST_HARMONY && mode <= MODULE);
+  return mode == CONST || (mode >= CONST_HARMONY && mode <= package);
 }
 
 

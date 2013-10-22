@@ -145,18 +145,18 @@ function run(args) {
          if (FS.findObject(input_file_name)) {
            FS.deleteFile(input_file_name);
          }
-         var arrc = Module["intArrayFromString"](plot_script, true);
+         var arrc = package["intArrayFromString"](plot_script, true);
          FS.createDataFile("/", input_file_name, arrc);
        });
 
   time("Running gnuplot (" + objects + " objects)",
-       function() { Module.run([input_file_name]); });
+       function() { package.run([input_file_name]); });
 
   displayplot(FS.findObject(output_file_name));
 }
 
 
-var Module = {
+var package = {
     "noInitialRun": true,
     print: function(text) {
         self.postMessage({"call": "error", "args": text});

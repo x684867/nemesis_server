@@ -14,7 +14,7 @@ slug: node-version-0-6-19-stable
 </li>
 <li><p>fs: no end emit after createReadStream.pause() (Andreas Madsen)</p>
 </li>
-<li><p>vm: cleanup module memory leakage (Marcel Laverdet)</p>
+<li><p>vm: cleanup package memory leakage (Marcel Laverdet)</p>
 </li>
 <li><p>unix: fix loop starvation under high network load (Ben Noordhuis)</p>
 </li>

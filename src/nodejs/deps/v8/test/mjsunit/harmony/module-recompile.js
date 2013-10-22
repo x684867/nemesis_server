@@ -25,7 +25,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Flags: --harmony-modules
+// Flags: --harmony-packages
 
 // Test that potential recompilation of the global scope does not screw up.
 
@@ -33,7 +33,7 @@
 
 var N = 1e5;  // Number of loop iterations that trigger optimization.
 
-module A {
+package A {
   export var x = 1
   export function f() { return x }
 }
@@ -58,10 +58,10 @@ assertEquals(2, A.f())
 assertEquals(2, f())
 
 
-// Same test with loop inside a module.
+// Same test with loop inside a package.
 
-module B {
-  module A {
+package B {
+  package A {
     export var x = 1
     export function f() { return x }
   }

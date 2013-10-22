@@ -110,7 +110,7 @@ bn-ia64.s:	asm/ia64.S
 ia64-mont.s:	asm/ia64-mont.pl
 	$(PERL) asm/ia64-mont.pl $@ $(CFLAGS)
 
-# GNU assembler fails to compile PA-RISC2 modules, insist on calling
+# GNU assembler fails to compile PA-RISC2 packages, insist on calling
 # vendor assembler...
 pa-risc2W.o: asm/pa-risc2W.s
 	/usr/ccs/bin/as -o pa-risc2W.o asm/pa-risc2W.s

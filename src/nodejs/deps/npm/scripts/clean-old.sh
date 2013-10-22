@@ -96,7 +96,7 @@ for prefix in $PREFIXES; do
         done
   done
 
-  # now remove the package modules, and the .npm folder itself.
+  # now remove the package packages, and the .npm folder itself.
   if [ "x$packages" != "x" ]; then
     for pkg in $packages; do
       filelist[$fid]="$prefix/lib/node/$pkg"

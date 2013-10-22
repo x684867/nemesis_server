@@ -2,7 +2,7 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -685,7 +685,7 @@ $code.=<<___;
 	.STRINGZ "SHA`64*$SZ` block transform for PA-RISC, CRYPTOGAMS by <appro\@openssl.org>"
 ___
 
-# Explicitly encode PA-RISC 2.0 instructions used in this module, so
+# Explicitly encode PA-RISC 2.0 instructions used in this package, so
 # that it can be compiled with .LEVEL 1.0. It should be noted that I
 # wouldn't have to do this, if GNU assembler understood .ALLOW 2.0
 # directive...

@@ -1089,7 +1089,7 @@ ASN1_VALUE * ASN1_item_d2i(ASN1_VALUE **val, const unsigned char **in, long len,
 int ASN1_item_i2d(ASN1_VALUE *val, unsigned char **out, const ASN1_ITEM *it);
 int ASN1_item_ndef_i2d(ASN1_VALUE *val, unsigned char **out, const ASN1_ITEM *it);
 
-void ASN1_add_oid_module(void);
+void ASN1_add_oid_package(void);
 
 ASN1_TYPE *ASN1_generate_nconf(char *str, CONF *nconf);
 ASN1_TYPE *ASN1_generate_v3(char *str, X509V3_CTX *cnf);
@@ -1261,7 +1261,7 @@ void ERR_load_ASN1_strings(void);
 #define ASN1_F_I2D_RSA_NET				 162
 #define ASN1_F_I2D_RSA_PUBKEY				 165
 #define ASN1_F_LONG_C2I					 166
-#define ASN1_F_OID_MODULE_INIT				 174
+#define ASN1_F_OID_package_INIT				 174
 #define ASN1_F_PARSE_TAGGING				 182
 #define ASN1_F_PKCS5_PBE2_SET_IV			 167
 #define ASN1_F_PKCS5_PBE_SET				 202

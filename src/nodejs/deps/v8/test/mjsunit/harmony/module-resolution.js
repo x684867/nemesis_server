@@ -25,9 +25,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Flags: --harmony-modules --harmony-scoping
+// Flags: --harmony-packages --harmony-scoping
 
-// Test basic module interface inference.
+// Test basic package interface inference.
 
 "use strict";
 
@@ -36,13 +36,13 @@ print("begin.")
 
 export let x = print("0")
 
-export module B = A.B
+export package B = A.B
 
-export module A {
+export package A {
   export let x = print("1")
   export let f = function() { return B.x }
-  export module B {
-    module BB = B
+  export package B {
+    package BB = B
     export BB, x
     let x = print("2")
     var y = print("3")
@@ -67,86 +67,86 @@ export module A {
   let Ax = A.x
   let Bx = B.x
   let ABx = A.B.x
-  module C {
+  package C {
     export let z = print("5")
-    export module D = B
+    export package D = B
     // TODO(rossberg): turn these into proper negative test cases once we have
     // suitable error messages.
     // import C.z  // multiple declarations
     import x from B
   }
-  module D {
+  package D {
     // TODO(rossberg): Handle import *.
     // import A.*  // invalid forward import
   }
-  module M {}
+  package M {}
   // TODO(rossberg): Handle import *.
   // import M.*  // invalid forward import
   let Cz = C.z
   let CDx = C.D.x
 }
 
-export module Imports {
-  module A1 {
-    export module A2 {}
+export package Imports {
+  package A1 {
+    export package A2 {}
   }
-  module B {
+  package B {
     // TODO(rossberg): Handle import *.
     // import A1.*
     // import A2.*  // unbound variable A2
   }
 }
 
-export module E {
+export package E {
   export let xx = x
   export y, B
   let Bx = B.x
   // TODO(rossberg): Handle import *.
   // import A.*
-  module B = A.B
+  package B = A.B
   let y = A.y
 }
 
-export module M1 {
-  export module A2 = M2
+export package M1 {
+  export package A2 = M2
 }
-export module M2 {
-  export module A1 = M1
+export package M2 {
+  export package A1 = M1
 }
 
 // TODO(rossberg): turn these into proper negative test cases once we have
 // suitable error messages.
-// module W1 = W2.W
-// module W2 = { export module W = W3 }
-// module W3 = W1  // cyclic module definition
+// package W1 = W2.W
+// package W2 = { export package W = W3 }
+// package W3 = W1  // cyclic package definition
 
-// module W1 = W2.W3
-// module W2 = {
-//   export module W3 = W4
-//   export module W4 = W1
-// }  // cyclic module definition
+// package W1 = W2.W3
+// package W2 = {
+//   export package W3 = W4
+//   export package W4 = W1
+// }  // cyclic package definition
 
 // TODO(rossberg): Handle import *.
-//module M3B = M3.B
-//export module M3 {
-//  export module B { export let x = "" }
-//  module C1 = { import M3.* }
-//  module C2 = { import M3.B.* }
-//  module C3 = { import M3B.* }
-//  module C4 = { export x import B.* }
+//package M3B = M3.B
+//export package M3 {
+//  export package B { export let x = "" }
+//  package C1 = { import M3.* }
+//  package C2 = { import M3.B.* }
+//  package C3 = { import M3B.* }
+//  package C4 = { export x import B.* }
 //// TODO(rossberg): turn these into proper negative test cases once we have
 //// suitable error messages.
-//// export module C5 = { import C5.* }  // invalid forward import
-//// export module C6 = { import M3.C6.* }  // invalid forward import
+//// export package C5 = { import C5.* }  // invalid forward import
+//// export package C6 = { import M3.C6.* }  // invalid forward import
 //}
 
-export module External at "external.js"
-export module External1 = External
-//export module ExternalA = External.A
-export module InnerExternal {
-  export module E at "external.js"
+export package External at "external.js"
+export package External1 = External
+//export package ExternalA = External.A
+export package InnerExternal {
+  export package E at "external.js"
 }
-export module External2 = InnerExternal.E
+export package External2 = InnerExternal.E
 //export let xxx = InnerExternal.E.A.x
 
 print("end.")

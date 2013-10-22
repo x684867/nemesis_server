@@ -26,7 +26,7 @@
   * GNU C (Cygwin or MinGW)
 
 - Netwide Assembler, a.k.a. NASM, available from http://nasm.sourceforge.net/
-  is required if you intend to utilize assembler modules. Note that NASM
+  is required if you intend to utilize assembler packages. Note that NASM
   is now the only supported assembler.
 
  If you are compiling from a tarball or a Git snapshot then the Win32 files

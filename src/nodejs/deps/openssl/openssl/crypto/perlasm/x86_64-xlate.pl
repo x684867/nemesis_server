@@ -13,7 +13,7 @@
 #
 # This translator is not designed to convert *arbitrary* assembler
 # code from AT&T format to MASM one. It's designed to convert just
-# enough to provide for dual-ABI OpenSSL modules development...
+# enough to provide for dual-ABI OpenSSL packages development...
 # There *are* limitations and you might have to modify your assembler
 # code or this script to achieve the desired result...
 #
@@ -242,7 +242,7 @@ my %globals;
 
 	# Silently convert all EAs to 64-bit. This is required for
 	# elder GNU assembler and results in more compact code,
-	# *but* most importantly AES module depends on this feature!
+	# *but* most importantly AES package depends on this feature!
 	$self->{index} =~ s/^[er](.?[0-9xpi])[d]?$/r\1/;
 	$self->{base}  =~ s/^[er](.?[0-9xpi])[d]?$/r\1/;
 
@@ -987,7 +987,7 @@ close STDOUT;
 # }
 #
 # It's appropriate to implement this handler in assembler, directly in
-# function's module. In order to do that one has to know members'
+# function's package. In order to do that one has to know members'
 # offsets in CONTEXT and DISPATCHER_CONTEXT structures and some constant
 # values. Here they are:
 #
@@ -1049,8 +1049,8 @@ close STDOUT;
 # Reference to functon_unwind_info from .xdata segment is the anchor.
 # In case you wonder why references are 32-bit .rvas and not 64-bit
 # .quads. References put into these two segments are required to be
-# *relative* to the base address of the current binary module, a.k.a.
-# image base. No Win64 module, be it .exe or .dll, can be larger than
+# *relative* to the base address of the current binary package, a.k.a.
+# image base. No Win64 package, be it .exe or .dll, can be larger than
 # 2GB and thus such relative references can be and are accommodated in
 # 32 bits.
 #

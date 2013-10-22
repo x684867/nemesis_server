@@ -11,7 +11,7 @@ import re
 import subprocess
 
 
-# TODO:  remove when we delete the last WriteList() call in this module
+# TODO:  remove when we delete the last WriteList() call in this package
 WriteList = SCons.WriteList
 
 
@@ -774,9 +774,9 @@ def GypLibrary(env, target, source, *args, **kw):
   result = env.Library(target, source, *args, **kw)
   return result
 
-def GypLoadableModule(env, target, source, *args, **kw):
+def GypLoadablepackage(env, target, source, *args, **kw):
   source = compilable_files(env, source)
-  result = env.LoadableModule(target, source, *args, **kw)
+  result = env.Loadablepackage(target, source, *args, **kw)
   return result
 
 def GypStaticLibrary(env, target, source, *args, **kw):
@@ -795,7 +795,7 @@ def add_gyp_methods(env):
   env.AddMethod(GypProgram)
   env.AddMethod(GypTestProgram)
   env.AddMethod(GypLibrary)
-  env.AddMethod(GypLoadableModule)
+  env.AddMethod(GypLoadablepackage)
   env.AddMethod(GypStaticLibrary)
   env.AddMethod(GypSharedLibrary)
 
@@ -824,7 +824,7 @@ if not GetOption('verbose'):
       CCCOMSTR='Compiling $TARGET',
       CONCATSOURCECOMSTR='ConcatSource $TARGET',
       CXXCOMSTR='Compiling $TARGET',
-      LDMODULECOMSTR='Building loadable module $TARGET',
+      LDpackageCOMSTR='Building loadable package $TARGET',
       LINKCOMSTR='Linking $TARGET',
       MANIFESTCOMSTR='Updating manifest for $TARGET',
       MIDLCOMSTR='Compiling IDL $TARGET',
@@ -859,13 +859,13 @@ Local command-line build options:
   --verbose                 Print actual executed command lines.
 
 Supported command-line build variables:
-  LOAD=[module,...]         Comma-separated list of components to load in the
+  LOAD=[package,...]         Comma-separated list of components to load in the
                               dependency graph ('-' prefix excludes)
   PROGRESS=type             Display a progress indicator:
                               name:  print each evaluated target name
                               spinner:  print a spinner every 5 targets
 
-The following TARGET names can also be used as LOAD= module names:
+The following TARGET names can also be used as LOAD= package names:
 
 %%s
 '''
@@ -899,7 +899,7 @@ if GetOption('help'):
     fmt = "The following are additional TARGET names:\\n\\n%%s\\n"
     help_text.append(fmt %% columnar_text(sorted(list(target_only))))
   if load_only:
-    fmt = "The following are additional LOAD= module names:\\n\\n%%s\\n"
+    fmt = "The following are additional LOAD= package names:\\n\\n%%s\\n"
     help_text.append(fmt %% columnar_text(sorted(list(load_only))))
   Help(''.join(help_text))
 """
@@ -1035,7 +1035,7 @@ def GenerateOutput(target_list, target_dicts, data, params):
       if td['type'] in ('static_library', 'shared_library'):
         libname = td.get('product_name', target_name)
         spec['libraries'].append('lib' + libname)
-      if td['type'] == 'loadable_module':
+      if td['type'] == 'loadable_package':
         prereqs = spec.get('scons_prerequisites', [])
         # TODO:  parameterize with <(SHARED_LIBRARY_*) variables?
         td_target = SCons.Target(td)

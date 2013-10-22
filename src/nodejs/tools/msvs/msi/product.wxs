@@ -83,7 +83,7 @@
     <Feature Id="EnvironmentPath"
              Level="1"
              Title="Add to PATH"
-             Description="Add Node, npm, and modules that were globally installed by npm to the PATH environment variable.">
+             Description="Add Node, npm, and packages that were globally installed by npm to the PATH environment variable.">
       <Feature Id="EnvironmentPathNode"
                Level="1"
                Title="Node and npm"
@@ -91,11 +91,11 @@
         <ComponentRef Id="EnvironmentPathNode"/>
       </Feature>
 
-      <Feature Id="EnvironmentPathNpmModules"
+      <Feature Id="EnvironmentPathNpmpackages"
                Level="1"
-               Title="npm modules"
-               Description="Add modules that are installed globally by npm to the PATH environment variable. This option works for the current user only; other users need to update their PATH manually.">
-        <ComponentRef Id="EnvironmentPathNpmModules"/>
+               Title="npm packages"
+               Description="Add packages that are installed globally by npm to the PATH environment variable. This option works for the current user only; other users need to update their PATH manually.">
+        <ComponentRef Id="EnvironmentPathNpmpackages"/>
       </Feature>
     </Feature>
 
@@ -177,7 +177,7 @@
         <File Id="npm.sh" KeyPath="yes" Source="$(var.NpmSourceDir)\bin\npm"/>
       </Component>
 
-      <Directory Id="NodeModulesFolder" Name="node_modules">
+      <Directory Id="NodepackagesFolder" Name="node_packages">
         <Directory Id="NpmFolder" Name="npm">
           <Component Id="NpmConfigurationFile">
             <File Id="npm.rc" KeyPath="yes" Source="$(var.RepoDir)\tools\msvs\npm\npmrc"/>
@@ -221,14 +221,14 @@
                      Value="[INSTALLDIR]"/>
       </Component>
 
-      <Component Id="EnvironmentPathNpmModules">
+      <Component Id="EnvironmentPathNpmpackages">
         <RegistryValue Root="HKCU"
                        Key="$(var.RegistryKeyPath)\Components"
-                       Name="EnvironmentPathNpmModules"
+                       Name="EnvironmentPathNpmpackages"
                        Type="integer"
                        Value="1"
                        KeyPath="yes"/>
-        <Environment Id="EnvironmentPathNpmModules"
+        <Environment Id="EnvironmentPathNpmpackages"
                      Action="set"
                      Name="PATH"
                      Part="last"

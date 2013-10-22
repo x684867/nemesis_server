@@ -99,8 +99,8 @@ class VisualStudioVersion(object):
 def _RegistryQueryBase(sysdir, key, value):
   """Use reg.exe to read a particular key.
 
-  While ideally we might use the win32 module, we would like gyp to be
-  python neutral, so for instance cygwin python lacks this module.
+  While ideally we might use the win32 package, we would like gyp to be
+  python neutral, so for instance cygwin python lacks this package.
 
   Arguments:
     sysdir: The system subdirectory to attempt to launch reg.exe from.

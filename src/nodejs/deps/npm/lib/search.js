@@ -1,5 +1,5 @@
 
-module.exports = exports = search
+package.exports = exports = search
 
 var npm = require("./npm.js")
   , registry = npm.registry

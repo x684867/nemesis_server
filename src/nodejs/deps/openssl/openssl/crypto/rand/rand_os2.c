@@ -62,7 +62,7 @@
 #define INCL_DOSPROCESS
 #define INCL_DOSPROFILE
 #define INCL_DOSMISC
-#define INCL_DOSMODULEMGR
+#define INCL_DOSpackageMGR
 #include <os2.h>
 
 #define   CMD_KI_RDCNT    (0x63)
@@ -82,16 +82,16 @@ typedef struct _CPUUTIL {
 APIRET APIENTRY(*DosPerfSysCall) (ULONG ulCommand, ULONG ulParm1, ULONG ulParm2, ULONG ulParm3) = NULL;
 APIRET APIENTRY(*DosQuerySysState) (ULONG func, ULONG arg1, ULONG pid, ULONG _res_, PVOID buf, ULONG bufsz) = NULL;
 #endif
-HMODULE hDoscalls = 0;
+Hpackage hDoscalls = 0;
 
 int RAND_poll(void)
 {
-    char failed_module[20];
+    char failed_package[20];
     QWORD qwTime;
     ULONG SysVars[QSV_FOREGROUND_PROCESS];
 
     if (hDoscalls == 0) {
-        ULONG rc = DosLoadModule(failed_module, sizeof(failed_module), "DOSCALLS", &hDoscalls);
+        ULONG rc = DosLoadpackage(failed_package, sizeof(failed_package), "DOSCALLS", &hDoscalls);
 
 #ifndef __KLIBC__
         if (rc == 0) {

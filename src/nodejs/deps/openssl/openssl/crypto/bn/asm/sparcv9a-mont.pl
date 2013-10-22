@@ -2,24 +2,24 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 
 # October 2005
 #
-# "Teaser" Montgomery multiplication module for UltraSPARC. Why FPU?
+# "Teaser" Montgomery multiplication package for UltraSPARC. Why FPU?
 # Because unlike integer multiplier, which simply stalls whole CPU,
 # FPU is fully pipelined and can effectively emit 48 bit partial
 # product every cycle. Why not blended SPARC v9? One can argue that
-# making this module dependent on UltraSPARC VIS extension limits its
+# making this package dependent on UltraSPARC VIS extension limits its
 # binary compatibility. Well yes, it does exclude SPARC64 prior-V(!)
 # implementations from compatibility matrix. But the rest, whole Sun
 # UltraSPARC family and brand new Fujitsu's SPARC64 V, all support
-# VIS extension instructions used in this module. This is considered
+# VIS extension instructions used in this package. This is considered
 # good enough to not care about HAL SPARC64 users [if any] who have
-# integer-only pure SPARCv9 module to "fall down" to.
+# integer-only pure SPARCv9 package to "fall down" to.
 
 # USI&II cores currently exhibit uniform 2x improvement [over pre-
 # bn_mul_mont codebase] for all key lengths and benchmarks. On USIII

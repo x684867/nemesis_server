@@ -22,7 +22,7 @@ static void unimplemented (void)
 }
 
 void OPENSSL_Uplink (volatile void **table, int index)
-{ static HMODULE volatile apphandle=NULL;
+{ static Hpackage volatile apphandle=NULL;
   static void ** volatile applinktable=NULL;
   int len;
   void (*func)(void)=unimplemented;
@@ -45,14 +45,14 @@ void OPENSSL_Uplink (volatile void **table, int index)
 	_tcscpy (msg+len,_T("unimplemented function"));
 
 	if ((h=apphandle)==NULL)
-	{   if  ((h=GetModuleHandle(NULL))==NULL)
-	    {	apphandle=(HMODULE)-1;
+	{   if  ((h=GetpackageHandle(NULL))==NULL)
+	    {	apphandle=(Hpackage)-1;
 		_tcscpy (msg+len,_T("no host application"));
 		break;
 	    }
 	    apphandle = h;
 	}
-	if ((h=apphandle)==(HMODULE)-1) /* revalidate */
+	if ((h=apphandle)==(Hpackage)-1) /* revalidate */
 	    break;
 
 	if (applinktable==NULL)
@@ -60,13 +60,13 @@ void OPENSSL_Uplink (volatile void **table, int index)
 
 	    applink=(void**(*)())GetProcAddress(h,"OPENSSL_Applink");
 	    if (applink==NULL)
-	    {	apphandle=(HMODULE)-1;
+	    {	apphandle=(Hpackage)-1;
 		_tcscpy (msg+len,_T("no OPENSSL_Applink"));
 		break;
 	    }
 	    p = (*applink)();
 	    if (p==NULL)
-	    {	apphandle=(HMODULE)-1;
+	    {	apphandle=(Hpackage)-1;
 		_tcscpy (msg+len,_T("no ApplinkTable"));
 		break;
 	    }

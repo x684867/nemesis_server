@@ -65,7 +65,7 @@ command.
 
 * `npm.dir` or `npm.root`
 
-    The `node_modules` directory where npm will operate.
+    The `node_packages` directory where npm will operate.
 
 * `npm.prefix`
 

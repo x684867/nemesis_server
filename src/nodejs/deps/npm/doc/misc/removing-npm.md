@@ -20,7 +20,7 @@ If that doesn't work, or if you require more drastic measures,
 continue reading.
 
 Note that this is only necessary for globally-installed packages.  Local
-installs are completely contained within a project's `node_modules`
+installs are completely contained within a project's `node_packages`
 folder.  Delete that folder, and everything is gone (unless a package's
 install script is particularly ill-behaved).
 
@@ -31,7 +31,7 @@ different prefix setting, then adjust the paths accordingly, replacing
 
 To remove everything npm-related manually:
 
-    rm -rf /usr/local/{lib/node{,/.npm,_modules},bin,share/man}/npm*
+    rm -rf /usr/local/{lib/node{,/.npm,_packages},bin,share/man}/npm*
 
 If you installed things *with* npm, then your best bet is to uninstall
 them with npm first, and then install them again once you have a
@@ -41,7 +41,7 @@ around:
     ls -laF /usr/local/{lib/node{,/.npm},bin,share/man} | grep npm
 
 Prior to version 0.3, npm used shim files for executables and node
-modules.  To track those down, you can do the following:
+packages.  To track those down, you can do the following:
 
     find /usr/local/{lib/node,bin} -exec grep -l npm \{\} \; ;
 

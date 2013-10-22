@@ -140,7 +140,7 @@ namespace node {
   V(buffer_constructor_function, v8::Function)                                \
   V(context, v8::Context)                                                     \
   V(domain_array, v8::Array)                                                  \
-  V(module_load_list_array, v8::Array)                                        \
+  V(package_load_list_array, v8::Array)                                        \
   V(pipe_constructor_template, v8::FunctionTemplate)                          \
   V(process_object, v8::Object)                                               \
   V(script_context_constructor_template, v8::FunctionTemplate)                \

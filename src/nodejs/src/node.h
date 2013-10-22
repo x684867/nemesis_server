@@ -59,7 +59,7 @@
 #endif
 
 #include "v8.h"  // NOLINT(build/include_order)
-#include "node_version.h"  // NODE_MODULE_VERSION
+#include "node_version.h"  // NODE_package_VERSION
 #include "node_object_wrap.h"
 
 // Forward-declare these functions now to stop MSVS from becoming
@@ -194,14 +194,14 @@ const char *signo_string(int errorno);
 
 NODE_EXTERN typedef void (*addon_register_func)(
     v8::Handle<v8::Object> exports,
-    v8::Handle<v8::Value> module);
+    v8::Handle<v8::Value> package);
 
 NODE_EXTERN typedef void (*addon_context_register_func)(
     v8::Handle<v8::Object> exports,
-    v8::Handle<v8::Value> module,
+    v8::Handle<v8::Value> package,
     v8::Handle<v8::Context> context);
 
-struct node_module_struct {
+struct node_package_struct {
   int version;
   void *dso_handle;
   const char *filename;
@@ -210,43 +210,43 @@ struct node_module_struct {
   const char *modname;
 };
 
-node_module_struct* get_builtin_module(const char *name);
+node_package_struct* get_builtin_package(const char *name);
 
-#define NODE_STANDARD_MODULE_STUFF \
-          NODE_MODULE_VERSION,     \
+#define NODE_STANDARD_package_STUFF \
+          NODE_package_VERSION,     \
           NULL,                    \
           __FILE__
 
 #ifdef _WIN32
-# define NODE_MODULE_EXPORT __declspec(dllexport)
+# define NODE_package_EXPORT __declspec(dllexport)
 #else
-# define NODE_MODULE_EXPORT /* empty */
+# define NODE_package_EXPORT /* empty */
 #endif
 
-#define NODE_MODULE(modname, regfunc)                                 \
+#define NODE_package(modname, regfunc)                                 \
   extern "C" {                                                        \
-    NODE_MODULE_EXPORT node::node_module_struct modname ## _module =  \
+    NODE_package_EXPORT node::node_package_struct modname ## _package =  \
     {                                                                 \
-      NODE_STANDARD_MODULE_STUFF,                                     \
+      NODE_STANDARD_package_STUFF,                                     \
       (node::addon_register_func) (regfunc),                          \
       NULL,                                                           \
       NODE_STRINGIFY(modname)                                         \
     };                                                                \
   }
 
-#define NODE_MODULE_CONTEXT_AWARE(modname, regfunc)                   \
+#define NODE_package_CONTEXT_AWARE(modname, regfunc)                   \
   extern "C" {                                                        \
-    NODE_MODULE_EXPORT node::node_module_struct modname ## _module =  \
+    NODE_package_EXPORT node::node_package_struct modname ## _package =  \
     {                                                                 \
-      NODE_STANDARD_MODULE_STUFF,                                     \
+      NODE_STANDARD_package_STUFF,                                     \
       NULL,                                                           \
       (regfunc),                                                      \
       NODE_STRINGIFY(modname)                                         \
     };                                                                \
   }
 
-#define NODE_MODULE_DECL(modname) \
-  extern "C" node::node_module_struct modname ## _module;
+#define NODE_package_DECL(modname) \
+  extern "C" node::node_package_struct modname ## _package;
 
 /* Called after the event loop exits but before the VM is disposed.
  * Callbacks are run in reverse order of registration, i.e. newest first.

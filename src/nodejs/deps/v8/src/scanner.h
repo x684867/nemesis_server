@@ -402,11 +402,11 @@ class Scanner {
   void SetHarmonyScoping(bool scoping) {
     harmony_scoping_ = scoping;
   }
-  bool HarmonyModules() const {
-    return harmony_modules_;
+  bool Harmonypackages() const {
+    return harmony_packages_;
   }
-  void SetHarmonyModules(bool modules) {
-    harmony_modules_ = modules;
+  void SetHarmonypackages(bool packages) {
+    harmony_packages_ = packages;
   }
   bool HarmonyNumericLiterals() const {
     return harmony_numeric_literals_;
@@ -560,8 +560,8 @@ class Scanner {
   bool has_multiline_comment_before_next_;
   // Whether we scan 'let' as a keyword for harmony block-scoped let bindings.
   bool harmony_scoping_;
-  // Whether we scan 'module', 'import', 'export' as keywords.
-  bool harmony_modules_;
+  // Whether we scan 'package', 'import', 'export' as keywords.
+  bool harmony_packages_;
   // Whether we scan 0o777 and 0b111 as numbers.
   bool harmony_numeric_literals_;
 };

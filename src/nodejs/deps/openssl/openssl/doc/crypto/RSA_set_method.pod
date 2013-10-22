@@ -50,7 +50,7 @@ RSA_set_method() selects B<meth> to perform all operations using the key
 B<rsa>. This will replace the RSA_METHOD used by the RSA key and if the
 previous method was supplied by an ENGINE, the handle to that ENGINE will
 be released during the change. It is possible to have RSA keys that only
-work with certain RSA_METHOD implementations (eg. from an ENGINE module
+work with certain RSA_METHOD implementations (eg. from an ENGINE package
 that supports embedded hardware-protected keys), and in such cases
 attempting to change the RSA_METHOD for the key can have unexpected
 results.
@@ -159,7 +159,7 @@ it returns a pointer to the newly allocated structure.
 
 As of version 0.9.7, RSA_METHOD implementations are grouped together with
 other algorithmic APIs (eg. DSA_METHOD, EVP_CIPHER, etc) into B<ENGINE>
-modules. If a default ENGINE is specified for RSA functionality using an
+packages. If a default ENGINE is specified for RSA functionality using an
 ENGINE API function, that will override any RSA defaults set using the RSA
 API (ie.  RSA_set_default_method()). For this reason, the ENGINE API is the
 recommended way to control default implementations for use in RSA and other

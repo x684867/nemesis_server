@@ -2,7 +2,7 @@
 
 // everything about the installation after the creation of
 // the .npm/{name}/{version}/package folder.
-// linking the modules into the npm.root,
+// linking the packages into the npm.root,
 // resolving dependencies, etc.
 
 // This runs AFTER install or link are completed.
@@ -20,7 +20,7 @@ var npm = require("./npm.js")
   , cmdShimIfExists = cmdShim.ifExists
   , asyncMap = require("slide").asyncMap
 
-module.exports = build
+package.exports = build
 build.usage = "npm build <folder>\n(this is plumbing)"
 
 build._didBuild = {}
@@ -72,7 +72,7 @@ function linkStuff (pkg, folder, global, didRB, cb) {
   // allow to opt out of linking binaries.
   if (npm.config.get("bin-links") === false) return cb()
 
-  // if it's global, and folder is in {prefix}/node_modules,
+  // if it's global, and folder is in {prefix}/node_packages,
   // then bins are in {prefix}/bin
   // otherwise, then bins are in folder/../.bin
   var parent = path.dirname(folder)
@@ -129,7 +129,7 @@ function rebuildBundles (pkg, folder, parent, gtop, cb) {
              .concat(Object.keys(pkg.devDependencies || {}))
     , bundles = pkg.bundleDependencies || pkg.bundledDependencies || []
 
-  fs.readdir(path.resolve(folder, "node_modules"), function (er, files) {
+  fs.readdir(path.resolve(folder, "node_packages"), function (er, files) {
     // error means no bundles
     if (er) return cb()
 
@@ -145,7 +145,7 @@ function rebuildBundles (pkg, folder, parent, gtop, cb) {
           // either not a dep, or explicitly bundled
           && (deps.indexOf(file) === -1 || bundles.indexOf(file) !== -1)
     }).map(function (file) {
-      file = path.resolve(folder, "node_modules", file)
+      file = path.resolve(folder, "node_packages", file)
       return function (cb) {
         if (build._didBuild[file]) return cb()
         log.verbose("rebuild bundle", file)
@@ -159,7 +159,7 @@ function rebuildBundles (pkg, folder, parent, gtop, cb) {
 }
 
 function linkBins (pkg, folder, parent, gtop, cb) {
-  if (!pkg.bin || !gtop && path.basename(parent) !== "node_modules") {
+  if (!pkg.bin || !gtop && path.basename(parent) !== "node_packages") {
     return cb()
   }
   var binRoot = gtop ? npm.globalBin

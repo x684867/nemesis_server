@@ -16,10 +16,10 @@ slug: node-v0-4-9
 <li> #1144 debugger: don't allow users to input non-valid commands (Siddharth Mahendraker)
 <li> Perf improvement for util.inherits
 <li> #1166 Support for signature verification with RSA/DSA public keys (Mark Cavage)
-<li> #1177 Remove node_modules lookup optimization to better support nested project structures (Mathias Buus)
+<li> #1177 Remove node_packages lookup optimization to better support nested project structures (Mathias Buus)
 <li> #1203 Add missing scope.Close to fs.sendfileSync
 <li> #1187 Support multiple 'link' headers
-<li> #1196 Fix -e/--eval can't load module from node_modules (Koichi Kobayashi)
+<li> #1196 Fix -e/--eval can't load package from node_packages (Koichi Kobayashi)
 <li> Upgrade V8 to 3.1.8.25, upgrade http-parser.</ul>
 
 

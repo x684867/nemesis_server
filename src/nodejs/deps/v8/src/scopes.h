@@ -284,14 +284,14 @@ class Scope: public ZoneObject {
   // Specific scope types.
   bool is_eval_scope() const { return scope_type_ == EVAL_SCOPE; }
   bool is_function_scope() const { return scope_type_ == FUNCTION_SCOPE; }
-  bool is_module_scope() const { return scope_type_ == MODULE_SCOPE; }
+  bool is_package_scope() const { return scope_type_ == package_SCOPE; }
   bool is_global_scope() const { return scope_type_ == GLOBAL_SCOPE; }
   bool is_catch_scope() const { return scope_type_ == CATCH_SCOPE; }
   bool is_block_scope() const { return scope_type_ == BLOCK_SCOPE; }
   bool is_with_scope() const { return scope_type_ == WITH_SCOPE; }
   bool is_declaration_scope() const {
     return is_eval_scope() || is_function_scope() ||
-        is_module_scope() || is_global_scope();
+        is_package_scope() || is_global_scope();
   }
   bool is_classic_mode() const {
     return language_mode() == CLASSIC_MODE;
@@ -357,7 +357,7 @@ class Scope: public ZoneObject {
   // The scope immediately surrounding this scope, or NULL.
   Scope* outer_scope() const { return outer_scope_; }
 
-  // The interface as inferred so far; only for module scopes.
+  // The interface as inferred so far; only for package scopes.
   Interface* interface() const { return interface_; }
 
   // ---------------------------------------------------------------------------
@@ -379,11 +379,11 @@ class Scope: public ZoneObject {
   int StackLocalCount() const;
   int ContextLocalCount() const;
 
-  // For global scopes, the number of module literals (including nested ones).
-  int num_modules() const { return num_modules_; }
+  // For global scopes, the number of package literals (including nested ones).
+  int num_packages() const { return num_packages_; }
 
-  // For module scopes, the host scope's internal variable binding this module.
-  Variable* module_var() const { return module_var_; }
+  // For package scopes, the host scope's internal variable binding this package.
+  Variable* package_var() const { return package_var_; }
 
   // Make sure this scope and all outer scopes are eagerly compiled.
   void ForceEagerCompilation()  { force_eager_compilation_ = true; }
@@ -478,7 +478,7 @@ class Scope: public ZoneObject {
   VariableDeclaration* function_;
   // Convenience variable; function scopes only.
   Variable* arguments_;
-  // Interface; module scopes only.
+  // Interface; package scopes only.
   Interface* interface_;
 
   // Illegal redeclaration.
@@ -516,11 +516,11 @@ class Scope: public ZoneObject {
   int num_stack_slots_;
   int num_heap_slots_;
 
-  // The number of modules (including nested ones).
-  int num_modules_;
+  // The number of packages (including nested ones).
+  int num_packages_;
 
-  // For module scopes, the host scope's internal variable binding this module.
-  Variable* module_var_;
+  // For package scopes, the host scope's internal variable binding this package.
+  Variable* package_var_;
 
   // Serialized scope info support.
   Handle<ScopeInfo> scope_info_;
@@ -606,7 +606,7 @@ class Scope: public ZoneObject {
   void AllocateNonParameterLocal(Variable* var);
   void AllocateNonParameterLocals();
   void AllocateVariablesRecursively();
-  void AllocateModulesRecursively(Scope* host_scope);
+  void AllocatepackagesRecursively(Scope* host_scope);
 
   // Resolve and fill in the allocation information for all variables
   // in this scopes. Must be called *after* all scopes have been

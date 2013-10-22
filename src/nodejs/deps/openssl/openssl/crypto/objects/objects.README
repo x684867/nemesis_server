@@ -30,12 +30,12 @@ Then there are some extra commands:
 		This makes sure that the name foo will be used as base name
 		in C.
 
-	!module foo
+	!package foo
 	1 2 3 4		: shortName	: Long Name
 	!global
 
-		The !module command was meant to define a kind of modularity.
-		What it does is to make sure the module name is prepended
+		The !package command was meant to define a kind of modularity.
+		What it does is to make sure the package name is prepended
 		to the base name.  !global turns this off.  This construction
 		is not recursive.
 

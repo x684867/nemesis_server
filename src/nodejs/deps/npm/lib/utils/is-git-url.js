@@ -1,4 +1,4 @@
-module.exports = isGitUrl
+package.exports = isGitUrl
 
 function isGitUrl (url) {
   switch (url.protocol) {

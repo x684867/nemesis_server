@@ -21,9 +21,9 @@ With version 0.8.0:
 1. Node got a lot faster.
 2. Node got more stable.
 3. You can do stuff with file descriptors again.
-4. The [cluster module](http://nodejs.org/api/cluster.html) is much more
+4. The [cluster package](http://nodejs.org/api/cluster.html) is much more
    awesome.
-5. The [domain module](http://nodejs.org/api/domain.html) was added.
+5. The [domain package](http://nodejs.org/api/domain.html) was added.
 6. The repl is better.
 7. The build system changed from waf to gyp.
 8. [Some other stuff changed,
@@ -159,7 +159,7 @@ Node is able to:
 
 GYP was used already in Node v0.6 to build on Windows, but now it
 defines the build on all platforms. Node is still in the process of
-migrating external addon modules to GYP, and node-gyp is included with
+migrating external addon packages to GYP, and node-gyp is included with
 npm.  In future releases, node-waf will be officially deprecated.  If
 you are currently using a wscript in your addon, please migrate to gyp
 as soon as possible.
@@ -193,7 +193,7 @@ cross-platform libuv base.
 
 Since the most common use case for listenFD was as a method for having
 servers in multiple node processes share the same underlying handle, the
-`cluster` module was added in its place.  However, this still left a lot
+`cluster` package was added in its place.  However, this still left a lot
 of use cases unaddressed, and was a reason why some people could not use
 node 0.6 for their programs.
 
@@ -214,7 +214,7 @@ the child process will see them as already-opened FDs.
 
 ## More Powerful Cluster
 
-The cluster module in 0.8 is so much improved over 0.6, it's basically a
+The cluster package in 0.8 is so much improved over 0.6, it's basically a
 complete rewrite.  The API is mostly backwards compatible, but not
 entirely.  (See the [migration
 wiki](https://github.com/joyent/node/wiki/API-changes-between-v0.6-and-v0.8)
@@ -245,20 +245,20 @@ used (and none when it isn't).  There are a lot of examples in [the API
 documentation](http://nodejs.org/api/domain.html), so check them out,
 and start handling your crashes smarter.
 
-The domain module is still experimental.  We are looking forward to your
+The domain package is still experimental.  We are looking forward to your
 feedback, so please use it and let us know what you think.
 
 ## Repl, Readline, TTY
 
-The Repl, Readline, and TTY modules have all had a major facelift.  The
-interfaces between these three modules are cleaned up and refactored,
+The Repl, Readline, and TTY packages have all had a major facelift.  The
+interfaces between these three packages are cleaned up and refactored,
 removing a lot of common pain points and making it easier to use for
 debugging your programs.
 
 It may seem minor at times, but a good repl dramatically increases the
 quality of the overall experience.  My personal favorites are:
 
-1. Typing `fs` or `net` or `path` will automatically load the module.
+1. Typing `fs` or `net` or `path` will automatically load the package.
 2. Typing `npm install ...` will give you a helpful message.
 3. It doesn't do that stupid thing where long lines wrap and then the
    backspace makes it get all confused and crazy.  Instead of that, it
@@ -277,7 +277,7 @@ The v0.9 releases will start in the next couple weeks.  The main focus
 of v0.9 will be:
 
 * The HTTP implementation - It has seen a lot of real-world use now, but
-  the http module is in dire need of a cleanup and refactor.  Special
+  the http package is in dire need of a cleanup and refactor.  Special
   attention will be paid to making the interfaces more consistent,
   improve performance, and increase correctness in more edge cases.
 * The Streams API - The concept of the Stream API is very core to node.
@@ -299,10 +299,10 @@ but these are some of the items on our radar:
 * SSL performance leaves much to be desired at the moment.  Node's
   interface with OpenSSL is somewhat naive and leaves a lot of potential
   optimization on the table.
-* The VM module needs massive improvement.  It lacks features required
+* The VM package needs massive improvement.  It lacks features required
   to emulate a web browser JavaScript context, which means that it is
   inadequate.
-* The Crypto module still uses some very dated APIs.  In 0.8, it can
+* The Crypto package still uses some very dated APIs.  In 0.8, it can
   accept Buffers for many things (finally!) but it still does not
   present a Node-like streaming interface.
 

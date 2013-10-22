@@ -3,7 +3,7 @@
 # found in the LICENSE file.
 
 """
-This module contains classes that help to emulate xcodebuild behavior on top of
+This package contains classes that help to emulate xcodebuild behavior on top of
 other build systems, such as make and ninja.
 """
 
@@ -70,9 +70,9 @@ class XcodeSettings(object):
     """Returns the bundle extension (.app, .framework, .plugin, etc).  Only
     valid for bundles."""
     assert self._IsBundle()
-    if self.spec['type'] in ('loadable_module', 'shared_library'):
+    if self.spec['type'] in ('loadable_package', 'shared_library'):
       default_wrapper_extension = {
-        'loadable_module': 'bundle',
+        'loadable_package': 'bundle',
         'shared_library': 'framework',
       }[self.spec['type']]
       wrapper_extension = self.GetPerTargetSetting(
@@ -109,7 +109,7 @@ class XcodeSettings(object):
       return os.path.join(
           self.GetWrapperName(), 'Versions', self.GetFrameworkVersion())
     else:
-      # loadable_modules have a 'Contents' folder like executables.
+      # loadable_packages have a 'Contents' folder like executables.
       return os.path.join(self.GetWrapperName(), 'Contents')
 
   def GetBundleResourceFolder(self):
@@ -122,7 +122,7 @@ class XcodeSettings(object):
     """Returns the qualified path to the bundle's plist file. E.g.
     Chromium.app/Contents/Info.plist. Only valid for bundles."""
     assert self._IsBundle()
-    if self.spec['type'] in ('executable', 'loadable_module'):
+    if self.spec['type'] in ('executable', 'loadable_package'):
       return os.path.join(self.GetBundleContentsFolderPath(), 'Info.plist')
     else:
       return os.path.join(self.GetBundleContentsFolderPath(),
@@ -133,13 +133,13 @@ class XcodeSettings(object):
     if self._IsBundle():
       return {
         'executable': 'com.apple.product-type.application',
-        'loadable_module': 'com.apple.product-type.bundle',
+        'loadable_package': 'com.apple.product-type.bundle',
         'shared_library': 'com.apple.product-type.framework',
       }[self.spec['type']]
     else:
       return {
         'executable': 'com.apple.product-type.tool',
-        'loadable_module': 'com.apple.product-type.library.dynamic',
+        'loadable_package': 'com.apple.product-type.library.dynamic',
         'shared_library': 'com.apple.product-type.library.dynamic',
         'static_library': 'com.apple.product-type.library.static',
       }[self.spec['type']]
@@ -153,7 +153,7 @@ class XcodeSettings(object):
       'executable': 'mh_execute',
       'static_library': 'staticlib',
       'shared_library': 'mh_dylib',
-      'loadable_module': 'mh_bundle',
+      'loadable_package': 'mh_bundle',
     }[self.spec['type']]
 
   def _GetBundleBinaryPath(self):
@@ -162,7 +162,7 @@ class XcodeSettings(object):
     assert self._IsBundle()
     if self.spec['type'] in ('shared_library'):
       path = self.GetBundleContentsFolderPath()
-    elif self.spec['type'] in ('executable', 'loadable_module'):
+    elif self.spec['type'] in ('executable', 'loadable_package'):
       path = os.path.join(self.GetBundleContentsFolderPath(), 'MacOS')
     return os.path.join(path, self.GetExecutableName())
 
@@ -173,7 +173,7 @@ class XcodeSettings(object):
       'executable': '',
       'static_library': '.a',
       'shared_library': '.dylib',
-      'loadable_module': '.so',
+      'loadable_package': '.so',
     }[self.spec['type']]
 
   def _GetStandaloneExecutablePrefix(self):
@@ -181,9 +181,9 @@ class XcodeSettings(object):
       'executable': '',
       'static_library': 'lib',
       'shared_library': 'lib',
-      # Non-bundled loadable_modules are called foo.so for some reason
+      # Non-bundled loadable_packages are called foo.so for some reason
       # (that is, .so and no prefix) with the xcode build -- match that.
-      'loadable_module': '',
+      'loadable_package': '',
     }[self.spec['type']])
 
   def _GetStandaloneBinaryPath(self):
@@ -191,13 +191,13 @@ class XcodeSettings(object):
     E.g. hello_world. Only valid for non-bundles."""
     assert not self._IsBundle()
     assert self.spec['type'] in (
-        'executable', 'shared_library', 'static_library', 'loadable_module'), (
+        'executable', 'shared_library', 'static_library', 'loadable_package'), (
         'Unexpected type %s' % self.spec['type'])
     target = self.spec['target_name']
     if self.spec['type'] == 'static_library':
       if target[:3] == 'lib':
         target = target[3:]
-    elif self.spec['type'] in ('loadable_module', 'shared_library'):
+    elif self.spec['type'] in ('loadable_package', 'shared_library'):
       if target[:3] == 'lib':
         target = target[3:]
 
@@ -426,9 +426,9 @@ class XcodeSettings(object):
 
   def GetInstallNameBase(self):
     """Return DYLIB_INSTALL_NAME_BASE for this target."""
-    # Xcode sets this for shared_libraries, and for nonbundled loadable_modules.
+    # Xcode sets this for shared_libraries, and for nonbundled loadable_packages.
     if (self.spec['type'] != 'shared_library' and
-        (self.spec['type'] != 'loadable_module' or self._IsBundle())):
+        (self.spec['type'] != 'loadable_package' or self._IsBundle())):
       return None
     install_base = self.GetPerTargetSetting(
         'DYLIB_INSTALL_NAME_BASE',
@@ -449,9 +449,9 @@ class XcodeSettings(object):
 
   def GetInstallName(self):
     """Return LD_DYLIB_INSTALL_NAME for this target."""
-    # Xcode sets this for shared_libraries, and for nonbundled loadable_modules.
+    # Xcode sets this for shared_libraries, and for nonbundled loadable_packages.
     if (self.spec['type'] != 'shared_library' and
-        (self.spec['type'] != 'loadable_module' or self._IsBundle())):
+        (self.spec['type'] != 'loadable_package' or self._IsBundle())):
       return None
 
     default_install_name = \
@@ -963,7 +963,7 @@ def _GetXcodeEnv(xcode_settings, built_products_dir, srcroot, configuration,
     env['SDKROOT'] = ''
 
   if spec['type'] in (
-      'executable', 'static_library', 'shared_library', 'loadable_module'):
+      'executable', 'static_library', 'shared_library', 'loadable_package'):
     env['EXECUTABLE_NAME'] = xcode_settings.GetExecutableName()
     env['EXECUTABLE_PATH'] = xcode_settings.GetExecutablePath()
     env['FULL_PRODUCT_NAME'] = xcode_settings.GetFullProductName()

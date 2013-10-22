@@ -1659,7 +1659,7 @@ void Connection::New(const FunctionCallbackInfo<Value>& args) {
   HandleScope scope(node_isolate);
 
   if (args.Length() < 1 || !args[0]->IsObject()) {
-    return ThrowError("First argument must be a crypto module Credentials");
+    return ThrowError("First argument must be a crypto package Credentials");
   }
 
   SecureContext* sc = WeakObject::Unwrap<SecureContext>(args[0]->ToObject());
@@ -3633,4 +3633,4 @@ void InitCrypto(Handle<Object> target,
 }  // namespace crypto
 }  // namespace node
 
-NODE_MODULE_CONTEXT_AWARE(node_crypto, node::crypto::InitCrypto)
+NODE_package_CONTEXT_AWARE(node_crypto, node::crypto::InitCrypto)

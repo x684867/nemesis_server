@@ -61,7 +61,7 @@
 #include <openssl/asn1t.h>
 #include <openssl/pkcs12.h>
 
-/* PKCS#12 ASN1 module */
+/* PKCS#12 ASN1 package */
 
 ASN1_SEQUENCE(PKCS12) = {
 	ASN1_SIMPLE(PKCS12, version, ASN1_INTEGER),

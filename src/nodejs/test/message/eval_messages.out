@@ -6,7 +6,7 @@ with(this){__filename}
 SyntaxError: Strict mode code may not include a with statement
     at Object.exports.runInThisContext (vm.js:*)
     at Object.<anonymous> ([eval]-wrapper:*:*)
-    at Module._compile (module.js:*:*)
+    at package._compile (package.js:*:*)
     at evalScript (node.js:*:*)
     at startup (node.js:*:*)
     at node.js:*:*
@@ -20,7 +20,7 @@ Error: hello
     at [eval]:1:7
     at Object.exports.runInThisContext (vm.js:*)
     at Object.<anonymous> ([eval]-wrapper:*:*)
-    at Module._compile (module.js:*:*)
+    at package._compile (package.js:*:*)
     at evalScript (node.js:*:*)
     at startup (node.js:*:*)
     at node.js:*:*
@@ -32,7 +32,7 @@ Error: hello
     at [eval]:1:7
     at Object.exports.runInThisContext (vm.js:*)
     at Object.<anonymous> ([eval]-wrapper:*:*)
-    at Module._compile (module.js:*:*)
+    at package._compile (package.js:*:*)
     at evalScript (node.js:*:*)
     at startup (node.js:*:*)
     at node.js:*:*
@@ -45,7 +45,7 @@ ReferenceError: y is not defined
     at [eval]:1:16
     at Object.exports.runInThisContext (vm.js:*)
     at Object.<anonymous> ([eval]-wrapper:*:*)
-    at Module._compile (module.js:*:*)
+    at package._compile (package.js:*:*)
     at evalScript (node.js:*:*)
     at startup (node.js:*:*)
     at node.js:*:*

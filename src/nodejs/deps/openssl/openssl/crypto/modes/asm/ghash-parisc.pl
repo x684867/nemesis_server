@@ -2,14 +2,14 @@
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 #
 # April 2010
 #
-# The module implements "4-bit" GCM GHASH function and underlying
+# The package implements "4-bit" GCM GHASH function and underlying
 # single multiplication operation in GF(2^128). "4-bit" means that it
 # uses 256 bytes per-key table [+128 bytes shared table]. On PA-7100LC
 # it processes one byte in 19.6 cycles, which is more than twice as
@@ -621,7 +621,7 @@ L\$rem_4bit
 	.ALIGN	64
 ___
 
-# Explicitly encode PA-RISC 2.0 instructions used in this module, so
+# Explicitly encode PA-RISC 2.0 instructions used in this package, so
 # that it can be compiled with .LEVEL 1.0. It should be noted that I
 # wouldn't have to do this, if GNU assembler understood .ALLOW 2.0
 # directive...

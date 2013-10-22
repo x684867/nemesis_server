@@ -25,7 +25,7 @@ slug: version-0-7-6-unstable
 </li>
 <li><p>url: Ignore empty port component (Łukasz Walukiewicz)</p>
 </li>
-<li><p>module: replace &#39;children&#39; array (isaacs)</p>
+<li><p>package: replace &#39;children&#39; array (isaacs)</p>
 </li>
 <li><p>tls: parse multiple values of a key in ssl certificate (Sambasiva Suda)</p>
 </li>

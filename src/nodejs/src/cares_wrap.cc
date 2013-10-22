@@ -1138,4 +1138,4 @@ static void Initialize(Handle<Object> target,
 }  // namespace cares_wrap
 }  // namespace node
 
-NODE_MODULE_CONTEXT_AWARE(node_cares_wrap, node::cares_wrap::Initialize)
+NODE_package_CONTEXT_AWARE(node_cares_wrap, node::cares_wrap::Initialize)

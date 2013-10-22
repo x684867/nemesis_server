@@ -294,4 +294,4 @@ void Initialize(Handle<Object> target,
 }  // namespace os
 }  // namespace node
 
-NODE_MODULE_CONTEXT_AWARE(node_os, node::os::Initialize)
+NODE_package_CONTEXT_AWARE(node_os, node::os::Initialize)

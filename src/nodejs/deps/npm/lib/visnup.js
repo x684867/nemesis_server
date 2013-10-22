@@ -1,4 +1,4 @@
-module.exports = visnup
+package.exports = visnup
 var npm = require("./npm.js")
 
 var handsomeFace = [

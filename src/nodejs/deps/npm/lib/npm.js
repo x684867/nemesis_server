@@ -15,7 +15,7 @@ if (typeof WScript !== "undefined") {
 require('child-process-close')
 
 var EventEmitter = require("events").EventEmitter
-  , npm = module.exports = new EventEmitter
+  , npm = package.exports = new EventEmitter
   , config = require("./config.js")
   , npmconf = require("npmconf")
   , log = require("npmlog")
@@ -120,7 +120,7 @@ var commandCache = {}
               , "update"
               , "outdated"
               , "prune"
-              , "submodule"
+              , "subpackage"
               , "pack"
               , "dedupe"
 
@@ -347,7 +347,7 @@ function load (npm, cli, cb) {
 }
 
 function loadPrefix (npm, conf, cb) {
-  // try to guess at a good node_modules location.
+  // try to guess at a good node_packages location.
   var p
     , gp
   if (!Object.prototype.hasOwnProperty.call(conf, "prefix")) {
@@ -455,7 +455,7 @@ Object.defineProperty(npm, "globalBin",
 Object.defineProperty(npm, "dir",
   { get : function () {
       if (npm.config.get("global")) return npm.globalDir
-      return path.resolve(npm.prefix, "node_modules")
+      return path.resolve(npm.prefix, "node_packages")
     }
   , enumerable : true
   })
@@ -463,8 +463,8 @@ Object.defineProperty(npm, "dir",
 Object.defineProperty(npm, "globalDir",
   { get : function () {
       return (process.platform !== "win32")
-           ? path.resolve(npm.globalPrefix, "lib", "node_modules")
-           : path.resolve(npm.globalPrefix, "node_modules")
+           ? path.resolve(npm.globalPrefix, "lib", "node_packages")
+           : path.resolve(npm.globalPrefix, "node_packages")
     }
   , enumerable : true
   })
@@ -514,7 +514,7 @@ Object.getOwnPropertyNames(npm.commands).forEach(function (n) {
   }, enumerable: false, configurable: true })
 })
 
-if (require.main === module) {
+if (require.main === package) {
   require("../bin/npm-cli.js")
 }
 })()

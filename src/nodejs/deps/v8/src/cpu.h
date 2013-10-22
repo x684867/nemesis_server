@@ -25,7 +25,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This module contains the architecture-specific code. This make the rest of
+// This package contains the architecture-specific code. This make the rest of
 // the code less dependent on differences between different processor
 // architecture.
 // The classes have the same definition for all architectures. The

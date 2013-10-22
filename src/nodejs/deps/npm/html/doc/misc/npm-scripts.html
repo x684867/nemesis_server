@@ -95,7 +95,7 @@ the process.</p>
 
 <h3 id="path">path</h3>
 
-<p>If you depend on modules that define executable scripts, like test
+<p>If you depend on packages that define executable scripts, like test
 suites, then those executables will be added to the <code>PATH</code> for
 executing the scripts.  So, if your package.json has this:</p>
 
@@ -104,7 +104,7 @@ executing the scripts.  So, if your package.json has this:</p>
 , &quot;scripts&quot;: { &quot;start&quot; : &quot;bar ./test&quot; } }</code></pre>
 
 <p>then you could run <code>npm start</code> to execute the <code>bar</code> script, which is
-exported into the <code>node_modules/.bin</code> directory on <code>npm install</code>.</p>
+exported into the <code>node_packages/.bin</code> directory on <code>npm install</code>.</p>
 
 <h3 id="package-json-vars">package.json vars</h3>
 
@@ -195,7 +195,7 @@ file.</p>
 <p>If you want to run a specific script at a specific lifecycle event for
 ALL packages, then you can use a hook script.</p>
 
-<p>Place an executable file at <code>node_modules/.hooks/{eventname}</code>, and
+<p>Place an executable file at <code>node_packages/.hooks/{eventname}</code>, and
 it&#39;ll get run for all packages when they are going through that point
 in the package lifecycle for any packages installed in that root.</p>
 

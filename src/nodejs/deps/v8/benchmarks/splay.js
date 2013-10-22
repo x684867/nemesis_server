@@ -25,7 +25,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This benchmark is based on a JavaScript log processing module used
+// This benchmark is based on a JavaScript log processing package used
 // by the V8 profiler to generate execution time profiles for runs of
 // JavaScript applications, and it effectively measures how fast the
 // JavaScript engine is at allocating nodes and reclaiming the memory

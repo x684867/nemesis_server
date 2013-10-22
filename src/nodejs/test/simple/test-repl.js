@@ -38,7 +38,7 @@ var net = require('net'),
 
 
 // absolute path to test/fixtures/a.js
-var moduleFilename = require('path').join(common.fixturesDir, 'a');
+var packageFilename = require('path').join(common.fixturesDir, 'a');
 
 console.error('repl test');
 
@@ -229,7 +229,7 @@ function tcp_test() {
         { client: client_tcp, send: 'a += 1',
           expect: ('12346' + '\n' + prompt_tcp) },
         { client: client_tcp,
-          send: 'require(' + JSON.stringify(moduleFilename) + ').number',
+          send: 'require(' + JSON.stringify(packageFilename) + ').number',
           expect: ('42' + '\n' + prompt_tcp) }
       ]);
     });

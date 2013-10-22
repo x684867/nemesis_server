@@ -1,0 +1,15 @@
+{
+	"_name":"start/manifest.json",
+	"_desc":"Nemesis Bootstrap Start Method package Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+	"name":"start",
+	
+	"dependencies":[
+		"types","error","logger","process",
+		"audit","broker","cipherStore",
+		"keyStore","ipc","worker","web"
+	]
+}

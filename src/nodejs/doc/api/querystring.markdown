@@ -4,7 +4,7 @@
 
 <!--name=querystring-->
 
-This module provides utilities for dealing with query strings.
+This package provides utilities for dealing with query strings.
 It provides the following methods:
 
 ## querystring.stringify(obj, [sep], [eq])

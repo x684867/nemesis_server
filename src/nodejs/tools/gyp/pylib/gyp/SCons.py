@@ -173,11 +173,11 @@ class SharedLibraryTarget(CompilableSourcesTargetBase):
   out_dir = '${LIB_DIR}'
 
 
-class LoadableModuleTarget(CompilableSourcesTargetBase):
+class LoadablepackageTarget(CompilableSourcesTargetBase):
   """
-  A GYP target type of 'loadable_module'.
+  A GYP target type of 'loadable_package'.
   """
-  builder_name = 'GypLoadableModule'
+  builder_name = 'GypLoadablepackage'
   intermediate_builder_name = 'SharedObject'
   target_prefix = '${SHLIBPREFIX}'
   target_suffix = '${SHLIBSUFFIX}'
@@ -191,7 +191,7 @@ TargetMap = {
   'executable' : ProgramTarget,
   'static_library' : StaticLibraryTarget,
   'shared_library' : SharedLibraryTarget,
-  'loadable_module' : LoadableModuleTarget,
+  'loadable_package' : LoadablepackageTarget,
 }
 
 

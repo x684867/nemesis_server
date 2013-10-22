@@ -35,20 +35,20 @@ namespace internal {
 
 
 // This class implements the following abstract grammar of interfaces
-// (i.e. module types):
-//   interface ::= UNDETERMINED | VALUE | CONST | MODULE(exports)
+// (i.e. package types):
+//   interface ::= UNDETERMINED | VALUE | CONST | package(exports)
 //   exports ::= {name : interface, ...}
 // A frozen type is one that is fully determined. Unification does not
 // allow to turn non-const values into const, or adding additional exports to
-// frozen interfaces. Otherwise, unifying modules merges their exports.
+// frozen interfaces. Otherwise, unifying packages merges their exports.
 // Undetermined types are unification variables that can be unified freely.
 // There is a natural subsort lattice that reflects the increase of knowledge:
 //
 //            undetermined
 //           //     |    \\                                                    .
-//       value  (frozen)  module
+//       value  (frozen)  package
 //      //   \\  /    \  //
-//  const   fr.value  fr.module
+//  const   fr.value  fr.package
 //      \\    /
 //     fr.const
 //
@@ -73,8 +73,8 @@ class Interface : public ZoneObject {
     return &value_interface;
   }
 
-  static Interface* NewModule(Zone* zone) {
-    return new(zone) Interface(MODULE);
+  static Interface* Newpackage(Zone* zone) {
+    return new(zone) Interface(package);
   }
 
   // ---------------------------------------------------------------------------
@@ -92,31 +92,31 @@ class Interface : public ZoneObject {
 
   // Determine this interface to be a value interface.
   void MakeValue(bool* ok) {
-    *ok = !IsModule();
+    *ok = !Ispackage();
     if (*ok) Chase()->flags_ |= VALUE;
   }
 
   // Determine this interface to be an immutable interface.
   void MakeConst(bool* ok) {
-    *ok = !IsModule() && (IsConst() || !IsFrozen());
+    *ok = !Ispackage() && (IsConst() || !IsFrozen());
     if (*ok) Chase()->flags_ |= VALUE + CONST;
   }
 
-  // Determine this interface to be a module interface.
-  void MakeModule(bool* ok) {
+  // Determine this interface to be a package interface.
+  void Makepackage(bool* ok) {
     *ok = !IsValue();
-    if (*ok) Chase()->flags_ |= MODULE;
+    if (*ok) Chase()->flags_ |= package;
   }
 
   // Do not allow any further refinements, directly or through unification.
   void Freeze(bool* ok) {
-    *ok = IsValue() || IsModule();
+    *ok = IsValue() || Ispackage();
     if (*ok) Chase()->flags_ |= FROZEN;
   }
 
   // Assign an index.
   void Allocate(int index) {
-    ASSERT(IsModule() && IsFrozen() && Chase()->index_ == -1);
+    ASSERT(Ispackage() && IsFrozen() && Chase()->index_ == -1);
     Chase()->index_ = index;
   }
 
@@ -132,8 +132,8 @@ class Interface : public ZoneObject {
   // Check whether this is a constant type.
   bool IsConst() { return Chase()->flags_ & CONST; }
 
-  // Check whether this is a module type.
-  bool IsModule() { return Chase()->flags_ & MODULE; }
+  // Check whether this is a package type.
+  bool Ispackage() { return Chase()->flags_ & package; }
 
   // Check whether this is closed (i.e. fully determined).
   bool IsFrozen() { return Chase()->flags_ & FROZEN; }
@@ -145,14 +145,14 @@ class Interface : public ZoneObject {
   }
 
   int Length() {
-    ASSERT(IsModule() && IsFrozen());
+    ASSERT(Ispackage() && IsFrozen());
     ZoneHashMap* exports = Chase()->exports_;
     return exports ? exports->occupancy() : 0;
   }
 
-  // The context slot in the hosting global context pointing to this module.
+  // The context slot in the hosting global context pointing to this package.
   int Index() {
-    ASSERT(IsModule() && IsFrozen());
+    ASSERT(Ispackage() && IsFrozen());
     return Chase()->index_;
   }
 
@@ -203,13 +203,13 @@ class Interface : public ZoneObject {
     NONE = 0,
     VALUE = 1,    // This type describes a value
     CONST = 2,    // This type describes a constant
-    MODULE = 4,   // This type describes a module
+    package = 4,   // This type describes a package
     FROZEN = 8    // This type is fully determined
   };
 
   int flags_;
   Interface* forward_;     // Unification link
-  ZoneHashMap* exports_;   // Module exports and their types (allocated lazily)
+  ZoneHashMap* exports_;   // package exports and their types (allocated lazily)
   int index_;
 
   explicit Interface(int flags)

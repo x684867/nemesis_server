@@ -6,7 +6,7 @@ fi
 set -o errexit
 set -o pipefail
 
-if ! [ -x node_modules/.bin/ronn ]; then
+if ! [ -x node_packages/.bin/ronn ]; then
   ps=0
   if [ -f .building_ronn ]; then
     pid=$(cat .building_ronn)
@@ -22,7 +22,7 @@ if ! [ -x node_modules/.bin/ronn ]; then
     echo $$ > .building_ronn
     sleep 1
     if [ $(cat .building_ronn) == $$ ]; then
-      make node_modules/.bin/ronn
+      make node_packages/.bin/ronn
       rm .building_ronn
     else
       while [ -f .building_ronn ]; do
@@ -42,7 +42,7 @@ mkdir -p $(dirname $dest)
 
 case $dest in
   *.[1357])
-    ./node_modules/.bin/ronn --roff $src \
+    ./node_packages/.bin/ronn --roff $src \
     | sed "s|@VERSION@|$version|g" \
     | perl -pi -e 's/(npm\\-)?([^\(]*)\(1\)/npm help \2/g' \
     | perl -pi -e 's/(npm\\-)?([^\(]*)\([57]\)/npm help \3 \2/g' \
@@ -54,7 +54,7 @@ case $dest in
     ;;
   *.html)
     (cat html/dochead.html && \
-     ./node_modules/.bin/ronn -f $src &&
+     ./node_packages/.bin/ronn -f $src &&
      cat html/docfoot.html)\
     | sed "s|@NAME@|$name|g" \
     | sed "s|@DATE@|$date|g" \

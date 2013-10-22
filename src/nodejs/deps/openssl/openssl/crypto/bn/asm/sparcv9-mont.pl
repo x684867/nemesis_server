@@ -2,7 +2,7 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -18,7 +18,7 @@
 # several integrated RSA/DSA accelerator circuits accessible through
 # kernel driver [only(*)], but having decent user-land software
 # implementation is important too. Finally, reasons like desire to
-# experiment with dedicated squaring procedure. Yes, this module
+# experiment with dedicated squaring procedure. Yes, this package
 # implements one, because it was easiest to draft it in SPARCv9
 # instructions...
 
@@ -37,9 +37,9 @@
 # You might notice that inner loops are modulo-scheduled:-) This has
 # essentially negligible impact on UltraSPARC performance, it's
 # Fujitsu SPARC64 V users who should notice and hopefully appreciate
-# the advantage... Currently this module surpasses sparcv9a-mont.pl
+# the advantage... Currently this package surpasses sparcv9a-mont.pl
 # by ~20% on UltraSPARC-III and later cores, but recall that sparcv9a
-# module still have hidden potential [see TODO list there], which is
+# package still have hidden potential [see TODO list there], which is
 # estimated to be larger than 20%...
 
 # int bn_mul_mont(

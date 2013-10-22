@@ -4,7 +4,7 @@
 
 [Punycode.js](http://mths.be/punycode) is bundled with Node.js v0.6.2+. Use
 `require('punycode')` to access it. (To use it with other Node.js versions,
-use npm to install the `punycode` module first.)
+use npm to install the `punycode` package first.)
 
 ## punycode.decode(string)
 

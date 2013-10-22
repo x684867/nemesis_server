@@ -2,7 +2,7 @@
 #   https://github.com/martine/ninja/blob/master/misc/ninja_syntax.py
 # Do not edit!  Edit the upstream one instead.
 
-"""Python module for generating .ninja files.
+"""Python package for generating .ninja files.
 
 Note that this is emphatically not a required piece of Ninja; it's
 just a helpful utility for build-file-generation systems that already

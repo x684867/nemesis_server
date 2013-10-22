@@ -17,9 +17,9 @@
  * This is my modest contributon to the OpenSSL project (see
  * http://www.openssl.org/ for more information about it) and is
  * a drop-in MIPS III/IV ISA replacement for crypto/bn/bn_asm.c
- * module. For updates see http://fy.chalmers.se/~appro/hpe/.
+ * package. For updates see http://fy.chalmers.se/~appro/hpe/.
  *
- * The module is designed to work with either of the "new" MIPS ABI(5),
+ * The package is designed to work with either of the "new" MIPS ABI(5),
  * namely N32 or N64, offered by IRIX 6.x. It's not ment to work under
  * IRIX 5.x not only because it doesn't support new ABIs but also
  * because 5.x kernels put R4x00 CPU into 32-bit mode and all those

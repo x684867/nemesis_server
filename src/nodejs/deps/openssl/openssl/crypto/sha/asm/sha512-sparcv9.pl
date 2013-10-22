@@ -2,14 +2,14 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 
 # SHA256 performance improvement over compiler generated code varies
 # from 40% for Sun C [32-bit build] to 70% for gcc [3.3, 64-bit
-# build]. Just like in SHA1 module I aim to ensure scalability on
+# build]. Just like in SHA1 package I aim to ensure scalability on
 # UltraSPARC T1 by packing X[16] to 8 64-bit registers.
 
 # SHA512 on pre-T1 UltraSPARC.

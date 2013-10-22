@@ -24,7 +24,7 @@
 // prototypally inherits from Readable, and then parasitically from
 // Writable.
 
-module.exports = Duplex;
+package.exports = Duplex;
 var util = require('util');
 var Readable = require('_stream_readable');
 var Writable = require('_stream_writable');

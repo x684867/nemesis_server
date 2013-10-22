@@ -712,7 +712,7 @@ OPENSSL_ia32cap(3) documentation page for further information.
 OpenSSL SHA-512 implementation depends on compiler support for 64-bit
 integer type. Few elder compilers [ULTRIX cc, SCO compiler to mention a
 couple] lack support for this and therefore are incapable of compiling
-the module in question. The recommendation is to disable SHA-512 by
+the package in question. The recommendation is to disable SHA-512 by
 adding no-sha512 to ./config [or ./Configure] command line. Another
 possible alternative might be to switch to GCC.
 
@@ -834,7 +834,7 @@ you have to compile small C snippet with compiler and/or options of
 your choice. The snippet gets installed as
 <install-root>/include/openssl/applink.c and should be either added to
 your application project or simply #include-d in one [and only one]
-of your application source files. Failure to link this shim module
+of your application source files. Failure to link this shim package
 into your application manifests itself as fatal "no OPENSSL_Applink"
 run-time error. An explicit reminder is due that in this situation
 [mixing compiler options] it is as important to add CRYPTO_malloc_init
@@ -989,7 +989,7 @@ Thread-local cleanup functions:
 Application-global cleanup functions that are aware of usage (and therefore
 thread-safe):
 
-  ENGINE_cleanup() and CONF_modules_unload()
+  ENGINE_cleanup() and CONF_packages_unload()
 
 "Brutal" (thread-unsafe) Application-global cleanup functions:
 

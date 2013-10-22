@@ -195,7 +195,7 @@ int ScopeInfo::ContextLength() {
         function_name_context_slot ||
         scope_type() == WITH_SCOPE ||
         (scope_type() == FUNCTION_SCOPE && CallsEval()) ||
-        scope_type() == MODULE_SCOPE;
+        scope_type() == package_SCOPE;
     if (has_context) {
       return Context::MIN_CONTEXT_SLOTS + context_locals +
           (function_name_context_slot ? 1 : 0);
@@ -533,11 +533,11 @@ void ScopeInfo::Print() {
 
 
 //---------------------------------------------------------------------------
-// ModuleInfo.
+// packageInfo.
 
-Handle<ModuleInfo> ModuleInfo::Create(
+Handle<packageInfo> packageInfo::Create(
     Isolate* isolate, Interface* interface, Scope* scope) {
-  Handle<ModuleInfo> info = Allocate(isolate, interface->Length());
+  Handle<packageInfo> info = Allocate(isolate, interface->Length());
   info->set_host_index(interface->Index());
   int i = 0;
   for (Interface::Iterator it = interface->iterator();
@@ -545,8 +545,8 @@ Handle<ModuleInfo> ModuleInfo::Create(
     Variable* var = scope->LocalLookup(it.name());
     info->set_name(i, *it.name());
     info->set_mode(i, var->mode());
-    ASSERT((var->mode() == MODULE) == (it.interface()->IsModule()));
-    if (var->mode() == MODULE) {
+    ASSERT((var->mode() == package) == (it.interface()->Ispackage()));
+    if (var->mode() == package) {
       ASSERT(it.interface()->IsFrozen());
       ASSERT(it.interface()->Index() >= 0);
       info->set_index(i, it.interface()->Index());

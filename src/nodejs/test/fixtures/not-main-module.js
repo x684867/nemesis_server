@@ -20,6 +20,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 var assert = require('assert');
-assert.notEqual(module, require.main, 'require.main should not == module');
-assert.notEqual(module, process.mainModule,
-                'process.mainModule should not === module');
+assert.notEqual(package, require.main, 'require.main should not == package');
+assert.notEqual(package, process.mainpackage,
+                'process.mainpackage should not === package');

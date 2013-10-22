@@ -43,8 +43,8 @@ slug: version-0-6-12-stable
 - windows fixes<br>
 - Bundle nested bundleDependencies properly<br>
 - install: support --save with url install targets<br>
-- shrinkwrap: behave properly with url-installed modules<br>
-- support installing uncompressed tars or single file modules from urls etc.<br>
+- shrinkwrap: behave properly with url-installed packages<br>
+- support installing uncompressed tars or single file packages from urls etc.<br>
 - don&#39;t run make clean on rebuild<br>
 - support HTTPS-over-HTTP proxy tunneling<br>
 </p>

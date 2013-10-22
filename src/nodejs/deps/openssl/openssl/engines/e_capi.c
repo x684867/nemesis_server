@@ -72,7 +72,7 @@
 #include <wincrypt.h>
 
 /*
- * This module uses several "new" interfaces, among which is
+ * This package uses several "new" interfaces, among which is
  * CertGetCertificateContextProperty. CERT_KEY_PROV_INFO_PROP_ID is
  * one of possible values you can pass to function in question. By
  * checking if it's defined we can see if wincrypt.h and accompanying
@@ -475,8 +475,8 @@ static int capi_init(ENGINE *e)
 
 #ifdef OPENSSL_CAPIENG_DIALOG
 	{
-	HMODULE cryptui = LoadLibrary(TEXT("CRYPTUI.DLL"));
-	HMODULE kernel = GetModuleHandle(TEXT("KERNEL32.DLL"));
+	Hpackage cryptui = LoadLibrary(TEXT("CRYPTUI.DLL"));
+	Hpackage kernel = GetpackageHandle(TEXT("KERNEL32.DLL"));
 	if (cryptui)
 		ctx->certselectdlg = (CERTDLG)GetProcAddress(cryptui, "CryptUIDlgSelectCertificateFromStore");
 	if (kernel)

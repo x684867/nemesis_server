@@ -18,7 +18,7 @@ slug: node-v0-7-2-unstable
 <li><p>fs: more specific error messages (Tj Holowaychuk)</p></li>
 <li><p>tty: emit 'unknown' key event if key sequence not found (Dan VerWeire, Nathan Rajlich)</p></li>
 <li><p>build: compile release build too if BUILDTYPE=Debug (Ben Noordhuis)</p></li>
-<li><p>module: fix --debug-brk on symlinked scripts (Fedor Indutny)</p></li>
+<li><p>package: fix --debug-brk on symlinked scripts (Fedor Indutny)</p></li>
 <li><p>zlib: fix <code>Failed to set dictionary</code> issue (Fedor Indutny)</p></li>
 <li><p>waf: predict target arch for OS X (Fedor Indutny)</p></li>
 </ul><p>Source Code: <a href="http://nodejs.org/dist/v0.7.2/node-v0.7.2.tar.gz">http://nodejs.org/dist/v0.7.2/node-v0.7.2.tar.gz</a></p>

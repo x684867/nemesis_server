@@ -57,10 +57,10 @@ function sendErrorMsg(res,c){
 	webSend(res,c,{"code":c,"message":require('http').STATUS_CODE[c];});
 }
 
-module.exports=unknownRoute;
+package.exports=unknownRoute;
 function unknownRoute(c){sendErrorMsg(c.res,400);}
 
-module.exports=create_account;
+package.exports=create_account;
 function create_account(c){
 	if( require(OBJECT_VERIFY_CLASS).isDataValid('account',c.message) ){
 		webSend( c.res , require(c.msgProcFile).createNewAccountObject(c.message) );
@@ -69,7 +69,7 @@ function create_account(c){
 	}
 }
 
-module.exports=create_object;
+package.exports=create_object;
 function create_object(c){
 	if( require(UUID_VERIFY_CLASS).isValidUUID('account',c.message) ){
 		if( require(OBJECT_VERIFY_CLASS).isDataValid('object',c.message) ){
@@ -82,7 +82,7 @@ function create_object(c){
 	}
 }
 
-module.exports=create_policy;
+package.exports=create_policy;
 function create_policy(c){	
 	var uv=require(UUID_VERIFY_CLASS);	
 	if(uv.isValidUUID('account',c.message)){
@@ -100,7 +100,7 @@ function create_policy(c){
 	}
 }
 
-module.exports=create_policy;
+package.exports=create_policy;
 function create_policy(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('object',c.message)){
 		if(require(OBJECT_VERIFY_CLASS).isDataValid('event',c.message)){
@@ -113,7 +113,7 @@ function create_policy(c){
 	}		
 }
 
-module.exports=read_account;
+package.exports=read_account;
 function read_account(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('account',c.message)){
 		webSend(c.res,require(c.msgProcFile).readAccountData(c.message));
@@ -122,7 +122,7 @@ function read_account(c){
 	}
 }
 
-module.exports=read_object;
+package.exports=read_object;
 function read_object(c){
 	var uv=require(UUID_VERIFY_CLASS);
 	if(uv.isValidUUID('account',c.message)){
@@ -136,7 +136,7 @@ function read_object(c){
 	}
 }
 
-module.exports=read_policy;
+package.exports=read_policy;
 function read_policy(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('policy',c.message)){
 		webSend(c.res,require(c.msgProcFile).readPolicyData(c.message));
@@ -145,7 +145,7 @@ function read_policy(c){
 	}
 }
 
-module.exports=read_audit_events;
+package.exports=read_audit_events;
 function read_audit_event(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('audit',message)){
 		webSend(c.res,require(c.msgProcFile).readEventData(c.message));
@@ -154,7 +154,7 @@ function read_audit_event(c){
 	}
 }
 
-module.exports=read_policy_list;
+package.exports=read_policy_list;
 function read_policy_list(c){
 	var uv=require(UUID_VERIFY_CLASS);
 	if(uv.isValidUUID('account',c.message)){
@@ -168,7 +168,7 @@ function read_policy_list(c){
 	}
 }
 
-module.exports=update_account
+package.exports=update_account
 function update_account(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('account',c.message)){
 		if(require(OBJECT_VERIFY_CLASS).isDataValid('account',c.message)){
@@ -181,7 +181,7 @@ function update_account(c){
 	}
 }
 
-module.exports=update_object
+package.exports=update_object
 function update_object(c){
 	var uv=require(UUID_VERIFY_CLASS);
 	if(uv.isValidUUID('account',c.message)){
@@ -199,7 +199,7 @@ function update_object(c){
 	}
 }
 
-module.exports=update_policy
+package.exports=update_policy
 function update_policy(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('policy',c.message)){
 		if(require(OBJECT_VERIFY_CLASS).isDataValid('policy',c.message)){
@@ -212,7 +212,7 @@ function update_policy(c){
 	}
 }
 
-module.exports=delete_object
+package.exports=delete_object
 function delete_object(c){
 	var uv=require(UUID_VERIFY_CLASS);
 	if(uv.isValidUUID('account',c.message)){
@@ -223,7 +223,7 @@ function delete_object(c){
 	}
 }
 
-module.exports=delete_policy
+package.exports=delete_policy
 function delete_policy(c){
 	if(require(UUID_VERIFY_CLASS).isValidUUID('policy',c.message)){
 		webSend(c.res,require(c.msgProcFile).deletePolicyObject(c.message));

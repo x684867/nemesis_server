@@ -2,7 +2,7 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -14,7 +14,7 @@
 # sha256_block_data_order is reportedly >3 times faster than gcc 3.3
 # generated code (must be a bug in compiler, as improvement is
 # "pathologically" high, in particular in comparison to other SHA
-# modules). But the real twist is that it detects if hardware support
+# packages). But the real twist is that it detects if hardware support
 # for SHA256 is available and in such case utilizes it. Then the
 # performance can reach >6.5x of assembler one for larger chunks.
 #

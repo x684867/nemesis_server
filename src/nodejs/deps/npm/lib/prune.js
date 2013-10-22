@@ -1,6 +1,6 @@
 // prune extraneous packages.
 
-module.exports = prune
+package.exports = prune
 
 prune.usage = "npm prune"
 

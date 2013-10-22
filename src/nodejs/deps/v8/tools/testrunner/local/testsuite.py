@@ -39,9 +39,9 @@ class TestSuite(object):
     name = root.split(os.path.sep)[-1]
     f = None
     try:
-      (f, pathname, description) = imp.find_module("testcfg", [root])
-      module = imp.load_module("testcfg", f, pathname, description)
-      suite = module.GetSuite(name, root)
+      (f, pathname, description) = imp.find_package("testcfg", [root])
+      package = imp.load_package("testcfg", f, pathname, description)
+      suite = package.GetSuite(name, root)
     finally:
       if f:
         f.close()

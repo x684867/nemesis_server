@@ -1,21 +1,21 @@
 .\" Generated with Ronnjs 0.3.8
 .\" http://github.com/kapouer/ronnjs/
 .
-.TH "NPM\-SUBMODULE" "3" "September 2013" "" ""
+.TH "NPM\-SUBpackage" "3" "September 2013" "" ""
 .
 .SH "NAME"
-\fBnpm-submodule\fR \-\- Add a package as a git submodule
+\fBnpm-subpackage\fR \-\- Add a package as a git subpackage
 .
 .SH "SYNOPSIS"
 .
 .nf
-npm\.commands\.submodule(packages, callback)
+npm\.commands\.subpackage(packages, callback)
 .
 .fi
 .
 .SH "DESCRIPTION"
 For each package specified, npm will check if it has a git repository url
-in its package\.json description then add it as a git submodule at \fBnode_modules/<pkg name>\fR\|\.
+in its package\.json description then add it as a git subpackage at \fBnode_packages/<pkg name>\fR\|\.
 .
 .P
 This is a convenience only\.  From then on, it\'s up to you to manage
@@ -26,9 +26,9 @@ in it\.
 .P
 This command also does not install missing dependencies, if the package
 does not include them in its git repository\.  If \fBnpm ls\fR reports that
-things are missing, you can either install, link, or submodule them yourself,
+things are missing, you can either install, link, or subpackage them yourself,
 or you can do \fBnpm explore <pkgname> \-\- npm install\fR to install the
-dependencies into the submodule folder\.
+dependencies into the subpackage folder\.
 .
 .SH "SEE ALSO"
 .
@@ -36,7 +36,7 @@ dependencies into the submodule folder\.
 npm help json
 .
 .IP "\(bu" 4
-git help submodule
+git help subpackage
 .
 .IP "" 0
 

@@ -116,7 +116,7 @@ VariableProxy::VariableProxy(Isolate* isolate,
 void VariableProxy::BindTo(Variable* var) {
   ASSERT(var_ == NULL);  // must be bound only once
   ASSERT(var != NULL);  // must bind
-  ASSERT(!FLAG_harmony_modules || interface_->IsUnified(var->interface()));
+  ASSERT(!FLAG_harmony_packages || interface_->IsUnified(var->interface()));
   ASSERT((is_this() && var->is_this()) || name_.is_identical_to(var->name()));
   // Ideally CONST-ness should match. However, this is very hard to achieve
   // because we don't know the exact semantics of conflicting (const and
@@ -1134,14 +1134,14 @@ REGULAR_NODE(CallNew)
 // LOOKUP variables only result from constructs that cannot be inlined anyway.
 REGULAR_NODE(VariableProxy)
 
-// We currently do not optimize any modules.
-DONT_OPTIMIZE_NODE(ModuleDeclaration)
+// We currently do not optimize any packages.
+DONT_OPTIMIZE_NODE(packageDeclaration)
 DONT_OPTIMIZE_NODE(ImportDeclaration)
 DONT_OPTIMIZE_NODE(ExportDeclaration)
-DONT_OPTIMIZE_NODE(ModuleVariable)
-DONT_OPTIMIZE_NODE(ModulePath)
-DONT_OPTIMIZE_NODE(ModuleUrl)
-DONT_OPTIMIZE_NODE(ModuleStatement)
+DONT_OPTIMIZE_NODE(packageVariable)
+DONT_OPTIMIZE_NODE(packagePath)
+DONT_OPTIMIZE_NODE(packageUrl)
+DONT_OPTIMIZE_NODE(packageStatement)
 DONT_OPTIMIZE_NODE(Yield)
 DONT_OPTIMIZE_NODE(WithStatement)
 DONT_OPTIMIZE_NODE(TryCatchStatement)
@@ -1155,7 +1155,7 @@ DONT_SELFOPTIMIZE_NODE(ForStatement)
 DONT_SELFOPTIMIZE_NODE(ForInStatement)
 DONT_SELFOPTIMIZE_NODE(ForOfStatement)
 
-DONT_CACHE_NODE(ModuleLiteral)
+DONT_CACHE_NODE(packageLiteral)
 
 void AstConstructionVisitor::VisitCallRuntime(CallRuntime* node) {
   increase_node_count();

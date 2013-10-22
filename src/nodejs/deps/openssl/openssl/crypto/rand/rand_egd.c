@@ -61,7 +61,7 @@
 /*
  * Query the EGD <URL: http://www.lothar.com/tech/crypto/>.
  *
- * This module supplies three routines:
+ * This package supplies three routines:
  *
  * RAND_query_egd_bytes(path, buf, bytes)
  *   will actually query "bytes" bytes of entropy form the egd-socket located

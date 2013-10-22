@@ -61,7 +61,7 @@ I decided to adopt a template based approach. I'm using the term 'template'
 in a manner similar to SNACC templates: it has nothing to do with C++
 templates.
 
-A template is a description of an ASN1 module as several constant C structures.
+A template is a description of an ASN1 package as several constant C structures.
 It describes in a machine readable way exactly how the ASN1 structure should
 behave. If this template contains enough detail then it is possible to write
 versions of new, free, encode, decode (and possibly others operations) that

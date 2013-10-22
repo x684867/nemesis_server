@@ -1,5 +1,5 @@
 
-module.exports = helpSearch
+package.exports = helpSearch
 
 var fs = require("graceful-fs")
   , path = require("path")

@@ -61,7 +61,7 @@
 
 /* #define ENGINE_CONF_DEBUG */
 
-/* ENGINE config module */
+/* ENGINE config package */
 
 static char *skip_dot(char *name)
 	{
@@ -213,21 +213,21 @@ static int int_engine_configure(char *name, char *value, const CONF *cnf)
 	}
 
 
-static int int_engine_module_init(CONF_IMODULE *md, const CONF *cnf)
+static int int_engine_package_init(CONF_Ipackage *md, const CONF *cnf)
 	{
 	STACK_OF(CONF_VALUE) *elist;
 	CONF_VALUE *cval;
 	int i;
 #ifdef ENGINE_CONF_DEBUG
-	fprintf(stderr, "Called engine module: name %s, value %s\n",
-			CONF_imodule_get_name(md), CONF_imodule_get_value(md));
+	fprintf(stderr, "Called engine package: name %s, value %s\n",
+			CONF_ipackage_get_name(md), CONF_ipackage_get_value(md));
 #endif
 	/* Value is a section containing ENGINEs to configure */
-	elist = NCONF_get_section(cnf, CONF_imodule_get_value(md));
+	elist = NCONF_get_section(cnf, CONF_ipackage_get_value(md));
 
 	if (!elist)
 		{
-		ENGINEerr(ENGINE_F_INT_ENGINE_MODULE_INIT, ENGINE_R_ENGINES_SECTION_ERROR);
+		ENGINEerr(ENGINE_F_INT_ENGINE_package_INIT, ENGINE_R_ENGINES_SECTION_ERROR);
 		return 0;
 		}
 
@@ -241,7 +241,7 @@ static int int_engine_module_init(CONF_IMODULE *md, const CONF *cnf)
 	return 1;
 	}
 
-static void int_engine_module_finish(CONF_IMODULE *md)
+static void int_engine_package_finish(CONF_Ipackage *md)
 	{
 	ENGINE *e;
 	while ((e = sk_ENGINE_pop(initialized_engines)))
@@ -251,9 +251,9 @@ static void int_engine_module_finish(CONF_IMODULE *md)
 	}
 	
 
-void ENGINE_add_conf_module(void)
+void ENGINE_add_conf_package(void)
 	{
-	CONF_module_add("engines",
-			int_engine_module_init,
-			int_engine_module_finish);
+	CONF_package_add("engines",
+			int_engine_package_init,
+			int_engine_package_finish);
 	}

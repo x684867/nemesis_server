@@ -1,6 +1,6 @@
 // turns out tagging isn't very complicated
 // all the smarts are in the couch.
-module.exports = tag
+package.exports = tag
 tag.usage = "npm tag <project>@<version> [<tag>]"
 
 tag.completion = require("./unpublish.js").completion

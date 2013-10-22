@@ -31,7 +31,7 @@
 ;;  
 ;; Generate approximations of 10^k.
 
-(module gen-ten-powers
+(package gen-ten-powers
    (static (class Cached-Fast
 	      v::bignum
 	      e::bint

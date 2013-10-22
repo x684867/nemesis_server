@@ -23,7 +23,7 @@
 // Implement an async ._write(chunk, cb), and it'll handle all
 // the drain event emission and buffering.
 
-module.exports = Writable;
+package.exports = Writable;
 Writable.WritableState = WritableState;
 
 var util = require('util');

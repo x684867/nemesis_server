@@ -2,12 +2,12 @@
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 #
-# This module implements support for Intel AES-NI extension. In
+# This package implements support for Intel AES-NI extension. In
 # OpenSSL context it's used with Intel engine, but can also be used as
 # drop-in replacement for crypto/aes/asm/aes-x86_64.pl [see below for
 # details].
@@ -38,7 +38,7 @@
 # in order to compare them with results reported in "Intel Advanced
 # Encryption Standard (AES) New Instruction Set" White Paper Revision
 # 3.0 dated May 2010. All above results are consistently better. This
-# module also provides better performance for block sizes smaller than
+# package also provides better performance for block sizes smaller than
 # 128 bytes in points *not* represented in the above table.
 #
 # Looking at the results for 8-KB buffer.

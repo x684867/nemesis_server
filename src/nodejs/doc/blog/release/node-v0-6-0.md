@@ -34,7 +34,7 @@ In the last version of Node, v0.4, we could only run Node on Windows with Cygwin
 <tr> <td>io.js write </td> <td>12.61 mB/s</td> <td>33.58 mB/s</td> </tr>
 <tr> <td>startup.js </td> <td>152.81 ms</td> <td>52.04 ms</td> </tr></table>
 
-We consider this a good intermediate stage for the Windows port. There is still work to be done. For example, we are not yet providing users with a blessed path for building addon modules in MS Visual Studio.  Work will continue in later releases.
+We consider this a good intermediate stage for the Windows port. There is still work to be done. For example, we are not yet providing users with a blessed path for building addon packages in MS Visual Studio.  Work will continue in later releases.
 
 For users upgrading code bases from v0.4 to v0.6 <a href="https://github.com/joyent/node/wiki/API-changes-between-v0.4-and-v0.6">we've documented</a> most of the issues that you will run into. Most people find the change painless. Despite the long list of changes most core APIs remain untouched. 
 
@@ -68,7 +68,7 @@ Here are the changes between v0.5.12 and v0.6.0:
 <li>process.uptime() support on windows (igorzi)</li>
 <li>Return IPv4 addresses before IPv6 addresses from getaddrinfo</li>
 <li>util.inspect improvements (Nathan Rajlich)</li>
-<li>cluster module api changes</li>
+<li>cluster package api changes</li>
 <li>Downgrade V8 to 3.6.6.6</li></ul>
 
 Download: <a href="http://nodejs.org/dist/v0.6.0/node-v0.6.0.tar.gz">http://nodejs.org/dist/v0.6.0/node-v0.6.0.tar.gz</a>

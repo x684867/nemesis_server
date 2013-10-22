@@ -42,7 +42,7 @@
       'lib/_http_outgoing.js',
       'lib/_http_server.js',
       'lib/https.js',
-      'lib/module.js',
+      'lib/package.js',
       'lib/net.js',
       'lib/os.js',
       'lib/path.js',

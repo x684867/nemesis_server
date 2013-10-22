@@ -2,17 +2,17 @@
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 #
 # May 2011
 #
-# The module implements bn_GF2m_mul_2x2 polynomial multiplication used
+# The package implements bn_GF2m_mul_2x2 polynomial multiplication used
 # in bn_gf2m.c. It's kind of low-hanging mechanical port from C for
 # the time being... gcc 4.3 appeared to generate poor code, therefore
-# the effort. And indeed, the module delivers 55%-90%(*) improvement
+# the effort. And indeed, the package delivers 55%-90%(*) improvement
 # on haviest ECDSA verify and ECDH benchmarks for 163- and 571-bit
 # key lengths on z990, 30%-55%(*) - on z10, and 70%-110%(*) - on z196.
 # This is for 64-bit build. In 32-bit "highgprs" case improvement is

@@ -1,5 +1,5 @@
 
-module.exports = star
+package.exports = star
 
 var npm = require("./npm.js")
   , registry = npm.registry

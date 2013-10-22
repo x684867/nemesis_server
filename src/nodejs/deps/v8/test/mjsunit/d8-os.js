@@ -25,7 +25,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Test the OS module of d8.  This test only makes sense with d8.  It
+// Test the OS package of d8.  This test only makes sense with d8.  It
 // only does non-trivial work on Unix since os.system() is not currently
 // implemented on Windows, and even if it were then many of the things
 // we are calling would not be available.

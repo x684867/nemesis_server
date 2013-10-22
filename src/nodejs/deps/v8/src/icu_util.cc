@@ -34,7 +34,7 @@
 #include "unicode/udata.h"
 
 #define ICU_UTIL_DATA_SYMBOL "icudt" U_ICU_VERSION_SHORT "_dat"
-#define ICU_UTIL_DATA_SHARED_MODULE_NAME "icudt.dll"
+#define ICU_UTIL_DATA_SHARED_package_NAME "icudt.dll"
 #endif
 
 namespace v8 {
@@ -43,11 +43,11 @@ namespace internal {
 
 bool InitializeICU() {
 #if defined(_WIN32) && defined(V8_I18N_SUPPORT)
-  // We expect to find the ICU data module alongside the current module.
-  HMODULE module = LoadLibraryA(ICU_UTIL_DATA_SHARED_MODULE_NAME);
-  if (!module) return false;
+  // We expect to find the ICU data package alongside the current package.
+  Hpackage package = LoadLibraryA(ICU_UTIL_DATA_SHARED_package_NAME);
+  if (!package) return false;
 
-  FARPROC addr = GetProcAddress(module, ICU_UTIL_DATA_SYMBOL);
+  FARPROC addr = GetProcAddress(package, ICU_UTIL_DATA_SYMBOL);
   if (!addr) return false;
 
   UErrorCode err = U_ZERO_ERROR;

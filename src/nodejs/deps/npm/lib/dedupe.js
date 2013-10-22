@@ -1,4 +1,4 @@
-// traverse the node_modules/package.json tree
+// traverse the node_packages/package.json tree
 // looking for duplicates.  If any duplicates are found,
 // then move them up to the highest level necessary
 // in order to make them no longer duplicated.
@@ -22,7 +22,7 @@ var rimraf = require("rimraf")
 var log = require("npmlog")
 var npm = require("./npm.js")
 
-module.exports = dedupe
+package.exports = dedupe
 
 dedupe.usage = "npm dedupe [pkg pkg...]"
 
@@ -129,18 +129,18 @@ function dedupe_ (dir, filter, unavoidable, dryrun, silent, cb) {
       }, {})
 
       var loc = locs.length ? locs.reduce(function (a, b) {
-        // a=/path/to/node_modules/foo/node_modules/bar
-        // b=/path/to/node_modules/elk/node_modules/bar
-        // ==/path/to/node_modules/bar
-        a = a.split(/\/node_modules\//)
-        b = b.split(/\/node_modules\//)
+        // a=/path/to/node_packages/foo/node_packages/bar
+        // b=/path/to/node_packages/elk/node_packages/bar
+        // ==/path/to/node_packages/bar
+        a = a.split(/\/node_packages\//)
+        b = b.split(/\/node_packages\//)
         var name = a.pop()
         b.pop()
         // find the longest chain that both A and B share.
-        // then push the name back on it, and join by /node_modules/
+        // then push the name back on it, and join by /node_packages/
         var res = []
         for (var i = 0, al = a.length, bl = b.length; i < al && i < bl && a[i] === b[i]; i++);
-        return a.slice(0, i).concat(name).join("/node_modules/")
+        return a.slice(0, i).concat(name).join("/node_packages/")
       }) : undefined
 
       return [item[0], { item: item
@@ -191,12 +191,12 @@ function installAndRetest (set, filter, dir, unavoidable, silent, cb) {
 
     if (regMatch) {
       var what = name + "@" + regMatch
-      // where is /path/to/node_modules/foo/node_modules/bar
+      // where is /path/to/node_packages/foo/node_packages/bar
       // for package "bar", but we need it to be just
-      // /path/to/node_modules/foo
-      where = where.split(/\/node_modules\//)
+      // /path/to/node_packages/foo
+      where = where.split(/\/node_packages\//)
       where.pop()
-      where = where.join("/node_modules/")
+      where = where.join("/node_packages/")
       remove.push.apply(remove, others)
 
       return npm.commands.install(where, what, cb)
@@ -300,7 +300,7 @@ function readInstalled (dir, counter, parent, cb) {
     next()
   })
 
-  fs.readdir(path.resolve(dir, "node_modules"), function (er, c) {
+  fs.readdir(path.resolve(dir, "node_packages"), function (er, c) {
     children = c || [] // error is ok, just means no children.
     children = children.filter(function (p) {
       return !p.match(/^[\._-]/)
@@ -318,7 +318,7 @@ function readInstalled (dir, counter, parent, cb) {
 
     pkg.realPath = realpath
     if (pkg.realPath !== pkg.path) children = []
-    var d = path.resolve(dir, "node_modules")
+    var d = path.resolve(dir, "node_packages")
     asyncMap(children, function (child, cb) {
       readInstalled(path.resolve(d, child), counter, pkg, cb)
     }, function (er) {

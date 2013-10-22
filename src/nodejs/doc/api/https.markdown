@@ -3,7 +3,7 @@
     Stability: 3 - Stable
 
 HTTPS is the HTTP protocol over TLS/SSL. In Node this is implemented as a
-separate module.
+separate package.
 
 ## Class: https.Server
 

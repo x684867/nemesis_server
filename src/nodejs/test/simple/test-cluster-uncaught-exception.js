@@ -20,7 +20,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // Installing a custom uncaughtException handler should override the default
-// one that the cluster module installs.
+// one that the cluster package installs.
 // https://github.com/joyent/node/issues/2556
 
 var common = require('../common');

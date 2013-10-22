@@ -104,7 +104,7 @@ struct gcm128_context {
 	union { u64 u[2]; u32 d[4]; u8 c[16]; }	Yi,EKi,EK0,len,
 						Xi,H;
 	/* Relative position of Xi, H and pre-computed Htable is used
-	 * in some assembler modules, i.e. don't change the order! */
+	 * in some assembler packages, i.e. don't change the order! */
 #if TABLE_BITS==8
 	u128 Htable[256];
 #else

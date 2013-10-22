@@ -1,5 +1,5 @@
 
-module.exports = set
+package.exports = set
 
 set.usage = "npm set <key> <value> (See `npm config`)"
 

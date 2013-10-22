@@ -684,7 +684,7 @@ _Same(_link, 'AdditionalLibraryDirectories', _folder_list)  # /LIBPATH
 #  /MANIFESTDEPENDENCY:
 _Same(_link, 'AdditionalManifestDependencies', _file_list)
 _Same(_link, 'AdditionalOptions', _string_list)
-_Same(_link, 'AddModuleNamesToAssembly', _file_list)  # /ASSEMBLYMODULE
+_Same(_link, 'AddpackageNamesToAssembly', _file_list)  # /ASSEMBLYpackage
 _Same(_link, 'AllowIsolation', _boolean)  # /ALLOWISOLATION
 _Same(_link, 'AssemblyLinkResource', _file_list)  # /ASSEMBLYLINKRESOURCE
 _Same(_link, 'BaseAddress', _string)  # /BASE
@@ -711,7 +711,7 @@ _Same(_link, 'MapFileName', _file_name)
 _Same(_link, 'MergedIDLBaseFileName', _file_name)  # /IDLOUT
 _Same(_link, 'MergeSections', _string)  # /MERGE
 _Same(_link, 'MidlCommandFile', _file_name)  # /MIDL
-_Same(_link, 'ModuleDefinitionFile', _file_name)  # /DEF
+_Same(_link, 'packageDefinitionFile', _file_name)  # /DEF
 _Same(_link, 'OutputFile', _file_name)  # /OUT
 _Same(_link, 'PerUserRedirection', _boolean)
 _Same(_link, 'Profile', _boolean)  # /PROFILE
@@ -975,7 +975,7 @@ _Same(_lib, 'ExportNamedFunctions', _string_list)  # /EXPORT
 _Same(_lib, 'ForceSymbolReferences', _string)  # /INCLUDE
 _Same(_lib, 'IgnoreAllDefaultLibraries', _boolean)  # /NODEFAULTLIB
 _Same(_lib, 'IgnoreSpecificDefaultLibraries', _file_list)  # /NODEFAULTLIB
-_Same(_lib, 'ModuleDefinitionFile', _file_name)  # /DEF
+_Same(_lib, 'packageDefinitionFile', _file_name)  # /DEF
 _Same(_lib, 'OutputFile', _file_name)  # /OUT
 _Same(_lib, 'SuppressStartupBanner', _boolean)  # /NOLOGO
 _Same(_lib, 'UseUnicodeResponseFiles', _boolean)

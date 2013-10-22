@@ -367,52 +367,52 @@ $ COMPILEWITH_CC5 = ",md2_dgst,md4_dgst,md5_dgst,mdc2dgst," + -
 $ ! Disable the MIXLINKAGE warning.
 $ COMPILEWITH_CC6 = "" !!! ",enc_read,set_key,"
 $!
-$! Figure Out What Other Modules We Are To Build.
+$! Figure Out What Other packages We Are To Build.
 $!
 $ BUILD_SET:
 $!
-$! Define A Module Counter.
+$! Define A package Counter.
 $!
-$ MODULE_COUNTER = 0
+$ package_COUNTER = 0
 $!
 $! Top Of The Loop.
 $!
-$ MODULE_NEXT:
+$ package_NEXT:
 $!
-$! Extract The Module Name From The Encryption List.
+$! Extract The package Name From The Encryption List.
 $!
-$ MODULE_NAME = F$ELEMENT(MODULE_COUNTER,",",ENCRYPT_TYPES)
-$ IF MODULE_NAME.EQS."Basic" THEN MODULE_NAME = ""
-$ MODULE_NAME1 = MODULE_NAME
+$ package_NAME = F$ELEMENT(package_COUNTER,",",ENCRYPT_TYPES)
+$ IF package_NAME.EQS."Basic" THEN package_NAME = ""
+$ package_NAME1 = package_NAME
 $!
-$! Check To See If We Are At The End Of The Module List.
+$! Check To See If We Are At The End Of The package List.
 $!
-$ IF (MODULE_NAME.EQS.",") 
+$ IF (package_NAME.EQS.",") 
 $ THEN 
 $!
-$!  We Are At The End Of The Module List, Go To MODULE_DONE.
+$!  We Are At The End Of The package List, Go To package_DONE.
 $!
-$   GOTO MODULE_DONE
+$   GOTO package_DONE
 $!
-$! End The Module List Check.
+$! End The package List Check.
 $!
 $ ENDIF
 $!
 $! Increment The Moudle Counter.
 $!
-$ MODULE_COUNTER = MODULE_COUNTER + 1
+$ package_COUNTER = package_COUNTER + 1
 $!
-$! Create The Library and Apps Module Names.
+$! Create The Library and Apps package Names.
 $!
-$ LIB_MODULE = "LIB_" + MODULE_NAME
-$ APPS_MODULE = "APPS_" + MODULE_NAME
-$ IF (F$EXTRACT(0,5,MODULE_NAME).EQS."ASN1_")
+$ LIB_package = "LIB_" + package_NAME
+$ APPS_package = "APPS_" + package_NAME
+$ IF (F$EXTRACT(0,5,package_NAME).EQS."ASN1_")
 $ THEN
-$   MODULE_NAME = "ASN1"
+$   package_NAME = "ASN1"
 $ ENDIF
-$ IF (F$EXTRACT(0,4,MODULE_NAME).EQS."EVP_")
+$ IF (F$EXTRACT(0,4,package_NAME).EQS."EVP_")
 $ THEN
-$   MODULE_NAME = "EVP"
+$   package_NAME = "EVP"
 $ ENDIF
 $!
 $! Set state (can be LIB and APPS)
@@ -420,30 +420,30 @@ $!
 $ STATE = "LIB"
 $ IF BUILDALL .EQS. "APPS" THEN STATE = "APPS"
 $!
-$! Check if the library module name actually is defined
+$! Check if the library package name actually is defined
 $!
-$ IF F$TYPE('LIB_MODULE') .EQS. ""
+$ IF F$TYPE('LIB_package') .EQS. ""
 $ THEN
 $   WRITE SYS$ERROR ""
-$   WRITE SYS$ERROR "The module ",MODULE_NAME1," does not exist.  Continuing..."
+$   WRITE SYS$ERROR "The package ",package_NAME1," does not exist.  Continuing..."
 $   WRITE SYS$ERROR ""
-$   GOTO MODULE_NEXT
+$   GOTO package_NEXT
 $ ENDIF
 $!
-$! Top Of The Module Loop.
+$! Top Of The package Loop.
 $!
-$ MODULE_AGAIN:
+$ package_AGAIN:
 $!
-$! Tell The User What Module We Are Building.
+$! Tell The User What package We Are Building.
 $!
-$ IF (MODULE_NAME1.NES."") 
+$ IF (package_NAME1.NES."") 
 $ THEN
 $   IF STATE .EQS. "LIB"
 $   THEN
-$     WRITE SYS$OUTPUT "Compiling The ",MODULE_NAME1," Library Files. (",BUILDALL,",",STATE,")"
-$   ELSE IF F$TYPE('APPS_MODULE') .NES. ""
+$     WRITE SYS$OUTPUT "Compiling The ",package_NAME1," Library Files. (",BUILDALL,",",STATE,")"
+$   ELSE IF F$TYPE('APPS_package') .NES. ""
 $     THEN
-$       WRITE SYS$OUTPUT "Compiling The ",MODULE_NAME1," Applications. (",BUILDALL,",",STATE,")"
+$       WRITE SYS$OUTPUT "Compiling The ",package_NAME1," Applications. (",BUILDALL,",",STATE,")"
 $     ENDIF
 $   ENDIF
 $ ENDIF
@@ -458,21 +458,21 @@ $! Top Of The File Loop.
 $!
 $ NEXT_FILE:
 $!
-$! Look in the LIB_MODULE is we're in state LIB
+$! Look in the LIB_package is we're in state LIB
 $!
 $ IF STATE .EQS. "LIB"
 $ THEN
 $!
 $!   O.K, Extract The File Name From The File List.
 $!
-$   FILE_NAME = F$ELEMENT(FILE_COUNTER,",",'LIB_MODULE')
+$   FILE_NAME = F$ELEMENT(FILE_COUNTER,",",'LIB_package')
 $!
 $!   else
 $!
 $ ELSE
 $   FILE_NAME = ","
 $!
-$   IF F$TYPE('APPS_MODULE') .NES. ""
+$   IF F$TYPE('APPS_package') .NES. ""
 $   THEN
 $!
 $!     Extract The File Name From The File List.
@@ -480,7 +480,7 @@ $!     This part is a bit more complicated.
 $!
 $     IF APPLICATION .EQS. ""
 $     THEN
-$       APPLICATION = F$ELEMENT(APPLICATION_COUNTER,";",'APPS_MODULE')
+$       APPLICATION = F$ELEMENT(APPLICATION_COUNTER,";",'APPS_package')
 $       APPLICATION_COUNTER = APPLICATION_COUNTER + 1
 $       APPLICATION_OBJECTS = F$ELEMENT(1,"/",APPLICATION)
 $       APPLICATION = F$ELEMENT(0,"/",APPLICATION)
@@ -512,7 +512,7 @@ $!
 $   IF STATE .EQS. "LIB" .AND. BUILDALL .NES. "LIBRARY"
 $   THEN
 $     STATE = "APPS"
-$     GOTO MODULE_AGAIN
+$     GOTO package_AGAIN
 $   ELSE
 $     GOTO FILE_DONE
 $   ENDIF
@@ -531,9 +531,9 @@ $ TMP_FILE_NAME = F$ELEMENT(1,"]",FILE_NAME)
 $ IF TMP_FILE_NAME .EQS. "]" THEN TMP_FILE_NAME = FILE_NAME
 $ IF F$ELEMENT(0,".",TMP_FILE_NAME) .EQS. TMP_FILE_NAME THEN -
 	FILE_NAME = FILE_NAME + ".c"
-$ IF (MODULE_NAME.NES."")
+$ IF (package_NAME.NES."")
 $ THEN
-$   SOURCE_FILE = "SYS$DISK:[." + MODULE_NAME+ "]" + FILE_NAME
+$   SOURCE_FILE = "SYS$DISK:[." + package_NAME+ "]" + FILE_NAME
 $ ELSE
 $   SOURCE_FILE = "SYS$DISK:[]" + FILE_NAME
 $ ENDIF
@@ -565,11 +565,11 @@ $ ENDIF
 $!
 $! Tell The User We Are Compiling The File.
 $!
-$ IF (MODULE_NAME.EQS."")
+$ IF (package_NAME.EQS."")
 $ THEN
 $   WRITE SYS$OUTPUT "Compiling The ",FILE_NAME," File.  (",BUILDALL,",",STATE,")"
 $ ENDIF
-$ IF (MODULE_NAME.NES."")
+$ IF (package_NAME.NES."")
 $ THEN 
 $   WRITE SYS$OUTPUT "        ",FILE_NAME,""
 $ ENDIF
@@ -655,11 +655,11 @@ $ FILE_DONE:
 $!
 $! Time To Build Some Applications
 $!
-$ IF F$TYPE('APPS_MODULE') .NES. "" .AND. BUILDALL .NES. "LIBRARY"
+$ IF F$TYPE('APPS_package') .NES. "" .AND. BUILDALL .NES. "LIBRARY"
 $ THEN
 $   APPLICATION_COUNTER = 0
 $ NEXT_APPLICATION:
-$   APPLICATION = F$ELEMENT(APPLICATION_COUNTER,";",'APPS_MODULE')
+$   APPLICATION = F$ELEMENT(APPLICATION_COUNTER,";",'APPS_package')
 $   IF APPLICATION .EQS. ";" THEN GOTO APPLICATION_DONE
 $
 $   APPLICATION_COUNTER = APPLICATION_COUNTER + 1
@@ -691,13 +691,13 @@ $   GOTO NEXT_APPLICATION
 $  APPLICATION_DONE:
 $ ENDIF
 $!
-$! Go Back And Get The Next Module.
+$! Go Back And Get The Next package.
 $!
-$ GOTO MODULE_NEXT
+$ GOTO package_NEXT
 $!
-$! All Done With This Module.
+$! All Done With This package.
 $!
-$ MODULE_DONE:
+$ package_DONE:
 $!
 $! Tell The User That We Are All Done.
 $!

@@ -26,26 +26,26 @@ root.version="2013.10.17.12.52"; /*Update when pushing to master branch.*/
 root.conf_dir='/srv/nemesis/app/';
 
 /* Initialize the framework object tree*/
-root.app={};root.config={};root.error={};root.messages={};root.modules={};root.ipc={};
+root.app={};root.config={};root.error={};root.messages={};root.packages={};root.ipc={};
 
 /* Load application configuration data*/
 root.config.app=require(root.conf_dir+'/app.conf.json');
 
-root.modules.init=require(root.config.app.moduleLoader)();
+root.packages.init=require(root.config.app.packageLoader)();
 
-console.log('bootstrap loading types: ');root.modules.load("types");
-console.log('bootstrap loading error: ');root.modules.load("error");
-console.log('bootstrap loading logger: ');root.modules.load("logger");
-console.log('bootstrap loading ipc: ');root.modules.load("ipc");
-console.log('bootstrap loading all modules: ');root.modules.loadall();
+console.log('bootstrap loading types: ');root.packages.load("types");
+console.log('bootstrap loading error: ');root.packages.load("error");
+console.log('bootstrap loading logger: ');root.packages.load("logger");
+console.log('bootstrap loading ipc: ');root.packages.load("ipc");
+console.log('bootstrap loading all packages: ');root.packages.loadall();
 /*
 	Define the application
 */
-root.app.log=root.modules.logger.init(module.filename,process.pid,{"console":true,"syslog":true});
-root.app.main=root.modules.main.init();
-root.app.start=root.modules.start.init();
+root.app.log=root.packages.logger.init(package.filename,process.pid,{"console":true,"syslog":true});
+root.app.main=root.packages.main.init();
+root.app.start=root.packages.start.init();
 root.app.monitor={};
-root.app.monitor.watchdog=root.modules.watchdog.init();
-root.app.monitor.stats=root.modules.stats.init();
+root.app.monitor.watchdog=root.packages.watchdog.init();
+root.app.monitor.stats=root.packages.stats.init();
 /*Initialize then launch the application with the specified service (using arg[2])*/
 root.app.main(process.argv[2]);

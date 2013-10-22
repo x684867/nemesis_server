@@ -29,7 +29,7 @@ The better approach is send an error response to the request that
 triggered the error, while letting the others finish in their normal
 time, and stop listening for new requests in that worker.
 
-In this way, `domain` usage goes hand-in-hand with the cluster module,
+In this way, `domain` usage goes hand-in-hand with the cluster package,
 since the master process can fork a new worker when a worker
 encounters an error.  For node programs that scale to multiple
 machines, the terminating proxy or service registry can take note of
@@ -389,7 +389,7 @@ with a single error handler in a single place.
 The `enter` method is plumbing used by the `run`, `bind`, and `intercept`
 methods to set the active domain. It sets `domain.active` and `process.domain`
 to the domain, and implicitly pushes the domain onto the domain stack managed
-by the domain module (see `domain.exit()` for details on the domain stack). The
+by the domain package (see `domain.exit()` for details on the domain stack). The
 call to `enter` delimits the beginning of a chain of asynchronous calls and I/O
 operations bound to a domain.
 

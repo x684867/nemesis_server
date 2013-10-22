@@ -90,7 +90,7 @@ static int wsa_init_done=0;
 
 /*
  * WSAAPI specifier is required to make indirect calls to run-time
- * linked WinSock 2 functions used in this module, to be specific
+ * linked WinSock 2 functions used in this package, to be specific
  * [get|free]addrinfo and getnameinfo. This is because WinSock uses
  * uses non-C calling convention, __stdcall vs. __cdecl, on x86
  * Windows. On non-WinSock platforms WSAAPI needs to be void.

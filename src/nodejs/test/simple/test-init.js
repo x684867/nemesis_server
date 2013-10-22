@@ -58,8 +58,8 @@
                        '`node test-init-index failed!');
         });
 
-    // ensures that `node fs` does not mistakenly load the native 'fs' module
-    // instead of the desired file and that the fs module loads as
+    // ensures that `node fs` does not mistakenly load the native 'fs' package
+    // instead of the desired file and that the fs package loads as
     // expected in node
     process.chdir(common.fixturesDir + '/test-init-native/');
 

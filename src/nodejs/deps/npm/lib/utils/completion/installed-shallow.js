@@ -1,5 +1,5 @@
 
-module.exports = installedShallow
+package.exports = installedShallow
 
 var npm = require("../../npm.js")
   , fs = require("graceful-fs")

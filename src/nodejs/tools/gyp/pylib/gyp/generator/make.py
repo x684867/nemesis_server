@@ -139,13 +139,13 @@ cmd_link = $(LINK.$(TOOLSET)) $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -o $@ -Wl,--s
 # We support two kinds of shared objects (.so):
 # 1) shared_library, which is just bundling together many dependent libraries
 # into a link line.
-# 2) loadable_module, which is generating a module intended for dlopen().
+# 2) loadable_package, which is generating a package intended for dlopen().
 #
 # They differ only slightly:
 # In the former case, we want to package all dependent code into the .so.
 # In the latter case, we want to package just the API exposed by the
-# outermost module.
-# This means shared_library uses --whole-archive, while loadable_module doesn't.
+# outermost package.
+# This means shared_library uses --whole-archive, while loadable_package doesn't.
 # (Note that --whole-archive is incompatible with the --start-group used in
 # normal linking.)
 
@@ -155,8 +155,8 @@ cmd_link = $(LINK.$(TOOLSET)) $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -o $@ -Wl,--s
 quiet_cmd_solink = SOLINK($(TOOLSET)) $@
 cmd_solink = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -Wl,-soname=$(@F) -o $@ -Wl,--whole-archive $(LD_INPUTS) -Wl,--no-whole-archive $(LIBS)
 
-quiet_cmd_solink_module = SOLINK_MODULE($(TOOLSET)) $@
-cmd_solink_module = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -Wl,-soname=$(@F) -o $@ -Wl,--start-group $(filter-out FORCE_DO_CMD, $^) -Wl,--end-group $(LIBS)
+quiet_cmd_solink_package = SOLINK_package($(TOOLSET)) $@
+cmd_solink_package = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -Wl,-soname=$(@F) -o $@ -Wl,--start-group $(filter-out FORCE_DO_CMD, $^) -Wl,--end-group $(LIBS)
 """
 
 LINK_COMMANDS_MAC = """\
@@ -167,14 +167,14 @@ quiet_cmd_link = LINK($(TOOLSET)) $@
 cmd_link = $(LINK.$(TOOLSET)) $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -o "$@" $(LD_INPUTS) $(LIBS)
 
 # TODO(thakis): Find out and document the difference between shared_library and
-# loadable_module on mac.
+# loadable_package on mac.
 quiet_cmd_solink = SOLINK($(TOOLSET)) $@
 cmd_solink = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -o "$@" $(LD_INPUTS) $(LIBS)
 
-# TODO(thakis): The solink_module rule is likely wrong. Xcode seems to pass
-# -bundle -single_module here (for osmesa.so).
-quiet_cmd_solink_module = SOLINK_MODULE($(TOOLSET)) $@
-cmd_solink_module = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -o $@ $(filter-out FORCE_DO_CMD, $^) $(LIBS)
+# TODO(thakis): The solink_package rule is likely wrong. Xcode seems to pass
+# -bundle -single_package here (for osmesa.so).
+quiet_cmd_solink_package = SOLINK_package($(TOOLSET)) $@
+cmd_solink_package = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -o $@ $(filter-out FORCE_DO_CMD, $^) $(LIBS)
 """
 
 LINK_COMMANDS_ANDROID = """\
@@ -198,10 +198,10 @@ cmd_link_host = $(LINK.$(TOOLSET)) $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -o $@ $(
 quiet_cmd_solink = SOLINK($(TOOLSET)) $@
 cmd_solink = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -Wl,-soname=$(@F) -o $@ -Wl,--whole-archive $(LD_INPUTS) -Wl,--no-whole-archive $(LIBS)
 
-quiet_cmd_solink_module = SOLINK_MODULE($(TOOLSET)) $@
-cmd_solink_module = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -Wl,-soname=$(@F) -o $@ -Wl,--start-group $(filter-out FORCE_DO_CMD, $^) -Wl,--end-group $(LIBS)
-quiet_cmd_solink_module_host = SOLINK_MODULE($(TOOLSET)) $@
-cmd_solink_module_host = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -Wl,-soname=$(@F) -o $@ $(filter-out FORCE_DO_CMD, $^) $(LIBS)
+quiet_cmd_solink_package = SOLINK_package($(TOOLSET)) $@
+cmd_solink_package = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -Wl,-soname=$(@F) -o $@ -Wl,--start-group $(filter-out FORCE_DO_CMD, $^) -Wl,--end-group $(LIBS)
+quiet_cmd_solink_package_host = SOLINK_package($(TOOLSET)) $@
+cmd_solink_package_host = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -Wl,-soname=$(@F) -o $@ $(filter-out FORCE_DO_CMD, $^) $(LIBS)
 """
 
 
@@ -709,7 +709,7 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
 
     self.is_standalone_static_library = bool(
         spec.get('standalone_static_library', 0))
-    self._INSTALLABLE_TARGETS = ('executable', 'loadable_module',
+    self._INSTALLABLE_TARGETS = ('executable', 'loadable_package',
                                  'shared_library')
     if (self.is_standalone_static_library or
         self.type in self._INSTALLABLE_TARGETS):
@@ -784,7 +784,7 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
     # Currently any versions have the same effect, but in future the behavior
     # could be different.
     if self.generator_flags.get('android_ndk_version', None):
-      self.WriteAndroidNdkModuleRule(self.target, all_sources, link_deps)
+      self.WriteAndroidNdkpackageRule(self.target, all_sources, link_deps)
 
     self.fp.close()
 
@@ -1274,13 +1274,13 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
   def ComputeOutputBasename(self, spec):
     """Return the 'output basename' of a gyp spec.
 
-    E.g., the loadable module 'foobar' in directory 'baz' will produce
+    E.g., the loadable package 'foobar' in directory 'baz' will produce
       'libfoobar.so'
     """
     assert not self.is_mac_bundle
 
     if self.flavor == 'mac' and self.type in (
-        'static_library', 'executable', 'shared_library', 'loadable_module'):
+        'static_library', 'executable', 'shared_library', 'loadable_package'):
       return self.xcode_settings.GetExecutablePath()
 
     target = spec['target_name']
@@ -1291,7 +1291,7 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
         target = target[3:]
       target_prefix = 'lib'
       target_ext = '.a'
-    elif self.type in ('loadable_module', 'shared_library'):
+    elif self.type in ('loadable_package', 'shared_library'):
       if target[:3] == 'lib':
         target = target[3:]
       target_prefix = 'lib'
@@ -1313,13 +1313,13 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
 
   def _InstallImmediately(self):
     return self.toolset == 'target' and self.flavor == 'mac' and self.type in (
-          'static_library', 'executable', 'shared_library', 'loadable_module')
+          'static_library', 'executable', 'shared_library', 'loadable_package')
 
 
   def ComputeOutput(self, spec):
     """Return the 'output' (full output path) of a gyp spec.
 
-    E.g., the loadable module 'foobar' in directory 'baz' will produce
+    E.g., the loadable package 'foobar' in directory 'baz' will produce
       '$(obj)/baz/libfoobar.so'
     """
     assert not self.is_mac_bundle
@@ -1484,7 +1484,7 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
 
       # After the framework is built, package it. Needs to happen before
       # postbuilds, since postbuilds depend on this.
-      if self.type in ('shared_library', 'loadable_module'):
+      if self.type in ('shared_library', 'loadable_package'):
         self.WriteLn('\t@$(call do_cmd,mac_package_framework,,,%s)' %
             self.xcode_settings.GetFrameworkVersion())
 
@@ -1538,16 +1538,16 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
             ' '.join(map(QuoteSpaces, link_deps))))
       self.WriteDoCmd([self.output_binary], link_deps, 'solink', part_of_all,
                       postbuilds=postbuilds)
-    elif self.type == 'loadable_module':
+    elif self.type == 'loadable_package':
       for link_dep in link_deps:
         assert ' ' not in link_dep, (
-            "Spaces in module input filenames not supported (%s)"  % link_dep)
+            "Spaces in package input filenames not supported (%s)"  % link_dep)
       if self.toolset == 'host' and self.flavor == 'android':
-        self.WriteDoCmd([self.output_binary], link_deps, 'solink_module_host',
+        self.WriteDoCmd([self.output_binary], link_deps, 'solink_package_host',
                         part_of_all, postbuilds=postbuilds)
       else:
         self.WriteDoCmd(
-            [self.output_binary], link_deps, 'solink_module', part_of_all,
+            [self.output_binary], link_deps, 'solink_package', part_of_all,
             postbuilds=postbuilds)
     elif self.type == 'none':
       # Write a stamp line.
@@ -1707,15 +1707,15 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
     self.WriteLn()
 
 
-  def WriteAndroidNdkModuleRule(self, module_name, all_sources, link_deps):
+  def WriteAndroidNdkpackageRule(self, package_name, all_sources, link_deps):
     """Write a set of LOCAL_XXX definitions for Android NDK.
 
     These variable definitions will be used by Android NDK but do nothing for
     non-Android applications.
 
     Arguments:
-      module_name: Android NDK module name, which must be unique among all
-          module names.
+      package_name: Android NDK package name, which must be unique among all
+          package names.
       all_sources: A list of source files (will be filtered by Compilable).
       link_deps: A list of link dependencies, which must be sorted in
           the order from dependencies to dependents.
@@ -1725,7 +1725,7 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
 
     self.WriteLn('# Variable definitions for Android applications')
     self.WriteLn('include $(CLEAR_VARS)')
-    self.WriteLn('LOCAL_MODULE := ' + module_name)
+    self.WriteLn('LOCAL_package := ' + package_name)
     self.WriteLn('LOCAL_CFLAGS := $(CFLAGS_$(BUILDTYPE)) '
                  '$(DEFS_$(BUILDTYPE)) '
                  # LOCAL_CFLAGS is applied to both of C and C++.  There is
@@ -1757,13 +1757,13 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
 
     # Filter out those which do not match prefix and suffix and produce
     # the resulting list without prefix and suffix.
-    def DepsToModules(deps, prefix, suffix):
-      modules = []
+    def DepsTopackages(deps, prefix, suffix):
+      packages = []
       for filepath in deps:
         filename = os.path.basename(filepath)
         if filename.startswith(prefix) and filename.endswith(suffix):
-          modules.append(filename[len(prefix):-len(suffix)])
-      return modules
+          packages.append(filename[len(prefix):-len(suffix)])
+      return packages
 
     # Retrieve the default value of 'SHARED_LIB_SUFFIX'
     params = {'flavor': 'linux'}
@@ -1771,12 +1771,12 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
     CalculateVariables(default_variables, params)
 
     self.WriteList(
-        DepsToModules(link_deps,
+        DepsTopackages(link_deps,
                       generator_default_variables['SHARED_LIB_PREFIX'],
                       default_variables['SHARED_LIB_SUFFIX']),
         'LOCAL_SHARED_LIBRARIES')
     self.WriteList(
-        DepsToModules(link_deps,
+        DepsTopackages(link_deps,
                       generator_default_variables['STATIC_LIB_PREFIX'],
                       generator_default_variables['STATIC_LIB_SUFFIX']),
         'LOCAL_STATIC_LIBRARIES')

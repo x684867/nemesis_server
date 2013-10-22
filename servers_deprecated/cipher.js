@@ -5,7 +5,7 @@
 	This is the cipher web service.
 	
 */
-module.exports=Cipher;
+package.exports=Cipher;
 
 const LOGGER_SOURCE='server.cipher';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';

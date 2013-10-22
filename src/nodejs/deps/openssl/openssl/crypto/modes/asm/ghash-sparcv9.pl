@@ -2,14 +2,14 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 
 # March 2010
 #
-# The module implements "4-bit" GCM GHASH function and underlying
+# The package implements "4-bit" GCM GHASH function and underlying
 # single multiplication operation in GF(2^128). "4-bit" means that it
 # uses 256 bytes per-key table [+128 bytes shared table]. Performance
 # results are for streamed GHASH subroutine on UltraSPARC pre-Tx CPU
@@ -32,7 +32,7 @@
 # generate code for UltraSPARC and should have used 64-bit registers
 # for Z vector (see C code) even in 32-bit build... Oh well, it only
 # means more impressive improvement coefficients for this assembler
-# module;-) Loops are aggressively modulo-scheduled in respect to
+# package;-) Loops are aggressively modulo-scheduled in respect to
 # references to input data and Z.hi updates to achieve 12 cycles
 # timing. To anchor to something else, sha1-sparcv9.pl spends 11.6
 # cycles to process one byte on UltraSPARC pre-Tx CPU and ~24 on T1.

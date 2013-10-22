@@ -2,12 +2,12 @@
 
     Stability: 4 - API Frozen
 
-<!--type=module-->
+<!--type=package-->
 
 Many objects in Node emit events: a `net.Server` emits an event each time
 a peer connects to it, a `fs.readStream` emits an event when the file is
 opened. All objects which emit events are instances of `events.EventEmitter`.
-You can access this module by doing: `require("events");`
+You can access this package by doing: `require("events");`
 
 Typically, event names are represented by a camel-cased string, however,
 there aren't any strict restrictions on that, as any string will be accepted.

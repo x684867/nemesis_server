@@ -159,13 +159,13 @@ up by the files array.  The ".npmignore" file works just like a
 
 ## main
 
-The main field is a module ID that is the primary entry point to your program.
+The main field is a package ID that is the primary entry point to your program.
 That is, if your package is named `foo`, and a user installs it, and then does
-`require("foo")`, then your main module's exports object will be returned.
+`require("foo")`, then your main package's exports object will be returned.
 
-This should be a module ID relative to the root of your package folder.
+This should be a package ID relative to the root of your package folder.
 
-For most modules, it makes the most sense to have a main script and often not
+For most packages, it makes the most sense to have a main script and often not
 much else.
 
 ## bin
@@ -176,7 +176,7 @@ feature to install the "npm" executable.)
 
 To use this, supply a `bin` field in your package.json which is a map of
 command name to local file name. On install, npm will symlink that file into
-`prefix/bin` for global installs, or `./node_modules/.bin/` for local
+`prefix/bin` for global installs, or `./node_packages/.bin/` for local
 installs.
 
 
@@ -401,7 +401,7 @@ As of version 1.1.65, you can refer to GitHub urls as just "foo": "user/foo-proj
 
 ## devDependencies
 
-If someone is planning on downloading and using your module in their
+If someone is planning on downloading and using your package in their
 program, then they probably don't want or need to download and build
 the external test or documentation framework that you use.
 
@@ -496,7 +496,7 @@ field is advisory only.
 
 ## engineStrict
 
-If you are sure that your module will *definitely not* run properly on
+If you are sure that your package will *definitely not* run properly on
 versions of Node/npm other than those specified in the `engines` hash,
 then you can set `"engineStrict": true` in your package.json file.
 This will override the user's `engine-strict` config setting.
@@ -510,7 +510,7 @@ people abuse it, it will be removed in a future version of npm.
 ## os
 
 You can specify which operating systems your
-module will run on:
+package will run on:
 
     "os" : [ "darwin", "linux" ]
 

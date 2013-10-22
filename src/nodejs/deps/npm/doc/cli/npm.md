@@ -12,7 +12,7 @@ npm(1) -- node package manager
 ## DESCRIPTION
 
 npm is the package manager for the Node JavaScript platform.  It puts
-modules in place so that node can find them, and manages dependency
+packages in place so that node can find them, and manages dependency
 conflicts intelligently.
 
 It is extremely configurable to support a wide variety of use cases.
@@ -39,11 +39,11 @@ In particular, npm has two modes of operation:
 
 * global mode:  
   npm installs packages into the install prefix at
-  `prefix/lib/node_modules` and bins are installed in `prefix/bin`.
+  `prefix/lib/node_packages` and bins are installed in `prefix/bin`.
 * local mode:  
   npm installs packages into the current project directory, which
   defaults to the current working directory.  Packages are installed to
-  `./node_modules`, and bins are installed to `./node_modules/.bin`.
+  `./node_packages`, and bins are installed to `./node_packages/.bin`.
 
 Local mode is the default.  Use `--global` or `-g` on any command to
 operate in global mode instead.

@@ -187,4 +187,4 @@ TTYWrap::TTYWrap(Environment* env, Handle<Object> object, int fd, bool readable)
 
 }  // namespace node
 
-NODE_MODULE_CONTEXT_AWARE(node_tty_wrap, node::TTYWrap::Initialize)
+NODE_package_CONTEXT_AWARE(node_tty_wrap, node::TTYWrap::Initialize)

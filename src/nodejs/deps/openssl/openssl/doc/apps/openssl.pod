@@ -131,7 +131,7 @@ Encoding with Ciphers.
 
 =item L<B<engine>|engine(1)>
 
-Engine (loadble module) information and manipulation.
+Engine (loadble package) information and manipulation.
 
 =item L<B<errstr>|errstr(1)>
 

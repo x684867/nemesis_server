@@ -96,7 +96,7 @@ This generates npm-shrinkwrap.json, which will look something like this:
     }
 
 The shrinkwrap command has locked down the dependencies based on
-what's currently installed in node_modules.  When "npm install"
+what's currently installed in node_packages.  When "npm install"
 installs a package with a npm-shrinkwrap.json file in the package
 root, the shrinkwrap file (rather than package.json files) completely
 drives the installation of that package and all of its dependencies
@@ -152,7 +152,7 @@ Since "npm shrinkwrap" is intended to lock down your dependencies for
 production use, `devDependencies` will not be included unless you
 explicitly set the `--dev` flag when you run `npm shrinkwrap`.  If
 installed `devDependencies` are excluded, then npm will print a
-warning.  If you want them to be installed with your module by
+warning.  If you want them to be installed with your package by
 default, please consider adding them to `dependencies` instead.
 
 If shrinkwrapped package A depends on shrinkwrapped package B, B's

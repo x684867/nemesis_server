@@ -197,12 +197,12 @@ $! Set up the engine library names.
 $!
 $ LIB_ENGINE = "ENGINE_" + ENGINE_NAME
 $!
-$! Check if the library module name actually is defined
+$! Check if the library package name actually is defined
 $!
 $ IF F$TYPE('LIB_ENGINE') .EQS. ""
 $ THEN
 $   WRITE SYS$ERROR ""
-$   WRITE SYS$ERROR "The module ",ENGINE_NAME," does not exist.  Continuing..."
+$   WRITE SYS$ERROR "The package ",ENGINE_NAME," does not exist.  Continuing..."
 $   WRITE SYS$ERROR ""
 $   GOTO ENGINE_NEXT
 $ ENDIF
@@ -223,7 +223,7 @@ $ THEN
 $   OPEN /WRITE OBJECTS 'EXE_DIR''ENGINE_NAME'.OPT
 $ ENDIF
 $!
-$! Here's the start of per-engine module loop.
+$! Here's the start of per-engine package loop.
 $!
 $ FILE_COUNTER = 0
 $ FILE_NEXT:
@@ -247,10 +247,10 @@ $     SOURCE_FILE = F$PARSE(FILE_NAME,"SYS$DISK:[."+'LIB_ENGINE'_SUBDIR+"].C",,,
 $ ENDIF
 $ OBJECT_FILE = OBJ_DIR + F$PARSE(FILE_NAME,,,"NAME","SYNTAX_ONLY") + ".OBJ"
 $!
-$! If we get some problem, we just go on trying to build the next module.
+$! If we get some problem, we just go on trying to build the next package.
 $ ON WARNING THEN GOTO FILE_NEXT
 $!
-$! Check if the module we want to compile is actually there.
+$! Check if the package we want to compile is actually there.
 $!
 $ IF F$SEARCH(SOURCE_FILE) .EQS. ""
 $ THEN

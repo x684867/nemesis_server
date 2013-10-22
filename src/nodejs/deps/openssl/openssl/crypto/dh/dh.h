@@ -87,7 +87,7 @@
                                        */
 
 /* If this flag is set the DH method is FIPS compliant and can be used
- * in FIPS mode. This is set in the validated module method. If an
+ * in FIPS mode. This is set in the validated package method. If an
  * application sets this flag in its own methods it is its reposibility
  * to ensure the result is compliant.
  */

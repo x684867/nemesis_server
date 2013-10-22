@@ -231,28 +231,28 @@ the current Node.js version.</p>
 
 <ul><li>Default: 2</li><li>Type: Number</li></ul>
 
-<p>The &quot;retries&quot; config for the <code>retry</code> module to use when fetching
+<p>The &quot;retries&quot; config for the <code>retry</code> package to use when fetching
 packages from the registry.</p>
 
 <h3 id="fetch-retry-factor">fetch-retry-factor</h3>
 
 <ul><li>Default: 10</li><li>Type: Number</li></ul>
 
-<p>The &quot;factor&quot; config for the <code>retry</code> module to use when fetching
+<p>The &quot;factor&quot; config for the <code>retry</code> package to use when fetching
 packages.</p>
 
 <h3 id="fetch-retry-mintimeout">fetch-retry-mintimeout</h3>
 
 <ul><li>Default: 10000 (10 seconds)</li><li>Type: Number</li></ul>
 
-<p>The &quot;minTimeout&quot; config for the <code>retry</code> module to use when fetching
+<p>The &quot;minTimeout&quot; config for the <code>retry</code> package to use when fetching
 packages.</p>
 
 <h3 id="fetch-retry-maxtimeout">fetch-retry-maxtimeout</h3>
 
 <ul><li>Default: 60000 (1 minute)</li><li>Type: Number</li></ul>
 
-<p>The &quot;maxTimeout&quot; config for the <code>retry</code> module to use when fetching
+<p>The &quot;maxTimeout&quot; config for the <code>retry</code> package to use when fetching
 packages.</p>
 
 <h3 id="git">git</h3>
@@ -271,7 +271,7 @@ the git binary.</p>
 <code>prefix</code> folder instead of the current working directory.  See
 <code><a href="../files/npm-folders.html">npm-folders(5)</a></code> for more on the differences in behavior.</p>
 
-<ul><li>packages are installed into the <code>{prefix}/lib/node_modules</code> folder, instead of the
+<ul><li>packages are installed into the <code>{prefix}/lib/node_packages</code> folder, instead of the
 current working directory.</li><li>bin files are linked to <code>{prefix}/bin</code></li><li>man pages are linked to <code>{prefix}/share/man</code></li></ul>
 
 <h3 id="globalconfig">globalconfig</h3>
@@ -317,13 +317,13 @@ user.</p>
 <p>A white-space separated list of glob patterns of files to always exclude
 from packages when building tarballs.</p>
 
-<h3 id="init-module">init-module</h3>
+<h3 id="init-package">init-package</h3>
 
 <ul><li>Default: ~/.npm-init.js</li><li>Type: path</li></ul>
 
-<p>A module that will be loaded by the <code>npm init</code> command.  See the
+<p>A package that will be loaded by the <code>npm init</code> command.  See the
 documentation for the
-<a href="https://github.com/isaacs/init-package-json">init-package-json</a> module
+<a href="https://github.com/isaacs/init-package-json">init-package-json</a> package
 for more information, or <a href="../cli/npm-init.html">npm-init(1)</a>.</p>
 
 <h3 id="init-version">init.version</h3>
@@ -389,7 +389,7 @@ The default is &quot;http&quot;, which shows http, warn, and error output.</p>
 <ul><li>Default: process.stderr</li><li>Type: Stream</li></ul>
 
 <p>This is the stream that is passed to the
-<a href="https://github.com/isaacs/npmlog">npmlog</a> module at run time.</p>
+<a href="https://github.com/isaacs/npmlog">npmlog</a> package at run time.</p>
 
 <p>It cannot be set from the command line, but if you are using npm
 programmatically, you may wish to send logs to somewhere other than
@@ -435,7 +435,7 @@ colored output if it is a TTY.</p>
 
 <ul><li>Default: false</li><li>Type: path</li></ul>
 
-<p>A node module to <code>require()</code> when npm loads.  Useful for programmatic
+<p>A node package to <code>require()</code> when npm loads.  Useful for programmatic
 usage.</p>
 
 <h3 id="optional">optional</h3>

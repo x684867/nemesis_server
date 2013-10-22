@@ -58,8 +58,8 @@ Handle<Value> Method(const Arguments& args) {
   return Undefined();
 }
 
-void init(Handle<Object> exports, Handle<Object> module) {
-  NODE_SET_METHOD(module, "exports", Method);
+void init(Handle<Object> exports, Handle<Object> package) {
+  NODE_SET_METHOD(package, "exports", Method);
 }
 
-NODE_MODULE(binding, init);
+NODE_package(binding, init);

@@ -462,14 +462,14 @@ class FullCodeGenerator: public AstVisitor {
   void VisitInDuplicateContext(Expression* expr);
 
   void VisitDeclarations(ZoneList<Declaration*>* declarations);
-  void DeclareModules(Handle<FixedArray> descriptions);
+  void Declarepackages(Handle<FixedArray> descriptions);
   void DeclareGlobals(Handle<FixedArray> pairs);
   int DeclareGlobalsFlags();
 
-  // Generate code to allocate all (including nested) modules and contexts.
-  // Because of recursive linking and the presence of module alias declarations,
-  // this has to be a separate pass _before_ populating or executing any module.
-  void AllocateModules(ZoneList<Declaration*>* declarations);
+  // Generate code to allocate all (including nested) packages and contexts.
+  // Because of recursive linking and the presence of package alias declarations,
+  // this has to be a separate pass _before_ populating or executing any package.
+  void Allocatepackages(ZoneList<Declaration*>* declarations);
 
   // Generate code to create an iterator result object.  The "value" property is
   // set to a value popped from the stack, and "done" is set according to the
@@ -898,8 +898,8 @@ class FullCodeGenerator: public AstVisitor {
   NestedStatement* nesting_stack_;
   int loop_depth_;
   ZoneList<Handle<Object> >* globals_;
-  Handle<FixedArray> modules_;
-  int module_index_;
+  Handle<FixedArray> packages_;
+  int package_index_;
   const ExpressionContext* context_;
   ZoneList<BailoutEntry> bailout_entries_;
   GrowableBitVector prepared_bailout_ids_;

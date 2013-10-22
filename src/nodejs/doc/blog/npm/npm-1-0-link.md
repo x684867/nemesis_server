@@ -9,7 +9,7 @@ slug: npm-1-0-link
 
 <p>In npm 0.x, there was a command called <code>link</code>. With it, you could &#8220;link-install&#8221; a package so that changes would be reflected in real-time. This is especially handy when you&#8217;re actually building something. You could make a few changes, run the command again, and voila, your new code would be run without having to re-install every time.</p>
 
-<p>Of course, compiled modules still have to be rebuilt. That&#8217;s not ideal, but it&#8217;s a problem that will take more powerful magic to solve.</p>
+<p>Of course, compiled packages still have to be rebuilt. That&#8217;s not ideal, but it&#8217;s a problem that will take more powerful magic to solve.</p>
 
 <p>In npm 0.x, this was a pretty awful kludge. Back then, every package existed in some folder like:</p>
 
@@ -52,7 +52,7 @@ slug: npm-1-0-link
 npm link              # create symlinks into {prefix}
 </code></pre>
 
-<p>Because of how I have my computer set up, with <code>/usr/local</code> as my install prefix, I end up with a symlink from <code>/usr/local/lib/node_modules/tap</code> pointing to <code>~/dev/js/node-tap</code>, and the executable linked to <code>/usr/local/bin/tap</code>.</p>
+<p>Because of how I have my computer set up, with <code>/usr/local</code> as my install prefix, I end up with a symlink from <code>/usr/local/lib/node_packages/tap</code> pointing to <code>~/dev/js/node-tap</code>, and the executable linked to <code>/usr/local/bin/tap</code>.</p>
 
 <p>Of course, if you <a href="http://blog.nodejs.org/2011/04/04/development-environment/">set your paths differently</a>, then you&#8217;ll have different results. (That&#8217;s why I tend to talk in terms of <code>prefix</code> rather than <code>/usr/local</code>.)</p>
 
@@ -66,7 +66,7 @@ npm link              # create symlinks into {prefix}
 npm link tap           # link the global thing into my project.
 </code></pre>
 
-<p>Now when I make changes in <code>~/dev/js/node-tap</code>, they&#8217;ll be immediately reflected in <code>~/dev/js/node-glob/node_modules/tap</code>.</p>
+<p>Now when I make changes in <code>~/dev/js/node-tap</code>, they&#8217;ll be immediately reflected in <code>~/dev/js/node-glob/node_packages/tap</code>.</p>
 
 <h2 id="link_to_stuff_you_don8217t_build">Link to stuff you <em>don&#8217;t</em> build</h2>
 
@@ -74,7 +74,7 @@ npm link tap           # link the global thing into my project.
 
 <pre><code>npm install express -g  # install express globally
 cd ~/dev/js/my-blog     # development folder one
-npm link express        # link the global express into ./node_modules
+npm link express        # link the global express into ./node_packages
 cd ~/dev/js/photo-site  # other project folder
 npm link express        # link express into here, as well
 

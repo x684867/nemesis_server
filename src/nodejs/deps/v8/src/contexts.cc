@@ -196,7 +196,7 @@ Handle<Object> Context::Lookup(Handle<String> name,
                 ? IMMUTABLE_CHECK_INITIALIZED_HARMONY :
                 IMMUTABLE_IS_INITIALIZED_HARMONY;
             break;
-          case MODULE:
+          case package:
             *attributes = READ_ONLY;
             *binding_flags = IMMUTABLE_IS_INITIALIZED_HARMONY;
             break;
@@ -348,7 +348,7 @@ bool Context::IsBootstrappingOrValidParentContext(
   if (!object->IsContext()) return false;
   Context* context = Context::cast(object);
   return context->IsNativeContext() || context->IsGlobalContext() ||
-         context->IsModuleContext() || !child->IsModuleContext();
+         context->IspackageContext() || !child->IspackageContext();
 }
 
 

@@ -19,8 +19,8 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var NativeModule = require('native_module');
-var util = NativeModule.require('util');
+var Nativepackage = require('native_package');
+var util = Nativepackage.require('util');
 var runInThisContext = require('vm').runInThisContext;
 var runInNewContext = require('vm').runInNewContext;
 var assert = require('assert').ok;
@@ -34,7 +34,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 
-function Module(id, parent) {
+function package(id, parent) {
   this.id = id;
   this.exports = {};
   this.parent = parent;
@@ -46,30 +46,30 @@ function Module(id, parent) {
   this.loaded = false;
   this.children = [];
 }
-module.exports = Module;
+package.exports = package;
 
-// Set the environ variable NODE_MODULE_CONTEXTS=1 to make node load all
-// modules in their own context.
-Module._contextLoad = (+process.env['NODE_MODULE_CONTEXTS'] > 0);
-Module._cache = {};
-Module._pathCache = {};
-Module._extensions = {};
-var modulePaths = [];
-Module.globalPaths = [];
+// Set the environ variable NODE_package_CONTEXTS=1 to make node load all
+// packages in their own context.
+package._contextLoad = (+process.env['NODE_package_CONTEXTS'] > 0);
+package._cache = {};
+package._pathCache = {};
+package._extensions = {};
+var packagePaths = [];
+package.globalPaths = [];
 
-Module.wrapper = NativeModule.wrapper;
-Module.wrap = NativeModule.wrap;
+package.wrapper = Nativepackage.wrapper;
+package.wrap = Nativepackage.wrap;
 
-var path = NativeModule.require('path');
+var path = Nativepackage.require('path');
 
-Module._debug = util.debuglog('module');
+package._debug = util.debuglog('package');
 
 
 // We use this alias for the preprocessor that filters it out
-var debug = Module._debug;
+var debug = package._debug;
 
 
-// given a module name, and a list of paths to test, returns the first
+// given a package name, and a list of paths to test, returns the first
 // matching file in the following precedence.
 //
 // require("a.<ext>")
@@ -81,7 +81,7 @@ var debug = Module._debug;
 //   -> a/index.<ext>
 
 function statPath(path) {
-  var fs = NativeModule.require('fs');
+  var fs = Nativepackage.require('fs');
   try {
     return fs.statSync(path);
   } catch (ex) {}
@@ -96,7 +96,7 @@ function readPackage(requestPath) {
     return packageCache[requestPath];
   }
 
-  var fs = NativeModule.require('fs');
+  var fs = Nativepackage.require('fs');
   try {
     var jsonPath = path.resolve(requestPath, 'package.json');
     var json = fs.readFileSync(jsonPath, 'utf8');
@@ -127,14 +127,14 @@ function tryPackage(requestPath, exts) {
 // In order to minimize unnecessary lstat() calls,
 // this cache is a list of known-real paths.
 // Set to an empty object to reset.
-Module._realpathCache = {};
+package._realpathCache = {};
 
 // check if the file exists and is not a directory
 function tryFile(requestPath) {
-  var fs = NativeModule.require('fs');
+  var fs = Nativepackage.require('fs');
   var stats = statPath(requestPath);
   if (stats && !stats.isDirectory()) {
-    return fs.realpathSync(requestPath, Module._realpathCache);
+    return fs.realpathSync(requestPath, package._realpathCache);
   }
   return false;
 }
@@ -152,8 +152,8 @@ function tryExtensions(p, exts) {
 }
 
 
-Module._findPath = function(request, paths) {
-  var exts = Object.keys(Module._extensions);
+package._findPath = function(request, paths) {
+  var exts = Object.keys(package._extensions);
 
   if (request.charAt(0) === '/') {
     paths = [''];
@@ -162,8 +162,8 @@ Module._findPath = function(request, paths) {
   var trailingSlash = (request.slice(-1) === '/');
 
   var cacheKey = JSON.stringify({request: request, paths: paths});
-  if (Module._pathCache[cacheKey]) {
-    return Module._pathCache[cacheKey];
+  if (package._pathCache[cacheKey]) {
+    return package._pathCache[cacheKey];
   }
 
   // For each path
@@ -191,15 +191,15 @@ Module._findPath = function(request, paths) {
     }
 
     if (filename) {
-      Module._pathCache[cacheKey] = filename;
+      package._pathCache[cacheKey] = filename;
       return filename;
     }
   }
   return false;
 };
 
-// 'from' is the __dirname of the module.
-Module._nodeModulePaths = function(from) {
+// 'from' is the __dirname of the package.
+package._nodepackagePaths = function(from) {
   // guarantee that 'from' is absolute.
   from = path.resolve(from);
 
@@ -211,9 +211,9 @@ Module._nodeModulePaths = function(from) {
   var parts = from.split(splitRe);
 
   for (var tip = parts.length - 1; tip >= 0; tip--) {
-    // don't search in .../node_modules/node_modules
-    if (parts[tip] === 'node_modules') continue;
-    var dir = parts.slice(0, tip + 1).concat('node_modules').join(path.sep);
+    // don't search in .../node_packages/node_packages
+    if (parts[tip] === 'node_packages') continue;
+    var dir = parts.slice(0, tip + 1).concat('node_packages').join(path.sep);
     paths.push(dir);
   }
 
@@ -221,14 +221,14 @@ Module._nodeModulePaths = function(from) {
 };
 
 
-Module._resolveLookupPaths = function(request, parent) {
-  if (NativeModule.exists(request)) {
+package._resolveLookupPaths = function(request, parent) {
+  if (Nativepackage.exists(request)) {
     return [request, []];
   }
 
   var start = request.substring(0, 2);
   if (start !== './' && start !== '..') {
-    var paths = modulePaths;
+    var paths = packagePaths;
     if (parent) {
       if (!parent.paths) parent.paths = [];
       paths = parent.paths.concat(paths);
@@ -240,14 +240,14 @@ Module._resolveLookupPaths = function(request, parent) {
   if (!parent || !parent.id || !parent.filename) {
     // make require('./path/to/foo') work - normally the path is taken
     // from realpath(__filename) but with eval there is no filename
-    var mainPaths = ['.'].concat(modulePaths);
-    mainPaths = Module._nodeModulePaths('.').concat(mainPaths);
+    var mainPaths = ['.'].concat(packagePaths);
+    mainPaths = package._nodepackagePaths('.').concat(mainPaths);
     return [request, mainPaths];
   }
 
-  // Is the parent an index module?
+  // Is the parent an index package?
   // We can assume the parent has a valid extension,
-  // as it already has been accepted as a module.
+  // as it already has been accepted as a package.
   var isIndex = /^index\.\w+?$/.test(path.basename(parent.filename));
   var parentIdPath = isIndex ? parent.id : path.dirname(parent.id);
   var id = path.resolve(parentIdPath, request);
@@ -265,96 +265,96 @@ Module._resolveLookupPaths = function(request, parent) {
 };
 
 
-Module._load = function(request, parent, isMain) {
+package._load = function(request, parent, isMain) {
   if (parent) {
-    debug('Module._load REQUEST  ' + (request) + ' parent: ' + parent.id);
+    debug('package._load REQUEST  ' + (request) + ' parent: ' + parent.id);
   }
 
-  var filename = Module._resolveFilename(request, parent);
+  var filename = package._resolveFilename(request, parent);
 
-  var cachedModule = Module._cache[filename];
-  if (cachedModule) {
-    return cachedModule.exports;
+  var cachedpackage = package._cache[filename];
+  if (cachedpackage) {
+    return cachedpackage.exports;
   }
 
-  if (NativeModule.exists(filename)) {
+  if (Nativepackage.exists(filename)) {
     // REPL is a special case, because it needs the real require.
     if (filename == 'repl') {
-      var replModule = new Module('repl');
-      replModule._compile(NativeModule.getSource('repl'), 'repl.js');
-      NativeModule._cache.repl = replModule;
-      return replModule.exports;
+      var replpackage = new package('repl');
+      replpackage._compile(Nativepackage.getSource('repl'), 'repl.js');
+      Nativepackage._cache.repl = replpackage;
+      return replpackage.exports;
     }
 
-    debug('load native module ' + request);
-    return NativeModule.require(filename);
+    debug('load native package ' + request);
+    return Nativepackage.require(filename);
   }
 
-  var module = new Module(filename, parent);
+  var package = new package(filename, parent);
 
   if (isMain) {
-    process.mainModule = module;
-    module.id = '.';
+    process.mainpackage = package;
+    package.id = '.';
   }
 
-  Module._cache[filename] = module;
+  package._cache[filename] = package;
 
   var hadException = true;
 
   try {
-    module.load(filename);
+    package.load(filename);
     hadException = false;
   } finally {
     if (hadException) {
-      delete Module._cache[filename];
+      delete package._cache[filename];
     }
   }
 
-  return module.exports;
+  return package.exports;
 };
 
-Module._resolveFilename = function(request, parent) {
-  if (NativeModule.exists(request)) {
+package._resolveFilename = function(request, parent) {
+  if (Nativepackage.exists(request)) {
     return request;
   }
 
-  var resolvedModule = Module._resolveLookupPaths(request, parent);
-  var id = resolvedModule[0];
-  var paths = resolvedModule[1];
+  var resolvedpackage = package._resolveLookupPaths(request, parent);
+  var id = resolvedpackage[0];
+  var paths = resolvedpackage[1];
 
   // look up the filename first, since that's the cache key.
   debug('looking for ' + JSON.stringify(id) +
         ' in ' + JSON.stringify(paths));
 
-  var filename = Module._findPath(request, paths);
+  var filename = package._findPath(request, paths);
   if (!filename) {
-    var err = new Error("Cannot find module '" + request + "'");
-    err.code = 'MODULE_NOT_FOUND';
+    var err = new Error("Cannot find package '" + request + "'");
+    err.code = 'package_NOT_FOUND';
     throw err;
   }
   return filename;
 };
 
 
-Module.prototype.load = function(filename) {
+package.prototype.load = function(filename) {
   debug('load ' + JSON.stringify(filename) +
-        ' for module ' + JSON.stringify(this.id));
+        ' for package ' + JSON.stringify(this.id));
 
   assert(!this.loaded);
   this.filename = filename;
-  this.paths = Module._nodeModulePaths(path.dirname(filename));
+  this.paths = package._nodepackagePaths(path.dirname(filename));
 
   var extension = path.extname(filename) || '.js';
-  if (!Module._extensions[extension]) extension = '.js';
-  Module._extensions[extension](this, filename);
+  if (!package._extensions[extension]) extension = '.js';
+  package._extensions[extension](this, filename);
   this.loaded = true;
 };
 
 
-Module.prototype.require = function(path) {
+package.prototype.require = function(path) {
   assert(util.isString(path), 'path must be a string');
   assert(path, 'missing path');
-  return Module._load(path, this);
+  return package._load(path, this);
 };
 
 
@@ -364,7 +364,7 @@ var resolvedArgv;
 
 
 // Returns exception if any
-Module.prototype._compile = function(content, filename) {
+package.prototype._compile = function(content, filename) {
   var self = this;
   // remove shebang
   content = content.replace(/^\#\!.*/, '');
@@ -374,32 +374,32 @@ Module.prototype._compile = function(content, filename) {
   }
 
   require.resolve = function(request) {
-    return Module._resolveFilename(request, self);
+    return package._resolveFilename(request, self);
   };
 
   Object.defineProperty(require, 'paths', { get: function() {
     throw new Error('require.paths is removed. Use ' +
-                    'node_modules folders, or the NODE_PATH ' +
+                    'node_packages folders, or the NODE_PATH ' +
                     'environment variable instead.');
   }});
 
-  require.main = process.mainModule;
+  require.main = process.mainpackage;
 
   // Enable support to add extra extension types
-  require.extensions = Module._extensions;
+  require.extensions = package._extensions;
   require.registerExtension = function() {
     throw new Error('require.registerExtension() removed. Use ' +
                     'require.extensions instead.');
   };
 
-  require.cache = Module._cache;
+  require.cache = package._cache;
 
   var dirname = path.dirname(filename);
 
-  if (Module._contextLoad) {
+  if (package._contextLoad) {
     if (self.id !== '.') {
-      debug('load submodule');
-      // not root module
+      debug('load subpackage');
+      // not root package
       var sandbox = {};
       for (var k in global) {
         sandbox[k] = global[k];
@@ -408,39 +408,39 @@ Module.prototype._compile = function(content, filename) {
       sandbox.exports = self.exports;
       sandbox.__filename = filename;
       sandbox.__dirname = dirname;
-      sandbox.module = self;
+      sandbox.package = self;
       sandbox.global = sandbox;
       sandbox.root = root;
 
       return runInNewContext(content, sandbox, { filename: filename });
     }
 
-    debug('load root module');
-    // root module
+    debug('load root package');
+    // root package
     global.require = require;
     global.exports = self.exports;
     global.__filename = filename;
     global.__dirname = dirname;
-    global.module = self;
+    global.package = self;
 
     return runInThisContext(content, { filename: filename });
   }
 
   // create wrapper function
-  var wrapper = Module.wrap(content);
+  var wrapper = package.wrap(content);
 
   var compiledWrapper = runInThisContext(wrapper, { filename: filename });
   if (global.v8debug) {
     if (!resolvedArgv) {
       // we enter the repl if we're not given a filename argument.
       if (process.argv[1]) {
-        resolvedArgv = Module._resolveFilename(process.argv[1], null);
+        resolvedArgv = package._resolveFilename(process.argv[1], null);
       } else {
         resolvedArgv = 'repl';
       }
     }
 
-    // Set breakpoint on module start
+    // Set breakpoint on package start
     if (filename === resolvedArgv) {
       global.v8debug.Debug.setBreakPoint(compiledWrapper, 0, 0);
     }
@@ -462,17 +462,17 @@ function stripBOM(content) {
 
 
 // Native extension for .js
-Module._extensions['.js'] = function(module, filename) {
-  var content = NativeModule.require('fs').readFileSync(filename, 'utf8');
-  module._compile(stripBOM(content), filename);
+package._extensions['.js'] = function(package, filename) {
+  var content = Nativepackage.require('fs').readFileSync(filename, 'utf8');
+  package._compile(stripBOM(content), filename);
 };
 
 
 // Native extension for .json
-Module._extensions['.json'] = function(module, filename) {
-  var content = NativeModule.require('fs').readFileSync(filename, 'utf8');
+package._extensions['.json'] = function(package, filename) {
+  var content = Nativepackage.require('fs').readFileSync(filename, 'utf8');
   try {
-    module.exports = JSON.parse(stripBOM(content));
+    package.exports = JSON.parse(stripBOM(content));
   } catch (err) {
     err.message = filename + ': ' + err.message;
     throw err;
@@ -481,18 +481,18 @@ Module._extensions['.json'] = function(module, filename) {
 
 
 //Native extension for .node
-Module._extensions['.node'] = process.dlopen;
+package._extensions['.node'] = process.dlopen;
 
 
-// bootstrap main module.
-Module.runMain = function() {
-  // Load the main module--the command line argument.
-  Module._load(process.argv[1], null, true);
+// bootstrap main package.
+package.runMain = function() {
+  // Load the main package--the command line argument.
+  package._load(process.argv[1], null, true);
   // Handle any nextTicks added in the first tick of the program
   process._tickCallback();
 };
 
-Module._initPaths = function() {
+package._initPaths = function() {
   var isWindows = process.platform === 'win32';
 
   if (isWindows) {
@@ -505,25 +505,25 @@ Module._initPaths = function() {
 
   if (homeDir) {
     paths.unshift(path.resolve(homeDir, '.node_libraries'));
-    paths.unshift(path.resolve(homeDir, '.node_modules'));
+    paths.unshift(path.resolve(homeDir, '.node_packages'));
   }
 
   if (process.env['NODE_PATH']) {
     paths = process.env['NODE_PATH'].split(path.delimiter).concat(paths);
   }
 
-  modulePaths = paths;
+  packagePaths = paths;
 
   // clone as a read-only copy, for introspection.
-  Module.globalPaths = modulePaths.slice(0);
+  package.globalPaths = packagePaths.slice(0);
 };
 
 // bootstrap repl
-Module.requireRepl = function() {
-  return Module._load('repl', '.');
+package.requireRepl = function() {
+  return package._load('repl', '.');
 };
 
-Module._initPaths();
+package._initPaths();
 
 // backwards compatibility
-Module.Module = Module;
+package.package = package;

@@ -996,4 +996,4 @@ void InitFs(Handle<Object> target,
 
 }  // end namespace node
 
-NODE_MODULE_CONTEXT_AWARE(node_fs, node::InitFs)
+NODE_package_CONTEXT_AWARE(node_fs, node::InitFs)

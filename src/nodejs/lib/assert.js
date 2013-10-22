@@ -26,11 +26,11 @@
 var util = require('util');
 var pSlice = Array.prototype.slice;
 
-// 1. The assert module provides functions that throw
+// 1. The assert package provides functions that throw
 // AssertionError's when particular conditions are not met. The
-// assert module must conform to the following interface.
+// assert package must conform to the following interface.
 
-var assert = module.exports = ok;
+var assert = package.exports = ok;
 
 // 2. The AssertionError is defined in assert.
 // new assert.AssertionError({ message: message,
@@ -84,7 +84,7 @@ function getMessage(self) {
 }
 
 // At present only the three keys mentioned above are used and
-// understood by the spec. Implementations or sub modules can pass
+// understood by the spec. Implementations or sub packages can pass
 // other keys to the AssertionError's constructor - they will be
 // ignored.
 
@@ -318,7 +318,7 @@ assert.throws = function(block, /*optional*/error, /*optional*/message) {
   _throws.apply(this, [true].concat(pSlice.call(arguments)));
 };
 
-// EXTENSION! This is annoying to write outside this module.
+// EXTENSION! This is annoying to write outside this package.
 assert.doesNotThrow = function(block, /*optional*/message) {
   _throws.apply(this, [false].concat(pSlice.call(arguments)));
 };

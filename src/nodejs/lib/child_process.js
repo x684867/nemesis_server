@@ -504,7 +504,7 @@ function setupChannel(target, channel) {
 
 function nop() { }
 
-exports.fork = function(modulePath /*, args, options*/) {
+exports.fork = function(packagePath /*, args, options*/) {
 
   // Get options and args arguments.
   var options, args, execArgv;
@@ -518,7 +518,7 @@ exports.fork = function(modulePath /*, args, options*/) {
 
   // Prepare arguments for fork:
   execArgv = options.execArgv || process.execArgv;
-  args = execArgv.concat([modulePath], args);
+  args = execArgv.concat([packagePath], args);
 
   // Leave stdin open for the IPC channel. stdout and stderr should be the
   // same as the parent's if silent isn't set.

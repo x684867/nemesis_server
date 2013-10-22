@@ -38,7 +38,7 @@
 #	pre-MMX AMD core[s], the improvement coefficient is more
 #	than likely to vary anyway and I don't know how. But the
 #	least I know is that gcc-generated code compiled with
-#	-DL_ENDIAN and -DOPENSSL_SMALL_FOOTPRINT [see C module for
+#	-DL_ENDIAN and -DOPENSSL_SMALL_FOOTPRINT [see C package for
 #	details] and optimized for Pentium was observed to perform
 #	*better* on Pentium 100 than unrolled non-MMX assembler
 #	loop... So we just say that I don't know if maintaining

@@ -22,7 +22,7 @@
 var common = require('../common');
 var assert = require('assert');
 
-var module = require('module');
+var package = require('package');
 
 var isWindows = process.platform === 'win32';
 
@@ -32,11 +32,11 @@ if (isWindows) {
   file = 'C:\\Users\\Rocko Artischocko\\node_stuff\\foo';
   delimiter = '\\'
 } else {
-  file = '/usr/test/lib/node_modules/npm/foo';
+  file = '/usr/test/lib/node_packages/npm/foo';
   delimiter = '/'
 }
 
-paths = module._nodeModulePaths(file);
+paths = package._nodepackagePaths(file);
 
-assert.ok(paths.indexOf(file + delimiter + 'node_modules') !== -1);
+assert.ok(paths.indexOf(file + delimiter + 'node_packages') !== -1);
 assert.ok(Array.isArray(paths));

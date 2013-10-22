@@ -133,7 +133,7 @@ static bool debug_wait_connect = false;
 static int debug_port = 5858;
 static bool v8_is_profiling = false;
 
-// used by C++ modules as well
+// used by C++ packages as well
 bool no_deprecation = false;
 
 // process-relative uptime base, initialized at start-up
@@ -1222,14 +1222,14 @@ void DisplayExceptionLine(Handle<Message> message) {
     String::Utf8Value sourceline(message->GetSourceLine());
     const char* sourceline_string = *sourceline;
 
-    // Because of how node modules work, all scripts are wrapped with a
-    // "function (module, exports, __filename, ...) {"
+    // Because of how node packages work, all scripts are wrapped with a
+    // "function (package, exports, __filename, ...) {"
     // to provide script local variables.
     //
     // When reporting errors on the first line of a script, this wrapper
     // function is leaked to the user. There used to be a hack here to
     // truncate off the first 62 characters, but it caused numerous other
-    // problems when vm.runIn*Context() methods were used for non-module
+    // problems when vm.runIn*Context() methods were used for non-package
     // code.
     //
     // If we ever decide to re-instate such a hack, the following steps
@@ -1805,8 +1805,8 @@ void Hrtime(const FunctionCallbackInfo<Value>& args) {
 
 typedef void (UV_DYNAMIC* extInit)(Handle<Object> exports);
 
-// DLOpen is process.dlopen(module, filename).
-// Used to load 'module.node' dynamically shared objects.
+// DLOpen is process.dlopen(package, filename).
+// Used to load 'package.node' dynamically shared objects.
 //
 // FIXME(bnoordhuis) Not multi-context ready. TBD how to resolve the conflict
 // when two contexts try to load the same shared object. Maybe have a shadow
@@ -1822,11 +1822,11 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
     return ThrowError("process.dlopen takes exactly 2 arguments.");
   }
 
-  Local<Object> module = args[0]->ToObject();  // Cast
+  Local<Object> package = args[0]->ToObject();  // Cast
   String::Utf8Value filename(args[1]);  // Cast
 
   Local<String> exports_string = env->exports_string();
-  Local<Object> exports = module->Get(exports_string)->ToObject();
+  Local<Object> exports = package->Get(exports_string)->ToObject();
 
   if (uv_dlopen(*filename, &lib)) {
     Local<String> errmsg = OneByteString(env->isolate(), uv_dlerror(&lib));
@@ -1863,42 +1863,42 @@ void DLOpen(const FunctionCallbackInfo<Value>& args) {
     *pos = '\0';
   }
 
-  /* Add the `_module` suffix to the extension name. */
-  r = snprintf(symbol, sizeof symbol, "%s_module", base);
+  /* Add the `_package` suffix to the extension name. */
+  r = snprintf(symbol, sizeof symbol, "%s_package", base);
   if (r <= 0 || static_cast<size_t>(r) >= sizeof symbol) {
     return ThrowError("Out of memory.");
   }
 
   /* Replace dashes with underscores. When loading foo-bar.node,
-   * look for foo_bar_module, not foo-bar_module.
+   * look for foo_bar_package, not foo-bar_package.
    */
   for (pos = symbol; *pos != '\0'; ++pos) {
     if (*pos == '-') *pos = '_';
   }
 
-  node_module_struct *mod;
+  node_package_struct *mod;
   if (uv_dlsym(&lib, symbol, reinterpret_cast<void**>(&mod))) {
     char errmsg[1024];
     snprintf(errmsg, sizeof(errmsg), "Symbol %s not found.", symbol);
     return ThrowError(errmsg);
   }
 
-  if (mod->version != NODE_MODULE_VERSION) {
+  if (mod->version != NODE_package_VERSION) {
     char errmsg[1024];
     snprintf(errmsg,
              sizeof(errmsg),
-             "Module version mismatch. Expected %d, got %d.",
-             NODE_MODULE_VERSION, mod->version);
+             "package version mismatch. Expected %d, got %d.",
+             NODE_package_VERSION, mod->version);
     return ThrowError(errmsg);
   }
 
-  // Execute the C++ module
+  // Execute the C++ package
   if (mod->register_context_func != NULL) {
-    mod->register_context_func(exports, module, env->context());
+    mod->register_context_func(exports, package, env->context());
   } else if (mod->register_func != NULL) {
-    mod->register_func(exports, module);
+    mod->register_func(exports, package);
   } else {
-    return ThrowError("Module has no declared entry point.");
+    return ThrowError("package has no declared entry point.");
   }
 
   // Tell coverity that 'handle' should not be freed when we return.
@@ -1984,45 +1984,45 @@ static void Binding(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args.GetIsolate());
   HandleScope handle_scope(args.GetIsolate());
 
-  Local<String> module = args[0]->ToString();
-  String::Utf8Value module_v(module);
+  Local<String> package = args[0]->ToString();
+  String::Utf8Value package_v(package);
 
   Local<Object> cache = env->binding_cache_object();
   Local<Object> exports;
 
-  if (cache->Has(module)) {
-    exports = cache->Get(module)->ToObject();
+  if (cache->Has(package)) {
+    exports = cache->Get(package)->ToObject();
     args.GetReturnValue().Set(exports);
     return;
   }
 
-  // Append a string to process.moduleLoadList
+  // Append a string to process.packageLoadList
   char buf[1024];
-  snprintf(buf, sizeof(buf), "Binding %s", *module_v);
+  snprintf(buf, sizeof(buf), "Binding %s", *package_v);
 
-  Local<Array> modules = env->module_load_list_array();
-  uint32_t l = modules->Length();
-  modules->Set(l, OneByteString(node_isolate, buf));
+  Local<Array> packages = env->package_load_list_array();
+  uint32_t l = packages->Length();
+  packages->Set(l, OneByteString(node_isolate, buf));
 
-  node_module_struct* mod = get_builtin_module(*module_v);
+  node_package_struct* mod = get_builtin_package(*package_v);
   if (mod != NULL) {
     exports = Object::New();
-    // Internal bindings don't have a "module" object, only exports.
+    // Internal bindings don't have a "package" object, only exports.
     assert(mod->register_func == NULL);
     assert(mod->register_context_func != NULL);
     Local<Value> unused = Undefined(env->isolate());
     mod->register_context_func(exports, unused, env->context());
-    cache->Set(module, exports);
-  } else if (!strcmp(*module_v, "constants")) {
+    cache->Set(package, exports);
+  } else if (!strcmp(*package_v, "constants")) {
     exports = Object::New();
     DefineConstants(exports);
-    cache->Set(module, exports);
-  } else if (!strcmp(*module_v, "natives")) {
+    cache->Set(package, exports);
+  } else if (!strcmp(*package_v, "natives")) {
     exports = Object::New();
     DefineJavaScript(exports);
-    cache->Set(module, exports);
+    cache->Set(package, exports);
   } else {
-    return ThrowError("No such module");
+    return ThrowError("No such package");
   }
 
   args.GetReturnValue().Set(exports);
@@ -2231,7 +2231,7 @@ static Handle<Object> GetFeatures() {
   obj->Set(FIXED_ONE_BYTE_STRING(node_isolate, "tls_sni"), tls_sni);
 
   obj->Set(FIXED_ONE_BYTE_STRING(node_isolate, "tls"),
-           Boolean::New(get_builtin_module("crypto") != NULL));
+           Boolean::New(get_builtin_package("crypto") != NULL));
 
   return scope.Close(obj);
 }
@@ -2353,10 +2353,10 @@ void SetupProcessObject(Environment* env,
                     "version",
                     FIXED_ONE_BYTE_STRING(node_isolate, NODE_VERSION));
 
-  // process.moduleLoadList
+  // process.packageLoadList
   READONLY_PROPERTY(process,
-                    "moduleLoadList",
-                    env->module_load_list_array());
+                    "packageLoadList",
+                    env->package_load_list_array());
 
   // process.versions
   Local<Object> versions = Object::New();
@@ -2383,10 +2383,10 @@ void SetupProcessObject(Environment* env,
                     "zlib",
                     FIXED_ONE_BYTE_STRING(node_isolate, ZLIB_VERSION));
 
-  const char node_modules_version[] = NODE_STRINGIFY(NODE_MODULE_VERSION);
+  const char node_packages_version[] = NODE_STRINGIFY(NODE_package_VERSION);
   READONLY_PROPERTY(versions,
-                    "modules",
-                    FIXED_ONE_BYTE_STRING(node_isolate, node_modules_version));
+                    "packages",
+                    FIXED_ONE_BYTE_STRING(node_isolate, node_packages_version));
 
 #if HAVE_OPENSSL
   // Stupid code to slice out the version string.
@@ -2617,7 +2617,7 @@ void Load(Environment* env) {
   // their places.
 
   // We start the process this way in order to be more modular. Developers
-  // who do not like how 'src/node.js' setups the module system but do like
+  // who do not like how 'src/node.js' setups the package system but do like
   // Node's I/O bindings may want to replace 'f' with their own function.
 
   // Add a reference to the global object
@@ -2700,8 +2700,8 @@ static void PrintHelp() {
 #else
          "NODE_PATH              ':'-separated list of directories\n"
 #endif
-         "                       prefixed to the module search path.\n"
-         "NODE_MODULE_CONTEXTS   Set to 1 to load modules in their own\n"
+         "                       prefixed to the package search path.\n"
+         "NODE_package_CONTEXTS   Set to 1 to load packages in their own\n"
          "                       global contexts.\n"
          "NODE_DISABLE_COLORS    Set to 1 to disable colors in the REPL\n"
          "\n"

@@ -110,7 +110,7 @@ int process_start(char *name, char *part, process_info_t *p, int is_helper) {
   if (!SetHandleInformation(nul, HANDLE_FLAG_INHERIT, HANDLE_FLAG_INHERIT))
     goto error;
 
-  result = GetModuleFileNameW(NULL, (WCHAR*)&image, sizeof(image) / sizeof(WCHAR));
+  result = GetpackageFileNameW(NULL, (WCHAR*)&image, sizeof(image) / sizeof(WCHAR));
   if (result == 0 || result == sizeof(image))
     goto error;
 

@@ -4,8 +4,8 @@ var silent = +process.env.NODE_BENCH_SILENT;
 
 exports.PORT = process.env.PORT || 12346;
 
-// If this is the main module, then run the benchmarks
-if (module === require.main) {
+// If this is the main package, then run the benchmarks
+if (package === require.main) {
   var type = process.argv[2];
   if (!type) {
     console.error('usage:\n ./node benchmark/common.js <type>');

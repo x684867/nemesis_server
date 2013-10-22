@@ -50,7 +50,7 @@ adding a local tarball:
 2. goto folder(2)
 */
 
-exports = module.exports = cache
+exports = package.exports = cache
 cache.read = read
 cache.clean = clean
 cache.unpack = unpack
@@ -984,7 +984,7 @@ function addPlacedTarball (p, name, shasum, cb) {
 // a set of arguments like it does now, but then also a destination
 // folder.
 //
-// cache.add('foo@bar', '/path/node_modules/foo', cb)
+// cache.add('foo@bar', '/path/node_packages/foo', cb)
 //
 // 1. Resolve 'foo@bar' to some specific:
 //   - git url

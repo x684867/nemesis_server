@@ -74,14 +74,14 @@ uninstall:
 clean:
 	-rm -rf out/Makefile node node_g out/$(BUILDTYPE)/node blog.html email.md
 	-find out/ -name '*.o' -o -name '*.a' | xargs rm -rf
-	-rm -rf node_modules
+	-rm -rf node_packages
 
 distclean:
 	-rm -rf out
 	-rm -f config.gypi
 	-rm -f config.mk
 	-rm -rf node node_g blog.html email.md
-	-rm -rf node_modules
+	-rm -rf node_packages
 
 test: all
 	$(PYTHON) tools/test.py --mode=release simple message
@@ -94,16 +94,16 @@ test-http1: all
 test-valgrind: all
 	$(PYTHON) tools/test.py --mode=release --valgrind simple message
 
-test/gc/node_modules/weak/build:
+test/gc/node_packages/weak/build:
 	@if [ ! -f node ]; then make all; fi
-	./node deps/npm/node_modules/node-gyp/bin/node-gyp rebuild \
-		--directory="$(shell pwd)/test/gc/node_modules/weak" \
+	./node deps/npm/node_packages/node-gyp/bin/node-gyp rebuild \
+		--directory="$(shell pwd)/test/gc/node_packages/weak" \
 		--nodedir="$(shell pwd)"
 
-test-gc: all test/gc/node_modules/weak/build
+test-gc: all test/gc/node_packages/weak/build
 	$(PYTHON) tools/test.py --mode=release gc
 
-test-all: all test/gc/node_modules/weak/build
+test-all: all test/gc/node_packages/weak/build
 	$(PYTHON) tools/test.py --mode=debug,release
 	make test-npm
 
@@ -198,7 +198,7 @@ email.md: ChangeLog tools/email-footer.md
 	cat tools/email-footer.md | sed -e 's|__VERSION__|'$(VERSION)'|g' >> $@
 
 blog.html: email.md
-	cat $< | ./node tools/doc/node_modules/.bin/marked > $@
+	cat $< | ./node tools/doc/node_packages/.bin/marked > $@
 
 blog-upload: blog
 	rsync -r out/blog/ node@nodejs.org:~/web/nodejs.org/blog/

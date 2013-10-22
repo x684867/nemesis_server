@@ -24,7 +24,7 @@
 #   allowed to feed its output back to aesenc[last], this was
 #   achieved at cost of two additional inter-registers moves;
 # - some instruction reordering and interleaving;
-# - this module doesn't implement key setup subroutine, instead it
+# - this package doesn't implement key setup subroutine, instead it
 #   relies on conversion of "conventional" key schedule as returned
 #   by AES_set_encrypt_key (see discussion below);
 # - first and last round keys are treated differently, which allowed

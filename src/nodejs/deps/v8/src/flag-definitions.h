@@ -155,8 +155,8 @@ DEFINE_bool(es52_globals, true,
 
 DEFINE_bool(harmony_typeof, false, "enable harmony semantics for typeof")
 DEFINE_bool(harmony_scoping, false, "enable harmony block scoping")
-DEFINE_bool(harmony_modules, false,
-            "enable harmony modules (implies block scoping)")
+DEFINE_bool(harmony_packages, false,
+            "enable harmony packages (implies block scoping)")
 DEFINE_bool(harmony_symbols, false,
             "enable harmony symbols (a.k.a. private names)")
 DEFINE_bool(harmony_proxies, false, "enable harmony proxies")
@@ -177,7 +177,7 @@ DEFINE_bool(harmony_strings, false, "enable harmony string")
 DEFINE_bool(harmony_arrays, false, "enable harmony arrays")
 DEFINE_bool(harmony, false, "enable all harmony features (except typeof)")
 DEFINE_implication(harmony, harmony_scoping)
-DEFINE_implication(harmony, harmony_modules)
+DEFINE_implication(harmony, harmony_packages)
 DEFINE_implication(harmony, harmony_symbols)
 DEFINE_implication(harmony, harmony_proxies)
 DEFINE_implication(harmony, harmony_collections)
@@ -187,7 +187,7 @@ DEFINE_implication(harmony, harmony_iteration)
 DEFINE_implication(harmony, harmony_numeric_literals)
 DEFINE_implication(harmony, harmony_strings)
 DEFINE_implication(harmony, harmony_arrays)
-DEFINE_implication(harmony_modules, harmony_scoping)
+DEFINE_implication(harmony_packages, harmony_scoping)
 DEFINE_implication(harmony_observation, harmony_collections)
 // TODO[dslomov] add harmony => harmony_typed_arrays
 

@@ -1,5 +1,5 @@
 
-module.exports = deprecate
+package.exports = deprecate
 
 deprecate.usage = "npm deprecate <pkg>[@<version>] <message>"
 

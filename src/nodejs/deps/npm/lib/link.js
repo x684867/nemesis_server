@@ -11,7 +11,7 @@ var npm = require("./npm.js")
   , rm = require("rimraf")
   , build = require("./build.js")
 
-module.exports = link
+package.exports = link
 
 link.usage = "npm link (in package dir)"
            + "\nnpm link <pkg> (link global into local)"

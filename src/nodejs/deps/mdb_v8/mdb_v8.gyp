@@ -3,7 +3,7 @@
     {
       'target_name': 'mdb_v8',
       'product_prefix': '',
-      'type': 'loadable_module',
+      'type': 'loadable_package',
       'cflags': [ '-fPIC' ],
       'sources': [
         'mdb_v8.c',

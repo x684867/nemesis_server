@@ -643,7 +643,7 @@ bool Object::IsContext() {
       map == heap->with_context_map() ||
       map == heap->native_context_map() ||
       map == heap->block_context_map() ||
-      map == heap->module_context_map() ||
+      map == heap->package_context_map() ||
       map == heap->global_context_map());
 }
 
@@ -676,7 +676,7 @@ TYPE_CHECKER(Cell, CELL_TYPE)
 TYPE_CHECKER(PropertyCell, PROPERTY_CELL_TYPE)
 TYPE_CHECKER(SharedFunctionInfo, SHARED_FUNCTION_INFO_TYPE)
 TYPE_CHECKER(JSGeneratorObject, JS_GENERATOR_OBJECT_TYPE)
-TYPE_CHECKER(JSModule, JS_MODULE_TYPE)
+TYPE_CHECKER(JSpackage, JS_package_TYPE)
 TYPE_CHECKER(JSValue, JS_VALUE_TYPE)
 TYPE_CHECKER(JSDate, JS_DATE_TYPE)
 TYPE_CHECKER(JSMessageObject, JS_MESSAGE_OBJECT_TYPE)
@@ -1671,8 +1671,8 @@ int JSObject::GetHeaderSize() {
   switch (type) {
     case JS_GENERATOR_OBJECT_TYPE:
       return JSGeneratorObject::kSize;
-    case JS_MODULE_TYPE:
-      return JSModule::kSize;
+    case JS_package_TYPE:
+      return JSpackage::kSize;
     case JS_GLOBAL_PROXY_TYPE:
       return JSGlobalProxy::kSize;
     case JS_GLOBAL_OBJECT_TYPE:
@@ -5173,14 +5173,14 @@ JSGeneratorObject* JSGeneratorObject::cast(Object* obj) {
 }
 
 
-ACCESSORS(JSModule, context, Object, kContextOffset)
-ACCESSORS(JSModule, scope_info, ScopeInfo, kScopeInfoOffset)
+ACCESSORS(JSpackage, context, Object, kContextOffset)
+ACCESSORS(JSpackage, scope_info, ScopeInfo, kScopeInfoOffset)
 
 
-JSModule* JSModule::cast(Object* obj) {
-  ASSERT(obj->IsJSModule());
-  ASSERT(HeapObject::cast(obj)->Size() == JSModule::kSize);
-  return reinterpret_cast<JSModule*>(obj);
+JSpackage* JSpackage::cast(Object* obj) {
+  ASSERT(obj->IsJSpackage());
+  ASSERT(HeapObject::cast(obj)->Size() == JSpackage::kSize);
+  return reinterpret_cast<JSpackage*>(obj);
 }
 
 

@@ -1,4 +1,4 @@
-module.exports = installedDeep
+package.exports = installedDeep
 
 var npm = require("../../npm.js")
   , readInstalled = require("read-installed")

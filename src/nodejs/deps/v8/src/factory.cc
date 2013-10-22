@@ -350,10 +350,10 @@ Handle<Context> Factory::NewGlobalContext(Handle<JSFunction> function,
 }
 
 
-Handle<Context> Factory::NewModuleContext(Handle<ScopeInfo> scope_info) {
+Handle<Context> Factory::NewpackageContext(Handle<ScopeInfo> scope_info) {
   CALL_HEAP_FUNCTION(
       isolate(),
-      isolate()->heap()->AllocateModuleContext(*scope_info),
+      isolate()->heap()->AllocatepackageContext(*scope_info),
       Context);
 }
 
@@ -1005,11 +1005,11 @@ Handle<JSObject> Factory::NewJSObject(Handle<JSFunction> constructor,
 }
 
 
-Handle<JSModule> Factory::NewJSModule(Handle<Context> context,
+Handle<JSpackage> Factory::NewJSpackage(Handle<Context> context,
                                       Handle<ScopeInfo> scope_info) {
   CALL_HEAP_FUNCTION(
       isolate(),
-      isolate()->heap()->AllocateJSModule(*context, *scope_info), JSModule);
+      isolate()->heap()->AllocateJSpackage(*context, *scope_info), JSpackage);
 }
 
 

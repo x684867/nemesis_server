@@ -26,7 +26,7 @@
 //   var mode = 438; /* mode=0666 */
 
 var util = require('util');
-var pathModule = require('path');
+var pathpackage = require('path');
 
 var binding = process.binding('fs');
 var constants = process.binding('constants');
@@ -152,7 +152,7 @@ fs.Stats.prototype.isSocket = function() {
 
 fs.exists = function(path, callback) {
   if (!nullCheck(path, cb)) return;
-  binding.stat(pathModule._makeLong(path), cb);
+  binding.stat(pathpackage._makeLong(path), cb);
   function cb(err, stats) {
     if (callback) callback(err ? false : true);
   }
@@ -161,7 +161,7 @@ fs.exists = function(path, callback) {
 fs.existsSync = function(path) {
   try {
     nullCheck(path);
-    binding.stat(pathModule._makeLong(path));
+    binding.stat(pathpackage._makeLong(path));
     return true;
   } catch (e) {
     return false;
@@ -393,7 +393,7 @@ fs.open = function(path, flags, mode, callback) {
   mode = modeNum(mode, 438 /*=0666*/);
 
   if (!nullCheck(path, callback)) return;
-  binding.open(pathModule._makeLong(path),
+  binding.open(pathpackage._makeLong(path),
                stringToFlags(flags),
                mode,
                callback);
@@ -402,7 +402,7 @@ fs.open = function(path, flags, mode, callback) {
 fs.openSync = function(path, flags, mode) {
   mode = modeNum(mode, 438 /*=0666*/);
   nullCheck(path);
-  return binding.open(pathModule._makeLong(path), stringToFlags(flags), mode);
+  return binding.open(pathpackage._makeLong(path), stringToFlags(flags), mode);
 };
 
 fs.read = function(fd, buffer, offset, length, position, callback) {
@@ -519,16 +519,16 @@ fs.rename = function(oldPath, newPath, callback) {
   callback = makeCallback(callback);
   if (!nullCheck(oldPath, callback)) return;
   if (!nullCheck(newPath, callback)) return;
-  binding.rename(pathModule._makeLong(oldPath),
-                 pathModule._makeLong(newPath),
+  binding.rename(pathpackage._makeLong(oldPath),
+                 pathpackage._makeLong(newPath),
                  callback);
 };
 
 fs.renameSync = function(oldPath, newPath) {
   nullCheck(oldPath);
   nullCheck(newPath);
-  return binding.rename(pathModule._makeLong(oldPath),
-                        pathModule._makeLong(newPath));
+  return binding.rename(pathpackage._makeLong(oldPath),
+                        pathpackage._makeLong(newPath));
 };
 
 fs.truncate = function(path, len, callback) {
@@ -591,12 +591,12 @@ fs.ftruncateSync = function(fd, len) {
 fs.rmdir = function(path, callback) {
   callback = makeCallback(callback);
   if (!nullCheck(path, callback)) return;
-  binding.rmdir(pathModule._makeLong(path), callback);
+  binding.rmdir(pathpackage._makeLong(path), callback);
 };
 
 fs.rmdirSync = function(path) {
   nullCheck(path);
-  return binding.rmdir(pathModule._makeLong(path));
+  return binding.rmdir(pathpackage._makeLong(path));
 };
 
 fs.fdatasync = function(fd, callback) {
@@ -619,26 +619,26 @@ fs.mkdir = function(path, mode, callback) {
   if (util.isFunction(mode)) callback = mode;
   callback = makeCallback(callback);
   if (!nullCheck(path, callback)) return;
-  binding.mkdir(pathModule._makeLong(path),
+  binding.mkdir(pathpackage._makeLong(path),
                 modeNum(mode, 511 /*=0777*/),
                 callback);
 };
 
 fs.mkdirSync = function(path, mode) {
   nullCheck(path);
-  return binding.mkdir(pathModule._makeLong(path),
+  return binding.mkdir(pathpackage._makeLong(path),
                        modeNum(mode, 511 /*=0777*/));
 };
 
 fs.readdir = function(path, callback) {
   callback = makeCallback(callback);
   if (!nullCheck(path, callback)) return;
-  binding.readdir(pathModule._makeLong(path), callback);
+  binding.readdir(pathpackage._makeLong(path), callback);
 };
 
 fs.readdirSync = function(path) {
   nullCheck(path);
-  return binding.readdir(pathModule._makeLong(path));
+  return binding.readdir(pathpackage._makeLong(path));
 };
 
 fs.fstat = function(fd, callback) {
@@ -648,13 +648,13 @@ fs.fstat = function(fd, callback) {
 fs.lstat = function(path, callback) {
   callback = makeCallback(callback);
   if (!nullCheck(path, callback)) return;
-  binding.lstat(pathModule._makeLong(path), callback);
+  binding.lstat(pathpackage._makeLong(path), callback);
 };
 
 fs.stat = function(path, callback) {
   callback = makeCallback(callback);
   if (!nullCheck(path, callback)) return;
-  binding.stat(pathModule._makeLong(path), callback);
+  binding.stat(pathpackage._makeLong(path), callback);
 };
 
 fs.fstatSync = function(fd) {
@@ -663,23 +663,23 @@ fs.fstatSync = function(fd) {
 
 fs.lstatSync = function(path) {
   nullCheck(path);
-  return binding.lstat(pathModule._makeLong(path));
+  return binding.lstat(pathpackage._makeLong(path));
 };
 
 fs.statSync = function(path) {
   nullCheck(path);
-  return binding.stat(pathModule._makeLong(path));
+  return binding.stat(pathpackage._makeLong(path));
 };
 
 fs.readlink = function(path, callback) {
   callback = makeCallback(callback);
   if (!nullCheck(path, callback)) return;
-  binding.readlink(pathModule._makeLong(path), callback);
+  binding.readlink(pathpackage._makeLong(path), callback);
 };
 
 fs.readlinkSync = function(path) {
   nullCheck(path);
-  return binding.readlink(pathModule._makeLong(path));
+  return binding.readlink(pathpackage._makeLong(path));
 };
 
 function preprocessSymlinkDestination(path, type) {
@@ -688,7 +688,7 @@ function preprocessSymlinkDestination(path, type) {
     return path;
   } else if (type === 'junction') {
     // Junctions paths need to be absolute and \\?\-prefixed.
-    return pathModule._makeLong(path);
+    return pathpackage._makeLong(path);
   } else {
     // Windows symlinks don't tolerate forward slashes.
     return ('' + path).replace(/\//g, '\\');
@@ -703,7 +703,7 @@ fs.symlink = function(destination, path, type_, callback) {
   if (!nullCheck(path, callback)) return;
 
   binding.symlink(preprocessSymlinkDestination(destination, type),
-                  pathModule._makeLong(path),
+                  pathpackage._makeLong(path),
                   type,
                   callback);
 };
@@ -715,7 +715,7 @@ fs.symlinkSync = function(destination, path, type) {
   nullCheck(path);
 
   return binding.symlink(preprocessSymlinkDestination(destination, type),
-                         pathModule._makeLong(path),
+                         pathpackage._makeLong(path),
                          type);
 };
 
@@ -724,27 +724,27 @@ fs.link = function(srcpath, dstpath, callback) {
   if (!nullCheck(srcpath, callback)) return;
   if (!nullCheck(dstpath, callback)) return;
 
-  binding.link(pathModule._makeLong(srcpath),
-               pathModule._makeLong(dstpath),
+  binding.link(pathpackage._makeLong(srcpath),
+               pathpackage._makeLong(dstpath),
                callback);
 };
 
 fs.linkSync = function(srcpath, dstpath) {
   nullCheck(srcpath);
   nullCheck(dstpath);
-  return binding.link(pathModule._makeLong(srcpath),
-                      pathModule._makeLong(dstpath));
+  return binding.link(pathpackage._makeLong(srcpath),
+                      pathpackage._makeLong(dstpath));
 };
 
 fs.unlink = function(path, callback) {
   callback = makeCallback(callback);
   if (!nullCheck(path, callback)) return;
-  binding.unlink(pathModule._makeLong(path), callback);
+  binding.unlink(pathpackage._makeLong(path), callback);
 };
 
 fs.unlinkSync = function(path) {
   nullCheck(path);
-  return binding.unlink(pathModule._makeLong(path));
+  return binding.unlink(pathpackage._makeLong(path));
 };
 
 fs.fchmod = function(fd, mode, callback) {
@@ -798,14 +798,14 @@ if (constants.hasOwnProperty('O_SYMLINK')) {
 fs.chmod = function(path, mode, callback) {
   callback = makeCallback(callback);
   if (!nullCheck(path, callback)) return;
-  binding.chmod(pathModule._makeLong(path),
+  binding.chmod(pathpackage._makeLong(path),
                 modeNum(mode),
                 callback);
 };
 
 fs.chmodSync = function(path, mode) {
   nullCheck(path);
-  return binding.chmod(pathModule._makeLong(path), modeNum(mode));
+  return binding.chmod(pathpackage._makeLong(path), modeNum(mode));
 };
 
 if (constants.hasOwnProperty('O_SYMLINK')) {
@@ -837,12 +837,12 @@ fs.fchownSync = function(fd, uid, gid) {
 fs.chown = function(path, uid, gid, callback) {
   callback = makeCallback(callback);
   if (!nullCheck(path, callback)) return;
-  binding.chown(pathModule._makeLong(path), uid, gid, callback);
+  binding.chown(pathpackage._makeLong(path), uid, gid, callback);
 };
 
 fs.chownSync = function(path, uid, gid) {
   nullCheck(path);
-  return binding.chown(pathModule._makeLong(path), uid, gid);
+  return binding.chown(pathpackage._makeLong(path), uid, gid);
 };
 
 // converts Date or number to a fractional UNIX timestamp
@@ -863,7 +863,7 @@ fs._toUnixTimestamp = toUnixTimestamp;
 fs.utimes = function(path, atime, mtime, callback) {
   callback = makeCallback(callback);
   if (!nullCheck(path, callback)) return;
-  binding.utimes(pathModule._makeLong(path),
+  binding.utimes(pathpackage._makeLong(path),
                  toUnixTimestamp(atime),
                  toUnixTimestamp(mtime),
                  callback);
@@ -873,7 +873,7 @@ fs.utimesSync = function(path, atime, mtime) {
   nullCheck(path);
   atime = toUnixTimestamp(atime);
   mtime = toUnixTimestamp(mtime);
-  binding.utimes(pathModule._makeLong(path), atime, mtime);
+  binding.utimes(pathpackage._makeLong(path), atime, mtime);
 };
 
 fs.futimes = function(fd, atime, mtime, callback) {
@@ -1016,7 +1016,7 @@ util.inherits(FSWatcher, EventEmitter);
 
 FSWatcher.prototype.start = function(filename, persistent) {
   nullCheck(filename);
-  var err = this._handle.start(pathModule._makeLong(filename), persistent);
+  var err = this._handle.start(pathpackage._makeLong(filename), persistent);
   if (err) {
     this._handle.close();
     throw errnoException(err, 'watch');
@@ -1084,7 +1084,7 @@ util.inherits(StatWatcher, EventEmitter);
 
 StatWatcher.prototype.start = function(filename, persistent, interval) {
   nullCheck(filename);
-  this._handle.start(pathModule._makeLong(filename), persistent, interval);
+  this._handle.start(pathpackage._makeLong(filename), persistent, interval);
 };
 
 
@@ -1169,7 +1169,7 @@ if (isWindows) {
 
 fs.realpathSync = function realpathSync(p, cache) {
   // make p is absolute
-  p = pathModule.resolve(p);
+  p = pathpackage.resolve(p);
 
   if (cache && Object.prototype.hasOwnProperty.call(cache, p)) {
     return cache[p];
@@ -1247,14 +1247,14 @@ fs.realpathSync = function realpathSync(p, cache) {
         fs.statSync(base);
         linkTarget = fs.readlinkSync(base);
       }
-      resolvedLink = pathModule.resolve(previous, linkTarget);
+      resolvedLink = pathpackage.resolve(previous, linkTarget);
       // track this, if given a cache.
       if (cache) cache[base] = resolvedLink;
       if (!isWindows) seenLinks[id] = linkTarget;
     }
 
     // resolve the link, then start over
-    p = pathModule.resolve(resolvedLink, p.slice(pos));
+    p = pathpackage.resolve(resolvedLink, p.slice(pos));
     start();
   }
 
@@ -1271,7 +1271,7 @@ fs.realpath = function realpath(p, cache, cb) {
   }
 
   // make p is absolute
-  p = pathModule.resolve(p);
+  p = pathpackage.resolve(p);
 
   if (cache && Object.prototype.hasOwnProperty.call(cache, p)) {
     return process.nextTick(cb.bind(null, null, cache[p]));
@@ -1374,14 +1374,14 @@ fs.realpath = function realpath(p, cache, cb) {
   function gotTarget(err, target, base) {
     if (err) return cb(err);
 
-    var resolvedLink = pathModule.resolve(previous, target);
+    var resolvedLink = pathpackage.resolve(previous, target);
     if (cache) cache[base] = resolvedLink;
     gotResolvedLink(resolvedLink);
   }
 
   function gotResolvedLink(resolvedLink) {
     // resolve the link, then start over
-    p = pathModule.resolve(resolvedLink, p.slice(pos));
+    p = pathpackage.resolve(resolvedLink, p.slice(pos));
     start();
   }
 };

@@ -1,5 +1,5 @@
 
-module.exports = errorHandler
+package.exports = errorHandler
 
 var cbCalled = false
   , log = require("npmlog")

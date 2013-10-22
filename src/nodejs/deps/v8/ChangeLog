@@ -1075,7 +1075,7 @@
         Made sure that names of temporaries do not clash with real variables.
         (issue 2322)
 
-        Rejected local module declarations. (Chromium issue 150628)
+        Rejected local package declarations. (Chromium issue 150628)
 
         Rejected uses of lexical for-loop variable on the RHS. (issue 2322)
 
@@ -1712,7 +1712,7 @@
 
         Throw syntax errors on illegal escape sequences.
 
-        Implemented rudimentary module linking (behind --harmony flag)
+        Implemented rudimentary package linking (behind --harmony flag)
 
         Implemented ES5 erratum: Global declarations should shadow
         inherited properties.
@@ -1897,7 +1897,7 @@
 
 2012-03-09: Version 3.9.16
 
-        Added basic interface inference for modules (behind the --harmony flag).
+        Added basic interface inference for packages (behind the --harmony flag).
 
         Added Object.is, Number.isFinite, Number.isNaN.
 
@@ -1956,7 +1956,7 @@
 
 2012-02-27: Version 3.9.11
 
-        Made 'module' a context-sensitive keyword (V8 issue 1957).
+        Made 'package' a context-sensitive keyword (V8 issue 1957).
 
 
 2012-02-24: Version 3.9.10
@@ -5662,7 +5662,7 @@
         executable memory only for spaces that may contain code objects.
 
         Moved StringBuilder to utils.h and ScopedLock to platform.h, where
-        they can be used by debugging and logging modules. Added
+        they can be used by debugging and logging packages. Added
         thread-safe message queues for dealing with debugger events.
 
         Fixed the source code reported by toString for certain builtin

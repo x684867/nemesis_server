@@ -278,7 +278,7 @@ static const ERR_FNS *err_fns = NULL;
 
 /* The internal state used by "err_defaults" - as such, the setting, reading,
  * creating, and deleting of this data should only be permitted via the
- * "err_defaults" functions. This way, a linked module can completely defer all
+ * "err_defaults" functions. This way, a linked package can completely defer all
  * ERR state operation (together with requisite locking) to the implementations
  * and state in the loading application. */
 static LHASH_OF(ERR_STRING_DATA) *int_error_hash = NULL;

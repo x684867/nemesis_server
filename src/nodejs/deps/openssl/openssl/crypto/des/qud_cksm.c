@@ -58,7 +58,7 @@
 
 /* From "Message Authentication"  R.R. Jueneman, S.M. Matyas, C.H. Meyer
  * IEEE Communications Magazine Sept 1985 Vol. 23 No. 9 p 29-40
- * This module in only based on the code in this paper and is
+ * This package in only based on the code in this paper and is
  * almost definitely not the same as the MIT implementation.
  */
 #include "des_locl.h"

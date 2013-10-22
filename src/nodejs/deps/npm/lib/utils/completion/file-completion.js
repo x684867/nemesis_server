@@ -1,4 +1,4 @@
-module.exports = fileCompletion
+package.exports = fileCompletion
 
 var mkdir = require("mkdirp")
   , path = require("path")

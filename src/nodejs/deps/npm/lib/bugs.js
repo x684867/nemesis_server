@@ -1,5 +1,5 @@
 
-module.exports = bugs
+package.exports = bugs
 
 bugs.usage = "npm bugs <pkgname>"
 

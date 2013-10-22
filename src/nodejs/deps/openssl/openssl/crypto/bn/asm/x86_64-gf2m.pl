@@ -2,14 +2,14 @@
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 #
 # May 2011
 #
-# The module implements bn_GF2m_mul_2x2 polynomial multiplication used
+# The package implements bn_GF2m_mul_2x2 polynomial multiplication used
 # in bn_gf2m.c. It's kind of low-hanging mechanical port from C for
 # the time being... Except that it has two code paths: code suitable
 # for any x86_64 CPU and PCLMULQDQ one suitable for Westmere and

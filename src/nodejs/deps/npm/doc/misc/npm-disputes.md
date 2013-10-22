@@ -1,4 +1,4 @@
-npm-disputes(7) -- Handling Module Name Disputes
+npm-disputes(7) -- Handling package Name Disputes
 ================================================
 
 ## SYNOPSIS
@@ -11,15 +11,15 @@ Don't squat on package names.  Publish code or move out of the way.
 
 ## DESCRIPTION
 
-There sometimes arise cases where a user publishes a module, and then
+There sometimes arise cases where a user publishes a package, and then
 later, some other user wants to use that name.  Here are some common
 ways that happens (each of these is based on actual events.)
 
-1. Joe writes a JavaScript module `foo`, which is not node-specific.
+1. Joe writes a JavaScript package `foo`, which is not node-specific.
    Joe doesn't use node at all.  Bob   wants to use `foo` in node, so he
-   wraps it in an npm module.  Some time later, Joe starts using node,
+   wraps it in an npm package.  Some time later, Joe starts using node,
    and wants to take over management of his program.
-2. Bob writes an npm module `foo`, and publishes it.  Perhaps much
+2. Bob writes an npm package `foo`, and publishes it.  Perhaps much
    later, Joe finds a bug in `foo`, and fixes it.  He sends a pull
    request to Bob, but Bob doesn't have the time to deal with it,
    because he has a new job and a new baby and is focused on his new
@@ -43,7 +43,7 @@ Joe's appropriate course of action in each case is the same.
 1. `npm owner ls foo`.  This will tell Joe the email address of the
    owner (Bob).
 2. Joe emails Bob, explaining the situation **as respectfully as possible**,
-   and what he would like to do with the module name.  He adds
+   and what he would like to do with the package name.  He adds
    isaacs <i@izs.me> to the CC list of the email.  Mention in the email
    that Bob can run `npm owner add joe foo` to add Joe as an owner of
    the `foo` package.
@@ -59,7 +59,7 @@ an amicable resolution without any major intervention.  Most people
 really do want to be reasonable, and are probably not even aware that
 they're in your way.
 
-Module ecosystems are most vibrant and powerful when they are as
+package ecosystems are most vibrant and powerful when they are as
 self-directed as possible.  If an admin one day deletes something you
 had worked on, then that is going to make most people quite upset,
 regardless of the justification.  When humans solve their problems by

@@ -1,4 +1,4 @@
-module.exports = test
+package.exports = test
 
 var testCmd = require("./utils/lifecycle.js").cmd("test")
   , log = require("npmlog")

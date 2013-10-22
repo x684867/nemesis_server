@@ -3,7 +3,7 @@
     Stability: 3 - Stable
 
 Node provides a tri-directional `popen(3)` facility through the
-`child_process` module.
+`child_process` package.
 
 It is possible to stream data through a child's `stdin`, `stdout`, and
 `stderr` in a fully non-blocking way.  (Note that some programs use
@@ -535,9 +535,9 @@ subshell but rather the specified file directly. This makes it slightly
 leaner than `child_process.exec`. It has the same options.
 
 
-## child\_process.fork(modulePath, [args], [options])
+## child\_process.fork(packagePath, [args], [options])
 
-* `modulePath` {String} The module to run in the child
+* `packagePath` {String} The package to run in the child
 * `args` {Array} List of string arguments
 * `options` {Object}
   * `cwd` {String} Current working directory of the child process

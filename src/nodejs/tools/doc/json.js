@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-module.exports = doJSON;
+package.exports = doJSON;
 
 // Take the lexed input, and return a JSON-encoded object
-// A module looks like this: https://gist.github.com/1777387
+// A package looks like this: https://gist.github.com/1777387
 
 var marked = require('marked');
 
@@ -37,7 +37,7 @@ function doJSON(input, filename, cb) {
     var type = tok.type;
     var text = tok.text;
 
-    // <!-- type = module -->
+    // <!-- type = package -->
     // This is for cases where the markdown semantic structure is lacking.
     if (type === 'paragraph' || type === 'html') {
       var metaExpr = /<!--([^=]+)=([^\-]+)-->\n*/g;
@@ -388,7 +388,7 @@ function finishSection(section, parent) {
   }
 
   if (!section.type) {
-    section.type = 'module';
+    section.type = 'package';
     if (parent && (parent.type === 'misc')) {
       section.type = 'misc';
     }

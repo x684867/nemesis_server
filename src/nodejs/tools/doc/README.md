@@ -1,23 +1,23 @@
 Here's how the node docs work.
 
-1:1 relationship from `lib/<module>.js` to `doc/api/<module>.markdown`
+1:1 relationship from `lib/<package>.js` to `doc/api/<package>.markdown`
 
 Each type of heading has a description block.
 
 
-    ## module
+    ## package
 
         Stability: 3 - Stable
 
     description and examples.
 
-    ### module.property
+    ### package.property
 
     * Type
 
     description of the property.
 
-    ### module.someFunction(x, y, [z=100])
+    ### package.someFunction(x, y, [z=100])
 
     * `x` {String} the description of the string
     * `y` {Boolean} Should I stay or should I go?
@@ -29,7 +29,7 @@ Each type of heading has a description block.
 
     * Argument: SomeClass object.
 
-    Modules don't usually raise events on themselves.  `cluster` is the
+    packages don't usually raise events on themselves.  `cluster` is the
     only exception.
 
     ## Class: SomeClass
@@ -59,10 +59,10 @@ Each type of heading has a description block.
 
     * `isBlerg` {Boolean}
 
-    This event is emitted on instances of SomeClass, not on the module itself.
+    This event is emitted on instances of SomeClass, not on the package itself.
 
 
-* Modules have (description, Properties, Functions, Classes, Examples)
+* packages have (description, Properties, Functions, Classes, Examples)
 * Properties have (type, description)
 * Functions have (list of arguments, description)
 * Classes have (description, Properties, Methods, Events)

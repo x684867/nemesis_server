@@ -1,5 +1,5 @@
 
-module.exports = rebuild
+package.exports = rebuild
 
 var readInstalled = require("read-installed")
   , semver = require("semver")

@@ -17,7 +17,7 @@ slug: npm-1-0-global-vs-local-installation
 
 <p>In npm 1.0, there are two ways to install things:</p>
 
-<ol> <li>globally &#8212;- This drops modules in <code>{prefix}/lib/node_modules</code>, and puts executable files in <code>{prefix}/bin</code>, where <code>{prefix}</code> is usually something like <code>/usr/local</code>. It also installs man pages in <code>{prefix}/share/man</code>, if they&#8217;re supplied.</li> <li>locally &#8212;- This installs your package in the current working directory. Node modules go in <code>./node_modules</code>, executables go in <code>./node_modules/.bin/</code>, and man pages aren&#8217;t installed at all.</li> </ol>
+<ol> <li>globally &#8212;- This drops packages in <code>{prefix}/lib/node_packages</code>, and puts executable files in <code>{prefix}/bin</code>, where <code>{prefix}</code> is usually something like <code>/usr/local</code>. It also installs man pages in <code>{prefix}/share/man</code>, if they&#8217;re supplied.</li> <li>locally &#8212;- This installs your package in the current working directory. Node packages go in <code>./node_packages</code>, executables go in <code>./node_packages/.bin/</code>, and man pages aren&#8217;t installed at all.</li> </ol>
 
 <h2>Which to choose</h2>
 
@@ -44,16 +44,16 @@ slug: npm-1-0-global-vs-local-installation
 <p>Let&#8217;s say you do something like this:</p>
 
 <pre style="background:#333!important;color:#ccc!important;overflow:auto!important;padding:2px!important;"><code>cd ~/projects/foo     # go into my project
-npm install express   # ./node_modules/express
+npm install express   # ./node_packages/express
 cd lib/utils          # move around in there
 vim some-thing.js     # edit some stuff, work work work
-npm install redis     # ./lib/utils/node_modules/redis!? ew.</code></pre>
+npm install redis     # ./lib/utils/node_packages/redis!? ew.</code></pre>
 
-<p>In this case, npm will install <code>redis</code> into <code>~/projects/foo/node_modules/redis</code>. Sort of like how git will work anywhere within a git repository, npm will work anywhere within a package, defined by having a <code>node_modules</code> folder.</p>
+<p>In this case, npm will install <code>redis</code> into <code>~/projects/foo/node_packages/redis</code>. Sort of like how git will work anywhere within a git repository, npm will work anywhere within a package, defined by having a <code>node_packages</code> folder.</p>
 
 <h2>Test runners and stuff</h2>
 
-<p>If your package's <code>scripts.test</code> command uses a command-line program installed by one of your dependencies, not to worry.  npm makes <code>./node_modules/.bin</code> the first entry in the <code>PATH</code> environment variable when running any lifecycle scripts, so this will work fine, even if your program is not globally installed:
+<p>If your package's <code>scripts.test</code> command uses a command-line program installed by one of your dependencies, not to worry.  npm makes <code>./node_packages/.bin</code> the first entry in the <code>PATH</code> environment variable when running any lifecycle scripts, so this will work fine, even if your program is not globally installed:
 
 <pre style="background:#333!important;color:#ccc!important;overflow:auto!important;padding:2px!important;"><code>{ "name" : "my-program"
 , "version" : "1.2.3"

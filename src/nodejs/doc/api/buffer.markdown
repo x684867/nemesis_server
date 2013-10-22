@@ -680,9 +680,9 @@ Creates a new `ArrayBuffer` with the copied memory of the buffer instance.
 * Number, Default: 50
 
 How many bytes will be returned when `buffer.inspect()` is called. This can
-be overridden by user modules.
+be overridden by user packages.
 
-Note that this is a property on the buffer module returned by
+Note that this is a property on the buffer package returned by
 `require('buffer')`, not on the Buffer global, or a buffer instance.
 
 ## Class: SlowBuffer

@@ -3,7 +3,7 @@
 	/srv/nemesis/app/servers/broker/msgRouter.js
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 */
-module.exports=msgRouterClass;
+package.exports=msgRouterClass;
 
 function timestamp(){return "["+(new Date).toISOString()+"]";}
 log={

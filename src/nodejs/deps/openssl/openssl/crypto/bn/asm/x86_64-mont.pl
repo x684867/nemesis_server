@@ -2,7 +2,7 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -26,7 +26,7 @@
 # Unroll and modulo-schedule inner loops in such manner that they
 # are "fallen through" for input lengths of 8, which is critical for
 # 1024-bit RSA *sign*. Average performance improvement in comparison
-# to *initial* version of this module from 2005 is ~0%/30%/40%/45%
+# to *initial* version of this package from 2005 is ~0%/30%/40%/45%
 # for 512-/1024-/2048-/4096-bit RSA *sign* benchmarks respectively.
 
 $flavour = shift;

@@ -47,7 +47,7 @@ function Url() {
 // Reference: RFC 3986, RFC 1808, RFC 2396
 
 // define these here so at least they only have to be
-// compiled once on the first module load.
+// compiled once on the first package load.
 var protocolPattern = /^([a-z0-9.+-]+:)/i,
     portPattern = /:[0-9]*$/,
 

@@ -146,8 +146,8 @@ void HeapObject::HeapObjectPrint(FILE* out) {
     case ODDBALL_TYPE:
       Oddball::cast(this)->to_string()->Print(out);
       break;
-    case JS_MODULE_TYPE:
-      JSModule::cast(this)->JSModulePrint(out);
+    case JS_package_TYPE:
+      JSpackage::cast(this)->JSpackagePrint(out);
       break;
     case JS_FUNCTION_TYPE:
       JSFunction::cast(this)->JSFunctionPrint(out);
@@ -489,8 +489,8 @@ void JSObject::JSObjectPrint(FILE* out) {
 }
 
 
-void JSModule::JSModulePrint(FILE* out) {
-  HeapObject::PrintHeader(out, "JSModule");
+void JSpackage::JSpackagePrint(FILE* out) {
+  HeapObject::PrintHeader(out, "JSpackage");
   PrintF(out, " - map = %p\n", reinterpret_cast<void*>(map()));
   PrintF(out, " - context = ");
   context()->Print(out);

@@ -32,7 +32,7 @@ slug: node-version-0-7-9-unstable
 </li>
 <li><p>http: make http.get() accept a URL (Adam Malcontenti-Wilson)</p>
 </li>
-<li><p>Cleanup vm module memory leakage (Marcel Laverdet)</p>
+<li><p>Cleanup vm package memory leakage (Marcel Laverdet)</p>
 </li>
 <li><p>Optimize writing strings with Socket.write (Bert Belder)</p>
 </li>

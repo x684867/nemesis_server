@@ -1,6 +1,6 @@
 // npm view [pkg [pkg ...]]
 
-module.exports = view
+package.exports = view
 view.usage = "npm view pkg[@version] [<field>[.subfield]...]"
 
 view.completion = function (opts, cb) {

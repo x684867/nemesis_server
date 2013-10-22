@@ -49,7 +49,7 @@ There are a few other notes:
 $ stackvis dtrace collapsed &lt; stacks.out | grep SomeFunction &gt; collapsed.out
 $ stackvis collapsed flamegraph-svg &lt; collapsed.out &gt; stacks.svg</pre>
     </li>
-    <li>If you've used Brendan's FlameGraph tools, you'll notice the coloring is a little different in the above flamegraph. I ported his tools to Node first so I could incorporate it more easily into other Node programs, but I've also been playing with different coloring options. The current default uses hue to denote stack depth and saturation to indicate time spent. (These are also indicated by position and size.) Other ideas include coloring by module (so V8, JavaScript, libc, etc. show up as different colors.)
+    <li>If you've used Brendan's FlameGraph tools, you'll notice the coloring is a little different in the above flamegraph. I ported his tools to Node first so I could incorporate it more easily into other Node programs, but I've also been playing with different coloring options. The current default uses hue to denote stack depth and saturation to indicate time spent. (These are also indicated by position and size.) Other ideas include coloring by package (so V8, JavaScript, libc, etc. show up as different colors.)
     </li>
 </ul>
 

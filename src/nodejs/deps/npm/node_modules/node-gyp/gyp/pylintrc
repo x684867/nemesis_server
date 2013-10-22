@@ -17,7 +17,7 @@ ignore=CVS
 # Pickle collected data for later comparisons.
 persistent=yes
 
-# List of plugins (as comma separated values of python modules names) to load,
+# List of plugins (as comma separated values of python packages names) to load,
 # usually to register additional checkers.
 load-plugins=
 
@@ -35,7 +35,7 @@ load-plugins=
 # it should appear only once).
 # C0103: Invalid name "NN" (should match [a-z_][a-z0-9_]{2,30}$)
 # C0111: Missing docstring
-# C0302: Too many lines in module (NN)
+# C0302: Too many lines in package (NN)
 # R0902: Too many instance attributes (N/7)
 # R0903: Too few public methods (N/2)
 # R0904: Too many public methods (NN/20)
@@ -77,10 +77,10 @@ load-plugins=
 # W0301: Unnecessary semicolon
 # W0311: Bad indentation. Found NN spaces, expected NN
 # W0401: Wildcard import XX
-# W0402: Uses of a deprecated module 'string'
+# W0402: Uses of a deprecated package 'string'
 # W0403: Relative import 'XX', should be 'YY.XX'
 # W0404: Reimport 'XX' (imported line NN)
-# W0601: Global variable 'XX' undefined at the module level
+# W0601: Global variable 'XX' undefined at the package level
 # W0602: Using global for 'XX' but no assignment is done
 # W0611: Unused import pprint
 # W0612: Unused variable 'XX'
@@ -103,7 +103,7 @@ output-format=text
 # Include message's id in output
 include-ids=yes
 
-# Put messages in a separate file for each module / package specified on the
+# Put messages in a separate file for each package / package specified on the
 # command line instead of printing them on stdout. Reports (if any) will be
 # written in a file name "pylint_global.[txt|html]".
 files-output=no
@@ -180,8 +180,8 @@ ignore-docstrings=yes
 # Maximum number of characters on a single line.
 max-line-length=80
 
-# Maximum number of lines in a module
-max-module-lines=1000
+# Maximum number of lines in a package
+max-package-lines=1000
 
 # String used as indentation unit. This is usually " " (4 spaces) or "\t" (1
 # tab).
@@ -190,16 +190,16 @@ indent-string='  '
 
 [BASIC]
 
-# Required attributes for module, separated by a comma
+# Required attributes for package, separated by a comma
 required-attributes=
 
 # List of builtins function names that should not be used, separated by a comma
 bad-functions=map,filter,apply,input
 
-# Regular expression which should only match correct module names
-module-rgx=(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$
+# Regular expression which should only match correct package names
+package-rgx=(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$
 
-# Regular expression which should only match correct module level names
+# Regular expression which should only match correct package level names
 const-rgx=(([A-Z_][A-Z0-9_]*)|(__.*__))$
 
 # Regular expression which should only match correct class names
@@ -284,8 +284,8 @@ valid-classmethod-first-arg=cls
 
 [IMPORTS]
 
-# Deprecated modules which should not be used, separated by a comma
-deprecated-modules=regsub,string,TERMIOS,Bastion,rexec
+# Deprecated packages which should not be used, separated by a comma
+deprecated-packages=regsub,string,TERMIOS,Bastion,rexec
 
 # Create a graph of every (i.e. internal and external) dependencies in the
 # given file (report RP0402 must not be disabled)

@@ -2,7 +2,7 @@
 
     Stability: 3 - Stable
 
-To use this module, do `require('string_decoder')`. StringDecoder decodes a
+To use this package, do `require('string_decoder')`. StringDecoder decodes a
 buffer to a string. It is a simple interface to `buffer.toString()` but provides
 additional support for utf8.
 

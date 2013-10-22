@@ -185,7 +185,7 @@ extern BIO *bio_err;
 			ERR_load_crypto_strings(); OpenSSL_add_all_algorithms(); \
 			ENGINE_load_builtin_engines(); setup_ui_method(); } while(0)
 #    define apps_shutdown() \
-			do { CONF_modules_unload(1); destroy_ui_method(); \
+			do { CONF_packages_unload(1); destroy_ui_method(); \
 			OBJ_cleanup(); EVP_cleanup(); ENGINE_cleanup(); \
 			CRYPTO_cleanup_all_ex_data(); ERR_remove_thread_state(NULL); \
 			ERR_free_strings(); zlib_cleanup();} while(0)
@@ -195,7 +195,7 @@ extern BIO *bio_err;
 			ERR_load_crypto_strings(); OpenSSL_add_all_algorithms(); \
 			setup_ui_method(); } while(0)
 #    define apps_shutdown() \
-			do { CONF_modules_unload(1); destroy_ui_method(); \
+			do { CONF_packages_unload(1); destroy_ui_method(); \
 			OBJ_cleanup(); EVP_cleanup(); \
 			CRYPTO_cleanup_all_ex_data(); ERR_remove_thread_state(NULL); \
 			ERR_free_strings(); zlib_cleanup(); } while(0)

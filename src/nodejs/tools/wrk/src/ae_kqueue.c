@@ -1,4 +1,4 @@
-/* Kqueue(2)-based ae.c module
+/* Kqueue(2)-based ae.c package
  *
  * Copyright (C) 2009 Harish Mallipeddi - harish.mallipeddi@gmail.com
  * All rights reserved.

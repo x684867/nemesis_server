@@ -178,9 +178,9 @@ var kMessages = {
   redef_external_array_element:  ["Cannot redefine a property of an object with external array elements"],
   harmony_const_assign:          ["Assignment to constant variable."],
   symbol_to_string:              ["Conversion from symbol to string"],
-  invalid_module_path:           ["Module does not export '", "%0", "', or export is not itself a module"],
-  module_type_error:             ["Module '", "%0", "' used improperly"],
-  module_export_undefined:       ["Export '", "%0", "' is not defined in module"]
+  invalid_package_path:           ["package does not export '", "%0", "', or export is not itself a package"],
+  package_type_error:             ["package '", "%0", "' used improperly"],
+  package_export_undefined:       ["Export '", "%0", "' is not defined in package"]
 };
 
 
@@ -197,8 +197,8 @@ function FormatString(format, args) {
         try {
           str = NoSideEffectToString(args[arg_num]);
         } catch (e) {
-          if (%IsJSModule(args[arg_num]))
-            str = "module";
+          if (%IsJSpackage(args[arg_num]))
+            str = "package";
           else if (IS_SPEC_OBJECT(args[arg_num]))
             str = "object";
           else

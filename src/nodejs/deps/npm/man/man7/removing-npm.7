@@ -40,7 +40,7 @@ continue reading\.
 .
 .P
 Note that this is only necessary for globally\-installed packages\.  Local
-installs are completely contained within a project\'s \fBnode_modules\fR
+installs are completely contained within a project\'s \fBnode_packages\fR
 folder\.  Delete that folder, and everything is gone (unless a package\'s
 install script is particularly ill\-behaved)\.
 .
@@ -55,7 +55,7 @@ To remove everything npm\-related manually:
 .IP "" 4
 .
 .nf
-rm \-rf /usr/local/{lib/node{,/\.npm,_modules},bin,share/man}/npm*
+rm \-rf /usr/local/{lib/node{,/\.npm,_packages},bin,share/man}/npm*
 .
 .fi
 .
@@ -78,7 +78,7 @@ ls \-laF /usr/local/{lib/node{,/\.npm},bin,share/man} | grep npm
 .
 .P
 Prior to version 0\.3, npm used shim files for executables and node
-modules\.  To track those down, you can do the following:
+packages\.  To track those down, you can do the following:
 .
 .IP "" 4
 .

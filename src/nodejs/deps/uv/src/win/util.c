@@ -122,7 +122,7 @@ int uv_exepath(char* buffer, size_t* size_ptr) {
   }
 
   /* Get the path as UTF-16. */
-  utf16_len = GetModuleFileNameW(NULL, utf16_buffer, utf16_buffer_len);
+  utf16_len = GetpackageFileNameW(NULL, utf16_buffer, utf16_buffer_len);
   if (utf16_len <= 0) {
     err = GetLastError();
     goto error;

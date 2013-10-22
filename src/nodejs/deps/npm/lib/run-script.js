@@ -1,5 +1,5 @@
 
-module.exports = runScript
+package.exports = runScript
 
 var lifecycle = require("./utils/lifecycle.js")
   , npm = require("./npm.js")
@@ -33,7 +33,7 @@ runScript.completion = function (opts, cb) {
       // ok, try to find out which package it was, then
       var pref = npm.config.get("global") ? npm.config.get("prefix")
                : npm.prefix
-      var pkgDir = path.resolve( pref, "node_modules"
+      var pkgDir = path.resolve( pref, "node_packages"
                                , argv[2], "package.json" )
       readJson(pkgDir, function (er, d) {
         if (er && er.code !== "ENOENT" && er.code !== "ENOTDIR") return cb(er)

@@ -1,7 +1,7 @@
 
 // initialize a package.json file
 
-module.exports = init
+package.exports = init
 
 var log = require("npmlog")
   , npm = require("./npm.js")
@@ -12,7 +12,7 @@ init.usage = "npm init"
 function init (args, cb) {
   var dir = process.cwd()
   log.pause()
-  var initFile = npm.config.get('init-module')
+  var initFile = npm.config.get('init-package')
 
   console.log(
     ["This utility will walk you through creating a package.json file."

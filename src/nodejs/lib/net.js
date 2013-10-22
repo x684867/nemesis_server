@@ -1109,7 +1109,7 @@ function listen(self, address, port, addressType, backlog, fd) {
     // port before calling listen().
     //
     // FIXME(bnoordhuis) Doesn't work for pipe handles, they don't have a
-    // getsockname() method. Non-issue for now, the cluster module doesn't
+    // getsockname() method. Non-issue for now, the cluster package doesn't
     // really support pipes anyway.
     if (err === 0 && port > 0 && handle.getsockname) {
       var out = {};

@@ -2,9 +2,9 @@
 
     Stability: 3 - Stable
 
-Use `require('tls')` to access this module.
+Use `require('tls')` to access this package.
 
-The `tls` module uses OpenSSL to provide Transport Layer Security and/or
+The `tls` package uses OpenSSL to provide Transport Layer Security and/or
 Secure Socket Layer: encrypted stream communication.
 
 TLS/SSL is a public/private key infrastructure. Each client and each

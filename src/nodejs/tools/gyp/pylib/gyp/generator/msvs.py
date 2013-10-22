@@ -278,7 +278,7 @@ def _BuildCommandLineForRuleRaw(spec, cmd, cygwin_shell, has_input_path,
     direct_cmd = ['\\"%s\\"' % i.replace('"', '\\\\\\"') for i in direct_cmd]
     # direct_cmd = gyp.common.EncodePOSIXShellList(direct_cmd)
     direct_cmd = ' '.join(direct_cmd)
-    # TODO(quote):  regularize quoting path names throughout the module
+    # TODO(quote):  regularize quoting path names throughout the package
     cmd = ''
     if do_setup_env:
       cmd += 'call "$(ProjectDir)%(cygwin_dir)s\\setup_env.bat" && '
@@ -317,7 +317,7 @@ def _BuildCommandLineForRuleRaw(spec, cmd, cygwin_shell, has_input_path,
     if quote_cmd:
       # Support a mode for using cmd directly.
       # Convert any paths to native form (first element is used directly).
-      # TODO(quote):  regularize quoting path names throughout the module
+      # TODO(quote):  regularize quoting path names throughout the package
       arguments = ['"%s"' % i for i in arguments]
     # Collapse into a single command.
     return input_dir_preamble + ' '.join(command + arguments)
@@ -1001,7 +1001,7 @@ def _GetMSVSConfigurationType(spec, build_file):
     config_type = {
         'executable': '1',  # .exe
         'shared_library': '2',  # .dll
-        'loadable_module': '2',  # .dll
+        'loadable_package': '2',  # .dll
         'static_library': '4',  # .lib
         'none': '10',  # Utility type
         }[spec['type']]
@@ -1039,7 +1039,7 @@ def _AddConfigurationToMSVSProject(p, spec, config_type, config_name, config):
   disabled_warnings = _GetDisabledWarnings(config)
   prebuild = config.get('msvs_prebuild')
   postbuild = config.get('msvs_postbuild')
-  def_file = _GetModuleDefinition(spec)
+  def_file = _GetpackageDefinition(spec)
   precompiled_header = config.get('msvs_precompiled_header')
 
   # Prepare the list of tools as a dictionary.
@@ -1086,13 +1086,13 @@ def _AddConfigurationToMSVSProject(p, spec, config_type, config_name, config):
                 'PrecompiledHeaderThrough', precompiled_header)
     _ToolAppend(tools, 'VCCLCompilerTool',
                 'ForcedIncludeFiles', precompiled_header)
-  # Loadable modules don't generate import libraries;
+  # Loadable packages don't generate import libraries;
   # tell dependent projects to not expect one.
-  if spec['type'] == 'loadable_module':
+  if spec['type'] == 'loadable_package':
     _ToolAppend(tools, 'VCLinkerTool', 'IgnoreImportLibrary', 'true')
-  # Set the module definition file if any.
+  # Set the package definition file if any.
   if def_file:
-    _ToolAppend(tools, 'VCLinkerTool', 'ModuleDefinitionFile', def_file)
+    _ToolAppend(tools, 'VCLinkerTool', 'packageDefinitionFile', def_file)
 
   _AddConfigurationToMSVS(p, spec, tools, config, config_type, config_name)
 
@@ -1161,7 +1161,7 @@ def _GetOutputFilePathAndTool(spec, msbuild):
   output_file_map = {
       'executable': ('VCLinkerTool', 'Link', '$(OutDir)', '.exe'),
       'shared_library': ('VCLinkerTool', 'Link', '$(OutDir)', '.dll'),
-      'loadable_module': ('VCLinkerTool', 'Link', '$(OutDir)', '.dll'),
+      'loadable_package': ('VCLinkerTool', 'Link', '$(OutDir)', '.dll'),
       'static_library': ('VCLibrarianTool', 'Lib', '$(OutDir)lib\\', '.lib'),
   }
   output_file_props = output_file_map.get(spec['type'])
@@ -1204,15 +1204,15 @@ def _GetDisabledWarnings(config):
   return [str(i) for i in config.get('msvs_disabled_warnings', [])]
 
 
-def _GetModuleDefinition(spec):
+def _GetpackageDefinition(spec):
   def_file = ''
-  if spec['type'] in ['shared_library', 'loadable_module', 'executable']:
+  if spec['type'] in ['shared_library', 'loadable_package', 'executable']:
     def_files = [s for s in spec.get('sources', []) if s.endswith('.def')]
     if len(def_files) == 1:
       def_file = _FixPath(def_files[0])
     elif def_files:
       raise ValueError(
-          'Multiple module definition files in one target, target %s lists '
+          'Multiple package definition files in one target, target %s lists '
           'multiple .def files: %s' % (
               spec['target_name'], ' '.join(def_files)))
   return def_file
@@ -2565,7 +2565,7 @@ def _GetMSBuildAttributes(spec, config, build_file):
   msbuild_tool_map = {
       'executable': 'Link',
       'shared_library': 'Link',
-      'loadable_module': 'Link',
+      'loadable_package': 'Link',
       'static_library': 'Lib',
   }
   msbuild_tool = msbuild_tool_map.get(spec['type'])
@@ -2745,7 +2745,7 @@ def _FinalizeMSBuildSettings(spec, configuration):
   # TODO(jeanluc) Validate & warn that we don't translate
   # prebuild = configuration.get('msvs_prebuild')
   # postbuild = configuration.get('msvs_postbuild')
-  def_file = _GetModuleDefinition(spec)
+  def_file = _GetpackageDefinition(spec)
   precompiled_header = configuration.get('msvs_precompiled_header')
 
   # Add the information to the appropriate tool
@@ -2779,13 +2779,13 @@ def _FinalizeMSBuildSettings(spec, configuration):
                 'PrecompiledHeaderFile', precompiled_header)
     _ToolAppend(msbuild_settings, 'ClCompile',
                 'ForcedIncludeFiles', precompiled_header)
-  # Loadable modules don't generate import libraries;
+  # Loadable packages don't generate import libraries;
   # tell dependent projects to not expect one.
-  if spec['type'] == 'loadable_module':
+  if spec['type'] == 'loadable_package':
     _ToolAppend(msbuild_settings, '', 'IgnoreImportLibrary', 'true')
-  # Set the module definition file if any.
+  # Set the package definition file if any.
   if def_file:
-    _ToolAppend(msbuild_settings, 'Link', 'ModuleDefinitionFile', def_file)
+    _ToolAppend(msbuild_settings, 'Link', 'packageDefinitionFile', def_file)
   configuration['finalized_msbuild_settings'] = msbuild_settings
 
 

@@ -2,7 +2,7 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -14,7 +14,7 @@
 # Code uses single 1K S-box and is >2 times faster than code generated
 # by gcc-3.4.1. This is thanks to unique feature of ARMv4 ISA, which
 # allows to merge logical or arithmetic operation with shift or rotate
-# in one instruction and emit combined result every cycle. The module
+# in one instruction and emit combined result every cycle. The package
 # is endian-neutral. The performance is ~42 cycles/byte for 128-bit
 # key [on single-issue Xscale PXA250 core].
 

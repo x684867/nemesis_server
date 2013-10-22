@@ -25,7 +25,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// The routines exported by this module are subtle.  If you use them, even if
+// The routines exported by this package are subtle.  If you use them, even if
 // you get the code right, it will depend on careful reasoning about atomicity
 // and memory ordering; it will be less readable, and harder to maintain.  If
 // you plan to use these routines, you should have a good reason, such as solid

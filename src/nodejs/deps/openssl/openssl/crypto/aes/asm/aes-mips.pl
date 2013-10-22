@@ -2,7 +2,7 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -17,7 +17,7 @@
 # recall that compressed S-box requires extra processing, namely
 # additional rotations. Rotations are implemented with lwl/lwr pairs,
 # which is normally used for loading unaligned data. Another cool
-# thing about this module is its endian neutrality, which means that
+# thing about this package is its endian neutrality, which means that
 # it processes data without ever changing byte order...
 
 ######################################################################

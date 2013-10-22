@@ -60,10 +60,10 @@
 
 /**
  * When this version number is changed, node.js will refuse
- * to load older modules.  This should be done whenever
+ * to load older packages.  This should be done whenever
  * an API is broken in the C++ side, including in v8 or
  * other dependencies.
  */
-#define NODE_MODULE_VERSION 13 /* v0.12 */
+#define NODE_package_VERSION 13 /* v0.12 */
 
 #endif  /* SRC_NODE_VERSION_H_ */

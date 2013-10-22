@@ -16,7 +16,7 @@
 # Port vpaes-x86_64.pl as 32-bit "almost" drop-in replacement for
 # aes-586.pl. "Almost" refers to the fact that AES_cbc_encrypt
 # doesn't handle partial vectors (doesn't have to if called from
-# EVP only). "Drop-in" implies that this module doesn't share key
+# EVP only). "Drop-in" implies that this package doesn't share key
 # schedule structure with the original nor does it make assumption
 # about its alignment...
 #

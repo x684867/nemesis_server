@@ -15,7 +15,7 @@ var okFile = new Buffer(
 ' * }\n' + 
 ' **/\n' + 
 '\n' + 
-'module.exports = "I\'m just a lonely index, naked as the day I was born."\n'
+'package.exports = "I\'m just a lonely index, naked as the day I was born."\n'
 )
 
 var failFile = new Buffer(
@@ -28,7 +28,7 @@ var failFile = new Buffer(
 ' * }\n' +
 ' **/\n' +
 '\n' +
-'module.exports = "I\'m just a lonely index, naked as the day I was born."\n'
+'package.exports = "I\'m just a lonely index, naked as the day I was born."\n'
 )
 
 var server
@@ -51,7 +51,7 @@ test("setup", function(t) {
 
 
 test("installing dependencies that having conflicting peerDependencies", function (t) {
-  rimraf.sync(__dirname + "/peer-deps-invalid/node_modules")
+  rimraf.sync(__dirname + "/peer-deps-invalid/node_packages")
   process.chdir(__dirname + "/peer-deps-invalid")
 
   npm.load(function () {

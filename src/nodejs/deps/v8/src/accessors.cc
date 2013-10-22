@@ -791,15 +791,15 @@ const AccessorDescriptor Accessors::FunctionCaller = {
 
 
 //
-// Accessors::MakeModuleExport
+// Accessors::MakepackageExport
 //
 
-static void ModuleGetExport(
+static void packageGetExport(
     v8::Local<v8::String> property,
     const v8::PropertyCallbackInfo<v8::Value>& info) {
-  JSModule* instance = JSModule::cast(*v8::Utils::OpenHandle(*info.Holder()));
+  JSpackage* instance = JSpackage::cast(*v8::Utils::OpenHandle(*info.Holder()));
   Context* context = Context::cast(instance->context());
-  ASSERT(context->IsModuleContext());
+  ASSERT(context->IspackageContext());
   int slot = info.Data()->Int32Value();
   Object* value = context->get(slot);
   Isolate* isolate = instance->GetIsolate();
@@ -814,13 +814,13 @@ static void ModuleGetExport(
 }
 
 
-static void ModuleSetExport(
+static void packageSetExport(
     v8::Local<v8::String> property,
     v8::Local<v8::Value> value,
     const v8::PropertyCallbackInfo<v8::Value>& info) {
-  JSModule* instance = JSModule::cast(*v8::Utils::OpenHandle(*info.Holder()));
+  JSpackage* instance = JSpackage::cast(*v8::Utils::OpenHandle(*info.Holder()));
   Context* context = Context::cast(instance->context());
-  ASSERT(context->IsModuleContext());
+  ASSERT(context->IspackageContext());
   int slot = info.Data()->Int32Value();
   Object* old_value = context->get(slot);
   if (old_value->IsTheHole()) {
@@ -835,7 +835,7 @@ static void ModuleSetExport(
 }
 
 
-Handle<AccessorInfo> Accessors::MakeModuleExport(
+Handle<AccessorInfo> Accessors::MakepackageExport(
     Handle<String> name,
     int index,
     PropertyAttributes attributes) {
@@ -846,8 +846,8 @@ Handle<AccessorInfo> Accessors::MakeModuleExport(
   info->set_all_can_write(true);
   info->set_name(*name);
   info->set_data(Smi::FromInt(index));
-  Handle<Object> getter = v8::FromCData(&ModuleGetExport);
-  Handle<Object> setter = v8::FromCData(&ModuleSetExport);
+  Handle<Object> getter = v8::FromCData(&packageGetExport);
+  Handle<Object> setter = v8::FromCData(&packageSetExport);
   info->set_getter(*getter);
   if (!(attributes & ReadOnly)) info->set_setter(*setter);
   return info;

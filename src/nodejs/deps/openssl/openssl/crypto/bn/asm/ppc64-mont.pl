@@ -2,7 +2,7 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -22,16 +22,16 @@
 # one would expect from 4.7GHz CPU. There is a chance that I'm doing
 # something wrong, but in the lack of assembler level micro-profiling
 # data or at least decent platform guide I can't tell... Or better
-# results might be achieved with VMX... Anyway, this module provides
+# results might be achieved with VMX... Anyway, this package provides
 # *worse* performance on other PowerPC implementations, ~40-15% slower
 # on PPC970 depending on key length and ~40% slower on Power 5 for all
 # key lengths. As it's obviously inappropriate as "best all-round"
 # alternative, it has to be complemented with run-time CPU family
 # detection. Oh! It should also be noted that unlike other PowerPC
-# implementation IALU ppc-mont.pl module performs *suboptimaly* on
+# implementation IALU ppc-mont.pl package performs *suboptimaly* on
 # >=1024-bit key lengths on Power 6. It should also be noted that
 # *everything* said so far applies to 64-bit builds! As far as 32-bit
-# application executed on 64-bit CPU goes, this module is likely to
+# application executed on 64-bit CPU goes, this package is likely to
 # become preferred choice, because it's easy to adapt it for such
 # case and *is* faster than 32-bit ppc-mont.pl on *all* processors.
 
@@ -39,15 +39,15 @@
 
 # Micro-profiling assisted optimization results in ~15% improvement
 # over original ppc64-mont.pl version, or overall ~50% improvement
-# over ppc.pl module on Power 6. If compared to ppc-mont.pl on same
-# Power 6 CPU, this module is 5-150% faster depending on key length,
+# over ppc.pl package on Power 6. If compared to ppc-mont.pl on same
+# Power 6 CPU, this package is 5-150% faster depending on key length,
 # [hereafter] more for longer keys. But if compared to ppc-mont.pl
 # on 1.8GHz PPC970, it's only 5-55% faster. Still far from impressive
 # in absolute terms, but it's apparently the way Power 6 is...
 
 # December 2009
 
-# Adapted for 32-bit build this module delivers 25-120%, yes, more
+# Adapted for 32-bit build this package delivers 25-120%, yes, more
 # than *twice* for longer keys, performance improvement over 32-bit
 # ppc-mont.pl on 1.8GHz PPC970. However! This implementation utilizes
 # even 64-bit integer operations and the trouble is that most PPC

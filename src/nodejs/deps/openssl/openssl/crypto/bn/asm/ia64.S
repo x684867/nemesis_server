@@ -14,14 +14,14 @@
 // ====================================================================
 //
 // Version 2.x is Itanium2 re-tune. Few words about how Itanum2 is
-// different from Itanium to this module viewpoint. Most notably, is it
+// different from Itanium to this package viewpoint. Most notably, is it
 // "wider" than Itanium? Can you experience loop scalability as
 // discussed in commentary sections? Not really:-( Itanium2 has 6
 // integer ALU ports, i.e. it's 2 ports wider, but it's not enough to
 // spin twice as fast, as I need 8 IALU ports. Amount of floating point
 // ports is the same, i.e. 2, while I need 4. In other words, to this
-// module Itanium2 remains effectively as "wide" as Itanium. Yet it's
-// essentially different in respect to this module, and a re-tune was
+// package Itanium2 remains effectively as "wide" as Itanium. Yet it's
+// essentially different in respect to this package, and a re-tune was
 // required. Well, because some intruction latencies has changed. Most
 // noticeably those intensively used:
 //
@@ -141,7 +141,7 @@
 //	programs for that matter) with -mfixed-range=f32-f127 command
 //	line option. No, it doesn't prevent the compiler from writing
 //	to upper bank, but at least discourages to do so. If you don't
-//	like the idea you have the option to compile the module with
+//	like the idea you have the option to compile the package with
 //	-Drum=nop.m in command line.
 //
 

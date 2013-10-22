@@ -90,7 +90,7 @@ var d = 'Content-Length: 466\r\n\r\n' +
         '{"seq":10,"type":"event","event":"afterCompile","success":true,' +
         '"body":{"script":{"handle":1,"type":"script","name":"dns.js",' +
         '"id":34,"lineOffset":0,"columnOffset":0,"lineCount":241,' +
-        '"sourceStart":"(function (module, exports, require) {' +
+        '"sourceStart":"(function (package, exports, require) {' +
         'var dns = process.binding(\'cares\')' +
         ';\\nvar ne","sourceLength":6137,"scriptType":2,"compilationType":0,' +
         '"context":{"ref":0},"text":"dns.js (lines: 241)"}},"refs":' +

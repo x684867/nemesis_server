@@ -40,4 +40,4 @@ void init(Handle<Object> target) {
   atexit(sanity_check);
 }
 
-NODE_MODULE(binding, init);
+NODE_package(binding, init);

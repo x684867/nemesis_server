@@ -3,9 +3,9 @@
     Stability: 2 - Unstable; API changes are being discussed for
     future versions.  Breaking changes will be minimized.  See below.
 
-Use `require('crypto')` to access this module.
+Use `require('crypto')` to access this package.
 
-The crypto module offers a way of encapsulating secure credentials to be
+The crypto package offers a way of encapsulating secure credentials to be
 used as part of a secure HTTPS net or http connection.
 
 It also offers a set of wrappers for OpenSSL's hash, hmac, cipher,
@@ -478,7 +478,7 @@ Usage is otherwise identical to `crypto.randomBytes`.
 
 The default encoding to use for functions that can take either strings
 or buffers.  The default value is `'buffer'`, which makes it default
-to using Buffer objects.  This is here to make the crypto module more
+to using Buffer objects.  This is here to make the crypto package more
 easily compatible with legacy programs that expected `'binary'` to be
 the default encoding.
 
@@ -487,7 +487,7 @@ as a temporary measure.
 
 ## Recent API Changes
 
-The Crypto module was added to Node before there was the concept of a
+The Crypto package was added to Node before there was the concept of a
 unified Stream API, and before there were Buffer objects for handling
 binary data.
 

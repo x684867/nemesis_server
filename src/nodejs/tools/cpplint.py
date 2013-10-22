@@ -487,7 +487,7 @@ class _IncludeState(dict):
 
 
 class _CppLintState(object):
-  """Maintains module-wide state.."""
+  """Maintains package-wide state.."""
 
   def __init__(self):
     self.verbose_level = 1  # global setting.
@@ -507,13 +507,13 @@ class _CppLintState(object):
     self.output_format = output_format
 
   def SetVerboseLevel(self, level):
-    """Sets the module's verbosity, and returns the previous setting."""
+    """Sets the package's verbosity, and returns the previous setting."""
     last_verbose_level = self.verbose_level
     self.verbose_level = level
     return last_verbose_level
 
   def SetCountingStyle(self, counting_style):
-    """Sets the module's counting options."""
+    """Sets the package's counting options."""
     self.counting = counting_style
 
   def SetFilters(self, filters):
@@ -542,12 +542,12 @@ class _CppLintState(object):
                          ' (%s does not)' % filt)
 
   def ResetErrorCounts(self):
-    """Sets the module's error statistic back to zero."""
+    """Sets the package's error statistic back to zero."""
     self.error_count = 0
     self.errors_by_category = {}
 
   def IncrementErrorCount(self, category):
-    """Bumps the module's error statistic."""
+    """Bumps the package's error statistic."""
     self.error_count += 1
     if self.counting in ('toplevel', 'detailed'):
       if self.counting != 'detailed':
@@ -567,37 +567,37 @@ _cpplint_state = _CppLintState()
 
 
 def _OutputFormat():
-  """Gets the module's output format."""
+  """Gets the package's output format."""
   return _cpplint_state.output_format
 
 
 def _SetOutputFormat(output_format):
-  """Sets the module's output format."""
+  """Sets the package's output format."""
   _cpplint_state.SetOutputFormat(output_format)
 
 
 def _VerboseLevel():
-  """Returns the module's verbosity setting."""
+  """Returns the package's verbosity setting."""
   return _cpplint_state.verbose_level
 
 
 def _SetVerboseLevel(level):
-  """Sets the module's verbosity, and returns the previous setting."""
+  """Sets the package's verbosity, and returns the previous setting."""
   return _cpplint_state.SetVerboseLevel(level)
 
 
 def _SetCountingStyle(level):
-  """Sets the module's counting options."""
+  """Sets the package's counting options."""
   _cpplint_state.SetCountingStyle(level)
 
 
 def _Filters():
-  """Returns the module's list of output filters, as a list."""
+  """Returns the package's list of output filters, as a list."""
   return _cpplint_state.filters
 
 
 def _SetFilters(filters):
-  """Sets the module's error-message filters.
+  """Sets the package's error-message filters.
 
   These filters are applied when deciding whether to emit a given
   error message.
@@ -2720,14 +2720,14 @@ for _header, _templates in _HEADERS_CONTAINING_TEMPLATES:
          _header))
 
 
-def FilesBelongToSameModule(filename_cc, filename_h):
-  """Check if these two filenames belong to the same module.
+def FilesBelongToSamepackage(filename_cc, filename_h):
+  """Check if these two filenames belong to the same package.
 
-  The concept of a 'module' here is a as follows:
+  The concept of a 'package' here is a as follows:
   foo.h, foo-inl.h, foo.cc, foo_test.cc and foo_unittest.cc belong to the
-  same 'module' if they are in the same directory.
+  same 'package' if they are in the same directory.
   some/path/public/xyzzy and some/path/internal/xyzzy are also considered
-  to belong to the same module here.
+  to belong to the same package here.
 
   If the filename_cc contains a longer path than the filename_h, for example,
   '/absolute/path/to/base/sysinfo.cc', and this file would include
@@ -2736,7 +2736,7 @@ def FilesBelongToSameModule(filename_cc, filename_h):
   header file. We don't have access to the real include paths in this context,
   so we need this guesswork here.
 
-  Known bugs: tools/base/bar.cc and base/bar.h belong to the same module
+  Known bugs: tools/base/bar.cc and base/bar.h belong to the same package
   according to this implementation. Because of this, this function gives
   some false positives. This should be sufficiently rare in practice.
 
@@ -2746,7 +2746,7 @@ def FilesBelongToSameModule(filename_cc, filename_h):
 
   Returns:
     Tuple with a bool and a string:
-    bool: True if filename_cc and filename_h belong to the same module.
+    bool: True if filename_cc and filename_h belong to the same package.
     string: the additional prefix needed to open the header file.
   """
 
@@ -2768,11 +2768,11 @@ def FilesBelongToSameModule(filename_cc, filename_h):
   filename_h = filename_h.replace('/public/', '/')
   filename_h = filename_h.replace('/internal/', '/')
 
-  files_belong_to_same_module = filename_cc.endswith(filename_h)
+  files_belong_to_same_package = filename_cc.endswith(filename_h)
   common_path = ''
-  if files_belong_to_same_module:
+  if files_belong_to_same_package:
     common_path = filename_cc[:-len(filename_h)]
-  return files_belong_to_same_module, common_path
+  return files_belong_to_same_package, common_path
 
 
 def UpdateIncludeState(filename, include_state, io=codecs):
@@ -2865,9 +2865,9 @@ def CheckForIncludeWhatYouUse(filename, clean_lines, include_state, error,
   # include_state is modified during iteration, so we iterate over a copy of
   # the keys.
   for header in include_state.keys():  #NOLINT
-    (same_module, common_path) = FilesBelongToSameModule(abs_filename, header)
+    (same_package, common_path) = FilesBelongToSamepackage(abs_filename, header)
     fullpath = common_path + header
-    if same_module and UpdateIncludeState(fullpath, include_state, io):
+    if same_package and UpdateIncludeState(fullpath, include_state, io):
       header_found = True
 
   # If we can't find the header file for a .cc, assume it's because we don't

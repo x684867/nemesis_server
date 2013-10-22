@@ -139,7 +139,7 @@ Most of the time, unless you actually want to do all the things that
 npm does, you should try using one of npm's dependencies rather than
 using npm itself, if possible.
 
-Eventually, npm will be just a thin cli wrapper around the modules
+Eventually, npm will be just a thin cli wrapper around the packages
 that it depends on, but for now, there are some things that you must
 use npm itself to do.
 
@@ -190,7 +190,7 @@ The packages in the npm registry are not part of npm itself, and are the
 sole property of their respective maintainers.  While every effort is
 made to ensure accountability, there is absolutely no guarantee,
 warrantee, or assertion made as to the quality, fitness for a specific
-purpose, or lack of malice in any given npm package.  Modules
+purpose, or lack of malice in any given npm package.  packages
 published on the npm registry are not affiliated with or endorsed by
 Joyent, Inc., Isaac Z. Schlueter, Ryan Dahl, or the Node.js project.
 
@@ -211,7 +211,7 @@ not Joyent's, not Ryan Dahl's.
 
 Yes, you can publish something evil.  It will be removed promptly if
 reported, and we'll lose respect for you.  But there is no vetting
-process for published modules.
+process for published packages.
 
 If this concerns you, inspect the source before using packages.
 

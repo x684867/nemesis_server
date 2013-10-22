@@ -19,7 +19,7 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// We've experienced a regression where the module loader stats a bunch of
+// We've experienced a regression where the package loader stats a bunch of
 // directories on require() even if it's been called before. The require()
 // should caching the request.
 var common = require('../common');
@@ -44,7 +44,7 @@ fs.stat = function() {
   return _stat.apply(this, arguments);
 };
 
-// Load the module 'a' and 'http' once. It should become cached.
+// Load the package 'a' and 'http' once. It should become cached.
 require(common.fixturesDir + '/a');
 require('../fixtures/a.js');
 require('./../fixtures/a.js');
@@ -53,7 +53,7 @@ require('http');
 console.log('counterBefore = %d', counter);
 var counterBefore = counter;
 
-// Now load the module a bunch of times with equivalent paths.
+// Now load the package a bunch of times with equivalent paths.
 // stat should not be called.
 for (var i = 0; i < 100; i++) {
   require(common.fixturesDir + '/a');
@@ -61,7 +61,7 @@ for (var i = 0; i < 100; i++) {
   require('./../fixtures/a.js');
 }
 
-// Do the same with a built-in module
+// Do the same with a built-in package
 for (var i = 0; i < 100; i++) {
   require('http');
 }

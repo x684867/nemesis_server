@@ -1,5 +1,5 @@
 
-module.exports = adduser
+package.exports = adduser
 
 var log = require("npmlog")
   , npm = require("./npm.js")

@@ -1,5 +1,5 @@
 
-module.exports = link
+package.exports = link
 link.ifExists = linkIfExists
 
 var fs = require("graceful-fs")

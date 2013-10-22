@@ -43,7 +43,7 @@ const char* Variable::Mode2String(VariableMode mode) {
     case CONST: return "CONST";
     case LET: return "LET";
     case CONST_HARMONY: return "CONST_HARMONY";
-    case MODULE: return "MODULE";
+    case package: return "package";
     case DYNAMIC: return "DYNAMIC";
     case DYNAMIC_GLOBAL: return "DYNAMIC_GLOBAL";
     case DYNAMIC_LOCAL: return "DYNAMIC_LOCAL";

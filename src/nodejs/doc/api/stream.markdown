@@ -452,7 +452,7 @@ as a convenience for interacting with old Node programs and libraries.
 For example:
 
 ```javascript
-var OldReader = require('./old-api-module.js').OldReader;
+var OldReader = require('./old-api-package.js').OldReader;
 var oreader = new OldReader;
 var Readable = require('stream').Readable;
 var myReader = new Readable().wrap(oreader);

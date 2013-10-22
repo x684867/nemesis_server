@@ -142,8 +142,8 @@ void HeapObject::HeapObjectVerify() {
     case JS_GENERATOR_OBJECT_TYPE:
       JSGeneratorObject::cast(this)->JSGeneratorObjectVerify();
       break;
-    case JS_MODULE_TYPE:
-      JSModule::cast(this)->JSModuleVerify();
+    case JS_package_TYPE:
+      JSpackage::cast(this)->JSpackageVerify();
       break;
     case JS_VALUE_TYPE:
       JSValue::cast(this)->JSValueVerify();
@@ -443,11 +443,11 @@ void JSGeneratorObject::JSGeneratorObjectVerify() {
 }
 
 
-void JSModule::JSModuleVerify() {
+void JSpackage::JSpackageVerify() {
   VerifyObjectField(kContextOffset);
   VerifyObjectField(kScopeInfoOffset);
   CHECK(context()->IsUndefined() ||
-        Context::cast(context())->IsModuleContext());
+        Context::cast(context())->IspackageContext());
 }
 
 

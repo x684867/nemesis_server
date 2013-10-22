@@ -180,7 +180,7 @@ class Variable: public ZoneObject {
   bool is_used_;
   InitializationFlag initialization_flag_;
 
-  // Module type info.
+  // package type info.
   Interface* interface_;
 };
 

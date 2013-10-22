@@ -24,7 +24,7 @@ symbolic link from \fBprefix/package\-name\fR to the current folder\.
 .
 .P
 Next, in some other location, \fBnpm link package\-name\fR will create a
-symlink from the local \fBnode_modules\fR folder to the global symlink\.
+symlink from the local \fBnode_packages\fR folder to the global symlink\.
 .
 .P
 Note that \fBpackage\-name\fR is taken from \fBpackage\.json\fR,
@@ -56,7 +56,7 @@ npm link redis              # link\-install the package
 .
 .P
 Now, any changes to ~/projects/node\-redis will be reflected in
-~/projects/node\-bloggy/node_modules/redis/
+~/projects/node\-bloggy/node_packages/redis/
 .
 .P
 You may also shortcut the two steps in one\.  For example, to do the
@@ -87,7 +87,7 @@ npm link redis
 .
 .P
 That is, it first creates a global link, and then links the global
-installation target into your project\'s \fBnode_modules\fR folder\.
+installation target into your project\'s \fBnode_packages\fR folder\.
 .
 .SH "SEE ALSO"
 .

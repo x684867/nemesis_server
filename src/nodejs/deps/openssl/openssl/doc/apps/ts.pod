@@ -561,14 +561,14 @@ Zoltan Glozik <zglozik@opentsa.org>. Known issues:
 =item * No support for time stamps over SMTP, though it is quite easy
 to implement an automatic e-mail based TSA with L<procmail(1)|procmail(1)> 
 and L<perl(1)|perl(1)>. HTTP server support is provided in the form of 
-a separate apache module. HTTP client support is provided by
+a separate apache package. HTTP client support is provided by
 L<tsget(1)|tsget(1)>. Pure TCP/IP protocol is not supported.
 
 =item * The file containing the last serial number of the TSA is not
 locked when being read or written. This is a problem if more than one
 instance of L<openssl(1)|openssl(1)> is trying to create a time stamp
 response at the same time. This is not an issue when using the apache
-server module, it does proper locking.
+server package, it does proper locking.
 
 =item * Look for the FIXME word in the source files.
 

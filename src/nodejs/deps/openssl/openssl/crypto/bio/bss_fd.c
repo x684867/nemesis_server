@@ -68,7 +68,7 @@
  */
 #else
 /*
- * As for unconditional usage of "UPLINK" interface in this module.
+ * As for unconditional usage of "UPLINK" interface in this package.
  * Trouble is that unlike Unix file descriptors [which are indexes
  * in kernel-side per-process table], corresponding descriptors on
  * platforms which require "UPLINK" interface seem to be indexes

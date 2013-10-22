@@ -1,0 +1,14 @@
+{
+	"_name":"cipherStore/manifest.json",
+	"_desc":"Nemesis CipherStore Server Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+	"name":"cipherStore",
+	
+	"dependencies":[
+		"types","error","logger","ipc",
+		"process","web","worker","storeClient"
+	]
+}

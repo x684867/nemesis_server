@@ -118,7 +118,7 @@ npm help  See npm\-scripts\.
 .
 .IP "\(bu" 4
 main:
-If you have a single module that serves as the entry point to your
+If you have a single package that serves as the entry point to your
 program (like what the "foo" package gives you at require("foo")),
 then you need to specify that in the "main" field\.
 .
@@ -179,9 +179,9 @@ need to add them to \fB\|\.npmignore\fR explicitly:
 .IP "" 0
 .
 .P
-Additionally, everything in \fBnode_modules\fR is ignored, except for
+Additionally, everything in \fBnode_packages\fR is ignored, except for
 bundled dependencies\. npm automatically handles this for you, so don\'t
-bother adding \fBnode_modules\fR to \fB\|\.npmignore\fR\|\.
+bother adding \fBnode_packages\fR to \fB\|\.npmignore\fR\|\.
 .
 .P
 The following paths and files are never ignored, so adding them to \fB\|\.npmignore\fR is pointless:
@@ -254,11 +254,11 @@ npm install \.\./my\-package
 .IP "" 0
 .
 .P
-to install it locally into the node_modules folder in that other place\.
+to install it locally into the node_packages folder in that other place\.
 .
 .P
 Then go into the node\-repl, and try using require("my\-thing") to
-bring in your module\'s main module\.
+bring in your package\'s main package\.
 .
 .SH "Create a User Account"
 Create a user with the adduser command\.  It works like this:

@@ -1,5 +1,5 @@
 
-module.exports = help
+package.exports = help
 
 help.completion = function (opts, cb) {
   if (opts.conf.argv.remain.length > 2) return cb(null, [])

@@ -85,7 +85,7 @@ ASFLAG=$(CFLAG)
 # the 80386.
 PROCESSOR=
 
-# CPUID module collects small commonly used assembler snippets
+# CPUID package collects small commonly used assembler snippets
 CPUID_OBJ= 
 BN_ASM= bn_asm.o
 DES_ENC= des_enc.o fcrypt_b.o
@@ -115,9 +115,9 @@ LIBZLIB=
 FIPSDIR=
 
 # This is the location of fipscanister.o and friends.
-# The FIPS module build will place it $(INSTALLTOP)/lib
+# The FIPS package build will place it $(INSTALLTOP)/lib
 # but since $(INSTALLTOP) can only take the default value
-# when the module is built it will be in /usr/local/ssl/lib
+# when the package is built it will be in /usr/local/ssl/lib
 # $(INSTALLTOP) for this build may be different so hard
 # code the path.
 

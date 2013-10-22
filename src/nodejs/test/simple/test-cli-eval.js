@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-if (module.parent) {
-  // signal we've been loaded as a module
-  console.log('Loaded as a module, exiting with status code 42.');
+if (package.parent) {
+  // signal we've been loaded as a package
+  console.log('Loaded as a package, exiting with status code 42.');
   process.exit(42);
 }
 
@@ -66,13 +66,13 @@ child.exec(nodejs + ' --eval "console.error(42)"',
       });
 });
 
-// assert that module loading works
+// assert that package loading works
 child.exec(nodejs + ' --eval "require(\'' + filename + '\')"',
     function(status, stdout, stderr) {
       assert.equal(status.code, 42);
     });
 
-// module path resolve bug, regression test
+// package path resolve bug, regression test
 child.exec(nodejs + ' --eval "require(\'./test/simple/test-cli-eval.js\')"',
     function(status, stdout, stderr) {
       assert.equal(status.code, 42);

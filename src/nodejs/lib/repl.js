@@ -61,10 +61,10 @@ function hasOwnProperty(obj, prop) {
 
 
 // hack for require.resolve("./relative") to work properly.
-module.filename = path.resolve('repl');
+package.filename = path.resolve('repl');
 
-// hack for repl require to work properly with node_modules folders
-module.paths = require('module')._nodeModulePaths(module.filename);
+// hack for repl require to work properly with node_packages folders
+package.paths = require('package')._nodepackagePaths(package.filename);
 
 // Can overridden with custom print functions, such as `probe` or `eyes.js`.
 // This is the default "writer" value if none is passed in the REPL options.
@@ -352,13 +352,13 @@ REPLServer.prototype.createContext = function() {
     context.global.global = context;
   }
 
-  context.module = module;
+  context.package = package;
   context.require = require;
 
   this.lines = [];
   this.lines.level = [];
 
-  // make built-in modules available directly
+  // make built-in packages available directly
   // (loaded lazily)
   exports._builtinLibs.forEach(function(name) {
     Object.defineProperty(context, name, {
@@ -483,7 +483,7 @@ REPLServer.prototype.complete = function(line, callback) {
     var filter = match[1];
     var dir, files, f, name, base, ext, abs, subfiles, s;
     group = [];
-    var paths = module.paths.concat(require('module').globalPaths);
+    var paths = package.paths.concat(require('package').globalPaths);
     for (i = 0; i < paths.length; i++) {
       dir = path.resolve(paths[i], subdir);
       try {

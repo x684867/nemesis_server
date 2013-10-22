@@ -102,7 +102,7 @@ Distribution of Modified Versions of the Package as Source
 or for a Distributor Fee, and with or without a Compiled form of the
 Modified Version) provided that you clearly document how it differs
 from the Standard Version, including, but not limited to, documenting
-any non-standard features, executables, or modules, and provided that
+any non-standard features, executables, or packages, and provided that
 you do at least ONE of the following:
 
     (a)  make the Modified Version available to the Copyright Holder
@@ -167,7 +167,7 @@ provided the result does not expose a direct interface to the Package.
 
 Items That are Not Considered Part of a Modified Version
 
-(9) Works (including, but not limited to, modules and scripts) that
+(9) Works (including, but not limited to, packages and scripts) that
 merely extend or make use of the Package, do not, by themselves, cause
 the Package to be a Modified Version.  In addition, such works are not
 considered parts of the Package itself, and are not subject to the
@@ -231,5 +231,5 @@ Copyright (c) by Tjarda Koster, http://jelloween.deviantart.com
 included for use in the npm website and documentation,
 used with permission.
 
-This program uses several Node modules contained in the node_modules/
+This program uses several Node packages contained in the node_packages/
 subdirectory, according to the terms of their respective licenses.

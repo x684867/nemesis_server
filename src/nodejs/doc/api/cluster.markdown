@@ -6,7 +6,7 @@ A single instance of Node runs in a single thread. To take advantage of
 multi-core systems the user will sometimes want to launch a cluster of Node
 processes to handle the load.
 
-The cluster module allows you to easily create a network of processes that
+The cluster package allows you to easily create a network of processes that
 all share server ports.
 
     var cluster = require('cluster');
@@ -53,7 +53,7 @@ The worker processes are spawned using the `child_process.fork` method,
 so that they can communicate with the parent via IPC and pass server
 handles back and forth.
 
-The cluster module supports two methods of distributing incoming
+The cluster package supports two methods of distributing incoming
 connections.
 
 The first one (and the default one on all platforms except Windows),
@@ -150,7 +150,7 @@ If the `process.env.NODE_UNIQUE_ID` is set to a value, then
 
 * `worker` {Worker object}
 
-When a new worker is forked the cluster module will emit a 'fork' event.
+When a new worker is forked the cluster package will emit a 'fork' event.
 This can be used to log worker activity, and create you own timeout.
 
     var timeouts = [];
@@ -225,7 +225,7 @@ connections.
 * `signal` {String} the name of the signal (eg. `'SIGHUP'`) that caused
   the process to be killed.
 
-When any of the workers die the cluster module will emit the 'exit' event.
+When any of the workers die the cluster package will emit the 'exit' event.
 This can be used to restart the worker by calling `fork()` again.
 
     cluster.on('exit', function(worker, code, signal) {
@@ -345,7 +345,7 @@ cluster.workers
 All workers are created using `child_process.fork()`, the returned object
 from this function is stored in process.
 
-See: [Child Process module](child_process.html)
+See: [Child Process package](child_process.html)
 
 ### worker.suicide
 

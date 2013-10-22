@@ -2,14 +2,14 @@
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 
 # January 2010
 #
-# "Teaser" Montgomery multiplication module for IA-64. There are
+# "Teaser" Montgomery multiplication package for IA-64. There are
 # several possibilities for improvement:
 #
 # - modulo-scheduling outer loop would eliminate quite a number of
@@ -33,10 +33,10 @@
 # be processed faster anyway, because minimal critical path of the
 # core loop happens to match 512-bit timing. Either way, it resulted
 # in >100% improvement of 512-bit RSA sign benchmark and 50% - of
-# 1024-bit one [in comparison to original version of *this* module].
+# 1024-bit one [in comparison to original version of *this* package].
 #
 # So far 'openssl speed rsa dsa' output on 900MHz Itanium 2 *with*
-# this module is:
+# this package is:
 #                   sign    verify    sign/s verify/s
 # rsa  512 bits 0.000290s 0.000024s   3452.8  42031.4
 # rsa 1024 bits 0.000793s 0.000058s   1261.7  17172.0

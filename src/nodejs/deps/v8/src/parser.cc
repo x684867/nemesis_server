@@ -558,7 +558,7 @@ Parser::Parser(CompilationInfo* info)
   ASSERT(!script_.is_null());
   isolate_->set_ast_node_id(0);
   set_allow_harmony_scoping(!info->is_native() && FLAG_harmony_scoping);
-  set_allow_modules(!info->is_native() && FLAG_harmony_modules);
+  set_allow_packages(!info->is_native() && FLAG_harmony_packages);
   set_allow_natives_syntax(FLAG_allow_natives_syntax || info->is_native());
   set_allow_lazy(false);  // Must be explicitly enabled.
   set_allow_generators(FLAG_harmony_generators);
@@ -846,7 +846,7 @@ void* Parser::ParseSourceElements(ZoneList<Statement*>* processor,
                                   bool is_global,
                                   bool* ok) {
   // SourceElements ::
-  //   (ModuleElement)* <end_token>
+  //   (packageElement)* <end_token>
 
   // Allocate a target stack to use for this set of source
   // elements. This way, all scripts and functions get their own
@@ -865,7 +865,7 @@ void* Parser::ParseSourceElements(ZoneList<Statement*>* processor,
     Scanner::Location token_loc = scanner().peek_location();
     Statement* stat;
     if (is_global && !is_eval) {
-      stat = ParseModuleElement(NULL, CHECK_OK);
+      stat = ParsepackageElement(NULL, CHECK_OK);
     } else {
       stat = ParseBlockElement(NULL, CHECK_OK);
     }
@@ -921,7 +921,7 @@ void* Parser::ParseSourceElements(ZoneList<Statement*>* processor,
 }
 
 
-Statement* Parser::ParseModuleElement(ZoneStringList* labels,
+Statement* Parser::ParsepackageElement(ZoneStringList* labels,
                                       bool* ok) {
   // (Ecma 262 5th Edition, clause 14):
   // SourceElement:
@@ -929,10 +929,10 @@ Statement* Parser::ParseModuleElement(ZoneStringList* labels,
   //    FunctionDeclaration
   //
   // In harmony mode we allow additionally the following productions
-  // ModuleElement:
+  // packageElement:
   //    LetDeclaration
   //    ConstDeclaration
-  //    ModuleDeclaration
+  //    packageDeclaration
   //    ImportDeclaration
   //    ExportDeclaration
   //    GeneratorDeclaration
@@ -942,15 +942,15 @@ Statement* Parser::ParseModuleElement(ZoneStringList* labels,
       return ParseFunctionDeclaration(NULL, ok);
     case Token::LET:
     case Token::CONST:
-      return ParseVariableStatement(kModuleElement, NULL, ok);
+      return ParseVariableStatement(kpackageElement, NULL, ok);
     case Token::IMPORT:
       return ParseImportDeclaration(ok);
     case Token::EXPORT:
       return ParseExportDeclaration(ok);
     default: {
       Statement* stmt = ParseStatement(labels, CHECK_OK);
-      // Handle 'module' as a context-sensitive keyword.
-      if (FLAG_harmony_modules &&
+      // Handle 'package' as a context-sensitive keyword.
+      if (FLAG_harmony_packages &&
           peek() == Token::IDENTIFIER &&
           !scanner().HasAnyLineTerminatorBeforeNext() &&
           stmt != NULL) {
@@ -958,9 +958,9 @@ Statement* Parser::ParseModuleElement(ZoneStringList* labels,
         if (estmt != NULL &&
             estmt->expression()->AsVariableProxy() != NULL &&
             estmt->expression()->AsVariableProxy()->name()->Equals(
-                isolate()->heap()->module_string()) &&
+                isolate()->heap()->package_string()) &&
             !scanner().literal_contains_escapes()) {
-          return ParseModuleDeclaration(NULL, ok);
+          return ParsepackageDeclaration(NULL, ok);
         }
       }
       return stmt;
@@ -969,61 +969,61 @@ Statement* Parser::ParseModuleElement(ZoneStringList* labels,
 }
 
 
-Statement* Parser::ParseModuleDeclaration(ZoneStringList* names, bool* ok) {
-  // ModuleDeclaration:
-  //    'module' Identifier Module
+Statement* Parser::ParsepackageDeclaration(ZoneStringList* names, bool* ok) {
+  // packageDeclaration:
+  //    'package' Identifier package
 
   Handle<String> name = ParseIdentifier(CHECK_OK);
 
 #ifdef DEBUG
   if (FLAG_print_interface_details)
-    PrintF("# Module %s...\n", name->ToAsciiArray());
+    PrintF("# package %s...\n", name->ToAsciiArray());
 #endif
 
-  Module* module = ParseModule(CHECK_OK);
-  VariableProxy* proxy = NewUnresolved(name, MODULE, module->interface());
+  package* package = Parsepackage(CHECK_OK);
+  VariableProxy* proxy = NewUnresolved(name, package, package->interface());
   Declaration* declaration =
-      factory()->NewModuleDeclaration(proxy, module, top_scope_);
+      factory()->NewpackageDeclaration(proxy, package, top_scope_);
   Declare(declaration, true, CHECK_OK);
 
 #ifdef DEBUG
   if (FLAG_print_interface_details)
-    PrintF("# Module %s.\n", name->ToAsciiArray());
+    PrintF("# package %s.\n", name->ToAsciiArray());
 
   if (FLAG_print_interfaces) {
-    PrintF("module %s : ", name->ToAsciiArray());
-    module->interface()->Print();
+    PrintF("package %s : ", name->ToAsciiArray());
+    package->interface()->Print();
   }
 #endif
 
   if (names) names->Add(name, zone());
-  if (module->body() == NULL)
+  if (package->body() == NULL)
     return factory()->NewEmptyStatement();
   else
-    return factory()->NewModuleStatement(proxy, module->body());
+    return factory()->NewpackageStatement(proxy, package->body());
 }
 
 
-Module* Parser::ParseModule(bool* ok) {
-  // Module:
-  //    '{' ModuleElement '}'
-  //    '=' ModulePath ';'
+package* Parser::Parsepackage(bool* ok) {
+  // package:
+  //    '{' packageElement '}'
+  //    '=' packagePath ';'
   //    'at' String ';'
 
   switch (peek()) {
     case Token::LBRACE:
-      return ParseModuleLiteral(ok);
+      return ParsepackageLiteral(ok);
 
     case Token::ASSIGN: {
       Expect(Token::ASSIGN, CHECK_OK);
-      Module* result = ParseModulePath(CHECK_OK);
+      package* result = ParsepackagePath(CHECK_OK);
       ExpectSemicolon(CHECK_OK);
       return result;
     }
 
     default: {
       ExpectContextualKeyword(CStrVector("at"), CHECK_OK);
-      Module* result = ParseModuleUrl(CHECK_OK);
+      package* result = ParsepackageUrl(CHECK_OK);
       ExpectSemicolon(CHECK_OK);
       return result;
     }
@@ -1031,16 +1031,16 @@ Module* Parser::ParseModule(bool* ok) {
 }
 
 
-Module* Parser::ParseModuleLiteral(bool* ok) {
-  // Module:
-  //    '{' ModuleElement '}'
+package* Parser::ParsepackageLiteral(bool* ok) {
+  // package:
+  //    '{' packageElement '}'
 
   // Construct block expecting 16 statements.
   Block* body = factory()->NewBlock(NULL, 16, false);
 #ifdef DEBUG
   if (FLAG_print_interface_details) PrintF("# Literal ");
 #endif
-  Scope* scope = NewScope(top_scope_, MODULE_SCOPE);
+  Scope* scope = NewScope(top_scope_, package_SCOPE);
 
   Expect(Token::LBRACE, CHECK_OK);
   scope->set_start_position(scanner().location().beg_pos);
@@ -1053,7 +1053,7 @@ Module* Parser::ParseModuleLiteral(bool* ok) {
     Target target_body(&this->target_stack_, body);
 
     while (peek() != Token::RBRACE) {
-      Statement* stat = ParseModuleElement(NULL, CHECK_OK);
+      Statement* stat = ParsepackageElement(NULL, CHECK_OK);
       if (stat && !stat->IsEmpty()) {
         body->AddStatement(stat, zone());
       }
@@ -1070,34 +1070,34 @@ Module* Parser::ParseModuleLiteral(bool* ok) {
        !it.done(); it.Advance()) {
     if (scope->LocalLookup(it.name()) == NULL) {
       Handle<String> name(it.name());
-      ReportMessage("module_export_undefined",
+      ReportMessage("package_export_undefined",
                     Vector<Handle<String> >(&name, 1));
       *ok = false;
       return NULL;
     }
   }
 
-  interface->MakeModule(ok);
+  interface->Makepackage(ok);
   ASSERT(*ok);
   interface->Freeze(ok);
   ASSERT(*ok);
-  return factory()->NewModuleLiteral(body, interface);
+  return factory()->NewpackageLiteral(body, interface);
 }
 
 
-Module* Parser::ParseModulePath(bool* ok) {
-  // ModulePath:
+package* Parser::ParsepackagePath(bool* ok) {
+  // packagePath:
   //    Identifier
-  //    ModulePath '.' Identifier
+  //    packagePath '.' Identifier
 
-  Module* result = ParseModuleVariable(CHECK_OK);
+  package* result = ParsepackageVariable(CHECK_OK);
   while (Check(Token::PERIOD)) {
     Handle<String> name = ParseIdentifierName(CHECK_OK);
 #ifdef DEBUG
     if (FLAG_print_interface_details)
       PrintF("# Path .%s ", name->ToAsciiArray());
 #endif
-    Module* member = factory()->NewModulePath(result, name);
+    package* member = factory()->NewpackagePath(result, name);
     result->interface()->Add(name, member->interface(), zone(), ok);
     if (!*ok) {
 #ifdef DEBUG
@@ -1109,7 +1109,7 @@ Module* Parser::ParseModulePath(bool* ok) {
         member->interface()->Print();
       }
 #endif
-      ReportMessage("invalid_module_path", Vector<Handle<String> >(&name, 1));
+      ReportMessage("invalid_package_path", Vector<Handle<String> >(&name, 1));
       return NULL;
     }
     result = member;
@@ -1119,25 +1119,25 @@ Module* Parser::ParseModulePath(bool* ok) {
 }
 
 
-Module* Parser::ParseModuleVariable(bool* ok) {
-  // ModulePath:
+package* Parser::ParsepackageVariable(bool* ok) {
+  // packagePath:
   //    Identifier
 
   Handle<String> name = ParseIdentifier(CHECK_OK);
 #ifdef DEBUG
   if (FLAG_print_interface_details)
-    PrintF("# Module variable %s ", name->ToAsciiArray());
+    PrintF("# package variable %s ", name->ToAsciiArray());
 #endif
   VariableProxy* proxy = top_scope_->NewUnresolved(
-      factory(), name, Interface::NewModule(zone()),
+      factory(), name, Interface::Newpackage(zone()),
       scanner().location().beg_pos);
 
-  return factory()->NewModuleVariable(proxy);
+  return factory()->NewpackageVariable(proxy);
 }
 
 
-Module* Parser::ParseModuleUrl(bool* ok) {
-  // Module:
+package* Parser::ParsepackageUrl(bool* ok) {
+  // package:
   //    String
 
   Expect(Token::STRING, CHECK_OK);
@@ -1151,11 +1151,11 @@ Module* Parser::ParseModuleUrl(bool* ok) {
 
   // Create an empty literal as long as the feature isn't finished.
   USE(symbol);
-  Scope* scope = NewScope(top_scope_, MODULE_SCOPE);
+  Scope* scope = NewScope(top_scope_, package_SCOPE);
   Block* body = factory()->NewBlock(NULL, 1, false);
   body->set_scope(scope);
   Interface* interface = scope->interface();
-  Module* result = factory()->NewModuleLiteral(body, interface);
+  package* result = factory()->NewpackageLiteral(body, interface);
   interface->Freeze(ok);
   ASSERT(*ok);
   interface->Unify(scope->interface(), zone(), ok);
@@ -1164,22 +1164,22 @@ Module* Parser::ParseModuleUrl(bool* ok) {
 }
 
 
-Module* Parser::ParseModuleSpecifier(bool* ok) {
-  // ModuleSpecifier:
+package* Parser::ParsepackageSpecifier(bool* ok) {
+  // packageSpecifier:
   //    String
-  //    ModulePath
+  //    packagePath
 
   if (peek() == Token::STRING) {
-    return ParseModuleUrl(ok);
+    return ParsepackageUrl(ok);
   } else {
-    return ParseModulePath(ok);
+    return ParsepackagePath(ok);
   }
 }
 
 
 Block* Parser::ParseImportDeclaration(bool* ok) {
   // ImportDeclaration:
-  //    'import' IdentifierName (',' IdentifierName)* 'from' ModuleSpecifier ';'
+  //    'import' IdentifierName (',' IdentifierName)* 'from' packageSpecifier ';'
   //
   // TODO(ES6): implement destructuring ImportSpecifiers
 
@@ -1195,7 +1195,7 @@ Block* Parser::ParseImportDeclaration(bool* ok) {
   }
 
   ExpectContextualKeyword(CStrVector("from"), CHECK_OK);
-  Module* module = ParseModuleSpecifier(CHECK_OK);
+  package* package = ParsepackageSpecifier(CHECK_OK);
   ExpectSemicolon(CHECK_OK);
 
   // Generate a separate declaration for each identifier.
@@ -1207,21 +1207,21 @@ Block* Parser::ParseImportDeclaration(bool* ok) {
       PrintF("# Import %s ", names[i]->ToAsciiArray());
 #endif
     Interface* interface = Interface::NewUnknown(zone());
-    module->interface()->Add(names[i], interface, zone(), ok);
+    package->interface()->Add(names[i], interface, zone(), ok);
     if (!*ok) {
 #ifdef DEBUG
       if (FLAG_print_interfaces) {
         PrintF("IMPORT TYPE ERROR at '%s'\n", names[i]->ToAsciiArray());
-        PrintF("module: ");
-        module->interface()->Print();
+        PrintF("package: ");
+        package->interface()->Print();
       }
 #endif
-      ReportMessage("invalid_module_path", Vector<Handle<String> >(&name, 1));
+      ReportMessage("invalid_package_path", Vector<Handle<String> >(&name, 1));
       return NULL;
     }
     VariableProxy* proxy = NewUnresolved(names[i], LET, interface);
     Declaration* declaration =
-        factory()->NewImportDeclaration(proxy, module, top_scope_);
+        factory()->NewImportDeclaration(proxy, package, top_scope_);
     Declare(declaration, true, CHECK_OK);
   }
 
@@ -1235,7 +1235,7 @@ Statement* Parser::ParseExportDeclaration(bool* ok) {
   //    'export' VariableDeclaration
   //    'export' FunctionDeclaration
   //    'export' GeneratorDeclaration
-  //    'export' ModuleDeclaration
+  //    'export' packageDeclaration
   //
   // TODO(ES6): implement structuring ExportSpecifiers
 
@@ -1246,8 +1246,8 @@ Statement* Parser::ParseExportDeclaration(bool* ok) {
   switch (peek()) {
     case Token::IDENTIFIER: {
       Handle<String> name = ParseIdentifier(CHECK_OK);
-      // Handle 'module' as a context-sensitive keyword.
-      if (!name->IsOneByteEqualTo(STATIC_ASCII_VECTOR("module"))) {
+      // Handle 'package' as a context-sensitive keyword.
+      if (!name->IsOneByteEqualTo(STATIC_ASCII_VECTOR("package"))) {
         names.Add(name, zone());
         while (peek() == Token::COMMA) {
           Consume(Token::COMMA);
@@ -1257,7 +1257,7 @@ Statement* Parser::ParseExportDeclaration(bool* ok) {
         ExpectSemicolon(CHECK_OK);
         result = factory()->NewEmptyStatement();
       } else {
-        result = ParseModuleDeclaration(&names, CHECK_OK);
+        result = ParsepackageDeclaration(&names, CHECK_OK);
       }
       break;
     }
@@ -1269,7 +1269,7 @@ Statement* Parser::ParseExportDeclaration(bool* ok) {
     case Token::VAR:
     case Token::LET:
     case Token::CONST:
-      result = ParseVariableStatement(kModuleElement, &names, CHECK_OK);
+      result = ParseVariableStatement(kpackageElement, &names, CHECK_OK);
       break;
 
     default:
@@ -1321,7 +1321,7 @@ Statement* Parser::ParseBlockElement(ZoneStringList* labels,
       return ParseFunctionDeclaration(NULL, ok);
     case Token::LET:
     case Token::CONST:
-      return ParseVariableStatement(kModuleElement, NULL, ok);
+      return ParseVariableStatement(kpackageElement, NULL, ok);
     default:
       return ParseStatement(labels, ok);
   }
@@ -1491,7 +1491,7 @@ void Parser::Declare(Declaration* declaration, bool resolve, bool* ok) {
   if (declaration_scope->is_function_scope() ||
       declaration_scope->is_strict_or_extended_eval_scope() ||
       declaration_scope->is_block_scope() ||
-      declaration_scope->is_module_scope() ||
+      declaration_scope->is_package_scope() ||
       declaration_scope->is_global_scope()) {
     // Declare the variable in the declaration scope.
     // For the global scope, we have to check for collisions with earlier
@@ -1607,7 +1607,7 @@ void Parser::Declare(Declaration* declaration, bool resolve, bool* ok) {
   if (resolve && var != NULL) {
     proxy->BindTo(var);
 
-    if (FLAG_harmony_modules) {
+    if (FLAG_harmony_packages) {
       bool ok;
 #ifdef DEBUG
       if (FLAG_print_interface_details)
@@ -1624,7 +1624,7 @@ void Parser::Declare(Declaration* declaration, bool resolve, bool* ok) {
           var->interface()->Print();
         }
 #endif
-        ReportMessage("module_type_error", Vector<Handle<String> >(&name, 1));
+        ReportMessage("package_type_error", Vector<Handle<String> >(&name, 1));
       }
     }
   }
@@ -2193,14 +2193,14 @@ Statement* Parser::ParseExpressionOrLabelledStatement(ZoneStringList* labels,
     return ParseNativeDeclaration(ok);
   }
 
-  // Parsed expression statement, or the context-sensitive 'module' keyword.
+  // Parsed expression statement, or the context-sensitive 'package' keyword.
   // Only expect semicolon in the former case.
-  if (!FLAG_harmony_modules ||
+  if (!FLAG_harmony_packages ||
       peek() != Token::IDENTIFIER ||
       scanner().HasAnyLineTerminatorBeforeNext() ||
       expr->AsVariableProxy() == NULL ||
       !expr->AsVariableProxy()->name()->Equals(
-          isolate()->heap()->module_string()) ||
+          isolate()->heap()->package_string()) ||
       scanner().literal_contains_escapes()) {
     ExpectSemicolon(CHECK_OK);
   }
@@ -3572,7 +3572,7 @@ Expression* Parser::ParsePrimaryExpression(bool* ok) {
     case Token::FUTURE_STRICT_RESERVED_WORD: {
       Handle<String> name = ParseIdentifier(CHECK_OK);
       if (fni_ != NULL) fni_->PushVariableName(name);
-      // The name may refer to a module instance object, so its type is unknown.
+      // The name may refer to a package instance object, so its type is unknown.
 #ifdef DEBUG
       if (FLAG_print_interface_details)
         PrintF("# Variable %s ", name->ToAsciiArray());
@@ -4593,7 +4593,7 @@ preparser::PreParser::PreParseResult Parser::LazyParseFunctionLiteral(
                                                    NULL,
                                                    stack_limit);
     reusable_preparser_->set_allow_harmony_scoping(allow_harmony_scoping());
-    reusable_preparser_->set_allow_modules(allow_modules());
+    reusable_preparser_->set_allow_packages(allow_packages());
     reusable_preparser_->set_allow_natives_syntax(allow_natives_syntax());
     reusable_preparser_->set_allow_lazy(true);
     reusable_preparser_->set_allow_generators(allow_generators());

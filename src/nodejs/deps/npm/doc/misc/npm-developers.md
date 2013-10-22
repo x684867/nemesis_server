@@ -81,7 +81,7 @@ least, you need:
   See npm-scripts(7).
 
 * main:
-  If you have a single module that serves as the entry point to your
+  If you have a single package that serves as the entry point to your
   program (like what the "foo" package gives you at require("foo")),
   then you need to specify that in the "main" field.
 
@@ -116,9 +116,9 @@ need to add them to `.npmignore` explicitly:
 * `CVS`
 * `npm-debug.log`
 
-Additionally, everything in `node_modules` is ignored, except for
+Additionally, everything in `node_packages` is ignored, except for
 bundled dependencies. npm automatically handles this for you, so don't
-bother adding `node_modules` to `.npmignore`.
+bother adding `node_packages` to `.npmignore`.
 
 The following paths and files are never ignored, so adding them to
 `.npmignore` is pointless:
@@ -160,10 +160,10 @@ To test a local install, go into some other folder, and then do:
     cd ../some-other-folder
     npm install ../my-package
 
-to install it locally into the node_modules folder in that other place.
+to install it locally into the node_packages folder in that other place.
 
 Then go into the node-repl, and try using require("my-thing") to
-bring in your module's main module.
+bring in your package's main package.
 
 ## Create a User Account
 

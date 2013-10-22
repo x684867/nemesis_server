@@ -613,4 +613,4 @@ void InitZlib(Handle<Object> target,
 
 }  // namespace node
 
-NODE_MODULE_CONTEXT_AWARE(node_zlib, node::InitZlib)
+NODE_package_CONTEXT_AWARE(node_zlib, node::InitZlib)

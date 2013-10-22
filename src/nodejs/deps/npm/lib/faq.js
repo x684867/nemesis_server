@@ -1,5 +1,5 @@
 
-module.exports = faq
+package.exports = faq
 
 faq.usage = "npm faq"
 

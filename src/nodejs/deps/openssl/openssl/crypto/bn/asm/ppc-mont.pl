@@ -2,14 +2,14 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 
 # April 2006
 
-# "Teaser" Montgomery multiplication module for PowerPC. It's possible
+# "Teaser" Montgomery multiplication package for PowerPC. It's possible
 # to gain a bit more by modulo-scheduling outer loop, then dedicated
 # squaring procedure should give further 20% and code can be adapted
 # for 32-bit application running on 64-bit CPU. As for the latter.

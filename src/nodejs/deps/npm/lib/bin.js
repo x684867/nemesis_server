@@ -1,4 +1,4 @@
-module.exports = bin
+package.exports = bin
 
 var npm = require("./npm.js")
 

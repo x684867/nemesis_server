@@ -2,7 +2,7 @@
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -444,7 +444,7 @@ $code.=<<___;
 ___
 
 if ($rc4 && $D) {	# sole purpose of this section is to provide
-			# option to use the generated module as drop-in
+			# option to use the generated package as drop-in
 			# replacement for rc4-x86_64.pl for debugging
 			# and testing purposes...
 my ($idx,$ido)=("%r8","%r9");

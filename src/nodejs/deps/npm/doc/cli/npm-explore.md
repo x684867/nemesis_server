@@ -12,8 +12,8 @@ Spawn a subshell in the directory of the installed package specified.
 If a command is specified, then it is run in the subshell, which then
 immediately terminates.
 
-This is particularly handy in the case of git submodules in the
-`node_modules` folder:
+This is particularly handy in the case of git subpackages in the
+`node_packages` folder:
 
     npm explore some-dependency -- git pull origin master
 
@@ -32,7 +32,7 @@ The shell to run for the `npm explore` command.
 
 ## SEE ALSO
 
-* npm-submodule(1)
+* npm-subpackage(1)
 * npm-folders(5)
 * npm-edit(1)
 * npm-rebuild(1)

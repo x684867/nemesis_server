@@ -15,7 +15,7 @@ Roman Shtylman, Ben Noordhuis)</p>
 <p>- Note: Windows UDP support not yet complete.</p></li>
 <li><p>http: Fix parser memory leak (koichik)</p></li>
 <li><p>zlib: Fix #2365 crashes on invalid input (Nicolas LaCasse)</p></li>
-<li><p>module: fix --debug-brk on symlinked scripts (Fedor Indutny)</p></li>
+<li><p>package: fix --debug-brk on symlinked scripts (Fedor Indutny)</p></li>
 <li><p>Documentation Restyling (Matthew Fitzsimmons)</p></li>
 <li><p>Update npm to 1.1.0-3 (isaacs)</p></li>
 <li><p>Windows: fix regression in stat() calls to C:\ (Bert Belder)</p></li>

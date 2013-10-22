@@ -43,7 +43,7 @@ RAND_get_rand_method(), is only used if no ENGINE has been set as the default
 way to control defaults.
 
 If an alternative B<RAND_METHOD> implementation is being used (either set
-directly or as provided by an ENGINE module), then it is entirely responsible
+directly or as provided by an ENGINE package), then it is entirely responsible
 for the generation and management of a cryptographically secure PRNG stream. The
 mechanisms described below relate solely to the software PRNG implementation
 built in to OpenSSL and used by default.

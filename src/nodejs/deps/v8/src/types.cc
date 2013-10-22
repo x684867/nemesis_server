@@ -170,7 +170,7 @@ int Type::LubBitset() {
       case JS_OBJECT_TYPE:
       case JS_CONTEXT_EXTENSION_OBJECT_TYPE:
       case JS_GENERATOR_OBJECT_TYPE:
-      case JS_MODULE_TYPE:
+      case JS_package_TYPE:
       case JS_GLOBAL_OBJECT_TYPE:
       case JS_BUILTINS_OBJECT_TYPE:
       case JS_GLOBAL_PROXY_TYPE:

@@ -595,4 +595,4 @@ void InitHttpParser(Handle<Object> target,
 
 }  // namespace node
 
-NODE_MODULE_CONTEXT_AWARE(node_http_parser, node::InitHttpParser)
+NODE_package_CONTEXT_AWARE(node_http_parser, node::InitHttpParser)

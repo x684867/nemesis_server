@@ -48,7 +48,7 @@ $nlmcpystr = "Copyright (c) 1998-now The OpenSSL Project" if (!$nlmcpystr);
 if ($LIBC)
 {
    @import_files = ("libc.imp");
-   @module_files = ("libc");
+   @package_files = ("libc");
    $libarch = "LIBC";
 }
 else
@@ -56,7 +56,7 @@ else
    # clib build
    @import_files = ("clib.imp");
    push(@import_files, "socklib.imp") if ($BSDSOCK);
-   @module_files = ("clib");
+   @package_files = ("clib");
    # push(@misc_imports, "_rt_modu64%16", "_rt_divu64%16");
    $libarch = "CLIB";
 }
@@ -421,9 +421,9 @@ sub do_def_file
       print( DEF_OUT "IMPORT \@$import_path${o}$i\n");
    }
 
-   foreach $i (@module_files)
+   foreach $i (@package_files)
    {
-      print( DEF_OUT "MODULE $i\n");
+      print( DEF_OUT "package $i\n");
    }
 
    foreach $i (@nlm_flags)

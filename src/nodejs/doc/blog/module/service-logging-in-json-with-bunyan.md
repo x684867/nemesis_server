@@ -2,7 +2,7 @@ title: Service logging in JSON with Bunyan
 author: trentmick
 date: Wed Mar 28 2012 12:25:26 GMT-0700 (PDT)
 status: publish
-category: module
+category: package
 slug: service-logging-in-json-with-bunyan
 
 <div style="float:right;margin:0 0 15px 15px;">
@@ -67,7 +67,7 @@ Blah, some other unstructured output to from a console.log call.
 
 <h1 style="margin:48px 0 24px;" id="introducing-bunyan">Introducing Bunyan</h1>
 
-<p><a href="https://github.com/trentm/node-bunyan">Bunyan</a> is <strong>a node.js module for logging in JSON</strong> and <strong>a <code style="color:#999;background-color:#2f2f2f;border:1px solid #484848;padding:.2em .4em;">bunyan</code> CLI tool</strong> to view those logs.</p>
+<p><a href="https://github.com/trentm/node-bunyan">Bunyan</a> is <strong>a node.js package for logging in JSON</strong> and <strong>a <code style="color:#999;background-color:#2f2f2f;border:1px solid #484848;padding:.2em .4em;">bunyan</code> CLI tool</strong> to view those logs.</p>
 
 <p>Logging with Bunyan basically looks like this:</p>
 
@@ -85,10 +85,10 @@ log.info("hi %s", "paul");
 
 <p>Pipe that through the <code style="color:#999;background-color:#2f2f2f;border:1px solid #484848;padding:.2em .4em;">bunyan</code> tool that is part of the "node-bunyan" install to get more readable output:</p>
 
-<pre style="overflow:auto;color:#999;background-color:#2f2f2f;border:1px solid #484848;padding:5px;"><code>$ node hi.js | ./node_modules/.bin/bunyan       # formatted text output
+<pre style="overflow:auto;color:#999;background-color:#2f2f2f;border:1px solid #484848;padding:5px;"><code>$ node hi.js | ./node_packages/.bin/bunyan       # formatted text output
 [2012-02-07T18:50:18.003Z]  INFO: hello/40026 on banana.local: hi paul
 
-$ node hi.js | ./node_modules/.bin/bunyan -j    # indented JSON output
+$ node hi.js | ./node_packages/.bin/bunyan -j    # indented JSON output
 {
   "name": "hello",
   "hostname": "banana.local",
@@ -234,7 +234,7 @@ X-Request-Id: 9496dfdd-4ec7-4b59-aae7-3fed57aed5ba
 {"name":"helloapi","hostname":"banana.local","pid":40341,"route":"SayHello","req_id":"9496dfdd-4ec7-4b59-aae7-3fed57aed5ba","level":30,"res":{"statusCode":200,"headers":{"access-control-allow-origin":"*","access-control-allow-headers":"Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version","access-control-expose-headers":"X-Api-Version, X-Request-Id, X-Response-Time","server":"Hello API","x-request-id":"9496dfdd-4ec7-4b59-aae7-3fed57aed5ba","access-control-allow-methods":"GET","connection":"close","content-length":16,"content-md5":"Xmn3QcFXaIaKw9RPUARGBA==","content-type":"application/json","date":"Wed, 28 Mar 2012 17:37:29 GMT","x-response-time":3}},"msg":"finished","time":"2012-03-28T17:37:29.510Z","v":0}
 </code></pre>
 
-<p>Lets look at each in turn to see what is interesting -- pretty-printed with <code style="color:#999;background-color:#2f2f2f;border:1px solid #484848;padding:.2em .4em;">node server.js | ./node_modules/.bin/bunyan -j</code>:</p>
+<p>Lets look at each in turn to see what is interesting -- pretty-printed with <code style="color:#999;background-color:#2f2f2f;border:1px solid #484848;padding:.2em .4em;">node server.js | ./node_packages/.bin/bunyan -j</code>:</p>
 
 <pre style="overflow:auto;color:#999;background-color:#2f2f2f;border:1px solid #484848;padding:5px;"><code>{                                                   // (1)
   "name": "helloapi",

@@ -2,19 +2,19 @@
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 
-# This module doesn't present direct interest for OpenSSL, because it
+# This package doesn't present direct interest for OpenSSL, because it
 # doesn't provide better performance for longer keys, at least not on
 # in-order-execution cores. While 512-bit RSA sign operations can be
 # 65% faster in 64-bit mode, 1024-bit ones are only 15% faster, and
 # 4096-bit ones are up to 15% slower. In 32-bit mode it varies from
 # 16% improvement for 512-bit RSA sign to -33% for 4096-bit RSA
 # verify:-( All comparisons are against bn_mul_mont-free assembler.
-# The module might be of interest to embedded system developers, as
+# The package might be of interest to embedded system developers, as
 # the code is smaller than 1KB, yet offers >3x improvement on MIPS64
 # and 75-30% [less for longer keys] on MIPS32 over compiler-generated
 # code.

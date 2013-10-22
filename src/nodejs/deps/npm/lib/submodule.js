@@ -1,8 +1,8 @@
-// npm submodule <pkg>
+// npm subpackage <pkg>
 // Check the package contents for a git repository url.
-// If there is one, then create a git submodule in the node_modules folder.
+// If there is one, then create a git subpackage in the node_packages folder.
 
-module.exports = submodule
+package.exports = subpackage
 
 var npm = require("./npm.js")
   , exec = require("child_process").execFile
@@ -11,29 +11,29 @@ var npm = require("./npm.js")
   , chain = require("slide").chain
   , which = require("which")
 
-submodule.usage = "npm submodule <pkg>"
+subpackage.usage = "npm subpackage <pkg>"
 
-submodule.completion = require("./docs.js").completion
+subpackage.completion = require("./docs.js").completion
 
-function submodule (args, cb) {
+function subpackage (args, cb) {
   if (npm.config.get("global")) {
-    return cb(new Error("Cannot use submodule command in global mode."))
+    return cb(new Error("Cannot use subpackage command in global mode."))
   }
 
-  if (args.length === 0) return cb(submodule.usage)
+  if (args.length === 0) return cb(subpackage.usage)
 
   asyncMap(args, function (arg, cb) {
     cache.add(arg, cb)
   }, function (er, pkgs) {
     if (er) return cb(er)
     chain(pkgs.map(function (pkg) { return function (cb) {
-      submodule_(pkg, cb)
+      subpackage_(pkg, cb)
     }}), cb)
   })
 
 }
 
-function submodule_ (pkg, cb) {
+function subpackage_ (pkg, cb) {
   if (!pkg.repository
       || pkg.repository.type !== "git"
       || !pkg.repository.url) {
@@ -44,20 +44,20 @@ function submodule_ (pkg, cb) {
   pkg.repository.url = pkg.repository.url
     .replace(/^(git:\/\/)?(git@)?github.com[:\/]/, "https://github.com/")
 
-  // first get the list of submodules, and update if it's already there.
-  getSubmodules(function (er, modules) {
+  // first get the list of subpackages, and update if it's already there.
+  getSubpackages(function (er, packages) {
     if (er) return cb(er)
-    // if there's already a submodule, then just update it.
-    if (modules.indexOf(pkg.name) !== -1) {
-      return updateSubmodule(pkg.name, cb)
+    // if there's already a subpackage, then just update it.
+    if (packages.indexOf(pkg.name) !== -1) {
+      return updateSubpackage(pkg.name, cb)
     }
-    addSubmodule(pkg.name, pkg.repository.url, cb)
+    addSubpackage(pkg.name, pkg.repository.url, cb)
   })
 }
 
-function updateSubmodule (name, cb) {
+function updateSubpackage (name, cb) {
   var git = npm.config.get("git")
-  var args = [ "submodule", "update", "--init", "node_modules/", name ]
+  var args = [ "subpackage", "update", "--init", "node_packages/", name ]
 
   // check for git
   which(git, function (err) {
@@ -70,9 +70,9 @@ function updateSubmodule (name, cb) {
   })
 }
 
-function addSubmodule (name, url, cb) {
+function addSubpackage (name, url, cb) {
   var git = npm.config.get("git")
-  var args = [ "submodule", "add", url, "node_modules/", name ]
+  var args = [ "subpackage", "add", url, "node_packages/", name ]
 
   // check for git
   which(git, function (err) {
@@ -83,15 +83,15 @@ function addSubmodule (name, url, cb) {
 
     exec(git, args, function (er) {
       if (er) return cb(er)
-      updateSubmodule(name, cb)
+      updateSubpackage(name, cb)
     })
   })
 }
 
 
-var getSubmodules = function getSubmodules (cb) {
+var getSubpackages = function getSubpackages (cb) {
   var git = npm.config.get("git")
-  var args = [ "submodule", "status" ]
+  var args = [ "subpackage", "status" ]
 
   // check for git
   which(git, function (err) {
@@ -104,14 +104,14 @@ var getSubmodules = function getSubmodules (cb) {
       res = stdout.trim().split(/\n/).map(function (line) {
         return line.trim().split(/\s+/)[1]
       }).filter(function (line) {
-        // only care about submodules in the node_modules folder.
-        return line && line.match(/^node_modules\//)
+        // only care about subpackages in the node_packages folder.
+        return line && line.match(/^node_packages\//)
       }).map(function (line) {
-        return line.replace(/^node_modules\//g, "")
+        return line.replace(/^node_packages\//g, "")
       })
 
       // memoize.
-      getSubmodules = function (cb) { return cb(null, res) }
+      getSubpackages = function (cb) { return cb(null, res) }
 
       cb(null, res)
     })

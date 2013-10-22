@@ -1,5 +1,5 @@
 
-module.exports = repo
+package.exports = repo
 
 repo.usage = "npm repo <pkgname>"
 

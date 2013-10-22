@@ -36,13 +36,13 @@
 #   Eric Veach, Laurence Gonsalves, Matthew Springer
 # Code reorganized a bit by Craig Silverstein
 
-"""This module is used to define and parse command line flags.
+"""This package is used to define and parse command line flags.
 
-This module defines a *distributed* flag-definition policy: rather than
+This package defines a *distributed* flag-definition policy: rather than
 an application having to define all flags in or near main(), each python
-module defines flags that are useful to it.  When one python module
+package defines flags that are useful to it.  When one python package
 imports another, it gains access to the other's flags.  (This is
-implemented by having all modules share a common, global registry object
+implemented by having all packages share a common, global registry object
 containing all the flag information.)
 
 Flags are defined through the use of one of the DEFINE_xxx functions.
@@ -58,14 +58,14 @@ value-checking and type conversion.  The converted flag values are
 available as attributes of the 'FlagValues' object.
 
 Code can access the flag through a FlagValues object, for instance
-gflags.FLAGS.myflag.  Typically, the __main__ module passes the
+gflags.FLAGS.myflag.  Typically, the __main__ package passes the
 command line arguments to gflags.FLAGS for parsing.
 
-At bottom, this module calls getopt(), so getopt functionality is
+At bottom, this package calls getopt(), so getopt functionality is
 supported, including short- and long-style flags, and the use of -- to
 terminate flags.
 
-Methods defined by the flag module will throw 'FlagsError' exceptions.
+Methods defined by the flag package will throw 'FlagsError' exceptions.
 The exception argument will be a human-readable string.
 
 
@@ -189,62 +189,62 @@ EXAMPLE USAGE:
 
 KEY FLAGS:
 
-As we already explained, each module gains access to all flags defined
-by all the other modules it transitively imports.  In the case of
+As we already explained, each package gains access to all flags defined
+by all the other packages it transitively imports.  In the case of
 non-trivial scripts, this means a lot of flags ...  For documentation
 purposes, it is good to identify the flags that are key (i.e., really
-important) to a module.  Clearly, the concept of "key flag" is a
+important) to a package.  Clearly, the concept of "key flag" is a
 subjective one.  When trying to determine whether a flag is key to a
-module or not, assume that you are trying to explain your module to a
+package or not, assume that you are trying to explain your package to a
 potential user: which flags would you really like to mention first?
 
-We'll describe shortly how to declare which flags are key to a module.
-For the moment, assume we know the set of key flags for each module.
-Then, if you use the app.py module, you can use the --helpshort flag to
-print only the help for the flags that are key to the main module, in a
+We'll describe shortly how to declare which flags are key to a package.
+For the moment, assume we know the set of key flags for each package.
+Then, if you use the app.py package, you can use the --helpshort flag to
+print only the help for the flags that are key to the main package, in a
 human-readable format.
 
 NOTE: If you need to parse the flag help, do NOT use the output of
 --help / --helpshort.  That output is meant for human consumption, and
 may be changed in the future.  Instead, use --helpxml; flags that are
-key for the main module are marked there with a <key>yes</key> element.
+key for the main package are marked there with a <key>yes</key> element.
 
-The set of key flags for a module M is composed of:
+The set of key flags for a package M is composed of:
 
-1. Flags defined by module M by calling a DEFINE_* function.
+1. Flags defined by package M by calling a DEFINE_* function.
 
-2. Flags that module M explictly declares as key by using the function
+2. Flags that package M explictly declares as key by using the function
 
      DECLARE_key_flag(<flag_name>)
 
-3. Key flags of other modules that M specifies by using the function
+3. Key flags of other packages that M specifies by using the function
 
-     ADOPT_module_key_flags(<other_module>)
+     ADOPT_package_key_flags(<other_package>)
 
    This is a "bulk" declaration of key flags: each flag that is key for
-   <other_module> becomes key for the current module too.
+   <other_package> becomes key for the current package too.
 
 Notice that if you do not use the functions described at points 2 and 3
 above, then --helpshort prints information only about the flags defined
-by the main module of our script.  In many cases, this behavior is good
-enough.  But if you move part of the main module code (together with the
-related flags) into a different module, then it is nice to use
-DECLARE_key_flag / ADOPT_module_key_flags and make sure --helpshort
+by the main package of our script.  In many cases, this behavior is good
+enough.  But if you move part of the main package code (together with the
+related flags) into a different package, then it is nice to use
+DECLARE_key_flag / ADOPT_package_key_flags and make sure --helpshort
 lists all relevant flags (otherwise, your code refactoring may confuse
 your users).
 
-Note: each of DECLARE_key_flag / ADOPT_module_key_flags has its own
+Note: each of DECLARE_key_flag / ADOPT_package_key_flags has its own
 pluses and minuses: DECLARE_key_flag is more targeted and may lead a
-more focused --helpshort documentation.  ADOPT_module_key_flags is good
-for cases when an entire module is considered key to the current script.
+more focused --helpshort documentation.  ADOPT_package_key_flags is good
+for cases when an entire package is considered key to the current script.
 Also, it does not require updates to client scripts when a new flag is
-added to the module.
+added to the package.
 
 
 EXAMPLE USAGE 2 (WITH KEY FLAGS):
 
 Consider an application that contains the following three files (two
-auxiliary modules and a main module):
+auxiliary packages and a main package):
 
 File libfoo.py:
 
@@ -262,7 +262,7 @@ File libbar.py:
   gflags.DEFINE_string('bar_gfs_path', '/gfs/path',
                        'Path to the GFS files for libbar.')
   gflags.DEFINE_string('email_for_bar_errors', 'bar-team@google.com',
-                       'Email address for bug reports about module libbar.')
+                       'Email address for bug reports about package libbar.')
   gflags.DEFINE_boolean('bar_risky_hack', False,
                         'Turn on an experimental and buggy optimization.')
 
@@ -277,11 +277,11 @@ File myscript.py:
   gflags.DEFINE_integer('num_iterations', 0, 'Number of iterations.')
 
   # Declare that all flags that are key for libfoo are
-  # key for this module too.
-  gflags.ADOPT_module_key_flags(libfoo)
+  # key for this package too.
+  gflags.ADOPT_package_key_flags(libfoo)
 
   # Declare that the flag --bar_gfs_path (defined in libbar) is key
-  # for this module.
+  # for this package.
   gflags.DECLARE_key_flag('bar_gfs_path')
 
   ... some code ...
@@ -292,8 +292,8 @@ message lists information about all the key flags for myscript:
 addition to the special flags --help and --helpshort).
 
 Of course, myscript uses all the flags declared by it (in this case,
-just --num_replicas) or by any of the modules it transitively imports
-(e.g., the modules libfoo, libbar).  E.g., it can access the value of
+just --num_replicas) or by any of the packages it transitively imports
+(e.g., the packages libfoo, libbar).  E.g., it can access the value of
 FLAGS.bar_risky_hack, even if --bar_risky_hack is not declared as a key
 flag for myscript.
 
@@ -305,10 +305,10 @@ The --helpxml flag generates output with the following structure:
 <?xml version="1.0"?>
 <AllFlags>
   <program>PROGRAM_BASENAME</program>
-  <usage>MAIN_MODULE_DOCSTRING</usage>
+  <usage>MAIN_package_DOCSTRING</usage>
   (<flag>
     [<key>yes</key>]
-    <file>DECLARING_MODULE</file>
+    <file>DECLARING_package</file>
     <name>FLAG_NAME</name>
     <meaning>FLAG_HELP_MESSAGE</meaning>
     <default>DEFAULT_FLAG_VALUE</default>
@@ -373,31 +373,31 @@ except NameError:
       return False
 
 # Are we running under pychecker?
-_RUNNING_PYCHECKER = 'pychecker.python' in sys.modules
+_RUNNING_PYCHECKER = 'pychecker.python' in sys.packages
 
 
-def _GetCallingModule():
-  """Returns the name of the module that's calling into this module.
+def _GetCallingpackage():
+  """Returns the name of the package that's calling into this package.
 
-  We generally use this function to get the name of the module calling a
+  We generally use this function to get the name of the package calling a
   DEFINE_foo... function.
   """
   # Walk down the stack to find the first globals dict that's not ours.
   for depth in range(1, sys.getrecursionlimit()):
     if not sys._getframe(depth).f_globals is globals():
       globals_for_frame = sys._getframe(depth).f_globals
-      module_name = _GetModuleObjectAndName(globals_for_frame)[1]
-      if module_name is not None:
-        return module_name
-  raise AssertionError("No module was found")
+      package_name = _GetpackageObjectAndName(globals_for_frame)[1]
+      if package_name is not None:
+        return package_name
+  raise AssertionError("No package was found")
 
 
-def _GetThisModuleObjectAndName():
-  """Returns: (module object, module name) for this module."""
-  return _GetModuleObjectAndName(globals())
+def _GetThispackageObjectAndName():
+  """Returns: (package object, package name) for this package."""
+  return _GetpackageObjectAndName(globals())
 
 
-# module exceptions:
+# package exceptions:
 class FlagsError(Exception):
   """The base class for all flags errors."""
   pass
@@ -420,20 +420,20 @@ class DuplicateFlagCannotPropagateNoneToSwig(DuplicateFlag):
 
 
 # A DuplicateFlagError conveys more information than a
-# DuplicateFlag. Since there are external modules that create
+# DuplicateFlag. Since there are external packages that create
 # DuplicateFlags, the interface to DuplicateFlag shouldn't change.
 class DuplicateFlagError(DuplicateFlag):
 
   def __init__(self, flagname, flag_values):
     self.flagname = flagname
     message = "The flag '%s' is defined twice." % self.flagname
-    flags_by_module = flag_values.FlagsByModuleDict()
-    for module in flags_by_module:
-      for flag in flags_by_module[module]:
+    flags_by_package = flag_values.FlagsBypackageDict()
+    for package in flags_by_package:
+      for flag in flags_by_package[package]:
         if flag.name == flagname or flag.short_name == flagname:
-          message = message + " First from " + module + ","
+          message = message + " First from " + package + ","
           break
-    message = message + " Second from " + _GetCallingModule()
+    message = message + " Second from " + _GetCallingpackage()
     DuplicateFlag.__init__(self, message)
 
 
@@ -448,7 +448,7 @@ class UnrecognizedFlag(FlagsError):
 
 
 # An UnrecognizedFlagError conveys more information than an
-# UnrecognizedFlag. Since there are external modules that create
+# UnrecognizedFlag. Since there are external packages that create
 # DuplicateFlags, the interface to DuplicateFlag shouldn't change.
 class UnrecognizedFlagError(UnrecognizedFlag):
   def __init__(self, flagname):
@@ -638,7 +638,7 @@ def DocToHelp(doc):
   # Cut out common space at line beginnings
   doc = CutCommonSpacePrefix(doc)
 
-  # Just like this module's comment, comments tend to be aligned somehow.
+  # Just like this package's comment, comments tend to be aligned somehow.
   # In other words they all start with the same amount of white space
   # 1) keep double new lines
   # 2) keep ws after new lines if not empty line
@@ -649,39 +649,39 @@ def DocToHelp(doc):
   return doc
 
 
-def _GetModuleObjectAndName(globals_dict):
-  """Returns the module that defines a global environment, and its name.
+def _GetpackageObjectAndName(globals_dict):
+  """Returns the package that defines a global environment, and its name.
 
   Args:
     globals_dict: A dictionary that should correspond to an environment
       providing the values of the globals.
 
   Returns:
-    A pair consisting of (1) module object and (2) module name (a
-    string).  Returns (None, None) if the module could not be
+    A pair consisting of (1) package object and (2) package name (a
+    string).  Returns (None, None) if the package could not be
     identified.
   """
   # The use of .items() (instead of .iteritems()) is NOT a mistake: if
-  # a parallel thread imports a module while we iterate over
+  # a parallel thread imports a package while we iterate over
   # .iteritems() (not nice, but possible), we get a RuntimeError ...
   # Hence, we use the slightly slower but safer .items().
-  for name, module in sys.modules.items():
-    if getattr(module, '__dict__', None) is globals_dict:
+  for name, package in sys.packages.items():
+    if getattr(package, '__dict__', None) is globals_dict:
       if name == '__main__':
-        # Pick a more informative name for the main module.
+        # Pick a more informative name for the main package.
         name = sys.argv[0]
-      return (module, name)
+      return (package, name)
   return (None, None)
 
 
-def _GetMainModule():
-  """Returns the name of the module from which execution started."""
+def _GetMainpackage():
+  """Returns the name of the package from which execution started."""
   for depth in range(1, sys.getrecursionlimit()):
     try:
       globals_of_main = sys._getframe(depth).f_globals
     except ValueError:
-      return _GetModuleObjectAndName(globals_of_main)[1]
-  raise AssertionError("No module was found")
+      return _GetpackageObjectAndName(globals_of_main)[1]
+  raise AssertionError("No package was found")
 
 
 class FlagValues:
@@ -723,12 +723,12 @@ class FlagValues:
 
     # Dictionary: flag name (string) -> Flag object.
     self.__dict__['__flags'] = {}
-    # Dictionary: module name (string) -> list of Flag objects that are defined
-    # by that module.
-    self.__dict__['__flags_by_module'] = {}
-    # Dictionary: module name (string) -> list of Flag objects that are
-    # key for that module.
-    self.__dict__['__key_flags_by_module'] = {}
+    # Dictionary: package name (string) -> list of Flag objects that are defined
+    # by that package.
+    self.__dict__['__flags_by_package'] = {}
+    # Dictionary: package name (string) -> list of Flag objects that are
+    # key for that package.
+    self.__dict__['__key_flags_by_package'] = {}
 
     # Set if we should use new style gnu_getopt rather than getopt when parsing
     # the args.  Only possible with Python 2.3+
@@ -743,88 +743,88 @@ class FlagValues:
   def FlagDict(self):
     return self.__dict__['__flags']
 
-  def FlagsByModuleDict(self):
-    """Returns the dictionary of module_name -> list of defined flags.
+  def FlagsBypackageDict(self):
+    """Returns the dictionary of package_name -> list of defined flags.
 
     Returns:
-      A dictionary.  Its keys are module names (strings).  Its values
+      A dictionary.  Its keys are package names (strings).  Its values
       are lists of Flag objects.
     """
-    return self.__dict__['__flags_by_module']
+    return self.__dict__['__flags_by_package']
 
-  def KeyFlagsByModuleDict(self):
-    """Returns the dictionary of module_name -> list of key flags.
+  def KeyFlagsBypackageDict(self):
+    """Returns the dictionary of package_name -> list of key flags.
 
     Returns:
-      A dictionary.  Its keys are module names (strings).  Its values
+      A dictionary.  Its keys are package names (strings).  Its values
       are lists of Flag objects.
     """
-    return self.__dict__['__key_flags_by_module']
+    return self.__dict__['__key_flags_by_package']
 
-  def _RegisterFlagByModule(self, module_name, flag):
-    """Records the module that defines a specific flag.
+  def _RegisterFlagBypackage(self, package_name, flag):
+    """Records the package that defines a specific flag.
 
-    We keep track of which flag is defined by which module so that we
-    can later sort the flags by module.
-
-    Args:
-      module_name: A string, the name of a Python module.
-      flag: A Flag object, a flag that is key to the module.
-    """
-    flags_by_module = self.FlagsByModuleDict()
-    flags_by_module.setdefault(module_name, []).append(flag)
-
-  def _RegisterKeyFlagForModule(self, module_name, flag):
-    """Specifies that a flag is a key flag for a module.
+    We keep track of which flag is defined by which package so that we
+    can later sort the flags by package.
 
     Args:
-      module_name: A string, the name of a Python module.
-      flag: A Flag object, a flag that is key to the module.
+      package_name: A string, the name of a Python package.
+      flag: A Flag object, a flag that is key to the package.
     """
-    key_flags_by_module = self.KeyFlagsByModuleDict()
-    # The list of key flags for the module named module_name.
-    key_flags = key_flags_by_module.setdefault(module_name, [])
+    flags_by_package = self.FlagsBypackageDict()
+    flags_by_package.setdefault(package_name, []).append(flag)
+
+  def _RegisterKeyFlagForpackage(self, package_name, flag):
+    """Specifies that a flag is a key flag for a package.
+
+    Args:
+      package_name: A string, the name of a Python package.
+      flag: A Flag object, a flag that is key to the package.
+    """
+    key_flags_by_package = self.KeyFlagsBypackageDict()
+    # The list of key flags for the package named package_name.
+    key_flags = key_flags_by_package.setdefault(package_name, [])
     # Add flag, but avoid duplicates.
     if flag not in key_flags:
       key_flags.append(flag)
 
-  def _GetFlagsDefinedByModule(self, module):
-    """Returns the list of flags defined by a module.
+  def _GetFlagsDefinedBypackage(self, package):
+    """Returns the list of flags defined by a package.
 
     Args:
-      module: A module object or a module name (a string).
+      package: A package object or a package name (a string).
 
     Returns:
       A new list of Flag objects.  Caller may update this list as he
       wishes: none of those changes will affect the internals of this
       FlagValue object.
     """
-    if not isinstance(module, str):
-      module = module.__name__
+    if not isinstance(package, str):
+      package = package.__name__
 
-    return list(self.FlagsByModuleDict().get(module, []))
+    return list(self.FlagsBypackageDict().get(package, []))
 
-  def _GetKeyFlagsForModule(self, module):
-    """Returns the list of key flags for a module.
+  def _GetKeyFlagsForpackage(self, package):
+    """Returns the list of key flags for a package.
 
     Args:
-      module: A module object or a module name (a string)
+      package: A package object or a package name (a string)
 
     Returns:
       A new list of Flag objects.  Caller may update this list as he
       wishes: none of those changes will affect the internals of this
       FlagValue object.
     """
-    if not isinstance(module, str):
-      module = module.__name__
+    if not isinstance(package, str):
+      package = package.__name__
 
-    # Any flag is a key flag for the module that defined it.  NOTE:
+    # Any flag is a key flag for the package that defined it.  NOTE:
     # key_flags is a fresh list: we can update it without affecting the
     # internals of this FlagValues object.
-    key_flags = self._GetFlagsDefinedByModule(module)
+    key_flags = self._GetFlagsDefinedBypackage(package)
 
-    # Take into account flags explicitly declared as key for a module.
-    for flag in self.KeyFlagsByModuleDict().get(module, []):
+    # Take into account flags explicitly declared as key for a package.
+    for flag in self.KeyFlagsBypackageDict().get(package, []):
       if flag not in key_flags:
         key_flags.append(flag)
     return key_flags
@@ -953,22 +953,22 @@ class FlagValues:
       # registered (please see the docstring of _FlagIsRegistered), then
       # we delete the occurences of the flag object in all our internal
       # dictionaries.
-      self.__RemoveFlagFromDictByModule(self.FlagsByModuleDict(), flag_obj)
-      self.__RemoveFlagFromDictByModule(self.KeyFlagsByModuleDict(), flag_obj)
+      self.__RemoveFlagFromDictBypackage(self.FlagsBypackageDict(), flag_obj)
+      self.__RemoveFlagFromDictBypackage(self.KeyFlagsBypackageDict(), flag_obj)
 
-  def __RemoveFlagFromDictByModule(self, flags_by_module_dict, flag_obj):
-    """Removes a flag object from a module -> list of flags dictionary.
+  def __RemoveFlagFromDictBypackage(self, flags_by_package_dict, flag_obj):
+    """Removes a flag object from a package -> list of flags dictionary.
 
     Args:
-      flags_by_module_dict: A dictionary that maps module names to lists of
+      flags_by_package_dict: A dictionary that maps package names to lists of
         flags.
       flag_obj: A flag object.
     """
-    for unused_module, flags_in_module in flags_by_module_dict.iteritems():
+    for unused_package, flags_in_package in flags_by_package_dict.iteritems():
       # while (as opposed to if) takes care of multiple occurences of a
-      # flag in the list for the same module.
-      while flag_obj in flags_in_module:
-        flags_in_module.remove(flag_obj)
+      # flag in the list for the same package.
+      while flag_obj in flags_in_package:
+        flags_in_package.remove(flag_obj)
 
   def SetDefault(self, name, value):
     """Changes the default value of the named flag object."""
@@ -1158,22 +1158,22 @@ class FlagValues:
     """Generates a help string for all known flags."""
     helplist = []
 
-    flags_by_module = self.FlagsByModuleDict()
-    if flags_by_module:
+    flags_by_package = self.FlagsBypackageDict()
+    if flags_by_package:
 
-      modules = flags_by_module.keys()
-      modules.sort()
+      packages = flags_by_package.keys()
+      packages.sort()
 
-      # Print the help for the main module first, if possible.
-      main_module = _GetMainModule()
-      if main_module in modules:
-        modules.remove(main_module)
-        modules = [main_module] + modules
+      # Print the help for the main package first, if possible.
+      main_package = _GetMainpackage()
+      if main_package in packages:
+        packages.remove(main_package)
+        packages = [main_package] + packages
 
-      for module in modules:
-        self.__RenderOurModuleFlags(module, helplist)
+      for package in packages:
+        self.__RenderOurpackageFlags(package, helplist)
 
-      self.__RenderModuleFlags('gflags',
+      self.__RenderpackageFlags('gflags',
                                _SPECIAL_FLAGS.FlagDict().values(),
                                helplist)
 
@@ -1185,52 +1185,52 @@ class FlagValues:
 
     return '\n'.join(helplist)
 
-  def __RenderModuleFlags(self, module, flags, output_lines, prefix=""):
-    """Generates a help string for a given module."""
-    if not isinstance(module, str):
-      module = module.__name__
-    output_lines.append('\n%s%s:' % (prefix, module))
+  def __RenderpackageFlags(self, package, flags, output_lines, prefix=""):
+    """Generates a help string for a given package."""
+    if not isinstance(package, str):
+      package = package.__name__
+    output_lines.append('\n%s%s:' % (prefix, package))
     self.__RenderFlagList(flags, output_lines, prefix + "  ")
 
-  def __RenderOurModuleFlags(self, module, output_lines, prefix=""):
-    """Generates a help string for a given module."""
-    flags = self._GetFlagsDefinedByModule(module)
+  def __RenderOurpackageFlags(self, package, output_lines, prefix=""):
+    """Generates a help string for a given package."""
+    flags = self._GetFlagsDefinedBypackage(package)
     if flags:
-      self.__RenderModuleFlags(module, flags, output_lines, prefix)
+      self.__RenderpackageFlags(package, flags, output_lines, prefix)
 
-  def __RenderOurModuleKeyFlags(self, module, output_lines, prefix=""):
-    """Generates a help string for the key flags of a given module.
+  def __RenderOurpackageKeyFlags(self, package, output_lines, prefix=""):
+    """Generates a help string for the key flags of a given package.
 
     Args:
-      module: A module object or a module name (a string).
+      package: A package object or a package name (a string).
       output_lines: A list of strings.  The generated help message
         lines will be appended to this list.
       prefix: A string that is prepended to each generated help line.
     """
-    key_flags = self._GetKeyFlagsForModule(module)
+    key_flags = self._GetKeyFlagsForpackage(package)
     if key_flags:
-      self.__RenderModuleFlags(module, key_flags, output_lines, prefix)
+      self.__RenderpackageFlags(package, key_flags, output_lines, prefix)
 
-  def ModuleHelp(self, module):
-    """Describe the key flags of a module.
+  def packageHelp(self, package):
+    """Describe the key flags of a package.
 
     Args:
-      module: A module object or a module name (a string).
+      package: A package object or a package name (a string).
 
     Returns:
-      string describing the key flags of a module.
+      string describing the key flags of a package.
     """
     helplist = []
-    self.__RenderOurModuleKeyFlags(module, helplist)
+    self.__RenderOurpackageKeyFlags(package, helplist)
     return '\n'.join(helplist)
 
-  def MainModuleHelp(self):
-    """Describe the key flags of the main module.
+  def MainpackageHelp(self):
+    """Describe the key flags of the main package.
 
     Returns:
-      string describing the key flags of a module.
+      string describing the key flags of a package.
     """
-    return self.ModuleHelp(_GetMainModule())
+    return self.packageHelp(_GetMainpackage())
 
   def __RenderFlagList(self, flaglist, output_lines, prefix="  "):
     fl = self.FlagDict()
@@ -1240,7 +1240,7 @@ class FlagValues:
     flagset = {}
     for (name, flag) in flaglist:
       # It's possible this flag got deleted or overridden since being
-      # registered in the per-module flaglist.  Check now against the
+      # registered in the per-package flaglist.  Check now against the
       # canonical source of current flag information, the FlagDict.
       if fl.get(name, None) != flag and special_fl.get(name, None) != flag:
         # a different flag is using this name now
@@ -1519,26 +1519,26 @@ class FlagValues:
     _WriteSimpleXMLElement(outfile, 'program', os.path.basename(sys.argv[0]),
                            indent)
 
-    usage_doc = sys.modules['__main__'].__doc__
+    usage_doc = sys.packages['__main__'].__doc__
     if not usage_doc:
       usage_doc = '\nUSAGE: %s [flags]\n' % sys.argv[0]
     else:
       usage_doc = usage_doc.replace('%s', sys.argv[0])
     _WriteSimpleXMLElement(outfile, 'usage', usage_doc, indent)
 
-    # Get list of key flags for the main module.
-    key_flags = self._GetKeyFlagsForModule(_GetMainModule())
+    # Get list of key flags for the main package.
+    key_flags = self._GetKeyFlagsForpackage(_GetMainpackage())
 
-    # Sort flags by declaring module name and next by flag name.
-    flags_by_module = self.FlagsByModuleDict()
-    all_module_names = list(flags_by_module.keys())
-    all_module_names.sort()
-    for module_name in all_module_names:
-      flag_list = [(f.name, f) for f in flags_by_module[module_name]]
+    # Sort flags by declaring package name and next by flag name.
+    flags_by_package = self.FlagsBypackageDict()
+    all_package_names = list(flags_by_package.keys())
+    all_package_names.sort()
+    for package_name in all_package_names:
+      flag_list = [(f.name, f) for f in flags_by_package[package_name]]
       flag_list.sort()
       for unused_flag_name, flag in flag_list:
         is_key = flag in key_flags
-        flag.WriteInfoInXMLFormat(outfile, module_name,
+        flag.WriteInfoInXMLFormat(outfile, package_name,
                                   is_key=is_key, indent=indent)
 
     outfile.write('</AllFlags>\n')
@@ -1603,8 +1603,8 @@ class Flag:
   this flag was already present, a FlagsError is raised.
 
   Parse() is also called during __init__ to parse the default value and
-  initialize the .value attribute.  This enables other python modules to
-  safely use flags even if the __main__ module neglects to parse the
+  initialize the .value attribute.  This enables other python packages to
+  safely use flags even if the __main__ package neglects to parse the
   command line arguments.  The .present attribute is cleared after
   __init__ parsing.  If the default value is set to None, then the
   __init__ parsing step is skipped and the .value attribute is
@@ -1692,7 +1692,7 @@ class Flag:
     # of strings', 'whitespace separated list of strings', etc.
     return self.parser.Type()
 
-  def WriteInfoInXMLFormat(self, outfile, module_name, is_key=False, indent=''):
+  def WriteInfoInXMLFormat(self, outfile, package_name, is_key=False, indent=''):
     """Writes common info about this flag, in XML format.
 
     This is information that is relevant to all flags (e.g., name,
@@ -1703,15 +1703,15 @@ class Flag:
 
     Args:
       outfile: File object we write to.
-      module_name: A string, the name of the module that defines this flag.
-      is_key: A boolean, True iff this flag is key for main module.
+      package_name: A string, the name of the package that defines this flag.
+      is_key: A boolean, True iff this flag is key for main package.
       indent: A string that is prepended to each generated line.
     """
     outfile.write(indent + '<flag>\n')
     inner_indent = indent + '  '
     if is_key:
       _WriteSimpleXMLElement(outfile, 'key', 'yes', inner_indent)
-    _WriteSimpleXMLElement(outfile, 'file', module_name, inner_indent)
+    _WriteSimpleXMLElement(outfile, 'file', package_name, inner_indent)
     # Print flag features that are relevant for all flags.
     _WriteSimpleXMLElement(outfile, 'name', self.name, inner_indent)
     if self.short_name:
@@ -1788,7 +1788,7 @@ class ListSerializer(ArgumentSerializer):
     return self.list_sep.join([str(x) for x in value])
 
 
-# The DEFINE functions are explained in mode details in the module doc string.
+# The DEFINE functions are explained in mode details in the package doc string.
 
 
 def DEFINE(parser, name, default, help, flag_values=FLAGS, serializer=None,
@@ -1836,15 +1836,15 @@ def DEFINE_flag(flag, flag_values=FLAGS):
     # FLAGS test here) and redefine flags with the same name (e.g.,
     # debug).  To avoid breaking their code, we perform the
     # registration only if flag_values is a real FlagValues object.
-    flag_values._RegisterFlagByModule(_GetCallingModule(), flag)
+    flag_values._RegisterFlagBypackage(_GetCallingpackage(), flag)
 
 
 def _InternalDeclareKeyFlags(flag_names,
                              flag_values=FLAGS, key_flag_values=None):
-  """Declares a flag as key for the calling module.
+  """Declares a flag as key for the calling package.
 
   Internal function.  User code should call DECLARE_key_flag or
-  ADOPT_module_key_flags instead.
+  ADOPT_package_key_flags instead.
 
   Args:
     flag_names: A list of strings that are names of already-registered
@@ -1854,7 +1854,7 @@ def _InternalDeclareKeyFlags(flag_names,
       argument from the DEFINE_* calls that defined those flags).
       This should almost never need to be overridden.
     key_flag_values: A FlagValues object that (among possibly many
-      other things) keeps track of the key flags for each module.
+      other things) keeps track of the key flags for each package.
       Default None means "same as flag_values".  This should almost
       never need to be overridden.
 
@@ -1864,22 +1864,22 @@ def _InternalDeclareKeyFlags(flag_names,
   """
   key_flag_values = key_flag_values or flag_values
 
-  module = _GetCallingModule()
+  package = _GetCallingpackage()
 
   for flag_name in flag_names:
     if flag_name not in flag_values:
       raise UnrecognizedFlagError(flag_name)
     flag = flag_values.FlagDict()[flag_name]
-    key_flag_values._RegisterKeyFlagForModule(module, flag)
+    key_flag_values._RegisterKeyFlagForpackage(package, flag)
 
 
 def DECLARE_key_flag(flag_name, flag_values=FLAGS):
-  """Declares one flag as key to the current module.
+  """Declares one flag as key to the current package.
 
-  Key flags are flags that are deemed really important for a module.
+  Key flags are flags that are deemed really important for a package.
   They are important when listing help messages; e.g., if the
   --helpshort command-line flag is used, then only the key flags of the
-  main module are listed (instead of all flags, as in the case of
+  main package are listed (instead of all flags, as in the case of
   --help).
 
   Sample usage:
@@ -1889,7 +1889,7 @@ def DECLARE_key_flag(flag_name, flag_values=FLAGS):
   Args:
     flag_name: A string, the name of an already declared flag.
       (Redeclaring flags as key, including flags implicitly key
-      because they were declared in this module, is a no-op.)
+      because they were declared in this package, is a no-op.)
     flag_values: A FlagValues object.  This should almost never
       need to be overridden.
   """
@@ -1905,35 +1905,35 @@ def DECLARE_key_flag(flag_name, flag_values=FLAGS):
   _InternalDeclareKeyFlags([flag_name], flag_values=flag_values)
 
 
-def ADOPT_module_key_flags(module, flag_values=FLAGS):
-  """Declares that all flags key to a module are key to the current module.
+def ADOPT_package_key_flags(package, flag_values=FLAGS):
+  """Declares that all flags key to a package are key to the current package.
 
   Args:
-    module: A module object.
+    package: A package object.
     flag_values: A FlagValues object.  This should almost never need
       to be overridden.
 
   Raises:
-    FlagsError: When given an argument that is a module name (a
-    string), instead of a module object.
+    FlagsError: When given an argument that is a package name (a
+    string), instead of a package object.
   """
   # NOTE(salcianu): an even better test would be if not
-  # isinstance(module, types.ModuleType) but I didn't want to import
+  # isinstance(package, types.packageType) but I didn't want to import
   # types for such a tiny use.
-  if isinstance(module, str):
-    raise FlagsError('Received module name %s; expected a module object.'
-                     % module)
+  if isinstance(package, str):
+    raise FlagsError('Received package name %s; expected a package object.'
+                     % package)
   _InternalDeclareKeyFlags(
-      [f.name for f in flag_values._GetKeyFlagsForModule(module.__name__)],
+      [f.name for f in flag_values._GetKeyFlagsForpackage(package.__name__)],
       flag_values=flag_values)
-  # If module is this flag module, take _SPECIAL_FLAGS into account.
-  if module == _GetThisModuleObjectAndName()[0]:
+  # If package is this flag package, take _SPECIAL_FLAGS into account.
+  if package == _GetThispackageObjectAndName()[0]:
     _InternalDeclareKeyFlags(
-        # As we associate flags with _GetCallingModule(), the special
-        # flags defined in this module are incorrectly registered with
-        # a different module.  So, we can't use _GetKeyFlagsForModule.
+        # As we associate flags with _GetCallingpackage(), the special
+        # flags defined in this package are incorrectly registered with
+        # a different package.  So, we can't use _GetKeyFlagsForpackage.
         # Instead, we take all flags from _SPECIAL_FLAGS (a private
-        # FlagValues, where no other module should register flags).
+        # FlagValues, where no other package should register flags).
         [f.name for f in _SPECIAL_FLAGS.FlagDict().values()],
         flag_values=_SPECIAL_FLAGS,
         key_flag_values=flag_values)
@@ -2030,7 +2030,7 @@ class HelpFlag(BooleanFlag):
                          short_name="?", allow_override=1)
   def Parse(self, arg):
     if arg:
-      doc = sys.modules["__main__"].__doc__
+      doc = sys.packages["__main__"].__doc__
       flags = str(FLAGS)
       print doc or ("\nUSAGE: %s [flags]\n" % sys.argv[0])
       if flags:
@@ -2056,18 +2056,18 @@ class HelpXMLFlag(BooleanFlag):
 class HelpshortFlag(BooleanFlag):
   """
   HelpshortFlag is a special boolean flag that prints usage
-  information for the "main" module, and rasies a SystemExit exception
+  information for the "main" package, and rasies a SystemExit exception
   if it is ever found in the command line arguments.  Note this is
   called with allow_override=1, so other apps can define their own
   --helpshort flag, replacing this one, if they want.
   """
   def __init__(self):
     BooleanFlag.__init__(self, "helpshort", 0,
-                         "show usage only for this module", allow_override=1)
+                         "show usage only for this package", allow_override=1)
   def Parse(self, arg):
     if arg:
-      doc = sys.modules["__main__"].__doc__
-      flags = FLAGS.MainModuleHelp()
+      doc = sys.packages["__main__"].__doc__
+      flags = FLAGS.MainpackageHelp()
       print doc or ("\nUSAGE: %s [flags]\n" % sys.argv[0])
       if flags:
         print "flags:"
@@ -2430,7 +2430,7 @@ def DEFINE_multi(parser, serializer, name, default, help, flag_values=FLAGS,
   Auxiliary function.  Normal users should NOT use it directly.
 
   Developers who need to create their own 'Parser' classes for options
-  which can appear multiple times can call this module function to
+  which can appear multiple times can call this package function to
   register their flags.
   """
   DEFINE_flag(MultiFlag(parser, serializer, name, default, help, **args),
@@ -2472,7 +2472,7 @@ DEFINE_flag(HelpshortFlag())
 DEFINE_flag(HelpXMLFlag())
 
 # Define special flags here so that help may be generated for them.
-# NOTE: Please do NOT use _SPECIAL_FLAGS from outside this module.
+# NOTE: Please do NOT use _SPECIAL_FLAGS from outside this package.
 _SPECIAL_FLAGS = FlagValues()
 
 

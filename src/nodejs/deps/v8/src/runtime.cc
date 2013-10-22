@@ -8869,21 +8869,21 @@ RUNTIME_FUNCTION(MaybeObject*, Runtime_PushBlockContext) {
 }
 
 
-RUNTIME_FUNCTION(MaybeObject*, Runtime_IsJSModule) {
+RUNTIME_FUNCTION(MaybeObject*, Runtime_IsJSpackage) {
   SealHandleScope shs(isolate);
   ASSERT(args.length() == 1);
   Object* obj = args[0];
-  return isolate->heap()->ToBoolean(obj->IsJSModule());
+  return isolate->heap()->ToBoolean(obj->IsJSpackage());
 }
 
 
-RUNTIME_FUNCTION(MaybeObject*, Runtime_PushModuleContext) {
+RUNTIME_FUNCTION(MaybeObject*, Runtime_PushpackageContext) {
   SealHandleScope shs(isolate);
   ASSERT(args.length() == 2);
   CONVERT_SMI_ARG_CHECKED(index, 0);
 
   if (!args[1]->IsScopeInfo()) {
-    // Module already initialized. Find hosting context and retrieve context.
+    // package already initialized. Find hosting context and retrieve context.
     Context* host = Context::cast(isolate->context())->global_context();
     Context* context = Context::cast(host->get(index));
     ASSERT(context->previous() == isolate->context());
@@ -8893,36 +8893,36 @@ RUNTIME_FUNCTION(MaybeObject*, Runtime_PushModuleContext) {
 
   CONVERT_ARG_HANDLE_CHECKED(ScopeInfo, scope_info, 1);
 
-  // Allocate module context.
+  // Allocate package context.
   HandleScope scope(isolate);
   Factory* factory = isolate->factory();
-  Handle<Context> context = factory->NewModuleContext(scope_info);
-  Handle<JSModule> module = factory->NewJSModule(context, scope_info);
-  context->set_module(*module);
+  Handle<Context> context = factory->NewpackageContext(scope_info);
+  Handle<JSpackage> package = factory->NewJSpackage(context, scope_info);
+  context->set_package(*package);
   Context* previous = isolate->context();
   context->set_previous(previous);
   context->set_closure(previous->closure());
   context->set_global_object(previous->global_object());
   isolate->set_context(*context);
 
-  // Find hosting scope and initialize internal variable holding module there.
+  // Find hosting scope and initialize internal variable holding package there.
   previous->global_context()->set(index, *context);
 
   return *context;
 }
 
 
-RUNTIME_FUNCTION(MaybeObject*, Runtime_DeclareModules) {
+RUNTIME_FUNCTION(MaybeObject*, Runtime_Declarepackages) {
   HandleScope scope(isolate);
   ASSERT(args.length() == 1);
   CONVERT_ARG_HANDLE_CHECKED(FixedArray, descriptions, 0);
   Context* host_context = isolate->context();
 
   for (int i = 0; i < descriptions->length(); ++i) {
-    Handle<ModuleInfo> description(ModuleInfo::cast(descriptions->get(i)));
+    Handle<packageInfo> description(packageInfo::cast(descriptions->get(i)));
     int host_index = description->host_index();
     Handle<Context> context(Context::cast(host_context->get(host_index)));
-    Handle<JSModule> module(context->module());
+    Handle<JSpackage> package(context->package());
 
     for (int j = 0; j < description->length(); ++j) {
       Handle<String> name(description->name(j));
@@ -8936,16 +8936,16 @@ RUNTIME_FUNCTION(MaybeObject*, Runtime_DeclareModules) {
           PropertyAttributes attr =
               IsImmutableVariableMode(mode) ? FROZEN : SEALED;
           Handle<AccessorInfo> info =
-              Accessors::MakeModuleExport(name, index, attr);
-          Handle<Object> result = SetAccessor(module, info);
+              Accessors::MakepackageExport(name, index, attr);
+          Handle<Object> result = SetAccessor(package, info);
           ASSERT(!(result.is_null() || result->IsUndefined()));
           USE(result);
           break;
         }
-        case MODULE: {
+        case package: {
           Object* referenced_context = Context::cast(host_context)->get(index);
-          Handle<JSModule> value(Context::cast(referenced_context)->module());
-          JSReceiver::SetProperty(module, name, value, FROZEN, kStrictMode);
+          Handle<JSpackage> value(Context::cast(referenced_context)->package());
+          JSReceiver::SetProperty(package, name, value, FROZEN, kStrictMode);
           break;
         }
         case INTERNAL:
@@ -8957,7 +8957,7 @@ RUNTIME_FUNCTION(MaybeObject*, Runtime_DeclareModules) {
       }
     }
 
-    JSObject::PreventExtensions(module);
+    JSObject::PreventExtensions(package);
   }
 
   ASSERT(!isolate->has_pending_exception());
@@ -11598,26 +11598,26 @@ static Handle<JSObject> MaterializeBlockScope(
 }
 
 
-// Create a plain JSObject which materializes the module scope for the specified
-// module context.
-static Handle<JSObject> MaterializeModuleScope(
+// Create a plain JSObject which materializes the package scope for the specified
+// package context.
+static Handle<JSObject> MaterializepackageScope(
     Isolate* isolate,
     Handle<Context> context) {
-  ASSERT(context->IsModuleContext());
+  ASSERT(context->IspackageContext());
   Handle<ScopeInfo> scope_info(ScopeInfo::cast(context->extension()));
 
   // Allocate and initialize a JSObject with all the members of the debugged
-  // module.
-  Handle<JSObject> module_scope =
+  // package.
+  Handle<JSObject> package_scope =
       isolate->factory()->NewJSObject(isolate->object_function());
 
   // Fill all context locals.
   if (!scope_info->CopyContextLocalsToScopeObject(
-          isolate, context, module_scope)) {
+          isolate, context, package_scope)) {
     return Handle<JSObject>();
   }
 
-  return module_scope;
+  return package_scope;
 }
 
 
@@ -11634,7 +11634,7 @@ class ScopeIterator {
     ScopeTypeClosure,
     ScopeTypeCatch,
     ScopeTypeBlock,
-    ScopeTypeModule
+    ScopeTypepackage
   };
 
   ScopeIterator(Isolate* isolate,
@@ -11770,9 +11770,9 @@ class ScopeIterator {
           ASSERT(context_->IsFunctionContext() ||
                  !scope_info->HasContext());
           return ScopeTypeLocal;
-        case MODULE_SCOPE:
-          ASSERT(context_->IsModuleContext());
-          return ScopeTypeModule;
+        case package_SCOPE:
+          ASSERT(context_->IspackageContext());
+          return ScopeTypepackage;
         case GLOBAL_SCOPE:
           ASSERT(context_->IsNativeContext());
           return ScopeTypeGlobal;
@@ -11803,8 +11803,8 @@ class ScopeIterator {
     if (context_->IsBlockContext()) {
       return ScopeTypeBlock;
     }
-    if (context_->IsModuleContext()) {
-      return ScopeTypeModule;
+    if (context_->IspackageContext()) {
+      return ScopeTypepackage;
     }
     ASSERT(context_->IsWithContext());
     return ScopeTypeWith;
@@ -11830,8 +11830,8 @@ class ScopeIterator {
         return MaterializeClosure(isolate_, CurrentContext());
       case ScopeIterator::ScopeTypeBlock:
         return MaterializeBlockScope(isolate_, CurrentContext());
-      case ScopeIterator::ScopeTypeModule:
-        return MaterializeModuleScope(isolate_, CurrentContext());
+      case ScopeIterator::ScopeTypepackage:
+        return MaterializepackageScope(isolate_, CurrentContext());
     }
     UNREACHABLE();
     return Handle<JSObject>();
@@ -11857,7 +11857,7 @@ class ScopeIterator {
       case ScopeIterator::ScopeTypeBlock:
         // TODO(2399): should we implement it?
         break;
-      case ScopeIterator::ScopeTypeModule:
+      case ScopeIterator::ScopeTypepackage:
         // TODO(2399): should we implement it?
         break;
     }

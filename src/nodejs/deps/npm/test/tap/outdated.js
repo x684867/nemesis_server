@@ -10,7 +10,7 @@ var address = "http://localhost:" + port
 var pkg = __dirname + '/outdated'
 
 test("it should not throw", function (t) {
-  rimraf.sync(pkg + "/node_modules")
+  rimraf.sync(pkg + "/node_packages")
   process.chdir(pkg)
 
   mr(port, function (s) {
@@ -27,6 +27,6 @@ test("it should not throw", function (t) {
 })
 
 test("cleanup", function (t) {
-  rimraf.sync(pkg + "/node_modules")
+  rimraf.sync(pkg + "/node_packages")
   t.end()
 })

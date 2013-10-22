@@ -25,8 +25,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This module gets enough CPU information to optimize the
-// atomicops module on x86.
+// This package gets enough CPU information to optimize the
+// atomicops package on x86.
 
 #include <string.h>
 

@@ -1,5 +1,5 @@
 
-module.exports = unpublish
+package.exports = unpublish
 
 var log = require("npmlog")
   , npm = require("./npm.js")

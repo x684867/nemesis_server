@@ -29,7 +29,7 @@ var SCHED_NONE = 1;
 var SCHED_RR = 2;
 
 var cluster = new EventEmitter;
-module.exports = cluster;
+package.exports = cluster;
 cluster.Worker = Worker;
 cluster.isWorker = ('NODE_UNIQUE_ID' in process.env);
 cluster.isMaster = (cluster.isWorker === false);
@@ -140,7 +140,7 @@ RoundRobinHandle.prototype.add = function(worker, send) {
   this.server.once('error', function(err) {
     // Hack: translate 'EADDRINUSE' error string back to numeric error code.
     // It works but ideally we'd have some backchannel between the net and
-    // cluster modules for stuff like this.
+    // cluster packages for stuff like this.
     var errno = process.binding('uv')['UV_' + err.errno];
     send(errno, null);
   });

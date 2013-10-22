@@ -434,7 +434,7 @@ class Parser BASE_EMBEDDED {
 
   bool allow_natives_syntax() const { return allow_natives_syntax_; }
   bool allow_lazy() const { return allow_lazy_; }
-  bool allow_modules() { return scanner().HarmonyModules(); }
+  bool allow_packages() { return scanner().Harmonypackages(); }
   bool allow_harmony_scoping() { return scanner().HarmonyScoping(); }
   bool allow_generators() const { return allow_generators_; }
   bool allow_for_of() const { return allow_for_of_; }
@@ -444,7 +444,7 @@ class Parser BASE_EMBEDDED {
 
   void set_allow_natives_syntax(bool allow) { allow_natives_syntax_ = allow; }
   void set_allow_lazy(bool allow) { allow_lazy_ = allow; }
-  void set_allow_modules(bool allow) { scanner().SetHarmonyModules(allow); }
+  void set_allow_packages(bool allow) { scanner().SetHarmonypackages(allow); }
   void set_allow_harmony_scoping(bool allow) {
     scanner().SetHarmonyScoping(allow);
   }
@@ -479,7 +479,7 @@ class Parser BASE_EMBEDDED {
   };
 
   enum VariableDeclarationContext {
-    kModuleElement,
+    kpackageElement,
     kBlockElement,
     kStatement,
     kForStatement
@@ -611,14 +611,14 @@ class Parser BASE_EMBEDDED {
   // for failure at the call sites.
   void* ParseSourceElements(ZoneList<Statement*>* processor, int end_token,
                             bool is_eval, bool is_global, bool* ok);
-  Statement* ParseModuleElement(ZoneStringList* labels, bool* ok);
-  Statement* ParseModuleDeclaration(ZoneStringList* names, bool* ok);
-  Module* ParseModule(bool* ok);
-  Module* ParseModuleLiteral(bool* ok);
-  Module* ParseModulePath(bool* ok);
-  Module* ParseModuleVariable(bool* ok);
-  Module* ParseModuleUrl(bool* ok);
-  Module* ParseModuleSpecifier(bool* ok);
+  Statement* ParsepackageElement(ZoneStringList* labels, bool* ok);
+  Statement* ParsepackageDeclaration(ZoneStringList* names, bool* ok);
+  package* Parsepackage(bool* ok);
+  package* ParsepackageLiteral(bool* ok);
+  package* ParsepackagePath(bool* ok);
+  package* ParsepackageVariable(bool* ok);
+  package* ParsepackageUrl(bool* ok);
+  package* ParsepackageSpecifier(bool* ok);
   Block* ParseImportDeclaration(bool* ok);
   Statement* ParseExportDeclaration(bool* ok);
   Statement* ParseBlockElement(ZoneStringList* labels, bool* ok);

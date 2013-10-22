@@ -2,7 +2,7 @@ title: multi-server continuous deployment with fleet
 author: Isaac Schlueter
 date: Wed May 02 2012 11:00:00 GMT-0700 (PDT)
 status: publish
-category: module
+category: package
 slug: multi-server-continuous-deployment-with-fleet
 
 <p><img style="float:right;margin-left:1.2em;" alt="substack" src="http://substack.net/images/substackistan.png"><i>This is a guest post by James "SubStack" Halliday, originally posted <a href="http://substack.net/posts/16a9d8/multi-server-continuous-deployment-with-fleet">on his blog</a>, and reposted here with permission.</i></p>

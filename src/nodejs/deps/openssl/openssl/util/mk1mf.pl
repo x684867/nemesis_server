@@ -480,7 +480,7 @@ MKLIB=$bin_dir$mklib
 MLFLAGS=$mlflags
 ASM=$bin_dir$asm
 
-# FIPS validated module and support file locations
+# FIPS validated package and support file locations
 
 FIPSDIR=$fipsdir
 BASEADDR=$baseaddr

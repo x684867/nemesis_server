@@ -486,7 +486,7 @@ Type: Number
 .IP "" 0
 .
 .P
-The "retries" config for the \fBretry\fR module to use when fetching
+The "retries" config for the \fBretry\fR package to use when fetching
 packages from the registry\.
 .
 .SS "fetch\-retry\-factor"
@@ -500,7 +500,7 @@ Type: Number
 .IP "" 0
 .
 .P
-The "factor" config for the \fBretry\fR module to use when fetching
+The "factor" config for the \fBretry\fR package to use when fetching
 packages\.
 .
 .SS "fetch\-retry\-mintimeout"
@@ -514,7 +514,7 @@ Type: Number
 .IP "" 0
 .
 .P
-The "minTimeout" config for the \fBretry\fR module to use when fetching
+The "minTimeout" config for the \fBretry\fR package to use when fetching
 packages\.
 .
 .SS "fetch\-retry\-maxtimeout"
@@ -528,7 +528,7 @@ Type: Number
 .IP "" 0
 .
 .P
-The "maxTimeout" config for the \fBretry\fR module to use when fetching
+The "maxTimeout" config for the \fBretry\fR package to use when fetching
 packages\.
 .
 .SS "git"
@@ -560,7 +560,7 @@ Type: Boolean
 npm help  Operates in "global" mode, so that packages are installed into the \fBprefix\fR folder instead of the current working directory\.  See \fBnpm\-folders\fR for more on the differences in behavior\.
 .
 .IP "\(bu" 4
-packages are installed into the \fB{prefix}/lib/node_modules\fR folder, instead of the
+packages are installed into the \fB{prefix}/lib/node_packages\fR folder, instead of the
 current working directory\.
 .
 .IP "\(bu" 4
@@ -656,7 +656,7 @@ Type: string
 A white\-space separated list of glob patterns of files to always exclude
 from packages when building tarballs\.
 .
-.SS "init\-module"
+.SS "init\-package"
 .
 .IP "\(bu" 4
 Default: ~/\.npm\-init\.js
@@ -667,8 +667,8 @@ Type: path
 .IP "" 0
 .
 .P
-A module that will be loaded by the \fBnpm init\fR command\.  See the
-documentation for the init\-package\-json \fIhttps://github\.com/isaacs/init\-package\-json\fR module
+A package that will be loaded by the \fBnpm init\fR command\.  See the
+documentation for the init\-package\-json \fIhttps://github\.com/isaacs/init\-package\-json\fR package
 npm help for more information, or npm\-init\.
 .
 .SS "init\.version"
@@ -800,7 +800,7 @@ Type: Stream
 .IP "" 0
 .
 .P
-This is the stream that is passed to the npmlog \fIhttps://github\.com/isaacs/npmlog\fR module at run time\.
+This is the stream that is passed to the npmlog \fIhttps://github\.com/isaacs/npmlog\fR package at run time\.
 .
 .P
 It cannot be set from the command line, but if you are using npm
@@ -890,7 +890,7 @@ Type: path
 .IP "" 0
 .
 .P
-A node module to \fBrequire()\fR when npm loads\.  Useful for programmatic
+A node package to \fBrequire()\fR when npm loads\.  Useful for programmatic
 usage\.
 .
 .SS "optional"

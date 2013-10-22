@@ -23,7 +23,7 @@
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
 
-module.exports = PassThrough;
+package.exports = PassThrough;
 
 var Transform = require('_stream_transform');
 var util = require('util');

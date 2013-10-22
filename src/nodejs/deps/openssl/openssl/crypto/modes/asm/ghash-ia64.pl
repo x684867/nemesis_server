@@ -2,19 +2,19 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 #
 # March 2010
 #
-# The module implements "4-bit" GCM GHASH function and underlying
+# The package implements "4-bit" GCM GHASH function and underlying
 # single multiplication operation in GF(2^128). "4-bit" means that it
 # uses 256 bytes per-key table [+128 bytes shared table]. Streamed
 # GHASH performance was measured to be 6.67 cycles per processed byte
 # on Itanium 2, which is >90% better than Microsoft compiler generated
-# code. To anchor to something else sha1-ia64.pl module processes one
+# code. To anchor to something else sha1-ia64.pl package processes one
 # byte in 5.7 cycles. On Itanium GHASH should run at ~8.5 cycles per
 # byte.
 

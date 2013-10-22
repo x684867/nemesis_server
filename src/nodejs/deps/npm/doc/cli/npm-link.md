@@ -15,7 +15,7 @@ First, `npm link` in a package folder will create a globally-installed
 symbolic link from `prefix/package-name` to the current folder.
 
 Next, in some other location, `npm link package-name` will create a
-symlink from the local `node_modules` folder to the global symlink.
+symlink from the local `node_packages` folder to the global symlink.
 
 Note that `package-name` is taken from `package.json`,
 not from directory name.
@@ -35,7 +35,7 @@ For example:
     npm link redis              # link-install the package
 
 Now, any changes to ~/projects/node-redis will be reflected in
-~/projects/node-bloggy/node_modules/redis/
+~/projects/node-bloggy/node_packages/redis/
 
 You may also shortcut the two steps in one.  For example, to do the
 above use-case in a shorter way:
@@ -49,7 +49,7 @@ The second line is the equivalent of doing:
     npm link redis
 
 That is, it first creates a global link, and then links the global
-installation target into your project's `node_modules` folder.
+installation target into your project's `node_packages` folder.
 
 ## SEE ALSO
 

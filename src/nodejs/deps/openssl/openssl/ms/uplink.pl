@@ -2,7 +2,7 @@
 #
 # For Microsoft CL this is implemented as inline assembler. So that
 # even though this script can generate even Win32 code, we'll be
-# using it primarily to generate Win64 modules. Both IA-64 and AMD64
+# using it primarily to generate Win64 packages. Both IA-64 and AMD64
 # are supported...
 
 # pull APPLINK_MAX value from applink.c...

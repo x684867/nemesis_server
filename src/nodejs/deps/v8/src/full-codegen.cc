@@ -60,8 +60,8 @@ void BreakableStatementChecker::VisitFunctionDeclaration(
     FunctionDeclaration* decl) {
 }
 
-void BreakableStatementChecker::VisitModuleDeclaration(
-    ModuleDeclaration* decl) {
+void BreakableStatementChecker::VisitpackageDeclaration(
+    packageDeclaration* decl) {
 }
 
 void BreakableStatementChecker::VisitImportDeclaration(
@@ -73,23 +73,23 @@ void BreakableStatementChecker::VisitExportDeclaration(
 }
 
 
-void BreakableStatementChecker::VisitModuleLiteral(ModuleLiteral* module) {
+void BreakableStatementChecker::VisitpackageLiteral(packageLiteral* package) {
 }
 
 
-void BreakableStatementChecker::VisitModuleVariable(ModuleVariable* module) {
+void BreakableStatementChecker::VisitpackageVariable(packageVariable* package) {
 }
 
 
-void BreakableStatementChecker::VisitModulePath(ModulePath* module) {
+void BreakableStatementChecker::VisitpackagePath(packagePath* package) {
 }
 
 
-void BreakableStatementChecker::VisitModuleUrl(ModuleUrl* module) {
+void BreakableStatementChecker::VisitpackageUrl(packageUrl* package) {
 }
 
 
-void BreakableStatementChecker::VisitModuleStatement(ModuleStatement* stmt) {
+void BreakableStatementChecker::VisitpackageStatement(packageStatement* stmt) {
 }
 
 
@@ -600,32 +600,32 @@ void FullCodeGenerator::DoTest(const TestContext* context) {
 }
 
 
-void FullCodeGenerator::AllocateModules(ZoneList<Declaration*>* declarations) {
+void FullCodeGenerator::Allocatepackages(ZoneList<Declaration*>* declarations) {
   ASSERT(scope_->is_global_scope());
 
   for (int i = 0; i < declarations->length(); i++) {
-    ModuleDeclaration* declaration = declarations->at(i)->AsModuleDeclaration();
+    packageDeclaration* declaration = declarations->at(i)->AspackageDeclaration();
     if (declaration != NULL) {
-      ModuleLiteral* module = declaration->module()->AsModuleLiteral();
-      if (module != NULL) {
-        Comment cmnt(masm_, "[ Link nested modules");
-        Scope* scope = module->body()->scope();
+      packageLiteral* package = declaration->package()->AspackageLiteral();
+      if (package != NULL) {
+        Comment cmnt(masm_, "[ Link nested packages");
+        Scope* scope = package->body()->scope();
         Interface* interface = scope->interface();
-        ASSERT(interface->IsModule() && interface->IsFrozen());
+        ASSERT(interface->Ispackage() && interface->IsFrozen());
 
-        interface->Allocate(scope->module_var()->index());
+        interface->Allocate(scope->package_var()->index());
 
-        // Set up module context.
+        // Set up package context.
         ASSERT(scope->interface()->Index() >= 0);
         __ Push(Smi::FromInt(scope->interface()->Index()));
         __ Push(scope->GetScopeInfo());
-        __ CallRuntime(Runtime::kPushModuleContext, 2);
+        __ CallRuntime(Runtime::kPushpackageContext, 2);
         StoreToFrameField(StandardFrameConstants::kContextOffset,
                           context_register());
 
-        AllocateModules(scope->declarations());
+        Allocatepackages(scope->declarations());
 
-        // Pop module context.
+        // Pop package context.
         LoadContextField(context_register(), Context::PREVIOUS_INDEX);
         // Update local stack frame context field.
         StoreToFrameField(StandardFrameConstants::kContextOffset,
@@ -636,96 +636,96 @@ void FullCodeGenerator::AllocateModules(ZoneList<Declaration*>* declarations) {
 }
 
 
-// Modules have their own local scope, represented by their own context.
-// Module instance objects have an accessor for every export that forwards
-// access to the respective slot from the module's context. (Exports that are
-// modules themselves, however, are simple data properties.)
+// packages have their own local scope, represented by their own context.
+// package instance objects have an accessor for every export that forwards
+// access to the respective slot from the package's context. (Exports that are
+// packages themselves, however, are simple data properties.)
 //
-// All modules have a _hosting_ scope/context, which (currently) is the
-// (innermost) enclosing global scope. To deal with recursion, nested modules
+// All packages have a _hosting_ scope/context, which (currently) is the
+// (innermost) enclosing global scope. To deal with recursion, nested packages
 // are hosted by the same scope as global ones.
 //
-// For every (global or nested) module literal, the hosting context has an
-// internal slot that points directly to the respective module context. This
-// enables quick access to (statically resolved) module members by 2-dimensional
+// For every (global or nested) package literal, the hosting context has an
+// internal slot that points directly to the respective package context. This
+// enables quick access to (statically resolved) package members by 2-dimensional
 // access through the hosting context. For example,
 //
-//   module A {
+//   package A {
 //     let x;
-//     module B { let y; }
+//     package B { let y; }
 //   }
-//   module C { let z; }
+//   package C { let z; }
 //
 // allocates contexts as follows:
 //
 // [header| .A | .B | .C | A | C ]  (global)
 //           |    |    |
-//           |    |    +-- [header| z ]  (module)
+//           |    |    +-- [header| z ]  (package)
 //           |    |
-//           |    +------- [header| y ]  (module)
+//           |    +------- [header| y ]  (package)
 //           |
-//           +------------ [header| x | B ]  (module)
+//           +------------ [header| x | B ]  (package)
 //
-// Here, .A, .B, .C are the internal slots pointing to the hosted module
+// Here, .A, .B, .C are the internal slots pointing to the hosted package
 // contexts, whereas A, B, C hold the actual instance objects (note that every
-// module context also points to the respective instance object through its
+// package context also points to the respective instance object through its
 // extension slot in the header).
 //
-// To deal with arbitrary recursion and aliases between modules,
+// To deal with arbitrary recursion and aliases between packages,
 // they are created and initialized in several stages. Each stage applies to
-// all modules in the hosting global scope, including nested ones.
+// all packages in the hosting global scope, including nested ones.
 //
-// 1. Allocate: for each module _literal_, allocate the module contexts and
+// 1. Allocate: for each package _literal_, allocate the package contexts and
 //    respective instance object and wire them up. This happens in the
-//    PushModuleContext runtime function, as generated by AllocateModules
+//    PushpackageContext runtime function, as generated by Allocatepackages
 //    (invoked by VisitDeclarations in the hosting scope).
 //
-// 2. Bind: for each module _declaration_ (i.e. literals as well as aliases),
+// 2. Bind: for each package _declaration_ (i.e. literals as well as aliases),
 //    assign the respective instance object to respective local variables. This
-//    happens in VisitModuleDeclaration, and uses the instance objects created
+//    happens in VisitpackageDeclaration, and uses the instance objects created
 //    in the previous stage.
-//    For each module _literal_, this phase also constructs a module descriptor
-//    for the next stage. This happens in VisitModuleLiteral.
+//    For each package _literal_, this phase also constructs a package descriptor
+//    for the next stage. This happens in VisitpackageLiteral.
 //
-// 3. Populate: invoke the DeclareModules runtime function to populate each
+// 3. Populate: invoke the Declarepackages runtime function to populate each
 //    _instance_ object with accessors for it exports. This is generated by
-//    DeclareModules (invoked by VisitDeclarations in the hosting scope again),
+//    Declarepackages (invoked by VisitDeclarations in the hosting scope again),
 //    and uses the descriptors generated in the previous stage.
 //
-// 4. Initialize: execute the module bodies (and other code) in sequence. This
-//    happens by the separate statements generated for module bodies. To reenter
-//    the module scopes properly, the parser inserted ModuleStatements.
+// 4. Initialize: execute the package bodies (and other code) in sequence. This
+//    happens by the separate statements generated for package bodies. To reenter
+//    the package scopes properly, the parser inserted packageStatements.
 
 void FullCodeGenerator::VisitDeclarations(
     ZoneList<Declaration*>* declarations) {
-  Handle<FixedArray> saved_modules = modules_;
-  int saved_module_index = module_index_;
+  Handle<FixedArray> saved_packages = packages_;
+  int saved_package_index = package_index_;
   ZoneList<Handle<Object> >* saved_globals = globals_;
   ZoneList<Handle<Object> > inner_globals(10, zone());
   globals_ = &inner_globals;
 
-  if (scope_->num_modules() != 0) {
-    // This is a scope hosting modules. Allocate a descriptor array to pass
+  if (scope_->num_packages() != 0) {
+    // This is a scope hosting packages. Allocate a descriptor array to pass
     // to the runtime for initialization.
-    Comment cmnt(masm_, "[ Allocate modules");
+    Comment cmnt(masm_, "[ Allocate packages");
     ASSERT(scope_->is_global_scope());
-    modules_ =
-        isolate()->factory()->NewFixedArray(scope_->num_modules(), TENURED);
-    module_index_ = 0;
+    packages_ =
+        isolate()->factory()->NewFixedArray(scope_->num_packages(), TENURED);
+    package_index_ = 0;
 
-    // Generate code for allocating all modules, including nested ones.
+    // Generate code for allocating all packages, including nested ones.
     // The allocated contexts are stored in internal variables in this scope.
-    AllocateModules(declarations);
+    Allocatepackages(declarations);
   }
 
   AstVisitor::VisitDeclarations(declarations);
 
-  if (scope_->num_modules() != 0) {
-    // Initialize modules from descriptor array.
-    ASSERT(module_index_ == modules_->length());
-    DeclareModules(modules_);
-    modules_ = saved_modules;
-    module_index_ = saved_module_index;
+  if (scope_->num_packages() != 0) {
+    // Initialize packages from descriptor array.
+    ASSERT(package_index_ == packages_->length());
+    Declarepackages(packages_);
+    packages_ = saved_packages;
+    package_index_ = saved_package_index;
   }
 
   if (!globals_->is_empty()) {
@@ -742,24 +742,24 @@ void FullCodeGenerator::VisitDeclarations(
 }
 
 
-void FullCodeGenerator::VisitModuleLiteral(ModuleLiteral* module) {
-  Block* block = module->body();
+void FullCodeGenerator::VisitpackageLiteral(packageLiteral* package) {
+  Block* block = package->body();
   Scope* saved_scope = scope();
   scope_ = block->scope();
   Interface* interface = scope_->interface();
 
-  Comment cmnt(masm_, "[ ModuleLiteral");
+  Comment cmnt(masm_, "[ packageLiteral");
   SetStatementPosition(block);
 
-  ASSERT(!modules_.is_null());
-  ASSERT(module_index_ < modules_->length());
-  int index = module_index_++;
+  ASSERT(!packages_.is_null());
+  ASSERT(package_index_ < packages_->length());
+  int index = package_index_++;
 
-  // Set up module context.
+  // Set up package context.
   ASSERT(interface->Index() >= 0);
   __ Push(Smi::FromInt(interface->Index()));
   __ Push(Smi::FromInt(0));
-  __ CallRuntime(Runtime::kPushModuleContext, 2);
+  __ CallRuntime(Runtime::kPushpackageContext, 2);
   StoreToFrameField(StandardFrameConstants::kContextOffset, context_register());
 
   {
@@ -767,45 +767,45 @@ void FullCodeGenerator::VisitModuleLiteral(ModuleLiteral* module) {
     VisitDeclarations(scope_->declarations());
   }
 
-  // Populate the module description.
-  Handle<ModuleInfo> description =
-      ModuleInfo::Create(isolate(), interface, scope_);
-  modules_->set(index, *description);
+  // Populate the package description.
+  Handle<packageInfo> description =
+      packageInfo::Create(isolate(), interface, scope_);
+  packages_->set(index, *description);
 
   scope_ = saved_scope;
-  // Pop module context.
+  // Pop package context.
   LoadContextField(context_register(), Context::PREVIOUS_INDEX);
   // Update local stack frame context field.
   StoreToFrameField(StandardFrameConstants::kContextOffset, context_register());
 }
 
 
-void FullCodeGenerator::VisitModuleVariable(ModuleVariable* module) {
+void FullCodeGenerator::VisitpackageVariable(packageVariable* package) {
   // Nothing to do.
-  // The instance object is resolved statically through the module's interface.
+  // The instance object is resolved statically through the package's interface.
 }
 
 
-void FullCodeGenerator::VisitModulePath(ModulePath* module) {
+void FullCodeGenerator::VisitpackagePath(packagePath* package) {
   // Nothing to do.
-  // The instance object is resolved statically through the module's interface.
+  // The instance object is resolved statically through the package's interface.
 }
 
 
-void FullCodeGenerator::VisitModuleUrl(ModuleUrl* module) {
+void FullCodeGenerator::VisitpackageUrl(packageUrl* package) {
   // TODO(rossberg): dummy allocation for now.
-  Scope* scope = module->body()->scope();
+  Scope* scope = package->body()->scope();
   Interface* interface = scope_->interface();
 
-  ASSERT(interface->IsModule() && interface->IsFrozen());
-  ASSERT(!modules_.is_null());
-  ASSERT(module_index_ < modules_->length());
-  interface->Allocate(scope->module_var()->index());
-  int index = module_index_++;
+  ASSERT(interface->Ispackage() && interface->IsFrozen());
+  ASSERT(!packages_.is_null());
+  ASSERT(package_index_ < packages_->length());
+  interface->Allocate(scope->package_var()->index());
+  int index = package_index_++;
 
-  Handle<ModuleInfo> description =
-      ModuleInfo::Create(isolate(), interface, scope_);
-  modules_->set(index, *description);
+  Handle<packageInfo> description =
+      packageInfo::Create(isolate(), interface, scope_);
+  packages_->set(index, *description);
 }
 
 
@@ -1083,7 +1083,7 @@ void FullCodeGenerator::VisitBlock(Block* stmt) {
   // Push a block context when entering a block with block scoped variables.
   if (stmt->scope() != NULL) {
     scope_ = stmt->scope();
-    ASSERT(!scope_->is_module_scope());
+    ASSERT(!scope_->is_package_scope());
     { Comment cmnt(masm_, "[ Extend block context");
       Handle<ScopeInfo> scope_info = scope_->GetScopeInfo();
       int heap_slots = scope_info->ContextLength() - Context::MIN_CONTEXT_SLOTS;
@@ -1121,12 +1121,12 @@ void FullCodeGenerator::VisitBlock(Block* stmt) {
 }
 
 
-void FullCodeGenerator::VisitModuleStatement(ModuleStatement* stmt) {
-  Comment cmnt(masm_, "[ Module context");
+void FullCodeGenerator::VisitpackageStatement(packageStatement* stmt) {
+  Comment cmnt(masm_, "[ package context");
 
   __ Push(Smi::FromInt(stmt->proxy()->interface()->Index()));
   __ Push(Smi::FromInt(0));
-  __ CallRuntime(Runtime::kPushModuleContext, 2);
+  __ CallRuntime(Runtime::kPushpackageContext, 2);
   StoreToFrameField(
       StandardFrameConstants::kContextOffset, context_register());
 

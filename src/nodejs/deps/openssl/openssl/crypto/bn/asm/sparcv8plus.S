@@ -16,7 +16,7 @@
  * This is my modest contributon to OpenSSL project (see
  * http://www.openssl.org/ for more information about it) and is
  * a drop-in UltraSPARC ISA replacement for crypto/bn/bn_asm.c
- * module. For updates see http://fy.chalmers.se/~appro/hpe/.
+ * package. For updates see http://fy.chalmers.se/~appro/hpe/.
  *
  * Questions-n-answers.
  *
@@ -33,7 +33,7 @@
  *
  *	gcc -E bn_asm.sparc.v8plus.S | as -xarch=v8plus /dev/fd/0 -o bn_asm.o
  *
- *    Quick-n-dirty way to fuse the module into the library.
+ *    Quick-n-dirty way to fuse the package into the library.
  *    Provided that the library is already configured and built
  *    (in 0.9.2 case with no-asm option):
  *
@@ -74,7 +74,7 @@
  * A. You can't adress *all* registers as 64-bit wide:-( The catch is
  *    that you actually may rely upon %o0-%o5 and %g1-%g4 being fully
  *    preserved if you're in a leaf function, i.e. such never calling
- *    any other functions. All functions in this module are leaf and
+ *    any other functions. All functions in this package are leaf and
  *    10 registers is a handful. And as a matter of fact none-"comba"
  *    routines don't require even that much and I could even afford to
  *    not allocate own stack frame for 'em:-)
@@ -92,13 +92,13 @@
  * A. Do you have a good benchmark? In either case below is what I
  *    experience with crypto/bn/expspeed.c test program:
  *
- *	v8plus module on U10/300MHz against bn_asm.c compiled with:
+ *	v8plus package on U10/300MHz against bn_asm.c compiled with:
  *
  *	cc-5.0 -xarch=v8plus -xO5 -xdepend	+7-12%
  *	cc-4.2 -xarch=v8plus -xO5 -xdepend	+25-35%
  *	egcs-1.1.2 -mcpu=ultrasparc -O3		+35-45%
  *
- *	v8 module on SS10/60MHz against bn_asm.c compiled with:
+ *	v8 package on SS10/60MHz against bn_asm.c compiled with:
  *
  *	cc-5.0 -xarch=v8 -xO5 -xdepend		+7-10%
  *	cc-4.2 -xarch=v8 -xO5 -xdepend		+10%

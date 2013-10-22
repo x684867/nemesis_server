@@ -2,7 +2,7 @@
 
     Stability: 3 - Stable
 
-You can access this module with:
+You can access this package with:
 
     var zlib = require('zlib');
 
@@ -39,7 +39,7 @@ the convenience methods.
       }
     });
 
-To use this module in an HTTP client or server, use the
+To use this package in an HTTP client or server, use the
 [accept-encoding](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3)
 on requests, and the
 [content-encoding](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11)
@@ -141,7 +141,7 @@ Returns a new [Unzip](#zlib_class_zlib_unzip) object with an
 
 ## Class: zlib.Zlib
 
-Not exported by the `zlib` module. It is documented here because it is the base
+Not exported by the `zlib` package. It is documented here because it is the base
 class of the compressor/decompressor classes.
 
 ### zlib.flush([kind], callback)

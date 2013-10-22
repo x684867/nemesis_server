@@ -217,7 +217,7 @@ enum BindingFlags {
 //                searches the extension object for properties.
 //                For global and block contexts, contains the respective
 //                ScopeInfo.
-//                For module contexts, points back to the respective JSModule.
+//                For package contexts, points back to the respective JSpackage.
 //
 // [ global_object ]  A pointer to the global object. Provided for quick
 //                access to the global object from inside the code (since
@@ -245,7 +245,7 @@ class Context: public FixedArray {
     // The extension slot is used for either the global object (in global
     // contexts), eval extension object (function contexts), subject of with
     // (with contexts), or the variable name (catch contexts), the serialized
-    // scope info (block contexts), or the module instance (module contexts).
+    // scope info (block contexts), or the package instance (package contexts).
     EXTENSION_INDEX,
     GLOBAL_OBJECT_INDEX,
     MIN_CONTEXT_SLOTS,
@@ -361,8 +361,8 @@ class Context: public FixedArray {
   Object* extension() { return get(EXTENSION_INDEX); }
   void set_extension(Object* object) { set(EXTENSION_INDEX, object); }
 
-  JSModule* module() { return JSModule::cast(get(EXTENSION_INDEX)); }
-  void set_module(JSModule* module) { set(EXTENSION_INDEX, module); }
+  JSpackage* package() { return JSpackage::cast(get(EXTENSION_INDEX)); }
+  void set_package(JSpackage* package) { set(EXTENSION_INDEX, package); }
 
   // Get the context where var declarations will be hoisted to, which
   // may be the context itself.
@@ -413,9 +413,9 @@ class Context: public FixedArray {
     Map* map = this->map();
     return map == map->GetHeap()->block_context_map();
   }
-  bool IsModuleContext() {
+  bool IspackageContext() {
     Map* map = this->map();
-    return map == map->GetHeap()->module_context_map();
+    return map == map->GetHeap()->package_context_map();
   }
   bool IsGlobalContext() {
     Map* map = this->map();

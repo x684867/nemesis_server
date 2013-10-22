@@ -1,5 +1,5 @@
 
-module.exports = config
+package.exports = config
 
 config.usage = "npm config set <key> <value>"
              + "\nnpm config get [<key>]"

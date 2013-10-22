@@ -2,7 +2,7 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -24,7 +24,7 @@
 # "overlap" multiplications and the other operations [and on most
 # platforms even minimize the amount of the other operations, in
 # particular references to memory]. But it's possible to improve this
-# module performance by implementing dedicated squaring code-path and
+# package performance by implementing dedicated squaring code-path and
 # possibly by unrolling loops...
 
 # January 2009.

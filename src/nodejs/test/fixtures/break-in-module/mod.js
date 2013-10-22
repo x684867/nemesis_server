@@ -20,5 +20,5 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 exports.hello = function() {
-  return 'hello from module';
+  return 'hello from package';
 };

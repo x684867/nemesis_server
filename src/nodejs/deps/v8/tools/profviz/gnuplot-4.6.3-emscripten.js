@@ -48,7 +48,7 @@
 //         return ticfmt[axis];
 //     }
 
-var Module = {
+var package = {
     'noInitialRun': true,
     print: function(text) {
         self.postMessage({'transaction': -1, 'content': text});
@@ -61,32 +61,32 @@ function gnuplot_create() {
 // Note: For maximum-speed code, see "Optimizing Code" on the Emscripten wiki, https://github.com/kripken/emscripten/wiki/Optimizing-Code
 // Note: Some Emscripten settings may limit the speed of the generated code.
 try {
-  this['Module'] = Module;
-  Module.test;
+  this['package'] = package;
+  package.test;
 } catch(e) {
-  this['Module'] = Module = {};
+  this['package'] = package = {};
 }
-// The environment setup code below is customized to use Module.
+// The environment setup code below is customized to use package.
 // *** Environment setup code ***
 var ENVIRONMENT_IS_NODE = typeof process === 'object' && typeof require === 'function';
 var ENVIRONMENT_IS_WEB = typeof window === 'object';
 var ENVIRONMENT_IS_WORKER = typeof importScripts === 'function';
 var ENVIRONMENT_IS_SHELL = !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !ENVIRONMENT_IS_WORKER;
-if (typeof module === "object") {
-  module.exports = Module;
+if (typeof package === "object") {
+  package.exports = package;
 }
 if (ENVIRONMENT_IS_NODE) {
   // Expose functionality in the same simple way that the shells work
   // Note that we pollute the global namespace here, otherwise we break in node
-  Module['print'] = function(x) {
+  package['print'] = function(x) {
     process['stdout'].write(x + '\n');
   };
-  Module['printErr'] = function(x) {
+  package['printErr'] = function(x) {
     process['stderr'].write(x + '\n');
   };
   var nodeFS = require('fs');
   var nodePath = require('path');
-  Module['read'] = function(filename, binary) {
+  package['read'] = function(filename, binary) {
     filename = nodePath['normalize'](filename);
     var ret = nodeFS['readFileSync'](filename);
     // The path is absolute if the normalized version is the same as the resolved.
@@ -97,65 +97,65 @@ if (ENVIRONMENT_IS_NODE) {
     if (ret && !binary) ret = ret.toString();
     return ret;
   };
-  Module['readBinary'] = function(filename) { return Module['read'](filename, true) };
-  Module['load'] = function(f) {
+  package['readBinary'] = function(filename) { return package['read'](filename, true) };
+  package['load'] = function(f) {
     globalEval(read(f));
   };
-  if (!Module['arguments']) {
-    Module['arguments'] = process['argv'].slice(2);
+  if (!package['arguments']) {
+    package['arguments'] = process['argv'].slice(2);
   }
 }
 if (ENVIRONMENT_IS_SHELL) {
-  Module['print'] = print;
-  if (typeof printErr != 'undefined') Module['printErr'] = printErr; // not present in v8 or older sm
-  Module['read'] = read;
-  Module['readBinary'] = function(f) {
+  package['print'] = print;
+  if (typeof printErr != 'undefined') package['printErr'] = printErr; // not present in v8 or older sm
+  package['read'] = read;
+  package['readBinary'] = function(f) {
     return read(f, 'binary');
   };
-  if (!Module['arguments']) {
+  if (!package['arguments']) {
     if (typeof scriptArgs != 'undefined') {
-      Module['arguments'] = scriptArgs;
+      package['arguments'] = scriptArgs;
     } else if (typeof arguments != 'undefined') {
-      Module['arguments'] = arguments;
+      package['arguments'] = arguments;
     }
   }
 }
 if (ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_WORKER) {
-  if (!Module['print']) {
-    Module['print'] = function(x) {
+  if (!package['print']) {
+    package['print'] = function(x) {
       console.log(x);
     };
   }
-  if (!Module['printErr']) {
-    Module['printErr'] = function(x) {
+  if (!package['printErr']) {
+    package['printErr'] = function(x) {
       console.log(x);
     };
   }
 }
 if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
-  Module['read'] = function(url) {
+  package['read'] = function(url) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, false);
     xhr.send(null);
     return xhr.responseText;
   };
-  if (!Module['arguments']) {
+  if (!package['arguments']) {
     if (typeof arguments != 'undefined') {
-      Module['arguments'] = arguments;
+      package['arguments'] = arguments;
     }
   }
 }
 if (ENVIRONMENT_IS_WORKER) {
   // We can do very little here...
   var TRY_USE_DUMP = false;
-  if (!Module['print']) {
-    Module['print'] = (TRY_USE_DUMP && (typeof(dump) !== "undefined") ? (function(x) {
+  if (!package['print']) {
+    package['print'] = (TRY_USE_DUMP && (typeof(dump) !== "undefined") ? (function(x) {
       dump(x);
     }) : (function(x) {
       // self.postMessage(x); // enable this if you want stdout to be sent as messages
     }));
   }
-  Module['load'] = importScripts;
+  package['load'] = importScripts;
 }
 if (!ENVIRONMENT_IS_WORKER && !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !ENVIRONMENT_IS_SHELL) {
   // Unreachable because SHELL is dependant on the others
@@ -164,27 +164,27 @@ if (!ENVIRONMENT_IS_WORKER && !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !EN
 function globalEval(x) {
   eval.call(null, x);
 }
-if (!Module['load'] == 'undefined' && Module['read']) {
-  Module['load'] = function(f) {
-    globalEval(Module['read'](f));
+if (!package['load'] == 'undefined' && package['read']) {
+  package['load'] = function(f) {
+    globalEval(package['read'](f));
   };
 }
-if (!Module['print']) {
-  Module['print'] = function(){};
+if (!package['print']) {
+  package['print'] = function(){};
 }
-if (!Module['printErr']) {
-  Module['printErr'] = Module['print'];
+if (!package['printErr']) {
+  package['printErr'] = package['print'];
 }
-if (!Module['arguments']) {
-  Module['arguments'] = [];
+if (!package['arguments']) {
+  package['arguments'] = [];
 }
 // *** Environment setup code ***
 // Closure helpers
-Module.print = Module['print'];
-Module.printErr = Module['printErr'];
+package.print = package['print'];
+package.printErr = package['printErr'];
 // Callbacks
-if (!Module['preRun']) Module['preRun'] = [];
-if (!Module['postRun']) Module['postRun'] = [];
+if (!package['preRun']) package['preRun'] = [];
+if (!package['postRun']) package['postRun'] = [];
 // === Auto-generated preamble library stuff ===
 //========================================
 // Runtime code shared with compiler
@@ -372,9 +372,9 @@ var Runtime = {
     if (args && args.length) {
       if (!args.splice) args = Array.prototype.slice.call(args);
       args.splice(0, 0, ptr);
-      return Module['dynCall_' + sig].apply(null, args);
+      return package['dynCall_' + sig].apply(null, args);
     } else {
-      return Module['dynCall_' + sig].call(null, ptr);
+      return package['dynCall_' + sig].call(null, ptr);
     }
   },
   functionPointers: [],
@@ -394,7 +394,7 @@ var Runtime = {
     if (!Runtime.warnOnce.shown) Runtime.warnOnce.shown = {};
     if (!Runtime.warnOnce.shown[text]) {
       Runtime.warnOnce.shown[text] = 1;
-      Module.printErr(text);
+      package.printErr(text);
     }
   },
   funcWrappers: {},
@@ -469,7 +469,7 @@ var tempValue, tempInt, tempBigInt, tempInt2, tempBigInt2, tempPair, tempBigIntI
 var tempI64, tempI64b;
 var tempRet0, tempRet1, tempRet2, tempRet3, tempRet4, tempRet5, tempRet6, tempRet7, tempRet8, tempRet9;
 function abort(text) {
-  Module.print(text + ':\n' + (new Error).stack);
+  package.print(text + ':\n' + (new Error).stack);
   ABORT = true;
   throw "Assertion: " + text;
 }
@@ -499,11 +499,11 @@ var globalScope = this;
 function ccall(ident, returnType, argTypes, args) {
   return ccallFunc(getCFunc(ident), returnType, argTypes, args);
 }
-Module["ccall"] = ccall;
+package["ccall"] = ccall;
 // Returns the C function with a specified identifier (for C++, you need to do manual name mangling)
 function getCFunc(ident) {
   try {
-    var func = globalScope['Module']['_' + ident]; // closure exported function
+    var func = globalScope['package']['_' + ident]; // closure exported function
     if (!func) func = eval('_' + ident); // explicit lookup
   } catch(e) {
   }
@@ -556,7 +556,7 @@ function cwrap(ident, returnType, argTypes) {
     return ccallFunc(func, returnType, argTypes, Array.prototype.slice.call(arguments));
   }
 }
-Module["cwrap"] = cwrap;
+package["cwrap"] = cwrap;
 // Sets a value in memory in a dynamic way at run-time. Uses the
 // type data. This is the same as makeSetValue, except that
 // makeSetValue is done at compile-time and generates the needed
@@ -579,7 +579,7 @@ function setValue(ptr, value, type, noSafe) {
       default: abort('invalid type for setValue: ' + type);
     }
 }
-Module['setValue'] = setValue;
+package['setValue'] = setValue;
 // Parallel to setValue.
 function getValue(ptr, type, noSafe) {
   type = type || 'i8';
@@ -596,17 +596,17 @@ function getValue(ptr, type, noSafe) {
     }
   return null;
 }
-Module['getValue'] = getValue;
+package['getValue'] = getValue;
 var ALLOC_NORMAL = 0; // Tries to use _malloc()
 var ALLOC_STACK = 1; // Lives for the duration of the current function call
 var ALLOC_STATIC = 2; // Cannot be freed
 var ALLOC_DYNAMIC = 3; // Cannot be freed except through sbrk
 var ALLOC_NONE = 4; // Do not allocate
-Module['ALLOC_NORMAL'] = ALLOC_NORMAL;
-Module['ALLOC_STACK'] = ALLOC_STACK;
-Module['ALLOC_STATIC'] = ALLOC_STATIC;
-Module['ALLOC_DYNAMIC'] = ALLOC_DYNAMIC;
-Module['ALLOC_NONE'] = ALLOC_NONE;
+package['ALLOC_NORMAL'] = ALLOC_NORMAL;
+package['ALLOC_STACK'] = ALLOC_STACK;
+package['ALLOC_STATIC'] = ALLOC_STATIC;
+package['ALLOC_DYNAMIC'] = ALLOC_DYNAMIC;
+package['ALLOC_NONE'] = ALLOC_NONE;
 // allocate(): This is for internal use. You can use it yourself as well, but the interface
 //             is a little tricky (see docs right below). The reason is that it is optimized
 //             for multiple syntaxes to save space in generated code. So you should
@@ -679,7 +679,7 @@ function allocate(slab, types, allocator, ptr) {
   }
   return ret;
 }
-Module['allocate'] = allocate;
+package['allocate'] = allocate;
 function Pointer_stringify(ptr, /* optional */ length) {
   // Find the length, and check for UTF while doing so
   var hasUtf = false;
@@ -712,7 +712,7 @@ function Pointer_stringify(ptr, /* optional */ length) {
   }
   return ret;
 }
-Module['Pointer_stringify'] = Pointer_stringify;
+package['Pointer_stringify'] = Pointer_stringify;
 // Memory management
 var PAGE_SIZE = 4096;
 function alignMemoryPage(x) {
@@ -724,11 +724,11 @@ var STATIC_BASE = 0, STATICTOP = 0, staticSealed = false; // static area
 var STACK_BASE = 0, STACKTOP = 0, STACK_MAX = 0; // stack area
 var DYNAMIC_BASE = 0, DYNAMICTOP = 0; // dynamic area handled by sbrk
 function enlargeMemory() {
-  abort('Cannot enlarge memory arrays in asm.js. Either (1) compile with -s TOTAL_MEMORY=X with X higher than the current value, or (2) set Module.TOTAL_MEMORY before the program runs.');
+  abort('Cannot enlarge memory arrays in asm.js. Either (1) compile with -s TOTAL_MEMORY=X with X higher than the current value, or (2) set package.TOTAL_MEMORY before the program runs.');
 }
-var TOTAL_STACK = Module['TOTAL_STACK'] || 5242880;
-var TOTAL_MEMORY = Module['TOTAL_MEMORY'] || 16777216;
-var FAST_MEMORY = Module['FAST_MEMORY'] || 2097152;
+var TOTAL_STACK = package['TOTAL_STACK'] || 5242880;
+var TOTAL_MEMORY = package['TOTAL_MEMORY'] || 16777216;
+var FAST_MEMORY = package['FAST_MEMORY'] || 2097152;
 // Initialize the runtime's memory
 // check for full engine support (use string 'subarray' to avoid closure compiler confusion)
 assert(!!Int32Array && !!Float64Array && !!(new Int32Array(1)['subarray']) && !!(new Int32Array(1)['set']),
@@ -745,15 +745,15 @@ HEAPF64 = new Float64Array(buffer);
 // Endianness check (note: assumes compiler arch was little-endian)
 HEAP32[0] = 255;
 assert(HEAPU8[0] === 255 && HEAPU8[3] === 0, 'Typed arrays 2 must be run on a little-endian system');
-Module['HEAP'] = HEAP;
-Module['HEAP8'] = HEAP8;
-Module['HEAP16'] = HEAP16;
-Module['HEAP32'] = HEAP32;
-Module['HEAPU8'] = HEAPU8;
-Module['HEAPU16'] = HEAPU16;
-Module['HEAPU32'] = HEAPU32;
-Module['HEAPF32'] = HEAPF32;
-Module['HEAPF64'] = HEAPF64;
+package['HEAP'] = HEAP;
+package['HEAP8'] = HEAP8;
+package['HEAP16'] = HEAP16;
+package['HEAP32'] = HEAP32;
+package['HEAPU8'] = HEAPU8;
+package['HEAPU16'] = HEAPU16;
+package['HEAPU32'] = HEAPU32;
+package['HEAPF32'] = HEAPF32;
+package['HEAPF64'] = HEAPF64;
 function callRuntimeCallbacks(callbacks) {
   while(callbacks.length > 0) {
     var callback = callbacks.shift();
@@ -801,7 +801,7 @@ function intArrayFromString(stringy, dontAddNull, length /* optional */) {
   }
   return ret;
 }
-Module['intArrayFromString'] = intArrayFromString;
+package['intArrayFromString'] = intArrayFromString;
 function intArrayToString(array) {
   var ret = [];
   for (var i = 0; i < array.length; i++) {
@@ -813,7 +813,7 @@ function intArrayToString(array) {
   }
   return ret.join('');
 }
-Module['intArrayToString'] = intArrayToString;
+package['intArrayToString'] = intArrayToString;
 // Write a Javascript array to somewhere in the heap
 function writeStringToMemory(string, buffer, dontAddNull) {
   var array = intArrayFromString(string, dontAddNull);
@@ -824,13 +824,13 @@ function writeStringToMemory(string, buffer, dontAddNull) {
     i = i + 1;
   }
 }
-Module['writeStringToMemory'] = writeStringToMemory;
+package['writeStringToMemory'] = writeStringToMemory;
 function writeArrayToMemory(array, buffer) {
   for (var i = 0; i < array.length; i++) {
     HEAP8[(((buffer)+(i))|0)]=array[i];
   }
 }
-Module['writeArrayToMemory'] = writeArrayToMemory;
+package['writeArrayToMemory'] = writeArrayToMemory;
 function unSign(value, bits, ignore, sig) {
   if (value >= 0) {
     return value;
@@ -871,44 +871,44 @@ var calledInit = false, calledRun = false;
 var runDependencyWatcher = null;
 function addRunDependency(id) {
   runDependencies++;
-  if (Module['monitorRunDependencies']) {
-    Module['monitorRunDependencies'](runDependencies);
+  if (package['monitorRunDependencies']) {
+    package['monitorRunDependencies'](runDependencies);
   }
   if (id) {
     assert(!runDependencyTracking[id]);
     runDependencyTracking[id] = 1;
   } else {
-    Module.printErr('warning: run dependency added without ID');
+    package.printErr('warning: run dependency added without ID');
   }
 }
-Module['addRunDependency'] = addRunDependency;
+package['addRunDependency'] = addRunDependency;
 function removeRunDependency(id) {
   runDependencies--;
-  if (Module['monitorRunDependencies']) {
-    Module['monitorRunDependencies'](runDependencies);
+  if (package['monitorRunDependencies']) {
+    package['monitorRunDependencies'](runDependencies);
   }
   if (id) {
     assert(runDependencyTracking[id]);
     delete runDependencyTracking[id];
   } else {
-    Module.printErr('warning: run dependency removed without ID');
+    package.printErr('warning: run dependency removed without ID');
   }
   if (runDependencies == 0) {
     if (runDependencyWatcher !== null) {
       clearInterval(runDependencyWatcher);
       runDependencyWatcher = null;
     }
-    // If run has never been called, and we should call run (INVOKE_RUN is true, and Module.noInitialRun is not false)
+    // If run has never been called, and we should call run (INVOKE_RUN is true, and package.noInitialRun is not false)
     if (!calledRun && shouldRunNow) run();
   }
 }
-Module['removeRunDependency'] = removeRunDependency;
-Module["preloadedImages"] = {}; // maps url to image data
-Module["preloadedAudios"] = {}; // maps url to audio data
+package['removeRunDependency'] = removeRunDependency;
+package["preloadedImages"] = {}; // maps url to image data
+package["preloadedAudios"] = {}; // maps url to audio data
 function addPreRun(func) {
-  if (!Module['preRun']) Module['preRun'] = [];
-  else if (typeof Module['preRun'] == 'function') Module['preRun'] = [Module['preRun']];
-  Module['preRun'].push(func);
+  if (!package['preRun']) package['preRun'] = [];
+  else if (typeof package['preRun'] == 'function') package['preRun'] = [package['preRun']];
+  package['preRun'].push(func);
 }
 var awaitingMemoryInitializer = false;
 function loadMemoryInitializer(filename) {
@@ -919,7 +919,7 @@ function loadMemoryInitializer(filename) {
   // always do this asynchronously, to keep shell and web as similar as possible
   addPreRun(function() {
     if (ENVIRONMENT_IS_NODE || ENVIRONMENT_IS_SHELL) {
-      applyData(Module['readBinary'](filename));
+      applyData(package['readBinary'](filename));
     } else {
       Browser.asyncLoad(filename, function(data) {
         applyData(data);
@@ -1285,7 +1285,7 @@ function copyTempDouble(ptr) {
             removeRunDependency('cp ' + fullname);
           }
           var handled = false;
-          Module['preloadPlugins'].forEach(function(plugin) {
+          package['preloadPlugins'].forEach(function(plugin) {
             if (handled) return;
             if (plugin['canHandle'](fullname)) {
               plugin['handle'](byteArray, fullname, finish, function() {
@@ -1319,12 +1319,12 @@ function copyTempDouble(ptr) {
         var success = true;
         if (typeof XMLHttpRequest !== 'undefined') {
           throw new Error("Lazy loading should have been performed (contents set) in createLazyFile, but it was not. Lazy loading only works in web workers. Use --embed-file or --preload-file in emcc on the main thread.");
-        } else if (Module['read']) {
+        } else if (package['read']) {
           // Command-line.
           try {
             // WARNING: Can't read binary files in V8's d8 or tracemonkey's js, as
             //          read() will try to parse UTF8.
-            obj.contents = intArrayFromString(Module['read'](obj.url), true);
+            obj.contents = intArrayFromString(package['read'](obj.url), true);
           } catch (e) {
             success = false;
           }
@@ -1350,10 +1350,10 @@ function copyTempDouble(ptr) {
         assert(!FS.init.initialized, 'FS.init was previously called. If you want to initialize later with custom parameters, remove any earlier calls (note that one is automatically added to the generated code)');
         FS.init.initialized = true;
         FS.ensureRoot();
-        // Allow Module.stdin etc. to provide defaults, if none explicitly passed to us here
-        input = input || Module['stdin'];
-        output = output || Module['stdout'];
-        error = error || Module['stderr'];
+        // Allow package.stdin etc. to provide defaults, if none explicitly passed to us here
+        input = input || package['stdin'];
+        output = output || package['stdout'];
+        error = error || package['stderr'];
         // Default handlers.
         var stdinOverridden = true, stdoutOverridden = true, stderrOverridden = true;
         if (!input) {
@@ -1389,13 +1389,13 @@ function copyTempDouble(ptr) {
           stdoutOverridden = false;
           output = simpleOutput;
         }
-        if (!output.printer) output.printer = Module['print'];
+        if (!output.printer) output.printer = package['print'];
         if (!output.buffer) output.buffer = [];
         if (!error) {
           stderrOverridden = false;
           error = simpleOutput;
         }
-        if (!error.printer) error.printer = Module['print'];
+        if (!error.printer) error.printer = package['print'];
         if (!error.buffer) error.buffer = [];
         // Create the temporary folder, if not already created
         try {
@@ -1558,7 +1558,7 @@ function copyTempDouble(ptr) {
         return Math.floor(bytesWritten / size);
       }
     }
-  Module["_strlen"] = _strlen;
+  package["_strlen"] = _strlen;
   function __reallyNegative(x) {
       return x < 0 || (x === 0 && (1/x) === -Infinity);
     }function __formatString(format, varargs) {
@@ -1939,7 +1939,7 @@ function copyTempDouble(ptr) {
       Runtime.stackRestore(stack);
       return ret;
     }
-  Module["_strcpy"] = _strcpy;
+  package["_strcpy"] = _strcpy;
   function _strncmp(px, py, n) {
       var i = 0;
       while (i < n) {
@@ -1986,7 +1986,7 @@ function copyTempDouble(ptr) {
       // http://pubs.opengroup.org/onlinepubs/000095399/functions/printf.html
       return _snprintf(s, undefined, format, varargs);
     }
-  Module["_strcat"] = _strcat;
+  package["_strcat"] = _strcat;
   function _strchr(ptr, chr) {
       ptr--;
       do {
@@ -1998,8 +1998,8 @@ function copyTempDouble(ptr) {
     }
   var _floor=Math.floor;
   var _llvm_pow_f64=Math.pow;
-  Module["_memcpy"] = _memcpy;var _llvm_memcpy_p0i8_p0i8_i32=_memcpy;
-  Module["_memset"] = _memset;var _llvm_memset_p0i8_i32=_memset;
+  package["_memcpy"] = _memcpy;var _llvm_memcpy_p0i8_p0i8_i32=_memcpy;
+  package["_memset"] = _memset;var _llvm_memset_p0i8_i32=_memset;
   function _ftell(stream) {
       // long ftell(FILE *stream);
       // http://pubs.opengroup.org/onlinepubs/000095399/functions/ftell.html
@@ -2227,7 +2227,7 @@ function copyTempDouble(ptr) {
         str++;
       }
     }
-  Module["_strncpy"] = _strncpy;
+  package["_strncpy"] = _strncpy;
   function _isspace(chr) {
       return chr in { 32: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0 };
     }function __parseInt(str, endptr, base, min, max, bits, unsign) {
@@ -2322,13 +2322,13 @@ function copyTempDouble(ptr) {
       } while (curr1);
       return 0;
     }
-  Module["_memcmp"] = _memcmp;
+  package["_memcmp"] = _memcmp;
   function _fputs(s, stream) {
       // int fputs(const char *restrict s, FILE *restrict stream);
       // http://pubs.opengroup.org/onlinepubs/000095399/functions/fputs.html
       return _write(stream, s, _strlen(s));
     }
-  Module["_memmove"] = _memmove;var _llvm_memmove_p0i8_p0i8_i32=_memmove;
+  package["_memmove"] = _memmove;var _llvm_memmove_p0i8_p0i8_i32=_memmove;
   function _fflush(stream) {
       // int fflush(FILE *stream);
       // http://pubs.opengroup.org/onlinepubs/000095399/functions/fflush.html
@@ -2359,7 +2359,7 @@ function copyTempDouble(ptr) {
         this.name = "ExitStatus";
         this.message = "Program terminated with exit(" + status + ")";
         this.status = status;
-        Module.print('Exit Status: ' + status);
+        package.print('Exit Status: ' + status);
       };
       ExitStatus.prototype = new Error();
       ExitStatus.prototype.constructor = ExitStatus;
@@ -2904,9 +2904,9 @@ function copyTempDouble(ptr) {
     }var ___fpclassifyd=___fpclassifyf;
   var _cos=Math.cos;
   var _sin=Math.sin;
-  Module["_tolower"] = _tolower;
-  Module["_strncasecmp"] = _strncasecmp;
-  Module["_strcasecmp"] = _strcasecmp;
+  package["_tolower"] = _tolower;
+  package["_strncasecmp"] = _strncasecmp;
+  package["_strcasecmp"] = _strcasecmp;
   function _strrchr(ptr, chr) {
       var ptr2 = ptr + _strlen(ptr);
       do {
@@ -3159,8 +3159,8 @@ function copyTempDouble(ptr) {
       // http://pubs.opengroup.org/onlinepubs/000095399/functions/putchar.html
       return _fputc(c, HEAP32[((_stdout)>>2)]);
     }
-  Module["_saveSetjmp"] = _saveSetjmp;
-  Module["_testSetjmp"] = _testSetjmp;var _setjmp=undefined;
+  package["_saveSetjmp"] = _saveSetjmp;
+  package["_testSetjmp"] = _testSetjmp;var _setjmp=undefined;
   function _signal(sig, func) {
       // TODO
       return 0;
@@ -3697,13 +3697,13 @@ function copyTempDouble(ptr) {
       return me.ret;
     }
   function _iconv_open() {
-  Module['printErr']('missing function: iconv_open'); abort(-1);
+  package['printErr']('missing function: iconv_open'); abort(-1);
   }
   function _iconv() {
-  Module['printErr']('missing function: iconv'); abort(-1);
+  package['printErr']('missing function: iconv'); abort(-1);
   }
   function _iconv_close() {
-  Module['printErr']('missing function: iconv_close'); abort(-1);
+  package['printErr']('missing function: iconv_close'); abort(-1);
   }
   function _localeconv() {
       // %struct.timeval = type { char* decimal point, other stuff... }
@@ -3766,10 +3766,10 @@ function copyTempDouble(ptr) {
       return (TWO_SQRTPI * sum);
     }
   function _lgamma() {
-  Module['printErr']('missing function: lgamma'); abort(-1);
+  package['printErr']('missing function: lgamma'); abort(-1);
   }
   function ___signgam() {
-  Module['printErr']('missing function: __signgam'); abort(-1);
+  package['printErr']('missing function: __signgam'); abort(-1);
   }
   function _modf(x, intpart) {
       HEAPF64[((intpart)>>3)]=Math.floor(x)
@@ -3978,21 +3978,21 @@ function copyTempDouble(ptr) {
           }
           Browser.mainLoop.shouldPause = false;
         },updateStatus:function () {
-          if (Module['setStatus']) {
-            var message = Module['statusMessage'] || 'Please wait...';
+          if (package['setStatus']) {
+            var message = package['statusMessage'] || 'Please wait...';
             var remaining = Browser.mainLoop.remainingBlockers;
             var expected = Browser.mainLoop.expectedBlockers;
             if (remaining) {
               if (remaining < expected) {
-                Module['setStatus'](message + ' (' + (expected - remaining) + '/' + expected + ')');
+                package['setStatus'](message + ' (' + (expected - remaining) + '/' + expected + ')');
               } else {
-                Module['setStatus'](message);
+                package['setStatus'](message);
               }
             } else {
-              Module['setStatus']('');
+              package['setStatus']('');
             }
           }
-        }},isFullScreen:false,pointerLock:false,moduleContextCreatedCallbacks:[],workers:[],init:function () {
+        }},isFullScreen:false,pointerLock:false,packageContextCreatedCallbacks:[],workers:[],init:function () {
         if (Browser.initted) return;
         Browser.initted = true;
         try {
@@ -4005,7 +4005,7 @@ function copyTempDouble(ptr) {
         Browser.BlobBuilder = typeof MozBlobBuilder != "undefined" ? MozBlobBuilder : (typeof WebKitBlobBuilder != "undefined" ? WebKitBlobBuilder : (!Browser.hasBlobConstructor ? console.log("warning: no BlobBuilder") : null));
         Browser.URLObject = typeof window != "undefined" ? (window.URL ? window.URL : window.webkitURL) : console.log("warning: cannot create object URLs");
         // Support for plugins that can process preloaded files. You can add more of these to
-        // your app by creating and appending to Module.preloadPlugins.
+        // your app by creating and appending to package.preloadPlugins.
         //
         // Each plugin is asked if it can handle a file based on the file's name. If it can,
         // it is given the file's raw data. When it is done, it calls a callback with the file's
@@ -4022,10 +4022,10 @@ function copyTempDouble(ptr) {
             'mp3': 'audio/mpeg'
           }[name.substr(name.lastIndexOf('.')+1)];
         }
-        if (!Module["preloadPlugins"]) Module["preloadPlugins"] = [];
+        if (!package["preloadPlugins"]) package["preloadPlugins"] = [];
         var imagePlugin = {};
         imagePlugin['canHandle'] = function(name) {
-          return !Module.noImageDecoding && /\.(jpg|jpeg|png|bmp)$/.exec(name);
+          return !package.noImageDecoding && /\.(jpg|jpeg|png|bmp)$/.exec(name);
         };
         imagePlugin['handle'] = function(byteArray, name, onload, onerror) {
           var b = null;
@@ -4050,7 +4050,7 @@ function copyTempDouble(ptr) {
             canvas.height = img.height;
             var ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
-            Module["preloadedImages"][name] = canvas;
+            package["preloadedImages"][name] = canvas;
             Browser.URLObject.revokeObjectURL(url);
             if (onload) onload(byteArray);
           };
@@ -4060,23 +4060,23 @@ function copyTempDouble(ptr) {
           };
           img.src = url;
         };
-        Module['preloadPlugins'].push(imagePlugin);
+        package['preloadPlugins'].push(imagePlugin);
         var audioPlugin = {};
         audioPlugin['canHandle'] = function(name) {
-          return !Module.noAudioDecoding && name.substr(-4) in { '.ogg': 1, '.wav': 1, '.mp3': 1 };
+          return !package.noAudioDecoding && name.substr(-4) in { '.ogg': 1, '.wav': 1, '.mp3': 1 };
         };
         audioPlugin['handle'] = function(byteArray, name, onload, onerror) {
           var done = false;
           function finish(audio) {
             if (done) return;
             done = true;
-            Module["preloadedAudios"][name] = audio;
+            package["preloadedAudios"][name] = audio;
             if (onload) onload(byteArray);
           }
           function fail() {
             if (done) return;
             done = true;
-            Module["preloadedAudios"][name] = new Audio(); // empty shim
+            package["preloadedAudios"][name] = new Audio(); // empty shim
             if (onerror) onerror();
           }
           if (Browser.hasBlobConstructor) {
@@ -4127,9 +4127,9 @@ function copyTempDouble(ptr) {
             return fail();
           }
         };
-        Module['preloadPlugins'].push(audioPlugin);
+        package['preloadPlugins'].push(audioPlugin);
         // Canvas event setup
-        var canvas = Module['canvas'];
+        var canvas = package['canvas'];
         canvas.requestPointerLock = canvas['requestPointerLock'] ||
                                     canvas['mozRequestPointerLock'] ||
                                     canvas['webkitRequestPointerLock'];
@@ -4146,7 +4146,7 @@ function copyTempDouble(ptr) {
         document.addEventListener('pointerlockchange', pointerLockChange, false);
         document.addEventListener('mozpointerlockchange', pointerLockChange, false);
         document.addEventListener('webkitpointerlockchange', pointerLockChange, false);
-        if (Module['elementPointerLock']) {
+        if (package['elementPointerLock']) {
           canvas.addEventListener("click", function(ev) {
             if (!Browser.pointerLock && canvas.requestPointerLock) {
               canvas.requestPointerLock();
@@ -4154,7 +4154,7 @@ function copyTempDouble(ptr) {
             }
           }, false);
         }
-      },createContext:function (canvas, useWebGL, setInModule) {
+      },createContext:function (canvas, useWebGL, setInpackage) {
         var ctx;
         try {
           if (useWebGL) {
@@ -4166,7 +4166,7 @@ function copyTempDouble(ptr) {
           }
           if (!ctx) throw ':(';
         } catch (e) {
-          Module.print('Could not create canvas - ' + e);
+          package.print('Could not create canvas - ' + e);
           return null;
         }
         if (useWebGL) {
@@ -4177,19 +4177,19 @@ function copyTempDouble(ptr) {
             alert('WebGL context lost. You will need to reload the page.');
           }, false);
         }
-        if (setInModule) {
-          Module.ctx = ctx;
-          Module.useWebGL = useWebGL;
-          Browser.moduleContextCreatedCallbacks.forEach(function(callback) { callback() });
+        if (setInpackage) {
+          package.ctx = ctx;
+          package.useWebGL = useWebGL;
+          Browser.packageContextCreatedCallbacks.forEach(function(callback) { callback() });
           Browser.init();
         }
         return ctx;
-      },destroyContext:function (canvas, useWebGL, setInModule) {},fullScreenHandlersInstalled:false,lockPointer:undefined,resizeCanvas:undefined,requestFullScreen:function (lockPointer, resizeCanvas) {
+      },destroyContext:function (canvas, useWebGL, setInpackage) {},fullScreenHandlersInstalled:false,lockPointer:undefined,resizeCanvas:undefined,requestFullScreen:function (lockPointer, resizeCanvas) {
         Browser.lockPointer = lockPointer;
         Browser.resizeCanvas = resizeCanvas;
         if (typeof Browser.lockPointer === 'undefined') Browser.lockPointer = true;
         if (typeof Browser.resizeCanvas === 'undefined') Browser.resizeCanvas = false;
-        var canvas = Module['canvas'];
+        var canvas = package['canvas'];
         function fullScreenChange() {
           Browser.isFullScreen = false;
           if ((document['webkitFullScreenElement'] || document['webkitFullscreenElement'] ||
@@ -4205,7 +4205,7 @@ function copyTempDouble(ptr) {
           } else if (Browser.resizeCanvas){
             Browser.setWindowedCanvasSize();
           }
-          if (Module['onFullScreen']) Module['onFullScreen'](Browser.isFullScreen);
+          if (package['onFullScreen']) package['onFullScreen'](Browser.isFullScreen);
         }
         if (!Browser.fullScreenHandlersInstalled) {
           Browser.fullScreenHandlersInstalled = true;
@@ -4276,14 +4276,14 @@ function copyTempDouble(ptr) {
         } else {
           // Otherwise, calculate the movement based on the changes
           // in the coordinates.
-          var rect = Module["canvas"].getBoundingClientRect();
+          var rect = package["canvas"].getBoundingClientRect();
           var x = event.pageX - (window.scrollX + rect.left);
           var y = event.pageY - (window.scrollY + rect.top);
           // the canvas might be CSS-scaled compared to its backbuffer;
           // SDL-using content will want mouse coordinates in terms
           // of backbuffer units.
-          var cw = Module["canvas"].width;
-          var ch = Module["canvas"].height;
+          var cw = package["canvas"].width;
+          var ch = package["canvas"].height;
           x = x * (cw / rect.width);
           y = y * (ch / rect.height);
           Browser.mouseMovementX = x - Browser.mouseX;
@@ -4318,17 +4318,17 @@ function copyTempDouble(ptr) {
         });
         if (!noRunDep) addRunDependency('al ' + url);
       },resizeListeners:[],updateResizeListeners:function () {
-        var canvas = Module['canvas'];
+        var canvas = package['canvas'];
         Browser.resizeListeners.forEach(function(listener) {
           listener(canvas.width, canvas.height);
         });
       },setCanvasSize:function (width, height, noUpdates) {
-        var canvas = Module['canvas'];
+        var canvas = package['canvas'];
         canvas.width = width;
         canvas.height = height;
         if (!noUpdates) Browser.updateResizeListeners();
       },windowedWidth:0,windowedHeight:0,setFullScreenCanvasSize:function () {
-        var canvas = Module['canvas'];
+        var canvas = package['canvas'];
         this.windowedWidth = canvas.width;
         this.windowedHeight = canvas.height;
         canvas.width = screen.width;
@@ -4338,7 +4338,7 @@ function copyTempDouble(ptr) {
         HEAP32[((SDL.screen+Runtime.QUANTUM_SIZE*0)>>2)]=flags
         Browser.updateResizeListeners();
       },setWindowedCanvasSize:function () {
-        var canvas = Module['canvas'];
+        var canvas = package['canvas'];
         canvas.width = this.windowedWidth;
         canvas.height = this.windowedHeight;
         var flags = HEAPU32[((SDL.screen+Runtime.QUANTUM_SIZE*0)>>2)];
@@ -4346,16 +4346,16 @@ function copyTempDouble(ptr) {
         HEAP32[((SDL.screen+Runtime.QUANTUM_SIZE*0)>>2)]=flags
         Browser.updateResizeListeners();
       }};
-__ATINIT__.unshift({ func: function() { if (!Module["noFSInit"] && !FS.init.initialized) FS.init() } });__ATMAIN__.push({ func: function() { FS.ignorePermissions = false } });__ATEXIT__.push({ func: function() { FS.quit() } });Module["FS_createFolder"] = FS.createFolder;Module["FS_createPath"] = FS.createPath;Module["FS_createDataFile"] = FS.createDataFile;Module["FS_createPreloadedFile"] = FS.createPreloadedFile;Module["FS_createLazyFile"] = FS.createLazyFile;Module["FS_createLink"] = FS.createLink;Module["FS_createDevice"] = FS.createDevice;
+__ATINIT__.unshift({ func: function() { if (!package["noFSInit"] && !FS.init.initialized) FS.init() } });__ATMAIN__.push({ func: function() { FS.ignorePermissions = false } });__ATEXIT__.push({ func: function() { FS.quit() } });package["FS_createFolder"] = FS.createFolder;package["FS_createPath"] = FS.createPath;package["FS_createDataFile"] = FS.createDataFile;package["FS_createPreloadedFile"] = FS.createPreloadedFile;package["FS_createLazyFile"] = FS.createLazyFile;package["FS_createLink"] = FS.createLink;package["FS_createDevice"] = FS.createDevice;
 ___errno_state = Runtime.staticAlloc(4); HEAP32[((___errno_state)>>2)]=0;
 _fgetc.ret = allocate([0], "i8", ALLOC_STATIC);
 _fputc.ret = allocate([0], "i8", ALLOC_STATIC);
 ___buildEnvironment(ENV);
-Module["requestFullScreen"] = function(lockPointer, resizeCanvas) { Browser.requestFullScreen(lockPointer, resizeCanvas) };
-  Module["requestAnimationFrame"] = function(func) { Browser.requestAnimationFrame(func) };
-  Module["pauseMainLoop"] = function() { Browser.mainLoop.pause() };
-  Module["resumeMainLoop"] = function() { Browser.mainLoop.resume() };
-  Module["getUserMedia"] = function() { Browser.getUserMedia() }
+package["requestFullScreen"] = function(lockPointer, resizeCanvas) { Browser.requestFullScreen(lockPointer, resizeCanvas) };
+  package["requestAnimationFrame"] = function(func) { Browser.requestAnimationFrame(func) };
+  package["pauseMainLoop"] = function() { Browser.mainLoop.pause() };
+  package["resumeMainLoop"] = function() { Browser.mainLoop.resume() };
+  package["getUserMedia"] = function() { Browser.getUserMedia() }
 STACK_BASE = STACKTOP = Runtime.alignMemory(STATICTOP);
 staticSealed = true; // seal the static portion of memory
 STACK_MAX = STACK_BASE + 5242880;
@@ -4364,7 +4364,7 @@ assert(DYNAMIC_BASE < TOTAL_MEMORY); // Stack must fit in TOTAL_MEMORY; allocati
 var Math_min = Math.min;
 function invoke_viiiii(index,a1,a2,a3,a4,a5) {
   try {
-    Module["dynCall_viiiii"](index,a1,a2,a3,a4,a5);
+    package["dynCall_viiiii"](index,a1,a2,a3,a4,a5);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4372,7 +4372,7 @@ function invoke_viiiii(index,a1,a2,a3,a4,a5) {
 }
 function invoke_viffiii(index,a1,a2,a3,a4,a5,a6) {
   try {
-    Module["dynCall_viffiii"](index,a1,a2,a3,a4,a5,a6);
+    package["dynCall_viffiii"](index,a1,a2,a3,a4,a5,a6);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4380,7 +4380,7 @@ function invoke_viffiii(index,a1,a2,a3,a4,a5,a6) {
 }
 function invoke_vf(index,a1) {
   try {
-    Module["dynCall_vf"](index,a1);
+    package["dynCall_vf"](index,a1);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4388,7 +4388,7 @@ function invoke_vf(index,a1) {
 }
 function invoke_i(index) {
   try {
-    return Module["dynCall_i"](index);
+    return package["dynCall_i"](index);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4396,7 +4396,7 @@ function invoke_i(index) {
 }
 function invoke_vi(index,a1) {
   try {
-    Module["dynCall_vi"](index,a1);
+    package["dynCall_vi"](index,a1);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4404,7 +4404,7 @@ function invoke_vi(index,a1) {
 }
 function invoke_vii(index,a1,a2) {
   try {
-    Module["dynCall_vii"](index,a1,a2);
+    package["dynCall_vii"](index,a1,a2);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4412,7 +4412,7 @@ function invoke_vii(index,a1,a2) {
 }
 function invoke_ii(index,a1) {
   try {
-    return Module["dynCall_ii"](index,a1);
+    return package["dynCall_ii"](index,a1);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4420,7 +4420,7 @@ function invoke_ii(index,a1) {
 }
 function invoke_iff(index,a1,a2) {
   try {
-    return Module["dynCall_iff"](index,a1,a2);
+    return package["dynCall_iff"](index,a1,a2);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4428,7 +4428,7 @@ function invoke_iff(index,a1,a2) {
 }
 function invoke_iiii(index,a1,a2,a3) {
   try {
-    return Module["dynCall_iiii"](index,a1,a2,a3);
+    return package["dynCall_iiii"](index,a1,a2,a3);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4436,7 +4436,7 @@ function invoke_iiii(index,a1,a2,a3) {
 }
 function invoke_viii(index,a1,a2,a3) {
   try {
-    Module["dynCall_viii"](index,a1,a2,a3);
+    package["dynCall_viii"](index,a1,a2,a3);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4444,7 +4444,7 @@ function invoke_viii(index,a1,a2,a3) {
 }
 function invoke_v(index) {
   try {
-    Module["dynCall_v"](index);
+    package["dynCall_v"](index);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4452,7 +4452,7 @@ function invoke_v(index) {
 }
 function invoke_vifiii(index,a1,a2,a3,a4,a5) {
   try {
-    Module["dynCall_vifiii"](index,a1,a2,a3,a4,a5);
+    package["dynCall_vifiii"](index,a1,a2,a3,a4,a5);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4460,7 +4460,7 @@ function invoke_vifiii(index,a1,a2,a3,a4,a5) {
 }
 function invoke_iiiii(index,a1,a2,a3,a4) {
   try {
-    return Module["dynCall_iiiii"](index,a1,a2,a3,a4);
+    return package["dynCall_iiiii"](index,a1,a2,a3,a4);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4468,7 +4468,7 @@ function invoke_iiiii(index,a1,a2,a3,a4) {
 }
 function invoke_fii(index,a1,a2) {
   try {
-    return Module["dynCall_fii"](index,a1,a2);
+    return package["dynCall_fii"](index,a1,a2);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
@@ -4476,17 +4476,17 @@ function invoke_fii(index,a1,a2) {
 }
 function invoke_iii(index,a1,a2) {
   try {
-    return Module["dynCall_iii"](index,a1,a2);
+    return package["dynCall_iii"](index,a1,a2);
   } catch(e) {
     if (typeof e !== 'number' && e !== 'longjmp') throw e;
     asm["setThrew"](1, 0);
   }
 }
 function asmPrintInt(x, y) {
-  Module.print('int ' + x + ',' + y);// + ' ' + new Error().stack);
+  package.print('int ' + x + ',' + y);// + ' ' + new Error().stack);
 }
 function asmPrintFloat(x, y) {
-  Module.print('float ' + x + ',' + y);// + ' ' + new Error().stack);
+  package.print('float ' + x + ',' + y);// + ' ' + new Error().stack);
 }
 // EMSCRIPTEN_START_ASM
 var asm=(function(global,env,buffer){"use asm";var a=new global.Int8Array(buffer);var b=new global.Int16Array(buffer);var c=new global.Int32Array(buffer);var d=new global.Uint8Array(buffer);var e=new global.Uint16Array(buffer);var f=new global.Uint32Array(buffer);var g=new global.Float32Array(buffer);var h=new global.Float64Array(buffer);var i=env.STACKTOP|0;var j=env.STACK_MAX|0;var k=env.tempDoublePtr|0;var l=env.ABORT|0;var m=env._stderr|0;var n=env._stdout|0;var o=env._stdin|0;var p=+env.NaN;var q=+env.Infinity;var r=0;var s=0;var t=0;var u=0;var v=0,w=0,x=0,y=0,z=0.0,A=0,B=0,C=0,D=0.0;var E=0;var F=0;var G=0;var H=0;var I=0;var J=0;var K=0;var L=0;var M=0;var N=0;var O=global.Math.floor;var P=global.Math.abs;var Q=global.Math.sqrt;var R=global.Math.pow;var S=global.Math.cos;var T=global.Math.sin;var U=global.Math.tan;var V=global.Math.acos;var W=global.Math.asin;var X=global.Math.atan;var Y=global.Math.atan2;var Z=global.Math.exp;var _=global.Math.log;var $=global.Math.ceil;var aa=global.Math.imul;var ab=env.abort;var ac=env.assert;var ad=env.asmPrintInt;var ae=env.asmPrintFloat;var af=env.copyTempDouble;var ag=env.copyTempFloat;var ah=env.min;var ai=env.invoke_viiiii;var aj=env.invoke_viffiii;var ak=env.invoke_vf;var al=env.invoke_i;var am=env.invoke_vi;var an=env.invoke_vii;var ao=env.invoke_ii;var ap=env.invoke_iff;var aq=env.invoke_iiii;var ar=env.invoke_viii;var as=env.invoke_v;var at=env.invoke_vifiii;var au=env.invoke_iiiii;var av=env.invoke_fii;var aw=env.invoke_iii;var ax=env._lseek;var ay=env.__scanString;var az=env._fclose;var aA=env._uname;var aB=env._sleep;var aC=env.__isFloat;var aD=env._fflush;var aE=env._strtol;var aF=env._fputc;var aG=env._iconv;var aH=env.___signgam;var aI=env._fwrite;var aJ=env._send;var aK=env._fputs;var aL=env._tmpnam;var aM=env._isspace;var aN=env._localtime;var aO=env._read;var aP=env._ceil;var aQ=env._strstr;var aR=env._fileno;var aS=env._perror;var aT=env._ctime;var aU=env._fsync;var aV=env._signal;var aW=env._opendir;var aX=env._fmod;var aY=env._strcmp;var aZ=env._memchr;var a_=env._strncmp;var a$=env._tmpfile;var a0=env._snprintf;var a1=env._fgetc;var a2=env._pclose;var a3=env._readdir;var a4=env._cosh;var a5=env._atexit;var a6=env._fgets;var a7=env._close;var a8=env._strchr;var a9=env._asin;var ba=env._llvm_lifetime_start;var bb=env.___setErrNo;var bc=env._ftell;var bd=env._exit;var be=env._sprintf;var bf=env._llvm_lifetime_end;var bg=env._asctime;var bh=env._strrchr;var bi=env._iconv_open;var bj=env._modf;var bk=env._strcspn;var bl=env._getcwd;var bm=env._gmtime;var bn=env._localtime_r;var bo=env._asctime_r;var bp=env._recv;var bq=env._cos;var br=env._putchar;var bs=env._isalnum;var bt=env._popen;var bu=env._erfc;var bv=env.__exit;var bw=env._strftime;var bx=env._llvm_va_end;var by=env._tzset;var bz=env._sinh;var bA=env._setlocale;var bB=env._isprint;var bC=env._toupper;var bD=env._printf;var bE=env._pread;var bF=env._fopen;var bG=env._open;var bH=env._usleep;var bI=env._log;var bJ=env._puts;var bK=env._mktime;var bL=env._fdopen;var bM=env._qsort;var bN=env._system;var bO=env._isalpha;var bP=env._strdup;var bQ=env._log10;var bR=env._closedir;var bS=env._isatty;var bT=env.__formatString;var bU=env._getenv;var bV=env._gettimeofday;var bW=env._atoi;var bX=env._vfprintf;var bY=env._chdir;var bZ=env._llvm_pow_f64;var b_=env._sbrk;var b$=env._localeconv;var b0=env.___errno_location;var b1=env._strerror;var b2=env._lgamma;var b3=env._erf;var b4=env._strspn;var b5=env.__parseInt;var b6=env._ungetc;var b7=env._llvm_trap;var b8=env._rename;var b9=env._vsnprintf;var ca=env._sscanf;var cb=env._sysconf;var cc=env._acos;var cd=env._fread;var ce=env._abort;var cf=env._fprintf;var cg=env.___fpclassifyf;var ch=env._tan;var ci=env.___buildEnvironment;var cj=env._feof;var ck=env._strncat;var cl=env._gmtime_r;var cm=env._fabs;var cn=env._floor;var co=env.__reallyNegative;var cp=env._fseek;var cq=env._sqrt;var cr=env._write;var cs=env._rewind;var ct=env._sin;var cu=env._stat;var cv=env._longjmp;var cw=env._atan;var cx=env._readdir_r;var cy=env._strpbrk;var cz=env._iconv_close;var cA=env._setbuf;var cB=env._nl_langinfo;var cC=env._pwrite;var cD=env._strerror_r;var cE=env._atan2;var cF=env._exp;var cG=env._time;var cH=env._setvbuf;
@@ -4499,47 +4499,47 @@ function ut(a){a=a|0;var b=0,d=0,e=0,f=0,g=0,h=0,i=0,j=0,k=0,l=0,m=0,n=0,o=0,p=0
 var cI=[vg,vg,sZ,vg,rC,vg,pN,vg,rM,vg,qN,vg,s1,vg,l2,vg,rd,vg,sn,vg,rc,vg,sC,vg,qP,vg,sF,vg,qk,vg,sW,vg,n6,vg,pV,vg,sd,vg,oq,vg,r0,vg,nK,vg,pw,vg,on,vg,lD,vg,nd,vg,mV,vg,pK,vg,vg,vg,vg,vg,vg,vg,vg,vg];var cJ=[vh,vh,nD,vh,mS,vh,qq,vh,n3,vh,pW,vh,lH,vh,vh,vh];var cK=[vi,vi,qG,vi,s_,vi,pM,vi,n7,vi,lC,vi,sE,vi,ql,vi,o8,vi,sG,vi,n5,vi,qX,vi,of,vi,nf,vi,sY,vi,mR,vi,mW,vi,lA,vi,op,vi,pP,vi,nb,vi,qL,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi,vi];var cL=[vj,vj,hy,vj,uN,vj,dI,vj];var cM=[vk,vk,g5,vk,iP,vk,kT,vk,th,vk,hg,vk,ku,vk,tm,vk,tn,vk,p4,vk,qf,vk,rk,vk,m_,vk,tb,vk,nu,vk,e0,vk,rj,vk,rZ,vk,kP,vk,mi,vk,mz,vk,hd,vk,kh,vk,sT,vk,rJ,vk,k7,vk,ff,vk,n8,vk,mX,vk,tc,vk,kE,vk,rs,vk,ks,vk,kF,vk,gX,vk,kG,vk,g1,vk,gY,vk,kM,vk,kn,vk,ou,vk,ke,vk,g6,vk,pZ,vk,ta,vk,lP,vk,iN,vk,tk,vk,te,vk,uu,vk,gL,vk,lF,vk,eW,vk,kS,vk,tr,vk,kx,vk,kU,vk,hj,vk,eI,vk,kI,vk,o3,vk,kR,vk,gZ,vk,kB,vk,gK,vk,m$,vk,tp,vk,kC,vk,e5,vk,qQ,vk,mN,vk,sa,vk,lB,vk,nH,vk,r2,vk,dL,vk,kv,vk,ki,vk,oN,vk,l9,vk,q9,vk,kY,vk,kj,vk,g0,vk,ph,vk,gM,vk,gW,vk,lU,vk,eJ,vk,s$,vk,qD,vk,tl,vk,kz,vk,kg,vk,gJ,vk,k5,vk,g$,vk,qi,vk,kQ,vk,g9,vk,e7,vk,kf,vk,sz,vk,g_,vk,g7,vk,gN,vk,sH,vk,eZ,vk,g4,vk,kl,vk,nY,vk,gP,vk,kZ,vk,k_,vk,qs,vk,m7,vk,gS,vk,e_,vk,qV,vk,hb,vk,eG,vk,pI,vk,kq,vk,g2,vk,he,vk,ky,vk,gV,vk,k3,vk,pY,vk,eK,vk,qo,vk,e$,vk,kX,vk,gG,vk,kk,vk,k1,vk,jI,vk,ps,vk,kD,vk,hf,vk,to,vk,s8,vk,gR,vk,pS,vk,gE,vk,rh,vk,gI,vk,ti,vk,g8,vk,nh,vk,k0,vk,k$,vk,td,vk,k6,vk,kJ,vk,tj,vk,gU,vk,km,vk,hc,vk,gH,vk,gF,vk,kH,vk,kO,vk,nE,vk,gO,vk,eF,vk,kL,vk,gQ,vk,gT,vk,hi,vk,oU,vk,k8,vk,k2,vk,kK,vk,hh,vk,s9,vk,g3,vk,kt,vk,uO,vk,qt,vk,eH,vk,mo,vk,os,vk,kN,vk,kw,vk,ha,vk,gD,vk,tq,vk,sl,vk,ko,vk,k4,vk,kp,vk,ol,vk,kA,vk,ow,vk,tf,vk,pX,vk,lT,vk,tg,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk,vk];var cN=[vl,vl,sS,vl,oT,vl,rH,vl,pT,vl,ok,vl,pr,vl,qp,vl,oB,vl,nG,vl,pG,vl,oA,vl,px,vl,oS,vl,nW,vl,p2,vl,qM,vl,l_,vl,r3,vl,oL,vl,m5,vl,my,vl,rr,vl,oM,vl,nX,vl,l7,vl,pf,vl,nn,vl,p3,vl,sy,vl,mt,vl,qe,vl,n9,vl,rY,vl,pg,vl,sR,vl,rI,vl,qd,vl,qR,vl,tM,vl,tU,vl,lZ,vl,py,vl,mh,vl,uP,vl,rX,vl,o2,vl,qB,vl,l8,vl,mY,vl,mL,vl,mg,vl,nO,vl,m6,vl,ns,vl,r9,vl,sx,vl,s0,vl,rq,vl,pH,vl,sI,vl,oj,vl,nP,vl,lO,vl,ms,vl,mM,vl,q3,vl,q2,vl,mx,vl,rT,vl,sk,vl,qC,vl,nm,vl,r8,vl,ot,vl,no,vl,o1,vl,qW,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl,vl];var cO=[vm,vm,o5,vm,e6,vm,qZ,vm,nF,vm,pQ,vm,lv,vm,h2,vm,pm,vm,uQ,vm,mP,vm,oW,vm,im,vm,pB,vm,oP,vm,q7,vm,ia,vm,mI,vm,nZ,vm,sX,vm,h4,vm,qm,vm,id,vm,ij,vm,r1,vm,m8,vm,q_,vm,n1,vm,ut,vm,uR,vm,mU,vm,l0,vm,rx,vm,h8,vm,sD,vm,sj,vm,sp,vm,hP,vm,pi,vm,ie,vm,pu,vm,oe,vm,o6,vm,h5,vm,ry,vm,pL,vm,ic,vm,od,vm,m9,vm,or,vm,h9,vm,uS,vm,h6,vm,nc,vm,uT,vm,qa,vm,sL,vm,q6,vm,rS,vm,oD,vm,h3,vm,hX,vm,lw,vm,tC,vm,rv,vm,rQ,vm,p9,vm,ik,vm,mQ,vm,nq,vm,sM,vm,o9,vm,qj,vm,nr,vm,qz,vm,ii,vm,mD,vm,pC,vm,h7,vm,lR,vm,lS,vm,uU,vm,mb,vm,qH,vm,pj,vm,rR,vm,h1,vm,il,vm,qy,vm,sr,vm,n4,vm,h0,vm,n_,vm,rP,vm,sK,vm,rw,vm,ng,vm,nC,vm,ig,vm,si,vm,sq,vm,ib,vm,qO,vm,ih,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm,vm];var cP=[vn,vn,lu,vn];var cQ=[vo,vo,uY,vo,uZ,vo,vo,vo];var cR=[vp,vp,tw,vp,pt,vp,uf,vp,lL,vp,sA,vp,rt,vp,r$,vp,ri,vp,o4,vp,rA,vp,pl,vp,p5,vp,qF,vp,na,vp,qE,vp,o7,vp,sB,vp,rB,vp,nv,vp,l$,vp,ma,vp,oE,vp,tX,vp,sU,vp,n0,vp,oO,vp,l1,vp,rb,vp,ne,vp,ly,vp,mA,vp,nQ,vp,r_,vp,qg,vp,mT,vp,mp,vp,tR,vp,hw,vp,mu,vp,mj,vp,rL,vp,sc,vp,tB,vp,lQ,vp,ra,vp,sV,vp,oo,vp,q4,vp,oC,vp,rK,vp,n$,vp,nJ,vp,sm,vp,oV,vp,nI,vp,om,vp,pJ,vp,pO,vp,mO,vp,pv,vp,qh,vp,tQ,vp,sb,vp];var cS=[vq,vq,m3,vq,p7,vq,mC,vq,mc,vq,dR,vq,pb,vq,rl,vq,pR,vq,qv,vq,mk,vq,ee,vq,np,vq,ei,vq,nL,vq,dX,vq,nU,vq,p8,vq,d9,vq,jy,vq,nz,vq,pA,vq,dH,vq,ru,vq,l3,vq,mw,vq,mf,vq,sQ,vq,oc,vq,o_,vq,d3,vq,nk,vq,es,vq,mB,vq,pa,vq,pe,vq,ox,vq,sN,vq,qT,vq,ob,vq,mE,vq,qr,vq,rm,vq,nt,vq,pd,vq,nN,vq,lo,vq,sh,vq,dV,vq,l5,vq,me,vq,ml,vq,oX,vq,m0,vq,lE,vq,sP,vq,eb,vq,se,vq,sJ,vq,d1,vq,lY,vq,r6,vq,er,vq,su,vq,eh,vq,qU,vq,pU,vq,oK,vq,n2,vq,t7,vq,fd,vq,dv,vq,dt,vq,pE,vq,mG,vq,m2,vq,qA,vq,rG,vq,qb,vq,q8,vq,rE,vq,pF,vq,rn,vq,d0,vq,m1,vq,mq,vq,mr,vq,eq,vq,r7,vq,oR,vq,qn,vq,nM,vq,en,vq,rg,vq,q5,vq,lN,vq,ov,vq,t5,vq,ny,vq,pq,vq,qx,vq,ex,vq,oY,vq,mF,vq,eg,vq,pn,vq,qc,vq,d_,vq,oF,vq,l4,vq,oz,vq,mH,vq,rF,vq,r4,vq,p_,vq,qS,vq,dQ,vq,mv,vq,dZ,vq,oa,vq,d6,vq,nw,vq,qK,vq,nS,vq,qu,vq,oJ,vq,sw,vq,nB,vq,pp,vq,dw,vq,oI,vq,og,vq,oH,vq,rO,vq,l6,vq,re,vq,oQ,vq,lX,vq,mm,vq,ec,vq,pk,vq,q1,vq,nj,vq,o$,vq,ej,vq,nx,vq,dN,vq,jo,vq,mn,vq,pD,vq,rW,vq,ni,vq,lM,vq,nR,vq,ro,vq,r5,vq,nl,vq,sO,vq,st,vq,p1,vq,po,vq,oi,vq,rU,vq,p0,vq,dW,vq,nV,vq,dY,vq,lI,vq,pc,vq,qI,vq,ek,vq,oy,vq,oG,vq,sg,vq,rN,vq,d5,vq,dE,vq,em,vq,qJ,vq,rV,vq,md,vq,q$,vq,ef,vq,oZ,vq,el,vq,ed,vq,mJ,vq,p$,vq,mZ,vq,pz,vq,rp,vq,nA,vq,dG,vq,sf,vq,d2,vq,sv,vq,so,vq,rz,vq,qw,vq,lV,vq,d4,vq,rf,vq,nT,vq,d7,vq,rD,vq,o0,vq,ss,vq,lW,vq,dS,vq,iK,vq,ds,vq,d$,vq,gk,vq,d8,vq,p6,vq,q0,vq,m4,vq,oh,vq,mK,vq,qY,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq,vq];var cT=[vr,vr,f6,vr,f7,vr,fJ,vr,dC,vr,fH,vr,fI,vr,di,vr];var cU=[vs,vs,u_,vs,u$,vs,vs,vs];var cV=[vt,vt,u0,vt,uz,vt,vt,vt];var cW=[vu,vu,lr,vu,la,vu,gn,vu,uV,vu,uW,vu,f5,vu,go,vu,i2,vu,hm,vu,hA,vu,iV,vu,uq,vu,uX,vu,uB,vu,f4,vu,gl,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu,vu];return{_memcmp:uG,_saveSetjmp:uL,_strcat:uC,_free:uu,_main:iM,_testSetjmp:uM,_strncpy:uF,_memmove:uH,_tolower:uI,_memset:uE,_malloc:ut,_memcpy:uD,_strcasecmp:uK,_strlen:uA,_realloc:uv,_strncasecmp:uJ,_strcpy:uB,stackAlloc:cX,stackSave:cY,stackRestore:cZ,setThrew:c_,setTempRet0:c$,setTempRet1:c0,setTempRet2:c1,setTempRet3:c2,setTempRet4:c3,setTempRet5:c4,setTempRet6:c5,setTempRet7:c6,setTempRet8:c7,setTempRet9:c8,dynCall_viiiii:u1,dynCall_viffiii:u2,dynCall_vf:u3,dynCall_i:u4,dynCall_vi:u5,dynCall_vii:u6,dynCall_ii:u7,dynCall_iff:u8,dynCall_iiii:u9,dynCall_viii:va,dynCall_v:vb,dynCall_vifiii:vc,dynCall_iiiii:vd,dynCall_fii:ve,dynCall_iii:vf}})
 // EMSCRIPTEN_END_ASM
 ({ "Math": Math, "Int8Array": Int8Array, "Int16Array": Int16Array, "Int32Array": Int32Array, "Uint8Array": Uint8Array, "Uint16Array": Uint16Array, "Uint32Array": Uint32Array, "Float32Array": Float32Array, "Float64Array": Float64Array }, { "abort": abort, "assert": assert, "asmPrintInt": asmPrintInt, "asmPrintFloat": asmPrintFloat, "copyTempDouble": copyTempDouble, "copyTempFloat": copyTempFloat, "min": Math_min, "invoke_viiiii": invoke_viiiii, "invoke_viffiii": invoke_viffiii, "invoke_vf": invoke_vf, "invoke_i": invoke_i, "invoke_vi": invoke_vi, "invoke_vii": invoke_vii, "invoke_ii": invoke_ii, "invoke_iff": invoke_iff, "invoke_iiii": invoke_iiii, "invoke_viii": invoke_viii, "invoke_v": invoke_v, "invoke_vifiii": invoke_vifiii, "invoke_iiiii": invoke_iiiii, "invoke_fii": invoke_fii, "invoke_iii": invoke_iii, "_lseek": _lseek, "__scanString": __scanString, "_fclose": _fclose, "_uname": _uname, "_sleep": _sleep, "__isFloat": __isFloat, "_fflush": _fflush, "_strtol": _strtol, "_fputc": _fputc, "_iconv": _iconv, "___signgam": ___signgam, "_fwrite": _fwrite, "_send": _send, "_fputs": _fputs, "_tmpnam": _tmpnam, "_isspace": _isspace, "_localtime": _localtime, "_read": _read, "_ceil": _ceil, "_strstr": _strstr, "_fileno": _fileno, "_perror": _perror, "_ctime": _ctime, "_fsync": _fsync, "_signal": _signal, "_opendir": _opendir, "_fmod": _fmod, "_strcmp": _strcmp, "_memchr": _memchr, "_strncmp": _strncmp, "_tmpfile": _tmpfile, "_snprintf": _snprintf, "_fgetc": _fgetc, "_pclose": _pclose, "_readdir": _readdir, "_cosh": _cosh, "_atexit": _atexit, "_fgets": _fgets, "_close": _close, "_strchr": _strchr, "_asin": _asin, "_llvm_lifetime_start": _llvm_lifetime_start, "___setErrNo": ___setErrNo, "_ftell": _ftell, "_exit": _exit, "_sprintf": _sprintf, "_llvm_lifetime_end": _llvm_lifetime_end, "_asctime": _asctime, "_strrchr": _strrchr, "_iconv_open": _iconv_open, "_modf": _modf, "_strcspn": _strcspn, "_getcwd": _getcwd, "_gmtime": _gmtime, "_localtime_r": _localtime_r, "_asctime_r": _asctime_r, "_recv": _recv, "_cos": _cos, "_putchar": _putchar, "_isalnum": _isalnum, "_popen": _popen, "_erfc": _erfc, "__exit": __exit, "_strftime": _strftime, "_llvm_va_end": _llvm_va_end, "_tzset": _tzset, "_sinh": _sinh, "_setlocale": _setlocale, "_isprint": _isprint, "_toupper": _toupper, "_printf": _printf, "_pread": _pread, "_fopen": _fopen, "_open": _open, "_usleep": _usleep, "_log": _log, "_puts": _puts, "_mktime": _mktime, "_fdopen": _fdopen, "_qsort": _qsort, "_system": _system, "_isalpha": _isalpha, "_strdup": _strdup, "_log10": _log10, "_closedir": _closedir, "_isatty": _isatty, "__formatString": __formatString, "_getenv": _getenv, "_gettimeofday": _gettimeofday, "_atoi": _atoi, "_vfprintf": _vfprintf, "_chdir": _chdir, "_llvm_pow_f64": _llvm_pow_f64, "_sbrk": _sbrk, "_localeconv": _localeconv, "___errno_location": ___errno_location, "_strerror": _strerror, "_lgamma": _lgamma, "_erf": _erf, "_strspn": _strspn, "__parseInt": __parseInt, "_ungetc": _ungetc, "_llvm_trap": _llvm_trap, "_rename": _rename, "_vsnprintf": _vsnprintf, "_sscanf": _sscanf, "_sysconf": _sysconf, "_acos": _acos, "_fread": _fread, "_abort": _abort, "_fprintf": _fprintf, "___fpclassifyf": ___fpclassifyf, "_tan": _tan, "___buildEnvironment": ___buildEnvironment, "_feof": _feof, "_strncat": _strncat, "_gmtime_r": _gmtime_r, "_fabs": _fabs, "_floor": _floor, "__reallyNegative": __reallyNegative, "_fseek": _fseek, "_sqrt": _sqrt, "_write": _write, "_rewind": _rewind, "_sin": _sin, "_stat": _stat, "_longjmp": _longjmp, "_atan": _atan, "_readdir_r": _readdir_r, "_strpbrk": _strpbrk, "_iconv_close": _iconv_close, "_setbuf": _setbuf, "_nl_langinfo": _nl_langinfo, "_pwrite": _pwrite, "_strerror_r": _strerror_r, "_atan2": _atan2, "_exp": _exp, "_time": _time, "_setvbuf": _setvbuf, "STACKTOP": STACKTOP, "STACK_MAX": STACK_MAX, "tempDoublePtr": tempDoublePtr, "ABORT": ABORT, "NaN": NaN, "Infinity": Infinity, "_stderr": _stderr, "_stdout": _stdout, "_stdin": _stdin }, buffer);
-var _memcmp = Module["_memcmp"] = asm["_memcmp"];
-var _saveSetjmp = Module["_saveSetjmp"] = asm["_saveSetjmp"];
-var _strcat = Module["_strcat"] = asm["_strcat"];
-var _free = Module["_free"] = asm["_free"];
-var _main = Module["_main"] = asm["_main"];
-var _testSetjmp = Module["_testSetjmp"] = asm["_testSetjmp"];
-var _strncpy = Module["_strncpy"] = asm["_strncpy"];
-var _memmove = Module["_memmove"] = asm["_memmove"];
-var _tolower = Module["_tolower"] = asm["_tolower"];
-var _memset = Module["_memset"] = asm["_memset"];
-var _malloc = Module["_malloc"] = asm["_malloc"];
-var _memcpy = Module["_memcpy"] = asm["_memcpy"];
-var _strcasecmp = Module["_strcasecmp"] = asm["_strcasecmp"];
-var _strlen = Module["_strlen"] = asm["_strlen"];
-var _realloc = Module["_realloc"] = asm["_realloc"];
-var _strncasecmp = Module["_strncasecmp"] = asm["_strncasecmp"];
-var _strcpy = Module["_strcpy"] = asm["_strcpy"];
-var dynCall_viiiii = Module["dynCall_viiiii"] = asm["dynCall_viiiii"];
-var dynCall_viffiii = Module["dynCall_viffiii"] = asm["dynCall_viffiii"];
-var dynCall_vf = Module["dynCall_vf"] = asm["dynCall_vf"];
-var dynCall_i = Module["dynCall_i"] = asm["dynCall_i"];
-var dynCall_vi = Module["dynCall_vi"] = asm["dynCall_vi"];
-var dynCall_vii = Module["dynCall_vii"] = asm["dynCall_vii"];
-var dynCall_ii = Module["dynCall_ii"] = asm["dynCall_ii"];
-var dynCall_iff = Module["dynCall_iff"] = asm["dynCall_iff"];
-var dynCall_iiii = Module["dynCall_iiii"] = asm["dynCall_iiii"];
-var dynCall_viii = Module["dynCall_viii"] = asm["dynCall_viii"];
-var dynCall_v = Module["dynCall_v"] = asm["dynCall_v"];
-var dynCall_vifiii = Module["dynCall_vifiii"] = asm["dynCall_vifiii"];
-var dynCall_iiiii = Module["dynCall_iiiii"] = asm["dynCall_iiiii"];
-var dynCall_fii = Module["dynCall_fii"] = asm["dynCall_fii"];
-var dynCall_iii = Module["dynCall_iii"] = asm["dynCall_iii"];
+var _memcmp = package["_memcmp"] = asm["_memcmp"];
+var _saveSetjmp = package["_saveSetjmp"] = asm["_saveSetjmp"];
+var _strcat = package["_strcat"] = asm["_strcat"];
+var _free = package["_free"] = asm["_free"];
+var _main = package["_main"] = asm["_main"];
+var _testSetjmp = package["_testSetjmp"] = asm["_testSetjmp"];
+var _strncpy = package["_strncpy"] = asm["_strncpy"];
+var _memmove = package["_memmove"] = asm["_memmove"];
+var _tolower = package["_tolower"] = asm["_tolower"];
+var _memset = package["_memset"] = asm["_memset"];
+var _malloc = package["_malloc"] = asm["_malloc"];
+var _memcpy = package["_memcpy"] = asm["_memcpy"];
+var _strcasecmp = package["_strcasecmp"] = asm["_strcasecmp"];
+var _strlen = package["_strlen"] = asm["_strlen"];
+var _realloc = package["_realloc"] = asm["_realloc"];
+var _strncasecmp = package["_strncasecmp"] = asm["_strncasecmp"];
+var _strcpy = package["_strcpy"] = asm["_strcpy"];
+var dynCall_viiiii = package["dynCall_viiiii"] = asm["dynCall_viiiii"];
+var dynCall_viffiii = package["dynCall_viffiii"] = asm["dynCall_viffiii"];
+var dynCall_vf = package["dynCall_vf"] = asm["dynCall_vf"];
+var dynCall_i = package["dynCall_i"] = asm["dynCall_i"];
+var dynCall_vi = package["dynCall_vi"] = asm["dynCall_vi"];
+var dynCall_vii = package["dynCall_vii"] = asm["dynCall_vii"];
+var dynCall_ii = package["dynCall_ii"] = asm["dynCall_ii"];
+var dynCall_iff = package["dynCall_iff"] = asm["dynCall_iff"];
+var dynCall_iiii = package["dynCall_iiii"] = asm["dynCall_iiii"];
+var dynCall_viii = package["dynCall_viii"] = asm["dynCall_viii"];
+var dynCall_v = package["dynCall_v"] = asm["dynCall_v"];
+var dynCall_vifiii = package["dynCall_vifiii"] = asm["dynCall_vifiii"];
+var dynCall_iiiii = package["dynCall_iiiii"] = asm["dynCall_iiiii"];
+var dynCall_fii = package["dynCall_fii"] = asm["dynCall_fii"];
+var dynCall_iii = package["dynCall_iii"] = asm["dynCall_iii"];
 Runtime.stackAlloc = function(size) { return asm['stackAlloc'](size) };
 Runtime.stackSave = function() { return asm['stackSave']() };
 Runtime.stackRestore = function(top) { asm['stackRestore'](top) };
 // Warning: printing of i64 values may be slightly rounded! No deep i64 math used, so precise i64 code not included
 var i64Math = null;
 // === Auto-generated postamble setup entry stuff ===
-Module['callMain'] = function callMain(args) {
+package['callMain'] = function callMain(args) {
   assert(runDependencies == 0, 'cannot call main when async dependencies remain! (listen on __ATMAIN__)');
-  assert(!Module['preRun'] || Module['preRun'].length == 0, 'cannot call main when preRun functions remain to be called');
+  assert(!package['preRun'] || package['preRun'].length == 0, 'cannot call main when preRun functions remain to be called');
   args = args || [];
   ensureInitRuntime();
   var argc = args.length+1;
@@ -4559,13 +4559,13 @@ Module['callMain'] = function callMain(args) {
   var ret;
   var initialStackTop = STACKTOP;
   try {
-    ret = Module['_main'](argc, argv, 0);
+    ret = package['_main'](argc, argv, 0);
   }
   catch(e) {
     if (e.name == 'ExitStatus') {
       return e.status;
     } else if (e == 'SimulateInfiniteLoop') {
-      Module['noExitRuntime'] = true;
+      package['noExitRuntime'] = true;
     } else {
       throw e;
     }
@@ -4575,15 +4575,15 @@ Module['callMain'] = function callMain(args) {
   return ret;
 }
 function run(args) {
-  args = args || Module['arguments'];
+  args = args || package['arguments'];
   if (runDependencies > 0) {
-    Module.printErr('run() called, but dependencies remain, so not running');
+    package.printErr('run() called, but dependencies remain, so not running');
     return 0;
   }
-  if (Module['preRun']) {
-    if (typeof Module['preRun'] == 'function') Module['preRun'] = [Module['preRun']];
-    var toRun = Module['preRun'];
-    Module['preRun'] = [];
+  if (package['preRun']) {
+    if (typeof package['preRun'] == 'function') package['preRun'] = [package['preRun']];
+    var toRun = package['preRun'];
+    package['preRun'] = [];
     for (var i = toRun.length-1; i >= 0; i--) {
       toRun[i]();
     }
@@ -4597,25 +4597,25 @@ function run(args) {
     preMain();
     var ret = 0;
     calledRun = true;
-    if (Module['_main'] && shouldRunNow) {
-      ret = Module['callMain'](args);
-      if (!Module['noExitRuntime']) {
+    if (package['_main'] && shouldRunNow) {
+      ret = package['callMain'](args);
+      if (!package['noExitRuntime']) {
         exitRuntime();
       }
     }
-    if (Module['postRun']) {
-      if (typeof Module['postRun'] == 'function') Module['postRun'] = [Module['postRun']];
-      while (Module['postRun'].length > 0) {
-        Module['postRun'].pop()();
+    if (package['postRun']) {
+      if (typeof package['postRun'] == 'function') package['postRun'] = [package['postRun']];
+      while (package['postRun'].length > 0) {
+        package['postRun'].pop()();
       }
     }
     return ret;
   }
-  if (Module['setStatus']) {
-    Module['setStatus']('Running...');
+  if (package['setStatus']) {
+    package['setStatus']('Running...');
     setTimeout(function() {
       setTimeout(function() {
-        Module['setStatus']('');
+        package['setStatus']('');
       }, 1);
       if (!ABORT) doRun();
     }, 1);
@@ -4624,22 +4624,22 @@ function run(args) {
     return doRun();
   }
 }
-Module['run'] = Module.run = run;
+package['run'] = package.run = run;
 // {{PRE_RUN_ADDITIONS}}
-if (Module['preInit']) {
-  if (typeof Module['preInit'] == 'function') Module['preInit'] = [Module['preInit']];
-  while (Module['preInit'].length > 0) {
-    Module['preInit'].pop()();
+if (package['preInit']) {
+  if (typeof package['preInit'] == 'function') package['preInit'] = [package['preInit']];
+  while (package['preInit'].length > 0) {
+    package['preInit'].pop()();
   }
 }
 // shouldRunNow refers to calling main(), not run().
 var shouldRunNow = false;
-if (Module['noInitialRun']) {
+if (package['noInitialRun']) {
   shouldRunNow = false;
 }
 run();
 // {{POST_RUN_ADDITIONS}}
-  // {{MODULE_ADDITIONS}}
+  // {{package_ADDITIONS}}
     shouldRunNow = true;
     self['Runtime'] = Runtime;
     self['FS'] = FS;

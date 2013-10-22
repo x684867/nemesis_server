@@ -1,4 +1,4 @@
-module.exports = whoami
+package.exports = whoami
 
 var npm = require("./npm.js")
 

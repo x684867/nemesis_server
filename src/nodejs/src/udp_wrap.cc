@@ -452,4 +452,4 @@ uv_udp_t* UDPWrap::UVHandle() {
 
 }  // namespace node
 
-NODE_MODULE_CONTEXT_AWARE(node_udp_wrap, node::UDPWrap::Initialize)
+NODE_package_CONTEXT_AWARE(node_udp_wrap, node::UDPWrap::Initialize)

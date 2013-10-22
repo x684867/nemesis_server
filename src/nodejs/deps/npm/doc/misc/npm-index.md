@@ -155,9 +155,9 @@ Start a package
 
 Stop a package
 
-## npm-submodule(1)
+## npm-subpackage(1)
 
-Add a package as a git submodule
+Add a package as a git subpackage
 
 ## npm-tag(1)
 
@@ -313,9 +313,9 @@ Start a package
 
 Stop a package
 
-## npm-submodule(3)
+## npm-subpackage(3)
 
-Add a package as a git submodule
+Add a package as a git subpackage
 
 ## npm-tag(3)
 
@@ -383,7 +383,7 @@ Developer Guide
 
 ## npm-disputes(7)
 
-Handling Module Name Disputes
+Handling package Name Disputes
 
 ## npm-faq(7)
 

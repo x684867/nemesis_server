@@ -427,7 +427,7 @@ maintained libraries. The externally maintained libraries used by Node are:
     or for a Distributor Fee, and with or without a Compiled form of the
     Modified Version) provided that you clearly document how it differs
     from the Standard Version, including, but not limited to, documenting
-    any non-standard features, executables, or modules, and provided that
+    any non-standard features, executables, or packages, and provided that
     you do at least ONE of the following:
 
         (a)  make the Modified Version available to the Copyright Holder
@@ -492,7 +492,7 @@ maintained libraries. The externally maintained libraries used by Node are:
 
     Items That are Not Considered Part of a Modified Version
 
-    (9) Works (including, but not limited to, modules and scripts) that
+    (9) Works (including, but not limited to, packages and scripts) that
     merely extend or make use of the Package, do not, by themselves, cause
     the Package to be a Modified Version.  In addition, such works are not
     considered parts of the Package itself, and are not subject to the
@@ -556,11 +556,11 @@ maintained libraries. The externally maintained libraries used by Node are:
     included for use in the npm website and documentation,
     used with permission.
 
-    This program uses several Node modules contained in the node_modules/
+    This program uses several Node packages contained in the node_packages/
     subdirectory, according to the terms of their respective licenses.
   """
 
-- tools/doc/node_modules/marked. Marked is a Markdown parser. Marked's
+- tools/doc/node_packages/marked. Marked is a Markdown parser. Marked's
   license follows:
   """
     Copyright (c) 2011-2012, Christopher Jeffrey (https://github.com/chjj/)
@@ -584,7 +584,7 @@ maintained libraries. The externally maintained libraries used by Node are:
     THE SOFTWARE.
   """
 
-- test/gc/node_modules/weak. Node-weak is a node.js addon that provides garbage
+- test/gc/node_packages/weak. Node-weak is a node.js addon that provides garbage
   collector notifications. Node-weak's license follows:
   """
     Copyright (c) 2011, Ben Noordhuis <info@bnoordhuis.nl>

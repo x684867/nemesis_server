@@ -70,7 +70,7 @@
 //           - JSRegExp
 //           - JSFunction
 //           - JSGeneratorObject
-//           - JSModule
+//           - JSpackage
 //           - GlobalObject
 //             - JSGlobalObject
 //             - JSBuiltinsObject
@@ -408,7 +408,7 @@ const int kStubMinorKeyBits = kBitsPerInt - kSmiTagSize - kStubMajorKeyBits;
   V(JS_OBJECT_TYPE)                                                            \
   V(JS_CONTEXT_EXTENSION_OBJECT_TYPE)                                          \
   V(JS_GENERATOR_OBJECT_TYPE)                                                  \
-  V(JS_MODULE_TYPE)                                                            \
+  V(JS_package_TYPE)                                                            \
   V(JS_GLOBAL_OBJECT_TYPE)                                                     \
   V(JS_BUILTINS_OBJECT_TYPE)                                                   \
   V(JS_GLOBAL_PROXY_TYPE)                                                      \
@@ -766,7 +766,7 @@ enum InstanceType {
   JS_OBJECT_TYPE,
   JS_CONTEXT_EXTENSION_OBJECT_TYPE,
   JS_GENERATOR_OBJECT_TYPE,
-  JS_MODULE_TYPE,
+  JS_package_TYPE,
   JS_GLOBAL_OBJECT_TYPE,
   JS_BUILTINS_OBJECT_TYPE,
   JS_GLOBAL_PROXY_TYPE,
@@ -994,7 +994,7 @@ class MaybeObject BASE_EMBEDDED {
   V(JSObject)                                  \
   V(JSContextExtensionObject)                  \
   V(JSGeneratorObject)                         \
-  V(JSModule)                                  \
+  V(JSpackage)                                  \
   V(Map)                                       \
   V(DescriptorArray)                           \
   V(TransitionArray)                           \
@@ -6892,21 +6892,21 @@ class JSGeneratorObject: public JSObject {
 };
 
 
-// Representation for module instance objects.
-class JSModule: public JSObject {
+// Representation for package instance objects.
+class JSpackage: public JSObject {
  public:
-  // [context]: the context holding the module's locals, or undefined if none.
+  // [context]: the context holding the package's locals, or undefined if none.
   DECL_ACCESSORS(context, Object)
 
   // [scope_info]: Scope info.
   DECL_ACCESSORS(scope_info, ScopeInfo)
 
   // Casting.
-  static inline JSModule* cast(Object* obj);
+  static inline JSpackage* cast(Object* obj);
 
   // Dispatched behavior.
-  DECLARE_PRINTER(JSModule)
-  DECLARE_VERIFIER(JSModule)
+  DECLARE_PRINTER(JSpackage)
+  DECLARE_VERIFIER(JSpackage)
 
   // Layout description.
   static const int kContextOffset = JSObject::kHeaderSize;
@@ -6914,7 +6914,7 @@ class JSModule: public JSObject {
   static const int kSize = kScopeInfoOffset + kPointerSize;
 
  private:
-  DISALLOW_IMPLICIT_CONSTRUCTORS(JSModule);
+  DISALLOW_IMPLICIT_CONSTRUCTORS(JSpackage);
 };
 
 

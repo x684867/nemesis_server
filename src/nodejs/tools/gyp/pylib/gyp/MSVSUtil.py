@@ -141,7 +141,7 @@ def InsertLargePdbShims(target_list, target_dicts, vars):
     # We only want to shim targets that have msvs_large_pdb enabled.
     if not int(target_dict.get('msvs_large_pdb', 0)):
       continue
-    # This is intended for executable, shared_library and loadable_module
+    # This is intended for executable, shared_library and loadable_package
     # targets where every configuration is set up to produce a PDB output.
     # If any of these conditions is not true then the shim logic will fail
     # below.

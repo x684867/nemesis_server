@@ -15,7 +15,7 @@
 * [Globals](globals.html)
 * [HTTP](http.html)
 * [HTTPS](https.html)
-* [Modules](modules.html)
+* [packages](packages.html)
 * [Net](net.html)
 * [OS](os.html)
 * [Path](path.html)

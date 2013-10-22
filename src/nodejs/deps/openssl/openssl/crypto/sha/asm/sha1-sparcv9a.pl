@@ -2,7 +2,7 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -22,11 +22,11 @@
 # 40% over pure IALU sha1-sparcv9.pl on UltraSPARC-IIi, but 12% on
 # UltraSPARC-III. See below for discussion...
 #
-# The module does not present direct interest for OpenSSL, because
+# The package does not present direct interest for OpenSSL, because
 # it doesn't provide better performance on contemporary SPARCv9 CPUs,
 # UltraSPARC-Tx and SPARC64-V[II] to be specific. Those who feel they
 # absolutely must score on UltraSPARC-I-IV can simply replace
-# crypto/sha/asm/sha1-sparcv9.pl with this module.
+# crypto/sha/asm/sha1-sparcv9.pl with this package.
 #
 # (*)	"Pipe-lined" means that even if it takes several cycles to
 #	complete, next instruction using same functional unit [but not
@@ -114,7 +114,7 @@ ___
 # out at 6.25 ticks. This means that USI&II should operate at IALU
 # rate, while USIII&IV - at VIS rate. This explains why performance
 # improvement varies among processors. Well, given that pure IALU
-# sha1-sparcv9.pl module exhibits virtually uniform performance of
+# sha1-sparcv9.pl package exhibits virtually uniform performance of
 # ~9.3 cycles per SHA1 round. Timings mentioned above are theoretical
 # lower limits. Real-life performance was measured to be 6.6 cycles
 # per SHA1 round on USIIi and 8.3 on USIII. The latter is lower than
@@ -543,7 +543,7 @@ $code.=<<___;
 ___
 
 # Purpose of these subroutines is to explicitly encode VIS instructions,
-# so that one can compile the module without having to specify VIS
+# so that one can compile the package without having to specify VIS
 # extentions on compiler command line, e.g. -xarch=v9 vs. -xarch=v9a.
 # Idea is to reserve for option to produce "universal" binary and let
 # programmer detect if current CPU is VIS capable at run-time.

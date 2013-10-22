@@ -15,7 +15,7 @@
 		3. The service will continue indefinitely until its process receives a 
 		   SIGKILL or SIGHUP.	
 */
-module.exports=BrokerServer;
+package.exports=BrokerServer;
 
 /*Return codes for server.start()*/
 const SERVER_OK=0

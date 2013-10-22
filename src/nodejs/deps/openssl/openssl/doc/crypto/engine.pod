@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-engine - ENGINE cryptographic module support
+engine - ENGINE cryptographic package support
 
 =head1 SYNOPSIS
 
@@ -157,11 +157,11 @@ engine - ENGINE cryptographic module support
  EVP_PKEY *ENGINE_load_public_key(ENGINE *e, const char *key_id,
      UI_METHOD *ui_method, void *callback_data);
 
- void ENGINE_add_conf_module(void);
+ void ENGINE_add_conf_package(void);
 
 =head1 DESCRIPTION
 
-These functions create, manipulate, and use cryptographic modules in the
+These functions create, manipulate, and use cryptographic packages in the
 form of B<ENGINE> objects. These objects act as containers for
 implementations of cryptographic algorithms, and support a
 reference-counted mechanism to allow them to be dynamically loaded in and
@@ -310,7 +310,7 @@ value.
 This section will explain the basic things an application programmer should
 support to make the most useful elements of the ENGINE functionality
 available to the user. The first thing to consider is whether the
-programmer wishes to make alternative ENGINE modules available to the
+programmer wishes to make alternative ENGINE packages available to the
 application and user. OpenSSL maintains an internal linked list of
 "visible" ENGINEs from which it has to operate - at start-up, this list is
 empty and in fact if an application does not call any ENGINE API calls and

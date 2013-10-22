@@ -3539,7 +3539,7 @@ The above three functions return the 3 different components strings for the
 error 'e'.  ERR_error_string() uses these functions.
 
 void ERR_load_ERR_strings(void );
-	This function 'registers' the error strings for the 'ERR' module.
+	This function 'registers' the error strings for the 'ERR' package.
 
 void ERR_load_crypto_strings(void );
 	This function 'register' the error strings for just about every

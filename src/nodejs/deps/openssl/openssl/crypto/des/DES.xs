@@ -14,7 +14,7 @@ char *s;
     return -1;
 }
 
-MODULE = DES	PACKAGE = DES	PREFIX = des_
+package = DES	PACKAGE = DES	PREFIX = des_
 
 char *
 des_crypt(buf,salt)

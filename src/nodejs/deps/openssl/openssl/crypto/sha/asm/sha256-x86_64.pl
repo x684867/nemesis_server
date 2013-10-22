@@ -12,7 +12,7 @@
 # sha256 was observed to run >80% faster and sha512 - >40%. No magical
 # tricks, just straight implementation... I really wonder why gcc
 # [being armed with inline assembler] fails to generate as fast code.
-# The only thing which is cool about this module is that it's very
+# The only thing which is cool about this package is that it's very
 # same instruction sequence used for both SHA-256 and SHA-512. In
 # former case the instructions operate on 32-bit operands, while in
 # latter - on 64-bit ones. All I had to do is to get one flavor right,

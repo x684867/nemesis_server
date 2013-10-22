@@ -1,0 +1,14 @@
+{
+	"_name":"process/manifest.json",
+	"_desc":"Nemesis Process Manager package Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+
+	"name":"process",
+	
+	"dependencies":[
+		"error","types","logger","ipc"
+	]
+}

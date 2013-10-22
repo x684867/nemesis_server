@@ -2,12 +2,12 @@
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 
-# This module doesn't present direct interest for OpenSSL, because it
+# This package doesn't present direct interest for OpenSSL, because it
 # doesn't provide better performance for longer keys. While 512-bit
 # RSA private key operations are 40% faster, 1024-bit ones are hardly
 # faster at all, while longer key operations are slower by up to 20%.
@@ -15,7 +15,7 @@
 # it's smaller than 1KB, yet offers ~3x improvement over compiler
 # generated code.
 #
-# The module targets N32 and N64 MIPS ABIs and currently is a bit
+# The package targets N32 and N64 MIPS ABIs and currently is a bit
 # IRIX-centric, i.e. is likely to require adaptation for other OSes.
 
 # int bn_mul_mont(

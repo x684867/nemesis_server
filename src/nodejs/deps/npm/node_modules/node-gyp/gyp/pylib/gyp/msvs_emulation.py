@@ -3,7 +3,7 @@
 # found in the LICENSE file.
 
 """
-This module helps emulate Visual Studio 2008 behavior on top of other
+This package helps emulate Visual Studio 2008 behavior on top of other
 build systems, primarily ninja.
 """
 
@@ -403,10 +403,10 @@ class MsvsSettings(object):
     return libflags
 
   def _GetDefFileAsLdflags(self, spec, ldflags, gyp_to_build_path):
-    """.def files get implicitly converted to a ModuleDefinitionFile for the
+    """.def files get implicitly converted to a packageDefinitionFile for the
     linker in the VS generator. Emulate that behaviour here."""
     def_file = ''
-    if spec['type'] in ('shared_library', 'loadable_module', 'executable'):
+    if spec['type'] in ('shared_library', 'loadable_package', 'executable'):
       def_files = [s for s in spec.get('sources', []) if s.endswith('.def')]
       if len(def_files) == 1:
         ldflags.append('/DEF:"%s"' % gyp_to_build_path(def_files[0]))

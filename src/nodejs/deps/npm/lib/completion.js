@@ -1,5 +1,5 @@
 
-module.exports = completion
+package.exports = completion
 
 completion.usage = "npm completion >> ~/.bashrc\n"
                  + "npm completion >> ~/.zshrc\n"

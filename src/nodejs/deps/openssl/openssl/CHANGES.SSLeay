@@ -448,7 +448,7 @@ BIO INTERNALS
 
 Eric has fixed things so that extra flags can be introduced in
 the BIO layer in future without having to play with all the BIO
-modules by adding in some macros.
+packages by adding in some macros.
 
 The ugly stuff using 
     b->flags ~= (BIO_FLAGS_RW|BIO_FLAGS_SHOULD_RETRY)
@@ -541,7 +541,7 @@ The main additions are
   The crypto/des/des_opts.c program, when compiled and run, will give
   an indication of the correct options to use.
 - The BIO stuff has been improved.  Read doc/bio.doc.  There are now
-  modules for encryption and base64 encoding and a BIO_printf() function.
+  packages for encryption and base64 encoding and a BIO_printf() function.
 - The CA program will accept simple one line X509v3 extensions in the
   ssleay.cnf file.  Have a look at the example.  Currently this just
   puts the text into the certificate as an OCTET_STRING so currently
@@ -694,10 +694,10 @@ time.  What the 'package' is is an API for a data structure containing
 functions.  IO interfaces can be written to conform to the
 specification.  This in not intended to hide the underlying data type
 from the application, but to hide it from SSLeay :-).
-I have only really finished testing the FILE * and socket/fd modules.
+I have only really finished testing the FILE * and socket/fd packages.
 There are also 'filter' BIO's.  Currently I have only implemented
 message digests, and it is in use in the dgst application.  This
-functionality will allow base64/encrypto/buffering modules to be
+functionality will allow base64/encrypto/buffering packages to be
 'push' into a BIO without it affecting the semantics.  I'm also
 working on an SSL BIO which will hide the SSL_accept()/SLL_connet()
 from an event loop which uses the interface.

@@ -5,7 +5,7 @@
 // <fullpath>:<name@ver>:<realpath>:<flags>
 // Flags are a :-separated list of zero or more indicators
 
-module.exports = exports = ls
+package.exports = exports = ls
 
 var npm = require("./npm.js")
   , readInstalled = require("read-installed")
@@ -328,11 +328,11 @@ function makeParseable_ (data, long, dir, depth, parent, d) {
     if (data.depth < npm.config.get("depth")) {
       var p = parent.link || parent.path
       data = npm.config.get("long")
-           ? path.resolve(parent.path, "node_modules", d)
+           ? path.resolve(parent.path, "node_packages", d)
            + ":"+d+"@"+JSON.stringify(data)+":INVALID:MISSING"
            : ""
     } else {
-      data = path.resolve(data.path || "", "node_modules", d || "")
+      data = path.resolve(data.path || "", "node_packages", d || "")
            + (npm.config.get("long")
              ? ":" + d + "@" + JSON.stringify(data)
              + ":" // no realpath resolved

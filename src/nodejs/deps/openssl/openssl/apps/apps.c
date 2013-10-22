@@ -1523,9 +1523,9 @@ int load_config(BIO *err, CONF *cnf)
 	if (!cnf)
 		return 1;
 
-	OPENSSL_load_builtin_modules();
+	OPENSSL_load_builtin_packages();
 
-	if (CONF_modules_load(cnf, NULL, 0) <= 0)
+	if (CONF_packages_load(cnf, NULL, 0) <= 0)
 		{
 		BIO_printf(err, "Error configuring OpenSSL\n");
 		ERR_print_errors(err);

@@ -30,19 +30,19 @@ while (<IN>)
 	{
 	chop;
 	$o++;
-        if (/^!module\s+(.*)$/)
+        if (/^!package\s+(.*)$/)
 		{
-		$module = $1."-";
-		$module =~ s/\./_/g;
-		$module =~ s/-/_/g;
+		$package = $1."-";
+		$package =~ s/\./_/g;
+		$package =~ s/-/_/g;
 		}
         if (/^!global$/)
-		{ $module = ""; }
+		{ $package = ""; }
 	if (/^!Cname\s+(.*)$/)
 		{ $Cname = $1; }
 	if (/^!Alias\s+(.+?)\s+(.*)$/)
 		{
-		$Cname = $module.$1;
+		$Cname = $package.$1;
 		$myoid = $2;
 		$myoid = &process_oid($myoid);
 		$Cname =~ s/-/_/g;
@@ -72,15 +72,15 @@ while (<IN>)
 		$Cname = $myln;
 		$Cname =~ s/\./_/g;
 		$Cname =~ s/-/_/g;
-		if ($Cname ne "" && defined($ln{$module.$Cname}))
-			{ die "objects.txt:$o:There's already an object with long name ",$ln{$module.$Cname}," on line ",$order{$module.$Cname},"\n"; }
+		if ($Cname ne "" && defined($ln{$package.$Cname}))
+			{ die "objects.txt:$o:There's already an object with long name ",$ln{$package.$Cname}," on line ",$order{$package.$Cname},"\n"; }
 		}
 	if ($Cname eq "")
 		{
 		$Cname = $mysn;
 		$Cname =~ s/-/_/g;
-		if ($Cname ne "" && defined($sn{$module.$Cname}))
-			{ die "objects.txt:$o:There's already an object with short name ",$sn{$module.$Cname}," on line ",$order{$module.$Cname},"\n"; }
+		if ($Cname ne "" && defined($sn{$package.$Cname}))
+			{ die "objects.txt:$o:There's already an object with short name ",$sn{$package.$Cname}," on line ",$order{$package.$Cname},"\n"; }
 		}
 	if ($Cname eq "")
 		{
@@ -88,12 +88,12 @@ while (<IN>)
 		$Cname =~ s/-/_/g;
 		$Cname =~ s/\./_/g;
 		$Cname =~ s/ /_/g;
-		if ($Cname ne "" && defined($ln{$module.$Cname}))
-			{ die "objects.txt:$o:There's already an object with long name ",$ln{$module.$Cname}," on line ",$order{$module.$Cname},"\n"; }
+		if ($Cname ne "" && defined($ln{$package.$Cname}))
+			{ die "objects.txt:$o:There's already an object with long name ",$ln{$package.$Cname}," on line ",$order{$package.$Cname},"\n"; }
 		}
 	$Cname =~ s/\./_/g;
 	$Cname =~ s/-/_/g;
-	$Cname = $module.$Cname;
+	$Cname = $package.$Cname;
 	$ordern{$o} = $Cname;
 	$order{$Cname} = $o;
 	$sn{$Cname} = $mysn;

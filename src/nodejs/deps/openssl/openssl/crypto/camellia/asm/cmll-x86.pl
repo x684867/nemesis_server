@@ -3,11 +3,11 @@
 # ====================================================================
 # Copyright (c) 2008 Andy Polyakov <appro@openssl.org>
 #
-# This module may be used under the terms of either the GNU General
+# This package may be used under the terms of either the GNU General
 # Public License version 2 or later, the GNU Lesser General Public
 # License version 2.1 or later, the Mozilla Public License version
 # 1.1 or the BSD License. The exact terms of either license are
-# distributed along with this module. For further details see
+# distributed along with this package. For further details see
 # http://www.openssl.org/~appro/camellia/.
 # ====================================================================
 
@@ -27,7 +27,7 @@
 #
 # Pairs of numbers in "+" rows represent performance improvement over
 # compiler generated position-independent code, PIC, and non-PIC
-# respectively. PIC results are of greater relevance, as this module
+# respectively. PIC results are of greater relevance, as this package
 # is position-independent, i.e. suitable for a shared library or PIE.
 # Position independence "costs" one register, which is why compilers
 # are so close with non-PIC results, they have an extra register to

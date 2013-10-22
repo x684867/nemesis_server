@@ -1,4 +1,4 @@
-/* ae.c module for illumos event ports.
+/* ae.c package for illumos event ports.
  *
  * Copyright (c) 2012, Joyent, Inc. All rights reserved.
  *
@@ -57,7 +57,7 @@ static int evport_debug = 0;
  * keep track of the last fds returned by aeApiPoll and re-associate them next
  * time aeApiPoll is invoked.
  *
- * To summarize, in this module, each fd association is EITHER (a) represented
+ * To summarize, in this package, each fd association is EITHER (a) represented
  * only via the in-kernel association OR (b) represented by pending_fds and
  * pending_masks.  (b) is only true for the last fds we returned from aeApiPoll,
  * and only until we enter aeApiPoll again (at which point we restore the

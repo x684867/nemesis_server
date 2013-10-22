@@ -42,7 +42,7 @@ Scanner::Scanner(UnicodeCache* unicode_cache)
     : unicode_cache_(unicode_cache),
       octal_pos_(Location::invalid()),
       harmony_scoping_(false),
-      harmony_modules_(false),
+      harmony_packages_(false),
       harmony_numeric_literals_(false) { }
 
 
@@ -853,7 +853,7 @@ uc32 Scanner::ScanIdentifierUnicodeEscape() {
   KEYWORD_GROUP('e')                                                \
   KEYWORD("else", Token::ELSE)                                      \
   KEYWORD("enum", Token::FUTURE_RESERVED_WORD)                      \
-  KEYWORD("export", harmony_modules                                 \
+  KEYWORD("export", harmony_packages                                 \
                     ? Token::EXPORT : Token::FUTURE_RESERVED_WORD)  \
   KEYWORD("extends", Token::FUTURE_RESERVED_WORD)                   \
   KEYWORD_GROUP('f')                                                \
@@ -864,7 +864,7 @@ uc32 Scanner::ScanIdentifierUnicodeEscape() {
   KEYWORD_GROUP('i')                                                \
   KEYWORD("if", Token::IF)                                          \
   KEYWORD("implements", Token::FUTURE_STRICT_RESERVED_WORD)         \
-  KEYWORD("import", harmony_modules                                 \
+  KEYWORD("import", harmony_packages                                 \
                     ? Token::IMPORT : Token::FUTURE_RESERVED_WORD)  \
   KEYWORD("in", Token::IN)                                          \
   KEYWORD("instanceof", Token::INSTANCEOF)                          \
@@ -905,7 +905,7 @@ uc32 Scanner::ScanIdentifierUnicodeEscape() {
 static Token::Value KeywordOrIdentifierToken(const char* input,
                                              int input_length,
                                              bool harmony_scoping,
-                                             bool harmony_modules) {
+                                             bool harmony_packages) {
   ASSERT(input_length >= 1);
   const int kMinLength = 2;
   const int kMaxLength = 10;
@@ -982,7 +982,7 @@ Token::Value Scanner::ScanIdentifierOrKeyword() {
     return KeywordOrIdentifierToken(chars.start(),
                                     chars.length(),
                                     harmony_scoping_,
-                                    harmony_modules_);
+                                    harmony_packages_);
   }
 
   return Token::IDENTIFIER;

@@ -1099,18 +1099,18 @@ Win32MemoryMappedFile::~Win32MemoryMappedFile() {
   V(SymGetOptions)                \
   V(SymSetOptions)                \
   V(SymGetSearchPath)             \
-  V(SymLoadModule64)              \
+  V(SymLoadpackage64)              \
   V(StackWalk64)                  \
   V(SymGetSymFromAddr64)          \
   V(SymGetLineFromAddr64)         \
   V(SymFunctionTableAccess64)     \
-  V(SymGetModuleBase64)
+  V(SymGetpackageBase64)
 
 // Function pointers to functions dynamically loaded from dbghelp.dll.
 #define TLHELP32_FUNCTION_LIST(V)  \
   V(CreateToolhelp32Snapshot)      \
-  V(Module32FirstW)                \
-  V(Module32NextW)
+  V(package32FirstW)                \
+  V(package32NextW)
 
 // Define the decoration to use for the type and variable name used for
 // dynamically loaded DLL function..
@@ -1140,11 +1140,11 @@ typedef BOOL (__stdcall *DLL_FUNC_TYPE(SymGetSearchPath))(
     IN HANDLE hProcess,
     OUT PSTR SearchPath,
     IN DWORD SearchPathLength);
-typedef DWORD64 (__stdcall *DLL_FUNC_TYPE(SymLoadModule64))(
+typedef DWORD64 (__stdcall *DLL_FUNC_TYPE(SymLoadpackage64))(
     IN HANDLE hProcess,
     IN HANDLE hFile,
     IN PSTR ImageName,
-    IN PSTR ModuleName,
+    IN PSTR packageName,
     IN DWORD64 BaseOfDll,
     IN DWORD SizeOfDll);
 typedef BOOL (__stdcall *DLL_FUNC_TYPE(StackWalk64))(
@@ -1155,7 +1155,7 @@ typedef BOOL (__stdcall *DLL_FUNC_TYPE(StackWalk64))(
     PVOID ContextRecord,
     PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine,
     PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine,
-    PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine,
+    PGET_package_BASE_ROUTINE64 GetpackageBaseRoutine,
     PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress);
 typedef BOOL (__stdcall *DLL_FUNC_TYPE(SymGetSymFromAddr64))(
     IN HANDLE hProcess,
@@ -1171,18 +1171,18 @@ typedef BOOL (__stdcall *DLL_FUNC_TYPE(SymGetLineFromAddr64))(
 typedef PVOID (__stdcall *DLL_FUNC_TYPE(SymFunctionTableAccess64))(
     HANDLE hProcess,
     DWORD64 AddrBase);  // DbgHelp.h typedef PFUNCTION_TABLE_ACCESS_ROUTINE64
-typedef DWORD64 (__stdcall *DLL_FUNC_TYPE(SymGetModuleBase64))(
+typedef DWORD64 (__stdcall *DLL_FUNC_TYPE(SymGetpackageBase64))(
     HANDLE hProcess,
-    DWORD64 AddrBase);  // DbgHelp.h typedef PGET_MODULE_BASE_ROUTINE64
+    DWORD64 AddrBase);  // DbgHelp.h typedef PGET_package_BASE_ROUTINE64
 
 // TlHelp32.h functions.
 typedef HANDLE (__stdcall *DLL_FUNC_TYPE(CreateToolhelp32Snapshot))(
     DWORD dwFlags,
     DWORD th32ProcessID);
-typedef BOOL (__stdcall *DLL_FUNC_TYPE(Module32FirstW))(HANDLE hSnapshot,
-                                                        LPMODULEENTRY32W lpme);
-typedef BOOL (__stdcall *DLL_FUNC_TYPE(Module32NextW))(HANDLE hSnapshot,
-                                                       LPMODULEENTRY32W lpme);
+typedef BOOL (__stdcall *DLL_FUNC_TYPE(package32FirstW))(HANDLE hSnapshot,
+                                                        LPpackageENTRY32W lpme);
+typedef BOOL (__stdcall *DLL_FUNC_TYPE(package32NextW))(HANDLE hSnapshot,
+                                                       LPpackageENTRY32W lpme);
 
 #undef IN
 #undef VOID
@@ -1201,32 +1201,32 @@ static bool LoadDbgHelpAndTlHelp32() {
 
   if (dbghelp_loaded) return true;
 
-  HMODULE module;
+  Hpackage package;
 
-  // Load functions from the dbghelp.dll module.
-  module = LoadLibrary(TEXT("dbghelp.dll"));
-  if (module == NULL) {
+  // Load functions from the dbghelp.dll package.
+  package = LoadLibrary(TEXT("dbghelp.dll"));
+  if (package == NULL) {
     return false;
   }
 
 #define LOAD_DLL_FUNC(name)                                                 \
   DLL_FUNC_VAR(name) =                                                      \
-      reinterpret_cast<DLL_FUNC_TYPE(name)>(GetProcAddress(module, #name));
+      reinterpret_cast<DLL_FUNC_TYPE(name)>(GetProcAddress(package, #name));
 
 DBGHELP_FUNCTION_LIST(LOAD_DLL_FUNC)
 
 #undef LOAD_DLL_FUNC
 
-  // Load functions from the kernel32.dll module (the TlHelp32.h function used
+  // Load functions from the kernel32.dll package (the TlHelp32.h function used
   // to be in tlhelp32.dll but are now moved to kernel32.dll).
-  module = LoadLibrary(TEXT("kernel32.dll"));
-  if (module == NULL) {
+  package = LoadLibrary(TEXT("kernel32.dll"));
+  if (package == NULL) {
     return false;
   }
 
 #define LOAD_DLL_FUNC(name)                                                 \
   DLL_FUNC_VAR(name) =                                                      \
-      reinterpret_cast<DLL_FUNC_TYPE(name)>(GetProcAddress(module, #name));
+      reinterpret_cast<DLL_FUNC_TYPE(name)>(GetProcAddress(package, #name));
 
 TLHELP32_FUNCTION_LIST(LOAD_DLL_FUNC)
 
@@ -1244,7 +1244,7 @@ TLHELP32_FUNCTION_LIST(DLL_FUNC_LOADED)
 
   dbghelp_loaded = result;
   return result;
-  // NOTE: The modules are never unloaded and will stay around until the
+  // NOTE: The packages are never unloaded and will stay around until the
   // application is closed.
 }
 
@@ -1282,23 +1282,23 @@ static bool LoadSymbols(HANDLE process_handle) {
   }
 
   HANDLE snapshot = _CreateToolhelp32Snapshot(
-      TH32CS_SNAPMODULE,       // dwFlags
+      TH32CS_SNAPpackage,       // dwFlags
       GetCurrentProcessId());  // th32ProcessId
   if (snapshot == INVALID_HANDLE_VALUE) return false;
-  MODULEENTRY32W module_entry;
-  module_entry.dwSize = sizeof(module_entry);  // Set the size of the structure.
-  BOOL cont = _Module32FirstW(snapshot, &module_entry);
+  packageENTRY32W package_entry;
+  package_entry.dwSize = sizeof(package_entry);  // Set the size of the structure.
+  BOOL cont = _package32FirstW(snapshot, &package_entry);
   while (cont) {
     DWORD64 base;
-    // NOTE the SymLoadModule64 function has the peculiarity of accepting a
+    // NOTE the SymLoadpackage64 function has the peculiarity of accepting a
     // both unicode and ASCII strings even though the parameter is PSTR.
-    base = _SymLoadModule64(
+    base = _SymLoadpackage64(
         process_handle,                                       // hProcess
         0,                                                    // hFile
-        reinterpret_cast<PSTR>(module_entry.szExePath),       // ImageName
-        reinterpret_cast<PSTR>(module_entry.szModule),        // ModuleName
-        reinterpret_cast<DWORD64>(module_entry.modBaseAddr),  // BaseOfDll
-        module_entry.modBaseSize);                            // SizeOfDll
+        reinterpret_cast<PSTR>(package_entry.szExePath),       // ImageName
+        reinterpret_cast<PSTR>(package_entry.szpackage),        // packageName
+        reinterpret_cast<DWORD64>(package_entry.modBaseAddr),  // BaseOfDll
+        package_entry.modBaseSize);                            // SizeOfDll
     if (base == 0) {
       int err = GetLastError();
       if (err != ERROR_MOD_NOT_FOUND &&
@@ -1306,11 +1306,11 @@ static bool LoadSymbols(HANDLE process_handle) {
     }
     LOG(i::Isolate::Current(),
         SharedLibraryEvent(
-            module_entry.szExePath,
-            reinterpret_cast<unsigned int>(module_entry.modBaseAddr),
-            reinterpret_cast<unsigned int>(module_entry.modBaseAddr +
-                                           module_entry.modBaseSize)));
-    cont = _Module32NextW(snapshot, &module_entry);
+            package_entry.szExePath,
+            reinterpret_cast<unsigned int>(package_entry.modBaseAddr),
+            reinterpret_cast<unsigned int>(package_entry.modBaseAddr +
+                                           package_entry.modBaseSize)));
+    cont = _package32NextW(snapshot, &package_entry);
   }
   CloseHandle(snapshot);
 
@@ -1386,7 +1386,7 @@ int OS::StackWalk(Vector<OS::StackFrame> frames) {
         &context,                   // ContextRecord
         NULL,                       // ReadMemoryRoutine
         _SymFunctionTableAccess64,  // FunctionTableAccessRoutine
-        _SymGetModuleBase64,        // GetModuleBaseRoutine
+        _SymGetpackageBase64,        // GetpackageBaseRoutine
         NULL);                      // TranslateAddress
     if (!ok) break;
 
@@ -1438,8 +1438,8 @@ int OS::StackWalk(Vector<OS::StackFrame> frames) {
       // No text representation of this frame
       frames[frames_count].text[0] = '\0';
 
-      // Continue if we are just missing a module (for non C/C++ frames a
-      // module will never be found).
+      // Continue if we are just missing a package (for non C/C++ frames a
+      // package will never be found).
       int err = GetLastError();
       if (err != ERROR_MOD_NOT_FOUND) {
         break;

@@ -25,7 +25,7 @@ no configuration takes place.
 =head1 NOTES
 
 It is B<strongly> recommended that B<all> new applications call OPENSSL_config()
-or the more sophisticated functions such as CONF_modules_load() during
+or the more sophisticated functions such as CONF_packages_load() during
 initialization (that is before starting any threads). By doing this
 an application does not need to keep track of all configuration options
 and some new functionality can be supported automatically.
@@ -53,7 +53,7 @@ ENGINE control operations because they can be performed by editing a
 configuration file.
 
 Applications should free up configuration at application closedown by calling
-CONF_modules_free().
+CONF_packages_free().
 
 =head1 RESTRICTIONS
 
@@ -64,7 +64,7 @@ location for example.
 
 It is however B<much> better than nothing. Applications which need finer
 control over their configuration functionality should use the configuration
-functions such as CONF_load_modules() directly.
+functions such as CONF_load_packages() directly.
 
 =head1 RETURN VALUES
 
@@ -72,8 +72,8 @@ Neither OPENSSL_config() nor OPENSSL_no_config() return a value.
 
 =head1 SEE ALSO
 
-L<conf(5)|conf(5)>, L<CONF_load_modules_file(3)|CONF_load_modules_file(3)>,
-L<CONF_modules_free(3),CONF_modules_free(3)>
+L<conf(5)|conf(5)>, L<CONF_load_packages_file(3)|CONF_load_packages_file(3)>,
+L<CONF_packages_free(3),CONF_packages_free(3)>
 
 =head1 HISTORY
 

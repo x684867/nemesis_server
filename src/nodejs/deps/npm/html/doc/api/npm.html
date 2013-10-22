@@ -58,7 +58,7 @@ command.</p>
 
 <ul><li><p><code>npm.load(configs, cb)</code></p><p>Load the configuration params, and call the <code>cb</code> function once the
 globalconfig and userconfig files have been loaded as well, or on
-nextTick if they&#39;ve already been loaded.</p></li><li><p><code>npm.config</code></p><p>An object for accessing npm configuration parameters.</p><ul><li><p><code>npm.config.get(key)</code></p></li><li><code>npm.config.set(key, val)</code></li><li><p><code>npm.config.del(key)</code></p></li></ul></li><li><p><code>npm.dir</code> or <code>npm.root</code></p><p>The <code>node_modules</code> directory where npm will operate.</p></li><li><p><code>npm.prefix</code></p><p>The prefix where npm is operating.  (Most often the current working
+nextTick if they&#39;ve already been loaded.</p></li><li><p><code>npm.config</code></p><p>An object for accessing npm configuration parameters.</p><ul><li><p><code>npm.config.get(key)</code></p></li><li><code>npm.config.set(key, val)</code></li><li><p><code>npm.config.del(key)</code></p></li></ul></li><li><p><code>npm.dir</code> or <code>npm.root</code></p><p>The <code>node_packages</code> directory where npm will operate.</p></li><li><p><code>npm.prefix</code></p><p>The prefix where npm is operating.  (Most often the current working
 directory.)</p></li><li><p><code>npm.cache</code></p><p>The place where npm keeps JSON and tarballs it fetches from the
 registry (or uploads to the registry).</p></li><li><p><code>npm.tmp</code></p><p>npm&#39;s temporary working directory.</p></li><li><p><code>npm.deref</code></p><p>Get the &quot;real&quot; name for a command that has either an alias or
 abbreviation.</p></li></ul>

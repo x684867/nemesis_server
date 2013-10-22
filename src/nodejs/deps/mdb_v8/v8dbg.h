@@ -21,7 +21,7 @@
 
 /*
  * v8dbg.h: macros for use by V8 heap inspection tools.  The consumer must
- * define values for various tags and shifts.  The MDB module gets these
+ * define values for various tags and shifts.  The MDB package gets these
  * constants from information encoded in the binary itself.
  */
 

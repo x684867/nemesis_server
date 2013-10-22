@@ -65,19 +65,19 @@ namespace internal {
 #define DECLARATION_NODE_LIST(V)                \
   V(VariableDeclaration)                        \
   V(FunctionDeclaration)                        \
-  V(ModuleDeclaration)                          \
+  V(packageDeclaration)                          \
   V(ImportDeclaration)                          \
   V(ExportDeclaration)                          \
 
-#define MODULE_NODE_LIST(V)                     \
-  V(ModuleLiteral)                              \
-  V(ModuleVariable)                             \
-  V(ModulePath)                                 \
-  V(ModuleUrl)
+#define package_NODE_LIST(V)                     \
+  V(packageLiteral)                              \
+  V(packageVariable)                             \
+  V(packagePath)                                 \
+  V(packageUrl)
 
 #define STATEMENT_NODE_LIST(V)                  \
   V(Block)                                      \
-  V(ModuleStatement)                            \
+  V(packageStatement)                            \
   V(ExpressionStatement)                        \
   V(EmptyStatement)                             \
   V(IfStatement)                                \
@@ -119,7 +119,7 @@ namespace internal {
 
 #define AST_NODE_LIST(V)                        \
   DECLARATION_NODE_LIST(V)                      \
-  MODULE_NODE_LIST(V)                           \
+  package_NODE_LIST(V)                           \
   STATEMENT_NODE_LIST(V)                        \
   EXPRESSION_NODE_LIST(V)
 
@@ -132,7 +132,7 @@ class AstConstructionVisitor;
 template<class> class AstNodeFactory;
 class AstVisitor;
 class Declaration;
-class Module;
+class package;
 class BreakableStatement;
 class Expression;
 class IterationStatement;
@@ -557,25 +557,25 @@ class FunctionDeclaration: public Declaration {
 };
 
 
-class ModuleDeclaration: public Declaration {
+class packageDeclaration: public Declaration {
  public:
-  DECLARE_NODE_TYPE(ModuleDeclaration)
+  DECLARE_NODE_TYPE(packageDeclaration)
 
-  Module* module() const { return module_; }
+  package* package() const { return package_; }
   virtual InitializationFlag initialization() const {
     return kCreatedInitialized;
   }
 
  protected:
-  ModuleDeclaration(VariableProxy* proxy,
-                    Module* module,
+  packageDeclaration(VariableProxy* proxy,
+                    package* package,
                     Scope* scope)
-      : Declaration(proxy, MODULE, scope),
-        module_(module) {
+      : Declaration(proxy, package, scope),
+        package_(package) {
   }
 
  private:
-  Module* module_;
+  package* package_;
 };
 
 
@@ -583,21 +583,21 @@ class ImportDeclaration: public Declaration {
  public:
   DECLARE_NODE_TYPE(ImportDeclaration)
 
-  Module* module() const { return module_; }
+  package* package() const { return package_; }
   virtual InitializationFlag initialization() const {
     return kCreatedInitialized;
   }
 
  protected:
   ImportDeclaration(VariableProxy* proxy,
-                    Module* module,
+                    package* package,
                     Scope* scope)
       : Declaration(proxy, LET, scope),
-        module_(module) {
+        package_(package) {
   }
 
  private:
-  Module* module_;
+  package* package_;
 };
 
 
@@ -615,16 +615,16 @@ class ExportDeclaration: public Declaration {
 };
 
 
-class Module: public AstNode {
+class package: public AstNode {
  public:
   Interface* interface() const { return interface_; }
   Block* body() const { return body_; }
 
  protected:
-  explicit Module(Zone* zone)
-      : interface_(Interface::NewModule(zone)),
+  explicit package(Zone* zone)
+      : interface_(Interface::Newpackage(zone)),
         body_(NULL) {}
-  explicit Module(Interface* interface, Block* body = NULL)
+  explicit package(Interface* interface, Block* body = NULL)
       : interface_(interface),
         body_(body) {}
 
@@ -634,58 +634,58 @@ class Module: public AstNode {
 };
 
 
-class ModuleLiteral: public Module {
+class packageLiteral: public package {
  public:
-  DECLARE_NODE_TYPE(ModuleLiteral)
+  DECLARE_NODE_TYPE(packageLiteral)
 
  protected:
-  ModuleLiteral(Block* body, Interface* interface) : Module(interface, body) {}
+  packageLiteral(Block* body, Interface* interface) : package(interface, body) {}
 };
 
 
-class ModuleVariable: public Module {
+class packageVariable: public package {
  public:
-  DECLARE_NODE_TYPE(ModuleVariable)
+  DECLARE_NODE_TYPE(packageVariable)
 
   VariableProxy* proxy() const { return proxy_; }
 
  protected:
-  inline explicit ModuleVariable(VariableProxy* proxy);
+  inline explicit packageVariable(VariableProxy* proxy);
 
  private:
   VariableProxy* proxy_;
 };
 
 
-class ModulePath: public Module {
+class packagePath: public package {
  public:
-  DECLARE_NODE_TYPE(ModulePath)
+  DECLARE_NODE_TYPE(packagePath)
 
-  Module* module() const { return module_; }
+  package* package() const { return package_; }
   Handle<String> name() const { return name_; }
 
  protected:
-  ModulePath(Module* module, Handle<String> name, Zone* zone)
-      : Module(zone),
-        module_(module),
+  packagePath(package* package, Handle<String> name, Zone* zone)
+      : package(zone),
+        package_(package),
         name_(name) {
   }
 
  private:
-  Module* module_;
+  package* package_;
   Handle<String> name_;
 };
 
 
-class ModuleUrl: public Module {
+class packageUrl: public package {
  public:
-  DECLARE_NODE_TYPE(ModuleUrl)
+  DECLARE_NODE_TYPE(packageUrl)
 
   Handle<String> url() const { return url_; }
 
  protected:
-  ModuleUrl(Handle<String> url, Zone* zone)
-      : Module(zone), url_(url) {
+  packageUrl(Handle<String> url, Zone* zone)
+      : package(zone), url_(url) {
   }
 
  private:
@@ -693,15 +693,15 @@ class ModuleUrl: public Module {
 };
 
 
-class ModuleStatement: public Statement {
+class packageStatement: public Statement {
  public:
-  DECLARE_NODE_TYPE(ModuleStatement)
+  DECLARE_NODE_TYPE(packageStatement)
 
   VariableProxy* proxy() const { return proxy_; }
   Block* body() const { return body_; }
 
  protected:
-  ModuleStatement(VariableProxy* proxy, Block* body)
+  packageStatement(VariableProxy* proxy, Block* body)
       : proxy_(proxy),
         body_(body) {
   }
@@ -2748,8 +2748,8 @@ class RegExpEmpty: public RegExpTree {
 // ----------------------------------------------------------------------------
 // Out-of-line inline constructors (to side-step cyclic dependencies).
 
-inline ModuleVariable::ModuleVariable(VariableProxy* proxy)
-    : Module(proxy->interface()),
+inline packageVariable::packageVariable(VariableProxy* proxy)
+    : package(proxy->interface()),
       proxy_(proxy) {
 }
 
@@ -2876,19 +2876,19 @@ class AstNodeFactory BASE_EMBEDDED {
     VISIT_AND_RETURN(FunctionDeclaration, decl)
   }
 
-  ModuleDeclaration* NewModuleDeclaration(VariableProxy* proxy,
-                                          Module* module,
+  packageDeclaration* NewpackageDeclaration(VariableProxy* proxy,
+                                          package* package,
                                           Scope* scope) {
-    ModuleDeclaration* decl =
-        new(zone_) ModuleDeclaration(proxy, module, scope);
-    VISIT_AND_RETURN(ModuleDeclaration, decl)
+    packageDeclaration* decl =
+        new(zone_) packageDeclaration(proxy, package, scope);
+    VISIT_AND_RETURN(packageDeclaration, decl)
   }
 
   ImportDeclaration* NewImportDeclaration(VariableProxy* proxy,
-                                          Module* module,
+                                          package* package,
                                           Scope* scope) {
     ImportDeclaration* decl =
-        new(zone_) ImportDeclaration(proxy, module, scope);
+        new(zone_) ImportDeclaration(proxy, package, scope);
     VISIT_AND_RETURN(ImportDeclaration, decl)
   }
 
@@ -2899,24 +2899,24 @@ class AstNodeFactory BASE_EMBEDDED {
     VISIT_AND_RETURN(ExportDeclaration, decl)
   }
 
-  ModuleLiteral* NewModuleLiteral(Block* body, Interface* interface) {
-    ModuleLiteral* module = new(zone_) ModuleLiteral(body, interface);
-    VISIT_AND_RETURN(ModuleLiteral, module)
+  packageLiteral* NewpackageLiteral(Block* body, Interface* interface) {
+    packageLiteral* package = new(zone_) packageLiteral(body, interface);
+    VISIT_AND_RETURN(packageLiteral, package)
   }
 
-  ModuleVariable* NewModuleVariable(VariableProxy* proxy) {
-    ModuleVariable* module = new(zone_) ModuleVariable(proxy);
-    VISIT_AND_RETURN(ModuleVariable, module)
+  packageVariable* NewpackageVariable(VariableProxy* proxy) {
+    packageVariable* package = new(zone_) packageVariable(proxy);
+    VISIT_AND_RETURN(packageVariable, package)
   }
 
-  ModulePath* NewModulePath(Module* origin, Handle<String> name) {
-    ModulePath* module = new(zone_) ModulePath(origin, name, zone_);
-    VISIT_AND_RETURN(ModulePath, module)
+  packagePath* NewpackagePath(package* origin, Handle<String> name) {
+    packagePath* package = new(zone_) packagePath(origin, name, zone_);
+    VISIT_AND_RETURN(packagePath, package)
   }
 
-  ModuleUrl* NewModuleUrl(Handle<String> url) {
-    ModuleUrl* module = new(zone_) ModuleUrl(url, zone_);
-    VISIT_AND_RETURN(ModuleUrl, module)
+  packageUrl* NewpackageUrl(Handle<String> url) {
+    packageUrl* package = new(zone_) packageUrl(url, zone_);
+    VISIT_AND_RETURN(packageUrl, package)
   }
 
   Block* NewBlock(ZoneStringList* labels,
@@ -2954,9 +2954,9 @@ class AstNodeFactory BASE_EMBEDDED {
     return NULL;
   }
 
-  ModuleStatement* NewModuleStatement(VariableProxy* proxy, Block* body) {
-    ModuleStatement* stmt = new(zone_) ModuleStatement(proxy, body);
-    VISIT_AND_RETURN(ModuleStatement, stmt)
+  packageStatement* NewpackageStatement(VariableProxy* proxy, Block* body) {
+    packageStatement* stmt = new(zone_) packageStatement(proxy, body);
+    VISIT_AND_RETURN(packageStatement, stmt)
   }
 
   ExpressionStatement* NewExpressionStatement(Expression* expression) {

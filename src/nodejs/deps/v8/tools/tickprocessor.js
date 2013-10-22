@@ -734,7 +734,7 @@ WindowsCppEntriesProvider.prototype.loadSymbols = function(libName) {
   var fileNameFields = libName.match(WindowsCppEntriesProvider.FILENAME_RE);
   if (!fileNameFields) return;
   var mapFileName = fileNameFields[1] + '.map';
-  this.moduleType_ = fileNameFields[2].toLowerCase();
+  this.packageType_ = fileNameFields[2].toLowerCase();
   try {
     this.symbols = read(mapFileName);
   } catch (e) {
@@ -758,7 +758,7 @@ WindowsCppEntriesProvider.prototype.parseNextLine = function() {
   var imageBaseFields = line.match(WindowsCppEntriesProvider.IMAGE_BASE_RE);
   if (imageBaseFields) {
     var imageBase = parseInt(imageBaseFields[1], 16);
-    if ((this.moduleType_ == 'exe') !=
+    if ((this.packageType_ == 'exe') !=
         (imageBase == WindowsCppEntriesProvider.EXE_IMAGE_BASE)) {
       return false;
     }

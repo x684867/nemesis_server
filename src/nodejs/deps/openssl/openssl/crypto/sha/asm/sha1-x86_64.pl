@@ -2,7 +2,7 @@
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -40,7 +40,7 @@
 #
 # Add SSSE3, Supplemental[!] SSE3, implementation. The idea behind it
 # is to offload message schedule denoted by Wt in NIST specification,
-# or Xupdate in OpenSSL source, to SIMD unit. See sha1-586.pl module
+# or Xupdate in OpenSSL source, to SIMD unit. See sha1-586.pl package
 # for background and implementation details. The only difference from
 # 32-bit code is that 64-bit code doesn't have to spill @X[] elements
 # to free temporary registers.

@@ -12,4 +12,4 @@ void init(Handle<Object> target) {
   NODE_SET_METHOD(target, "hello", Method);
 }
 
-NODE_MODULE(binding, init);
+NODE_package(binding, init);

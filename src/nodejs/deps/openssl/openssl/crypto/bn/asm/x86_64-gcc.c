@@ -38,7 +38,7 @@
  *	dsa 1024 bits   0.0014s   0.0018s    692.3    559.2
  *	dsa 2048 bits   0.0049s   0.0061s    204.7    165.0
  *
- *    'apps/openssl speed rsa dsa' output with this module:
+ *    'apps/openssl speed rsa dsa' output with this package:
  *
  *	                  sign    verify    sign/s verify/s
  *	rsa  512 bits   0.0004s   0.0000s   2767.1  33297.9

@@ -26,7 +26,7 @@ slug: version-0-6-18-stable
 </li>
 <li><p>pipe_wrap: don&#39;t assert() on pipe accept errors (Ben Noordhuis)</p>
 </li>
-<li><p>Better exception output for module load and process.nextTick (Felix Geisendörfer)</p>
+<li><p>Better exception output for package load and process.nextTick (Felix Geisendörfer)</p>
 </li>
 <li><p>zlib: fix error reporting (Ben Noordhuis)</p>
 </li>

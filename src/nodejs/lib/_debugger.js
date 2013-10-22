@@ -1120,9 +1120,9 @@ Interface.prototype.list = function(delta) {
           });
 
       if (lineno == 1) {
-        // The first line needs to have the module wrapper filtered out of
+        // The first line needs to have the package wrapper filtered out of
         // it.
-        var wrapper = require('module').wrapper[0];
+        var wrapper = require('package').wrapper[0];
         lines[i] = lines[i].slice(wrapper.length);
 
         client.currentSourceColumn -= wrapper.length;

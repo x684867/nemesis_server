@@ -3,14 +3,14 @@
 npm-debug.log
 /test/bin
 /test/output.log
-/test/packages/*/node_modules
+/test/packages/*/node_packages
 /test/packages/npm-test-depends-on-spark/which-spark.log
 /test/packages/test-package/random-data.txt
 /test/root
-node_modules/ronn
-node_modules/tap
-node_modules/.bin
-node_modules/npm-registry-mock
+node_packages/ronn
+node_packages/tap
+node_packages/.bin
+node_packages/npm-registry-mock
 /npmrc
 /release/
 

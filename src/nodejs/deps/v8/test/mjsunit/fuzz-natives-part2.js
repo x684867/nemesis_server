@@ -147,7 +147,7 @@ var knownProblems = {
   "PushWithContext": true,
   "PushCatchContext": true,
   "PushBlockContext": true,
-  "PushModuleContext": true,
+  "PushpackageContext": true,
   "LazyCompile": true,
   "LazyRecompile": true,
   "ParallelRecompile": true,

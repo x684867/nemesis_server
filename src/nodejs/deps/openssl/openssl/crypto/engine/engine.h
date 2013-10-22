@@ -617,7 +617,7 @@ int ENGINE_set_default_pkey_asn1_meths(ENGINE *e);
  * selective functions. */
 int ENGINE_set_default(ENGINE *e, unsigned int flags);
 
-void ENGINE_add_conf_module(void);
+void ENGINE_add_conf_package(void);
 
 /* Deprecated functions ... */
 /* int ENGINE_clear_defaults(void); */
@@ -790,7 +790,7 @@ void ERR_load_ENGINE_strings(void);
 #define ENGINE_F_ENGINE_UP_REF				 190
 #define ENGINE_F_INT_CTRL_HELPER			 172
 #define ENGINE_F_INT_ENGINE_CONFIGURE			 188
-#define ENGINE_F_INT_ENGINE_MODULE_INIT			 187
+#define ENGINE_F_INT_ENGINE_package_INIT			 187
 #define ENGINE_F_LOG_MESSAGE				 141
 
 /* Reason codes. */

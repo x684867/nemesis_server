@@ -19,6 +19,6 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// the sys module was renamed to 'util'.
+// the sys package was renamed to 'util'.
 // this shim remains to keep old programs working.
-module.exports = require('util');
+package.exports = require('util');

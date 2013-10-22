@@ -28,7 +28,7 @@ var assert = require('assert');
 var http = require('http');
 var util = require('util');
 var url = require('url');
-var modulesLoaded = 0;
+var packagesLoaded = 0;
 
 var server = http.createServer(function(req, res) {
   var body = 'exports.httpPath = function() {' +
@@ -41,22 +41,22 @@ var server = http.createServer(function(req, res) {
 server.listen(common.PORT);
 
 assert.throws(function() {
-  var httpModule = require('http://localhost:' + common.PORT + '/moduleA.js');
-  assert.equal('/moduleA.js', httpModule.httpPath());
-  modulesLoaded++;
+  var httppackage = require('http://localhost:' + common.PORT + '/packageA.js');
+  assert.equal('/packageA.js', httppackage.httpPath());
+  packagesLoaded++;
 });
 
 var nodeBinary = process.ARGV[0];
 var cmd = 'NODE_PATH=' + common.libDir + ' ' + nodeBinary +
-          ' http://localhost:' + common.PORT + '/moduleB.js';
+          ' http://localhost:' + common.PORT + '/packageB.js';
 
 util.exec(cmd, function(err, stdout, stderr) {
   if (err) throw err;
   console.log('success!');
-  modulesLoaded++;
+  packagesLoaded++;
   server.close();
 });
 
 process.on('exit', function() {
-  assert.equal(1, modulesLoaded);
+  assert.equal(1, packagesLoaded);
 });

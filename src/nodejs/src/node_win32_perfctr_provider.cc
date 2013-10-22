@@ -88,7 +88,7 @@ typedef ULONG (WINAPI *PerfDecrementULongLongCounterValueFunc)(
     __in ULONGLONG Value);
 
 
-HMODULE advapimod;
+Hpackage advapimod;
 PerfStartProviderExFunc perfctr_startProvider;
 PerfStopProviderFunc perfctr_stopProvider;
 PerfSetCounterSetInfoFunc perfctr_setCounterSetInfo;

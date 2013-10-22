@@ -633,9 +633,9 @@ class TestRepository(TestSuite):
     self.is_loaded = True
     file = None
     try:
-      (file, pathname, description) = imp.find_module('testcfg', [ self.path ])
-      module = imp.load_module('testcfg', file, pathname, description)
-      self.config = module.GetConfiguration(context, self.path)
+      (file, pathname, description) = imp.find_package('testcfg', [ self.path ])
+      package = imp.load_package('testcfg', file, pathname, description)
+      self.config = package.GetConfiguration(context, self.path)
     finally:
       if file:
         file.close()

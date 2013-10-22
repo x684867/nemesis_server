@@ -8668,8 +8668,8 @@ void HOptimizedGraphBuilder::VisitFunctionDeclaration(
 }
 
 
-void HOptimizedGraphBuilder::VisitModuleDeclaration(
-    ModuleDeclaration* declaration) {
+void HOptimizedGraphBuilder::VisitpackageDeclaration(
+    packageDeclaration* declaration) {
   UNREACHABLE();
 }
 
@@ -8686,27 +8686,27 @@ void HOptimizedGraphBuilder::VisitExportDeclaration(
 }
 
 
-void HOptimizedGraphBuilder::VisitModuleLiteral(ModuleLiteral* module) {
+void HOptimizedGraphBuilder::VisitpackageLiteral(packageLiteral* package) {
   UNREACHABLE();
 }
 
 
-void HOptimizedGraphBuilder::VisitModuleVariable(ModuleVariable* module) {
+void HOptimizedGraphBuilder::VisitpackageVariable(packageVariable* package) {
   UNREACHABLE();
 }
 
 
-void HOptimizedGraphBuilder::VisitModulePath(ModulePath* module) {
+void HOptimizedGraphBuilder::VisitpackagePath(packagePath* package) {
   UNREACHABLE();
 }
 
 
-void HOptimizedGraphBuilder::VisitModuleUrl(ModuleUrl* module) {
+void HOptimizedGraphBuilder::VisitpackageUrl(packageUrl* package) {
   UNREACHABLE();
 }
 
 
-void HOptimizedGraphBuilder::VisitModuleStatement(ModuleStatement* stmt) {
+void HOptimizedGraphBuilder::VisitpackageStatement(packageStatement* stmt) {
   UNREACHABLE();
 }
 

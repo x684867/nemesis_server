@@ -2,7 +2,7 @@
 
     Stability: 3 - Stable
 
-Use `require('dns')` to access this module. All methods in the dns module
+Use `require('dns')` to access this package. All methods in the dns package
 use C-Ares except for `dns.lookup` which uses `getaddrinfo(3)` in a thread
 pool. C-Ares is much faster than `getaddrinfo` but the system resolver is
 more constant with how other programs operate. When a user does

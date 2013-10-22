@@ -18,7 +18,7 @@ npm <command> [args]
 .
 .SH "DESCRIPTION"
 npm is the package manager for the Node JavaScript platform\.  It puts
-modules in place so that node can find them, and manages dependency
+packages in place so that node can find them, and manages dependency
 conflicts intelligently\.
 .
 .P
@@ -49,14 +49,14 @@ In particular, npm has two modes of operation:
 global mode:
 .
 .br
-npm installs packages into the install prefix at \fBprefix/lib/node_modules\fR and bins are installed in \fBprefix/bin\fR\|\.
+npm installs packages into the install prefix at \fBprefix/lib/node_packages\fR and bins are installed in \fBprefix/bin\fR\|\.
 .
 .IP "\(bu" 4
 local mode:
 .
 .br
 npm installs packages into the current project directory, which
-defaults to the current working directory\.  Packages are installed to \fB\|\./node_modules\fR, and bins are installed to \fB\|\./node_modules/\.bin\fR\|\.
+defaults to the current working directory\.  Packages are installed to \fB\|\./node_packages\fR, and bins are installed to \fB\|\./node_packages/\.bin\fR\|\.
 .
 .IP "" 0
 .

@@ -22,7 +22,7 @@
 var common = require('../common');
 var assert = require('assert');
 
-var module = require('module');
+var package = require('package');
 
 var isWindows = process.platform === 'win32';
 
@@ -33,14 +33,14 @@ if (isWindows) {
   partB = 'C:\\Program Files (x86)\\nodejs\\';
   process.env['NODE_PATH'] = partA + ';' + partB;
 } else {
-  partA = '/usr/test/lib/node_modules';
+  partA = '/usr/test/lib/node_packages';
   partB = '/usr/test/lib/node';
   process.env['NODE_PATH'] = partA + ':' + partB;
 }
 
-module._initPaths();
+package._initPaths();
 
-assert.ok(module.globalPaths.indexOf(partA) !== -1);
-assert.ok(module.globalPaths.indexOf(partB) !== -1);
+assert.ok(package.globalPaths.indexOf(partA) !== -1);
+assert.ok(package.globalPaths.indexOf(partB) !== -1);
 
-assert.ok(Array.isArray(module.globalPaths));
+assert.ok(Array.isArray(package.globalPaths));

@@ -22,7 +22,7 @@ if (useDomains) {
   gdom.enter();
 }
 
-var server = module.exports = http.createServer(function (req, res) {
+var server = package.exports = http.createServer(function (req, res) {
   if (useDomains) {
     var dom = domain.create();
     dom.add(req);
@@ -115,6 +115,6 @@ function makeString(size, c) {
 }
 
 server.listen(port, function () {
-  if (module === require.main)
+  if (package === require.main)
     console.error('Listening at http://127.0.0.1:'+port+'/');
 });

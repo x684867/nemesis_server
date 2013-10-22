@@ -43,7 +43,7 @@ DH_set_method() selects B<meth> to perform all operations using the key B<dh>.
 This will replace the DH_METHOD used by the DH key and if the previous method
 was supplied by an ENGINE, the handle to that ENGINE will be released during the
 change. It is possible to have DH keys that only work with certain DH_METHOD
-implementations (eg. from an ENGINE module that supports embedded
+implementations (eg. from an ENGINE package that supports embedded
 hardware-protected keys), and in such cases attempting to change the DH_METHOD
 for the key can have unexpected results.
 
@@ -100,7 +100,7 @@ returns a pointer to the newly allocated structure.
 =head1 NOTES
 
 As of version 0.9.7, DH_METHOD implementations are grouped together with other
-algorithmic APIs (eg. RSA_METHOD, EVP_CIPHER, etc) in B<ENGINE> modules. If a
+algorithmic APIs (eg. RSA_METHOD, EVP_CIPHER, etc) in B<ENGINE> packages. If a
 default ENGINE is specified for DH functionality using an ENGINE API function,
 that will override any DH defaults set using the DH API (ie.
 DH_set_default_method()). For this reason, the ENGINE API is the recommended way

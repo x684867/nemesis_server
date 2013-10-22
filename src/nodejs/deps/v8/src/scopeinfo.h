@@ -133,26 +133,26 @@ class ContextSlotCache {
 
 
 //---------------------------------------------------------------------------
-// Auxiliary class used for the description of module instances.
-// Used by Runtime_DeclareModules.
+// Auxiliary class used for the description of package instances.
+// Used by Runtime_Declarepackages.
 
-class ModuleInfo: public FixedArray {
+class packageInfo: public FixedArray {
  public:
-  static ModuleInfo* cast(Object* description) {
-    return static_cast<ModuleInfo*>(FixedArray::cast(description));
+  static packageInfo* cast(Object* description) {
+    return static_cast<packageInfo*>(FixedArray::cast(description));
   }
 
-  static Handle<ModuleInfo> Create(
+  static Handle<packageInfo> Create(
       Isolate* isolate, Interface* interface, Scope* scope);
 
-  // Index of module's context in host context.
+  // Index of package's context in host context.
   int host_index() { return Smi::cast(get(HOST_OFFSET))->value(); }
 
   // Name, mode, and index of the i-th export, respectively.
-  // For value exports, the index is the slot of the value in the module
-  // context, for exported modules it is the slot index of the
-  // referred module's context in the host context.
-  // TODO(rossberg): This format cannot yet handle exports of modules declared
+  // For value exports, the index is the slot of the value in the package
+  // context, for exported packages it is the slot index of the
+  // referred package's context in the host context.
+  // TODO(rossberg): This format cannot yet handle exports of packages declared
   // in earlier scripts.
   String* name(int i) { return String::cast(get(name_offset(i))); }
   VariableMode mode(int i) {
@@ -176,8 +176,8 @@ class ModuleInfo: public FixedArray {
   inline int mode_offset(int i) { return MODE_OFFSET + i * ITEM_SIZE; }
   inline int index_offset(int i) { return INDEX_OFFSET + i * ITEM_SIZE; }
 
-  static Handle<ModuleInfo> Allocate(Isolate* isolate, int length) {
-    return Handle<ModuleInfo>::cast(
+  static Handle<packageInfo> Allocate(Isolate* isolate, int length) {
+    return Handle<packageInfo>::cast(
         isolate->factory()->NewFixedArray(HEADER_SIZE + ITEM_SIZE * length));
   }
   void set_host_index(int index) { set(HOST_OFFSET, Smi::FromInt(index)); }

@@ -11,7 +11,7 @@ packages.
 
 */
 
-module.exports = outdated
+package.exports = outdated
 
 outdated.usage = "npm outdated [<pkg> [<pkg> ...]]"
 
@@ -42,7 +42,7 @@ function makePretty (p) {
   var parseable = npm.config.get("parseable")
     , long = npm.config.get("long")
     , dep = p[1]
-    , dir = path.resolve(p[0], "node_modules", dep)
+    , dir = path.resolve(p[0], "node_packages", dep)
     , has = p[2]
     , want = p[3]
 
@@ -66,11 +66,11 @@ function makePretty (p) {
 }
 
 function outdated_ (args, dir, parentHas, cb) {
-  // get the deps from package.json, or {<dir/node_modules/*>:"*"}
+  // get the deps from package.json, or {<dir/node_packages/*>:"*"}
   // asyncMap over deps:
   //   shouldHave = cache.add(dep, req).version
   //   if has === shouldHave then
-  //     return outdated(args, dir/node_modules/dep, parentHas + has)
+  //     return outdated(args, dir/node_packages/dep, parentHas + has)
   //   else if dep in args or args is empty
   //     return [dir, dep, has, shouldHave]
 
@@ -82,7 +82,7 @@ function outdated_ (args, dir, parentHas, cb) {
   })
 
   var has = null
-  fs.readdir(path.resolve(dir, "node_modules"), function (er, pkgs) {
+  fs.readdir(path.resolve(dir, "node_packages"), function (er, pkgs) {
     if (er) {
       has = Object.create(parentHas)
       return next()
@@ -91,7 +91,7 @@ function outdated_ (args, dir, parentHas, cb) {
       return !p.match(/^[\._-]/)
     })
     asyncMap(pkgs, function (pkg, cb) {
-      var jsonFile = path.resolve(dir, "node_modules", pkg, "package.json")
+      var jsonFile = path.resolve(dir, "node_packages", pkg, "package.json")
       readJson(jsonFile, function (er, d) {
         if (er && er.code !== "ENOENT" && er.code !== "ENOTDIR") return cb(er)
         cb(null, er ? [] : [[d.name, d.version, d._from]])
@@ -138,7 +138,7 @@ function shouldUpdate (args, dir, dep, has, req, cb) {
 
   function skip () {
     outdated_( args
-             , path.resolve(dir, "node_modules", dep)
+             , path.resolve(dir, "node_packages", dep)
              , has
              , cb )
   }

@@ -3,8 +3,8 @@
 
 	/** Detect free variables */
 	var freeExports = typeof exports == 'object' && exports;
-	var freeModule = typeof module == 'object' && module &&
-		module.exports == freeExports && module;
+	var freepackage = typeof package == 'object' && package &&
+		package.exports == freeExports && package;
 	var freeGlobal = typeof global == 'object' && global;
 	if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal) {
 		root = freeGlobal;
@@ -493,8 +493,8 @@
 			return punycode;
 		});
 	}	else if (freeExports && !freeExports.nodeType) {
-		if (freeModule) { // in Node.js or RingoJS v0.8.0+
-			freeModule.exports = punycode;
+		if (freepackage) { // in Node.js or RingoJS v0.8.0+
+			freepackage.exports = punycode;
 		} else { // in Narwhal or RingoJS v0.7.0-
 			for (key in punycode) {
 				punycode.hasOwnProperty(key) && (freeExports[key] = punycode[key]);

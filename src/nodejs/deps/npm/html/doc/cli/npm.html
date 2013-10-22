@@ -19,7 +19,7 @@
 <h2 id="DESCRIPTION">DESCRIPTION</h2>
 
 <p>npm is the package manager for the Node JavaScript platform.  It puts
-modules in place so that node can find them, and manages dependency
+packages in place so that node can find them, and manages dependency
 conflicts intelligently.</p>
 
 <p>It is extremely configurable to support a wide variety of use cases.
@@ -45,9 +45,9 @@ Use <code>npm ls</code> to show everything you&#39;ve installed.</p>
 <p>In particular, npm has two modes of operation:</p>
 
 <ul><li>global mode:<br />npm installs packages into the install prefix at
-<code>prefix/lib/node_modules</code> and bins are installed in <code>prefix/bin</code>.</li><li>local mode:<br />npm installs packages into the current project directory, which
+<code>prefix/lib/node_packages</code> and bins are installed in <code>prefix/bin</code>.</li><li>local mode:<br />npm installs packages into the current project directory, which
 defaults to the current working directory.  Packages are installed to
-<code>./node_modules</code>, and bins are installed to <code>./node_modules/.bin</code>.</li></ul>
+<code>./node_packages</code>, and bins are installed to <code>./node_packages/.bin</code>.</li></ul>
 
 <p>Local mode is the default.  Use <code>--global</code> or <code>-g</code> on any command to
 operate in global mode instead.</p>

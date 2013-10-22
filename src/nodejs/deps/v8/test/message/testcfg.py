@@ -79,7 +79,7 @@ class MessageTestSuite(testsuite.TestSuite):
             string.startswith("DEBUG MODE ENABLED") or
             string.startswith("tools/nacl-run.py") or
             string.find("BYPASSING ALL ACL CHECKS") > 0 or
-            string.find("Native Client module will be loaded") > 0 or
+            string.find("Native Client package will be loaded") > 0 or
             string.find("NaClHostDescOpen:") > 0)
 
   def IsFailureOutput(self, output, testpath):

@@ -111,4 +111,4 @@ class SignalWrap : public HandleWrap {
 }  // namespace node
 
 
-NODE_MODULE_CONTEXT_AWARE(node_signal_wrap, node::SignalWrap::Initialize)
+NODE_package_CONTEXT_AWARE(node_signal_wrap, node::SignalWrap::Initialize)

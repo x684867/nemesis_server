@@ -149,13 +149,13 @@ up by the files array.  The &quot;.npmignore&quot; file works just like a
 
 <h2 id="main">main</h2>
 
-<p>The main field is a module ID that is the primary entry point to your program.
+<p>The main field is a package ID that is the primary entry point to your program.
 That is, if your package is named <code>foo</code>, and a user installs it, and then does
-<code>require(&quot;foo&quot;)</code>, then your main module&#39;s exports object will be returned.</p>
+<code>require(&quot;foo&quot;)</code>, then your main package&#39;s exports object will be returned.</p>
 
-<p>This should be a module ID relative to the root of your package folder.</p>
+<p>This should be a package ID relative to the root of your package folder.</p>
 
-<p>For most modules, it makes the most sense to have a main script and often not
+<p>For most packages, it makes the most sense to have a main script and often not
 much else.</p>
 
 <h2 id="bin">bin</h2>
@@ -166,7 +166,7 @@ feature to install the &quot;npm&quot; executable.)</p>
 
 <p>To use this, supply a <code>bin</code> field in your package.json which is a map of
 command name to local file name. On install, npm will symlink that file into
-<code>prefix/bin</code> for global installs, or <code>./node_modules/.bin/</code> for local
+<code>prefix/bin</code> for global installs, or <code>./node_packages/.bin/</code> for local
 installs.</p>
 
 <p>For example, npm has this:</p>
@@ -377,7 +377,7 @@ an argument to <code>git checkout</code>.  The default is <code>master</code>.</
 
 <h2 id="devDependencies">devDependencies</h2>
 
-<p>If someone is planning on downloading and using your module in their
+<p>If someone is planning on downloading and using your package in their
 program, then they probably don&#39;t want or need to download and build
 the external test or documentation framework that you use.</p>
 
@@ -472,7 +472,7 @@ field is advisory only.</p>
 
 <h2 id="engineStrict">engineStrict</h2>
 
-<p>If you are sure that your module will <em>definitely not</em> run properly on
+<p>If you are sure that your package will <em>definitely not</em> run properly on
 versions of Node/npm other than those specified in the <code>engines</code> hash,
 then you can set <code>&quot;engineStrict&quot;: true</code> in your package.json file.
 This will override the user&#39;s <code>engine-strict</code> config setting.</p>
@@ -486,7 +486,7 @@ people abuse it, it will be removed in a future version of npm.</p>
 <h2 id="os">os</h2>
 
 <p>You can specify which operating systems your
-module will run on:</p>
+package will run on:</p>
 
 <pre><code>&quot;os&quot; : [ &quot;darwin&quot;, &quot;linux&quot; ]</code></pre>
 

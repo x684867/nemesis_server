@@ -2,14 +2,14 @@
 #
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 #
 # March, May, June 2010
 #
-# The module implements "4-bit" GCM GHASH function and underlying
+# The package implements "4-bit" GCM GHASH function and underlying
 # single multiplication operation in GF(2^128). "4-bit" means that it
 # uses 256 bytes per-key table [+64/128 bytes fixed table]. It has two
 # code paths: vanilla x86 and vanilla MMX. Former will be executed on

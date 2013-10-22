@@ -5,7 +5,7 @@
 	This is the keys web service.
 	
 */
-module.exports=Keys;
+package.exports=Keys;
 
 const LOGGER_SOURCE='server.keys';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';

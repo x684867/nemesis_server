@@ -269,7 +269,7 @@ Makes various commands more forceful.
 * Default: 2
 * Type: Number
 
-The "retries" config for the `retry` module to use when fetching
+The "retries" config for the `retry` package to use when fetching
 packages from the registry.
 
 ### fetch-retry-factor
@@ -277,7 +277,7 @@ packages from the registry.
 * Default: 10
 * Type: Number
 
-The "factor" config for the `retry` module to use when fetching
+The "factor" config for the `retry` package to use when fetching
 packages.
 
 ### fetch-retry-mintimeout
@@ -285,7 +285,7 @@ packages.
 * Default: 10000 (10 seconds)
 * Type: Number
 
-The "minTimeout" config for the `retry` module to use when fetching
+The "minTimeout" config for the `retry` package to use when fetching
 packages.
 
 ### fetch-retry-maxtimeout
@@ -293,7 +293,7 @@ packages.
 * Default: 60000 (1 minute)
 * Type: Number
 
-The "maxTimeout" config for the `retry` module to use when fetching
+The "maxTimeout" config for the `retry` package to use when fetching
 packages.
 
 ### git
@@ -314,7 +314,7 @@ Operates in "global" mode, so that packages are installed into the
 `prefix` folder instead of the current working directory.  See
 `npm-folders(5)` for more on the differences in behavior.
 
-* packages are installed into the `{prefix}/lib/node_modules` folder, instead of the
+* packages are installed into the `{prefix}/lib/node_packages` folder, instead of the
   current working directory.
 * bin files are linked to `{prefix}/bin`
 * man pages are linked to `{prefix}/share/man`
@@ -368,14 +368,14 @@ Sets a User-Agent to the request header
 A white-space separated list of glob patterns of files to always exclude
 from packages when building tarballs.
 
-### init-module
+### init-package
 
 * Default: ~/.npm-init.js
 * Type: path
 
-A module that will be loaded by the `npm init` command.  See the
+A package that will be loaded by the `npm init` command.  See the
 documentation for the
-[init-package-json](https://github.com/isaacs/init-package-json) module
+[init-package-json](https://github.com/isaacs/init-package-json) package
 for more information, or npm-init(1).
 
 ### init.version
@@ -451,7 +451,7 @@ The default is "http", which shows http, warn, and error output.
 * Type: Stream
 
 This is the stream that is passed to the
-[npmlog](https://github.com/isaacs/npmlog) module at run time.
+[npmlog](https://github.com/isaacs/npmlog) package at run time.
 
 It cannot be set from the command line, but if you are using npm
 programmatically, you may wish to send logs to somewhere other than
@@ -503,7 +503,7 @@ The url to report npat test results.
 * Default: false
 * Type: path
 
-A node module to `require()` when npm loads.  Useful for programmatic
+A node package to `require()` when npm loads.  Useful for programmatic
 usage.
 
 ### optional

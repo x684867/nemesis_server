@@ -1,1 +1,1 @@
-﻿module.exports = 42;
+﻿package.exports = 42;

@@ -113,7 +113,7 @@ void Processor::VisitBlock(Block* node) {
 }
 
 
-void Processor::VisitModuleStatement(ModuleStatement* node) {
+void Processor::VisitpackageStatement(packageStatement* node) {
   bool set_after_body = is_set_;
   Visit(node->body());
   is_set_ = is_set_ && set_after_body;
@@ -227,13 +227,13 @@ void Processor::VisitWithStatement(WithStatement* node) {
 // Do nothing:
 void Processor::VisitVariableDeclaration(VariableDeclaration* node) {}
 void Processor::VisitFunctionDeclaration(FunctionDeclaration* node) {}
-void Processor::VisitModuleDeclaration(ModuleDeclaration* node) {}
+void Processor::VisitpackageDeclaration(packageDeclaration* node) {}
 void Processor::VisitImportDeclaration(ImportDeclaration* node) {}
 void Processor::VisitExportDeclaration(ExportDeclaration* node) {}
-void Processor::VisitModuleLiteral(ModuleLiteral* node) {}
-void Processor::VisitModuleVariable(ModuleVariable* node) {}
-void Processor::VisitModulePath(ModulePath* node) {}
-void Processor::VisitModuleUrl(ModuleUrl* node) {}
+void Processor::VisitpackageLiteral(packageLiteral* node) {}
+void Processor::VisitpackageVariable(packageVariable* node) {}
+void Processor::VisitpackagePath(packagePath* node) {}
+void Processor::VisitpackageUrl(packageUrl* node) {}
 void Processor::VisitEmptyStatement(EmptyStatement* node) {}
 void Processor::VisitReturnStatement(ReturnStatement* node) {}
 void Processor::VisitDebuggerStatement(DebuggerStatement* node) {}

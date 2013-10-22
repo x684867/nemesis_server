@@ -58,7 +58,7 @@ RAND_SSLeay() return pointers to the respective methods.
 =head1 NOTES
 
 As of version 0.9.7, RAND_METHOD implementations are grouped together with other
-algorithmic APIs (eg. RSA_METHOD, EVP_CIPHER, etc) in B<ENGINE> modules. If a
+algorithmic APIs (eg. RSA_METHOD, EVP_CIPHER, etc) in B<ENGINE> packages. If a
 default ENGINE is specified for RAND functionality using an ENGINE API function,
 that will override any RAND defaults set using the RAND API (ie.
 RAND_set_rand_method()). For this reason, the ENGINE API is the recommended way

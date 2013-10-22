@@ -75,11 +75,11 @@ void PrettyPrinter::VisitFunctionDeclaration(FunctionDeclaration* node) {
 }
 
 
-void PrettyPrinter::VisitModuleDeclaration(ModuleDeclaration* node) {
-  Print("module ");
+void PrettyPrinter::VisitpackageDeclaration(packageDeclaration* node) {
+  Print("package ");
   PrintLiteral(node->proxy()->name(), false);
   Print(" = ");
-  Visit(node->module());
+  Visit(node->package());
   Print(";");
 }
 
@@ -88,7 +88,7 @@ void PrettyPrinter::VisitImportDeclaration(ImportDeclaration* node) {
   Print("import ");
   PrintLiteral(node->proxy()->name(), false);
   Print(" from ");
-  Visit(node->module());
+  Visit(node->package());
   Print(";");
 }
 
@@ -100,31 +100,31 @@ void PrettyPrinter::VisitExportDeclaration(ExportDeclaration* node) {
 }
 
 
-void PrettyPrinter::VisitModuleLiteral(ModuleLiteral* node) {
+void PrettyPrinter::VisitpackageLiteral(packageLiteral* node) {
   VisitBlock(node->body());
 }
 
 
-void PrettyPrinter::VisitModuleVariable(ModuleVariable* node) {
+void PrettyPrinter::VisitpackageVariable(packageVariable* node) {
   Visit(node->proxy());
 }
 
 
-void PrettyPrinter::VisitModulePath(ModulePath* node) {
-  Visit(node->module());
+void PrettyPrinter::VisitpackagePath(packagePath* node) {
+  Visit(node->package());
   Print(".");
   PrintLiteral(node->name(), false);
 }
 
 
-void PrettyPrinter::VisitModuleUrl(ModuleUrl* node) {
+void PrettyPrinter::VisitpackageUrl(packageUrl* node) {
   Print("at ");
   PrintLiteral(node->url(), true);
 }
 
 
-void PrettyPrinter::VisitModuleStatement(ModuleStatement* node) {
-  Print("module ");
+void PrettyPrinter::VisitpackageStatement(packageStatement* node) {
+  Print("package ");
   PrintLiteral(node->proxy()->name(), false);
   Print(" ");
   Visit(node->body());
@@ -799,17 +799,17 @@ void AstPrinter::VisitFunctionDeclaration(FunctionDeclaration* node) {
 }
 
 
-void AstPrinter::VisitModuleDeclaration(ModuleDeclaration* node) {
-  IndentedScope indent(this, "MODULE");
+void AstPrinter::VisitpackageDeclaration(packageDeclaration* node) {
+  IndentedScope indent(this, "package");
   PrintLiteralIndented("NAME", node->proxy()->name(), true);
-  Visit(node->module());
+  Visit(node->package());
 }
 
 
 void AstPrinter::VisitImportDeclaration(ImportDeclaration* node) {
   IndentedScope indent(this, "IMPORT");
   PrintLiteralIndented("NAME", node->proxy()->name(), true);
-  Visit(node->module());
+  Visit(node->package());
 }
 
 
@@ -819,32 +819,32 @@ void AstPrinter::VisitExportDeclaration(ExportDeclaration* node) {
 }
 
 
-void AstPrinter::VisitModuleLiteral(ModuleLiteral* node) {
-  IndentedScope indent(this, "MODULE LITERAL");
+void AstPrinter::VisitpackageLiteral(packageLiteral* node) {
+  IndentedScope indent(this, "package LITERAL");
   VisitBlock(node->body());
 }
 
 
-void AstPrinter::VisitModuleVariable(ModuleVariable* node) {
-  IndentedScope indent(this, "MODULE VARIABLE");
+void AstPrinter::VisitpackageVariable(packageVariable* node) {
+  IndentedScope indent(this, "package VARIABLE");
   Visit(node->proxy());
 }
 
 
-void AstPrinter::VisitModulePath(ModulePath* node) {
-  IndentedScope indent(this, "MODULE PATH");
-  PrintIndentedVisit("MODULE PATH PARENT", node->module());
+void AstPrinter::VisitpackagePath(packagePath* node) {
+  IndentedScope indent(this, "package PATH");
+  PrintIndentedVisit("package PATH PARENT", node->package());
   PrintLiteralIndented("NAME", node->name(), true);
 }
 
 
-void AstPrinter::VisitModuleUrl(ModuleUrl* node) {
+void AstPrinter::VisitpackageUrl(packageUrl* node) {
   PrintLiteralIndented("URL", node->url(), true);
 }
 
 
-void AstPrinter::VisitModuleStatement(ModuleStatement* node) {
-  IndentedScope indent(this, "MODULE STATEMENT");
+void AstPrinter::VisitpackageStatement(packageStatement* node) {
+  IndentedScope indent(this, "package STATEMENT");
   PrintLiteralIndented("NAME", node->proxy()->name(), true);
   PrintStatements(node->body()->statements());
 }

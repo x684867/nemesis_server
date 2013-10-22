@@ -2800,7 +2800,7 @@ bool Heap::CreateInitialMaps() {
         AllocateMap(FIXED_ARRAY_TYPE, kVariableSizeSentinel);
     if (!maybe_obj->ToObject(&obj)) return false;
   }
-  set_module_context_map(Map::cast(obj));
+  set_package_context_map(Map::cast(obj));
 
   { MaybeObject* maybe_obj =
         AllocateMap(FIXED_ARRAY_TYPE, kVariableSizeSentinel);
@@ -4641,18 +4641,18 @@ MaybeObject* Heap::AllocateJSGeneratorObject(JSFunction *function) {
 }
 
 
-MaybeObject* Heap::AllocateJSModule(Context* context, ScopeInfo* scope_info) {
-  // Allocate a fresh map. Modules do not have a prototype.
+MaybeObject* Heap::AllocateJSpackage(Context* context, ScopeInfo* scope_info) {
+  // Allocate a fresh map. packages do not have a prototype.
   Map* map;
-  MaybeObject* maybe_map = AllocateMap(JS_MODULE_TYPE, JSModule::kSize);
+  MaybeObject* maybe_map = AllocateMap(JS_package_TYPE, JSpackage::kSize);
   if (!maybe_map->To(&map)) return maybe_map;
   // Allocate the object based on the map.
-  JSModule* module;
-  MaybeObject* maybe_module = AllocateJSObjectFromMap(map, TENURED);
-  if (!maybe_module->To(&module)) return maybe_module;
-  module->set_context(context);
-  module->set_scope_info(scope_info);
-  return module;
+  JSpackage* package;
+  MaybeObject* maybe_package = AllocateJSObjectFromMap(map, TENURED);
+  if (!maybe_package->To(&package)) return maybe_package;
+  package->set_context(context);
+  package->set_scope_info(scope_info);
+  return package;
 }
 
 
@@ -5773,14 +5773,14 @@ MaybeObject* Heap::AllocateGlobalContext(JSFunction* function,
 }
 
 
-MaybeObject* Heap::AllocateModuleContext(ScopeInfo* scope_info) {
+MaybeObject* Heap::AllocatepackageContext(ScopeInfo* scope_info) {
   Object* result;
   { MaybeObject* maybe_result =
         AllocateFixedArray(scope_info->ContextLength(), TENURED);
     if (!maybe_result->ToObject(&result)) return maybe_result;
   }
   Context* context = reinterpret_cast<Context*>(result);
-  context->set_map_no_write_barrier(module_context_map());
+  context->set_map_no_write_barrier(package_context_map());
   // Instance link will be set later.
   context->set_extension(Smi::FromInt(0));
   return context;

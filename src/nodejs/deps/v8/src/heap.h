@@ -159,7 +159,7 @@ namespace internal {
   V(Map, catch_context_map, CatchContextMap)                                   \
   V(Map, with_context_map, WithContextMap)                                     \
   V(Map, block_context_map, BlockContextMap)                                   \
-  V(Map, module_context_map, ModuleContextMap)                                 \
+  V(Map, package_context_map, packageContextMap)                                 \
   V(Map, global_context_map, GlobalContextMap)                                 \
   V(Map, oddball_map, OddballMap)                                              \
   V(Map, message_object_map, JSMessageObjectMap)                               \
@@ -217,7 +217,7 @@ namespace internal {
   V(eval_string, "eval")                                                 \
   V(function_string, "function")                                         \
   V(length_string, "length")                                             \
-  V(module_string, "module")                                             \
+  V(package_string, "package")                                             \
   V(name_string, "name")                                                 \
   V(native_string, "native")                                             \
   V(null_string, "null")                                                 \
@@ -632,7 +632,7 @@ class Heap {
   MUST_USE_RESULT MaybeObject* AllocateJSGeneratorObject(
       JSFunction* function);
 
-  MUST_USE_RESULT MaybeObject* AllocateJSModule(Context* context,
+  MUST_USE_RESULT MaybeObject* AllocateJSpackage(Context* context,
                                                 ScopeInfo* scope_info);
 
   // Allocate a JSArray with no elements
@@ -1005,8 +1005,8 @@ class Heap {
   MUST_USE_RESULT MaybeObject* AllocateGlobalContext(JSFunction* function,
                                                      ScopeInfo* scope_info);
 
-  // Allocate a module context.
-  MUST_USE_RESULT MaybeObject* AllocateModuleContext(ScopeInfo* scope_info);
+  // Allocate a package context.
+  MUST_USE_RESULT MaybeObject* AllocatepackageContext(ScopeInfo* scope_info);
 
   // Allocate a function context.
   MUST_USE_RESULT MaybeObject* AllocateFunctionContext(int length,

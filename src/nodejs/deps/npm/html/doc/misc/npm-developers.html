@@ -68,7 +68,7 @@ If you have a special compilation or installation script, then you
 should put it in the <code>scripts</code> hash.  You should definitely have at
 least a basic smoke-test command as the &quot;scripts.test&quot; field.
 See <a href="../misc/npm-scripts.html">npm-scripts(7)</a>.</p></li><li><p>main:
-If you have a single module that serves as the entry point to your
+If you have a single package that serves as the entry point to your
 program (like what the &quot;foo&quot; package gives you at require(&quot;foo&quot;)),
 then you need to specify that in the &quot;main&quot; field.</p></li><li><p>directories:
 This is a hash of folders.  The best ones to include are &quot;lib&quot; and
@@ -92,9 +92,9 @@ need to add them to <code>.npmignore</code> explicitly:</p>
 
 <ul><li><code>.*.swp</code></li><li><code>._*</code></li><li><code>.DS_Store</code></li><li><code>.git</code></li><li><code>.hg</code></li><li><code>.lock-wscript</code></li><li><code>.svn</code></li><li><code>.wafpickle-*</code></li><li><code>CVS</code></li><li><code>npm-debug.log</code></li></ul>
 
-<p>Additionally, everything in <code>node_modules</code> is ignored, except for
+<p>Additionally, everything in <code>node_packages</code> is ignored, except for
 bundled dependencies. npm automatically handles this for you, so don&#39;t
-bother adding <code>node_modules</code> to <code>.npmignore</code>.</p>
+bother adding <code>node_packages</code> to <code>.npmignore</code>.</p>
 
 <p>The following paths and files are never ignored, so adding them to
 <code>.npmignore</code> is pointless:</p>
@@ -135,10 +135,10 @@ package that points to your working directory, then do this:</p>
 <pre><code>cd ../some-other-folder
 npm install ../my-package</code></pre>
 
-<p>to install it locally into the node_modules folder in that other place.</p>
+<p>to install it locally into the node_packages folder in that other place.</p>
 
 <p>Then go into the node-repl, and try using require(&quot;my-thing&quot;) to
-bring in your module&#39;s main module.</p>
+bring in your package&#39;s main package.</p>
 
 <h2 id="Create-a-User-Account">Create a User Account</h2>
 

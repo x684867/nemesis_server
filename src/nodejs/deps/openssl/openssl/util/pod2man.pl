@@ -180,7 +180,7 @@ you might keep a modification log here.
 =head1 EXAMPLES
 
     pod2man program > program.1
-    pod2man some_module.pm > /usr/perl/man/man3/some_module.3
+    pod2man some_package.pm > /usr/perl/man/man3/some_package.3
     pod2man --section=7 note.pod > note.7
 
 =head1 DIAGNOSTICS
@@ -380,9 +380,9 @@ if ($section =~ /^1/) {
 $name =~ s/\.(pod|p[lm])$//i;
 
 # Lose everything up to the first of
-#     */lib/*perl*	standard or site_perl module
+#     */lib/*perl*	standard or site_perl package
 #     */*perl*/lib	from -D prefix=/opt/perl
-#     */*perl*/		random module hierarchy
+#     */*perl*/		random package hierarchy
 # which works.
 $name =~ s-//+-/-g;
 if ($name =~ s-^.*?/lib/[^/]*perl[^/]*/--i

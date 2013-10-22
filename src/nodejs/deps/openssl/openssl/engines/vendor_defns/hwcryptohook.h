@@ -239,7 +239,7 @@ typedef struct {
    * no prompt information is available (it should not be an empty
    * string).  It will not contain text like `enter passphrase';
    * instead it might say something like `Operator Card for John
-   * Smith' or `SmartCard in nFast Module #1, Slot #1'.
+   * Smith' or `SmartCard in nFast package #1, Slot #1'.
    *
    * buf points to a buffer in which to return the passphrase; on
    * entry *len_io is the length of the buffer.  It should be updated
@@ -346,8 +346,8 @@ extern HWCryptoHook_Init_t HWCryptoHook_Init;
  */
 
 /* The RSAImmed* functions (and key managed RSA) only work with
- * modules which have an RSA patent licence - currently that means KM
- * units; the ModExp* ones work with all modules, so you need a patent
+ * packages which have an RSA patent licence - currently that means KM
+ * units; the ModExp* ones work with all packages, so you need a patent
  * licence in the software in the US.  They are otherwise identical.
  */
 

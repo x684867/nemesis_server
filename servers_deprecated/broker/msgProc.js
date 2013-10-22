@@ -27,7 +27,7 @@
 			}
 		}	
 */
-module.exports=msgProcClass;
+package.exports=msgProcClass;
 
 const WEBSTATSCLASS='/srv/nemesis/app/server/web/webStats.js'
 

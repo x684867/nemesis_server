@@ -56,9 +56,9 @@ generator_extra_sources_for_rules = []
 
 
 SHARED_FOOTER = """\
-# "gyp_all_modules" is a concatenation of the "gyp_all_modules" targets from
+# "gyp_all_packages" is a concatenation of the "gyp_all_packages" targets from
 # all the included sub-makefiles. This is just here to clarify.
-gyp_all_modules:
+gyp_all_packages:
 """
 
 header = """\
@@ -93,8 +93,8 @@ android_standard_include_paths = set([
     ])
 
 
-# Map gyp target types to Android module classes.
-MODULE_CLASSES = {
+# Map gyp target types to Android package classes.
+package_CLASSES = {
     'static_library': 'STATIC_LIBRARIES',
     'shared_library': 'SHARED_LIBRARIES',
     'executable': 'EXECUTABLES',
@@ -112,9 +112,9 @@ def Sourceify(path):
 
 
 # Map from qualified target to path to output.
-# For Android, the target of these maps is a tuple ('static', 'modulename'),
-# ('dynamic', 'modulename'), or ('path', 'some/path') instead of a string,
-# since we link by module.
+# For Android, the target of these maps is a tuple ('static', 'packagename'),
+# ('dynamic', 'packagename'), or ('path', 'some/path') instead of a string,
+# since we link by package.
 target_outputs = {}
 # Map from qualified target to any linkable output.  A subset
 # of target_outputs.  E.g. when mybinary depends on liba, we want to
@@ -166,26 +166,26 @@ class AndroidMkWriter(object):
     extra_outputs = []
     extra_sources = []
 
-    self.android_class = MODULE_CLASSES.get(self.type, 'GYP')
-    self.android_module = self.ComputeAndroidModule(spec)
+    self.android_class = package_CLASSES.get(self.type, 'GYP')
+    self.android_package = self.ComputeAndroidpackage(spec)
     (self.android_stem, self.android_suffix) = self.ComputeOutputParts(spec)
     self.output = self.output_binary = self.ComputeOutput(spec)
 
     # Standard header.
     self.WriteLn('include $(CLEAR_VARS)\n')
 
-    # Module class and name.
-    self.WriteLn('LOCAL_MODULE_CLASS := ' + self.android_class)
-    self.WriteLn('LOCAL_MODULE := ' + self.android_module)
-    # Only emit LOCAL_MODULE_STEM if it's different to LOCAL_MODULE.
-    # The library module classes fail if the stem is set. ComputeOutputParts
-    # makes sure that stem == modulename in these cases.
-    if self.android_stem != self.android_module:
-      self.WriteLn('LOCAL_MODULE_STEM := ' + self.android_stem)
-    self.WriteLn('LOCAL_MODULE_SUFFIX := ' + self.android_suffix)
-    self.WriteLn('LOCAL_MODULE_TAGS := optional')
+    # package class and name.
+    self.WriteLn('LOCAL_package_CLASS := ' + self.android_class)
+    self.WriteLn('LOCAL_package := ' + self.android_package)
+    # Only emit LOCAL_package_STEM if it's different to LOCAL_package.
+    # The library package classes fail if the stem is set. ComputeOutputParts
+    # makes sure that stem == packagename in these cases.
+    if self.android_stem != self.android_package:
+      self.WriteLn('LOCAL_package_STEM := ' + self.android_stem)
+    self.WriteLn('LOCAL_package_SUFFIX := ' + self.android_suffix)
+    self.WriteLn('LOCAL_package_TAGS := optional')
     if self.toolset == 'host':
-      self.WriteLn('LOCAL_IS_HOST_MODULE := true')
+      self.WriteLn('LOCAL_IS_HOST_package := true')
 
     # Grab output directories; needed for Actions and Rules.
     self.WriteLn('gyp_intermediate_dir := $(call local-intermediates-dir)')
@@ -233,12 +233,12 @@ class AndroidMkWriter(object):
 
     # Update global list of link dependencies.
     if self.type == 'static_library':
-      target_link_deps[qualified_target] = ('static', self.android_module)
+      target_link_deps[qualified_target] = ('static', self.android_package)
     elif self.type == 'shared_library':
-      target_link_deps[qualified_target] = ('shared', self.android_module)
+      target_link_deps[qualified_target] = ('shared', self.android_package)
 
     self.fp.close()
-    return self.android_module
+    return self.android_package
 
 
   def WriteActions(self, actions, extra_sources, extra_outputs):
@@ -339,7 +339,7 @@ class AndroidMkWriter(object):
     """
     if len(rules) == 0:
       return
-    rule_trigger = '%s_rule_trigger' % self.android_module
+    rule_trigger = '%s_rule_trigger' % self.android_package
 
     did_write_rule = False
     for rule in rules:
@@ -488,11 +488,11 @@ class AndroidMkWriter(object):
                    quoter=make.EscapeCppDefine)
     self.WriteLn('LOCAL_CFLAGS := $(MY_CFLAGS_C) $(MY_CFLAGS) $(MY_DEFS)')
 
-    # Undefine ANDROID for host modules
+    # Undefine ANDROID for host packages
     # TODO: the source code should not use macro ANDROID to tell if it's host or
-    # target module.
+    # target package.
     if self.toolset == 'host':
-      self.WriteLn('# Undefine ANDROID for host modules')
+      self.WriteLn('# Undefine ANDROID for host packages')
       self.WriteLn('LOCAL_CFLAGS += -UANDROID')
 
     self.WriteLn('\n# Include paths placed before CFLAGS/CPPFLAGS')
@@ -556,7 +556,7 @@ class AndroidMkWriter(object):
     # For any generated source, if it is coming from the shared intermediate
     # directory then we add a Make rule to copy them to the local intermediate
     # directory first. This is because the Android LOCAL_GENERATED_SOURCES
-    # must be in the local module intermediate directory for the compile rules
+    # must be in the local package intermediate directory for the compile rules
     # to work properly. If the file has the wrong C++ extension, then we add
     # a rule to copy that to intermediates and use the new version.
     final_generated_sources = []
@@ -594,12 +594,12 @@ class AndroidMkWriter(object):
     self.WriteSourceFlags(spec, configs)
 
 
-  def ComputeAndroidModule(self, spec):
-    """Return the Android module name used for a gyp spec.
+  def ComputeAndroidpackage(self, spec):
+    """Return the Android package name used for a gyp spec.
 
     We use the complete qualified target name to avoid collisions between
     duplicate targets in different directories. We also add a suffix to
-    distinguish gyp-generated module names.
+    distinguish gyp-generated package names.
     """
 
     if int(spec.get('android_unmangled_name', 0)):
@@ -608,7 +608,7 @@ class AndroidMkWriter(object):
 
     if self.type == 'shared_library':
       # For reasons of convention, the Android build system requires that all
-      # shared library modules are named 'libfoo' when generating -l flags.
+      # shared library packages are named 'libfoo' when generating -l flags.
       prefix = 'lib_'
     else:
       prefix = ''
@@ -629,21 +629,21 @@ class AndroidMkWriter(object):
   def ComputeOutputParts(self, spec):
     """Return the 'output basename' of a gyp spec, split into filename + ext.
 
-    Android libraries must be named the same thing as their module name,
+    Android libraries must be named the same thing as their package name,
     otherwise the linker can't find them, so product_name and so on must be
     ignored if we are building a library, and the "lib" prepending is
     not done for Android.
     """
-    assert self.type != 'loadable_module' # TODO: not supported?
+    assert self.type != 'loadable_package' # TODO: not supported?
 
     target = spec['target_name']
     target_prefix = ''
     target_ext = ''
     if self.type == 'static_library':
-      target = self.ComputeAndroidModule(spec)
+      target = self.ComputeAndroidpackage(spec)
       target_ext = '.a'
     elif self.type == 'shared_library':
-      target = self.ComputeAndroidModule(spec)
+      target = self.ComputeAndroidpackage(spec)
       target_ext = '.so'
     elif self.type == 'none':
       target_ext = '.stamp'
@@ -665,7 +665,7 @@ class AndroidMkWriter(object):
   def ComputeOutputBasename(self, spec):
     """Return the 'output basename' of a gyp spec.
 
-    E.g., the loadable module 'foobar' in directory 'baz' will produce
+    E.g., the loadable package 'foobar' in directory 'baz' will produce
       'libfoobar.so'
     """
     return ''.join(self.ComputeOutputParts(spec))
@@ -674,7 +674,7 @@ class AndroidMkWriter(object):
   def ComputeOutput(self, spec):
     """Return the 'output' (full output path) of a gyp spec.
 
-    E.g., the loadable module 'foobar' in directory 'baz' will produce
+    E.g., the loadable package 'foobar' in directory 'baz' will produce
       '$(obj)/baz/libfoobar.so'
     """
     if self.type == 'executable' and self.toolset == 'host':
@@ -690,10 +690,10 @@ class AndroidMkWriter(object):
       # Other targets just get built into their intermediate dir.
       if self.toolset == 'host':
         path = '$(call intermediates-dir-for,%s,%s,true)' % (self.android_class,
-                                                            self.android_module)
+                                                            self.android_package)
       else:
         path = '$(call intermediates-dir-for,%s,%s)' % (self.android_class,
-                                                        self.android_module)
+                                                        self.android_package)
 
     assert spec.get('product_dir') is None # TODO: not supported?
     return os.path.join(path, self.ComputeOutputBasename(spec))
@@ -756,16 +756,16 @@ class AndroidMkWriter(object):
 
     return (clean_cflags, include_paths)
 
-  def ComputeAndroidLibraryModuleNames(self, libraries):
-    """Compute the Android module names from libraries, ie spec.get('libraries')
+  def ComputeAndroidLibrarypackageNames(self, libraries):
+    """Compute the Android package names from libraries, ie spec.get('libraries')
 
     Args:
       libraries: the value of spec.get('libraries')
     Returns:
-      A tuple (static_lib_modules, dynamic_lib_modules)
+      A tuple (static_lib_packages, dynamic_lib_packages)
     """
-    static_lib_modules = []
-    dynamic_lib_modules = []
+    static_lib_packages = []
+    dynamic_lib_packages = []
     for libs in libraries:
       # Libs can have multiple words.
       for lib in libs.split():
@@ -776,19 +776,19 @@ class AndroidMkWriter(object):
           continue
         match = re.search(r'([^/]+)\.a$', lib)
         if match:
-          static_lib_modules.append(match.group(1))
+          static_lib_packages.append(match.group(1))
           continue
         match = re.search(r'([^/]+)\.so$', lib)
         if match:
-          dynamic_lib_modules.append(match.group(1))
+          dynamic_lib_packages.append(match.group(1))
           continue
         # "-lstlport" -> libstlport
         if lib.startswith('-l'):
           if lib.endswith('_static'):
-            static_lib_modules.append('lib' + lib[2:])
+            static_lib_packages.append('lib' + lib[2:])
           else:
-            dynamic_lib_modules.append('lib' + lib[2:])
-    return (static_lib_modules, dynamic_lib_modules)
+            dynamic_lib_packages.append('lib' + lib[2:])
+    return (static_lib_packages, dynamic_lib_packages)
 
 
   def ComputeDeps(self, spec):
@@ -820,14 +820,14 @@ class AndroidMkWriter(object):
 
     # LDFLAGS
     ldflags = list(config.get('ldflags', []))
-    static_flags, dynamic_flags = self.ComputeAndroidLibraryModuleNames(
+    static_flags, dynamic_flags = self.ComputeAndroidLibrarypackageNames(
         ldflags)
     self.WriteLn('')
     self.WriteList(self.NormalizeLdFlags(ldflags), 'LOCAL_LDFLAGS')
 
     # Libraries (i.e. -lfoo)
     libraries = gyp.common.uniquer(spec.get('libraries', []))
-    static_libs, dynamic_libs = self.ComputeAndroidLibraryModuleNames(
+    static_libs, dynamic_libs = self.ComputeAndroidLibrarypackageNames(
         libraries)
 
     # Link dependencies (i.e. libfoo.a, libfoo.so)
@@ -856,22 +856,22 @@ class AndroidMkWriter(object):
       self.WriteTargetFlags(spec, configs, link_deps)
 
     # Add to the set of targets which represent the gyp 'all' target. We use the
-    # name 'gyp_all_modules' as the Android build system doesn't allow the use
-    # of the Make target 'all' and because 'all_modules' is the equivalent of
+    # name 'gyp_all_packages' as the Android build system doesn't allow the use
+    # of the Make target 'all' and because 'all_packages' is the equivalent of
     # the Make target 'all' on Android.
     if part_of_all:
-      self.WriteLn('# Add target alias to "gyp_all_modules" target.')
-      self.WriteLn('.PHONY: gyp_all_modules')
-      self.WriteLn('gyp_all_modules: %s' % self.android_module)
+      self.WriteLn('# Add target alias to "gyp_all_packages" target.')
+      self.WriteLn('.PHONY: gyp_all_packages')
+      self.WriteLn('gyp_all_packages: %s' % self.android_package)
       self.WriteLn('')
 
-    # Add an alias from the gyp target name to the Android module name. This
+    # Add an alias from the gyp target name to the Android package name. This
     # simplifies manual builds of the target, and is required by the test
     # framework.
-    if self.target != self.android_module:
+    if self.target != self.android_package:
       self.WriteLn('# Alias gyp target name.')
       self.WriteLn('.PHONY: %s' % self.target)
-      self.WriteLn('%s: %s' % (self.target, self.android_module))
+      self.WriteLn('%s: %s' % (self.target, self.android_package))
       self.WriteLn('')
 
     # Add the command to trigger build of the target type depending
@@ -883,24 +883,24 @@ class AndroidMkWriter(object):
     if self.type == 'static_library':
       self.WriteLn('include $(BUILD_%sSTATIC_LIBRARY)' % modifier)
     elif self.type == 'shared_library':
-      self.WriteLn('LOCAL_PRELINK_MODULE := false')
+      self.WriteLn('LOCAL_PRELINK_package := false')
       self.WriteLn('include $(BUILD_%sSHARED_LIBRARY)' % modifier)
     elif self.type == 'executable':
       if self.toolset == 'host':
-        self.WriteLn('LOCAL_MODULE_PATH := $(gyp_shared_intermediate_dir)')
+        self.WriteLn('LOCAL_package_PATH := $(gyp_shared_intermediate_dir)')
       else:
         # Don't install target executables for now, as it results in them being
         # included in ROM. This can be revisited if there's a reason to install
         # them later.
-        self.WriteLn('LOCAL_UNINSTALLABLE_MODULE := true')
+        self.WriteLn('LOCAL_UNINSTALLABLE_package := true')
       self.WriteLn('include $(BUILD_%sEXECUTABLE)' % modifier)
     else:
-      self.WriteLn('LOCAL_MODULE_PATH := $(PRODUCT_OUT)/gyp_stamp')
-      self.WriteLn('LOCAL_UNINSTALLABLE_MODULE := true')
+      self.WriteLn('LOCAL_package_PATH := $(PRODUCT_OUT)/gyp_stamp')
+      self.WriteLn('LOCAL_UNINSTALLABLE_package := true')
       self.WriteLn()
       self.WriteLn('include $(BUILD_SYSTEM)/base_rules.mk')
       self.WriteLn()
-      self.WriteLn('$(LOCAL_BUILT_MODULE): $(LOCAL_ADDITIONAL_DEPENDENCIES)')
+      self.WriteLn('$(LOCAL_BUILT_package): $(LOCAL_ADDITIONAL_DEPENDENCIES)')
       self.WriteLn('\t$(hide) echo "Gyp timestamp: $@"')
       self.WriteLn('\t$(hide) mkdir -p $(dir $@)')
       self.WriteLn('\t$(hide) touch $@')
@@ -963,7 +963,7 @@ def PerformBuild(data, configurations, params):
                                           'GypAndroid.mk'))
   env = dict(os.environ)
   env['ONE_SHOT_MAKEFILE'] = makefile
-  arguments = ['make', '-C', os.environ['ANDROID_BUILD_TOP'], 'gyp_all_modules']
+  arguments = ['make', '-C', os.environ['ANDROID_BUILD_TOP'], 'gyp_all_packages']
   print 'Building: %s' % arguments
   subprocess.check_call(arguments, env=env)
 
@@ -1028,7 +1028,7 @@ def GenerateOutput(target_list, target_dicts, data, params):
 
   build_files = set()
   include_list = set()
-  android_modules = {}
+  android_packages = {}
   for qualified_target in target_list:
     build_file, target, toolset = gyp.common.ParseQualifiedTarget(
         qualified_target)
@@ -1066,16 +1066,16 @@ def GenerateOutput(target_list, target_dicts, data, params):
     relative_target = gyp.common.QualifiedTarget(relative_build_file, target,
                                                  toolset)
     writer = AndroidMkWriter(android_top_dir)
-    android_module = writer.Write(qualified_target, relative_target, base_path,
+    android_package = writer.Write(qualified_target, relative_target, base_path,
                                   output_file, spec, configs,
                                   part_of_all=part_of_all)
-    if android_module in android_modules:
-      print ('ERROR: Android module names must be unique. The following '
-             'targets both generate Android module name %s.\n  %s\n  %s' %
-             (android_module, android_modules[android_module],
+    if android_package in android_packages:
+      print ('ERROR: Android package names must be unique. The following '
+             'targets both generate Android package name %s.\n  %s\n  %s' %
+             (android_package, android_packages[android_package],
               qualified_target))
       return
-    android_modules[android_module] = qualified_target
+    android_packages[android_package] = qualified_target
 
     # Our root_makefile lives at the source root.  Compute the relative path
     # from there to the output_file for including.

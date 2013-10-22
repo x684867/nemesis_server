@@ -36,7 +36,7 @@ X9cm 3			: DSA-SHA1		: dsaWithSHA1
 
 
 ISO-US 10045		: ansi-X9-62		: ANSI X9.62
-!module X9-62
+!package X9-62
 !Alias id-fieldType ansi-X9-62 1
 X9-62_id-fieldType 1		: prime-field
 X9-62_id-fieldType 2		: characteristic-two-field
@@ -206,7 +206,7 @@ pkcs7 5			:			: pkcs7-digestData
 pkcs7 6			:			: pkcs7-encryptedData
 
 pkcs 9			: pkcs9
-!module pkcs9
+!package pkcs9
 pkcs9 1			: 			: emailAddress
 pkcs9 2			:			: unstructuredName
 pkcs9 3			:			: contentType
@@ -236,7 +236,7 @@ SMIME 4			: id-smime-cd
 SMIME 5			: id-smime-spq
 SMIME 6			: id-smime-cti
 
-# S/MIME Modules
+# S/MIME packages
 id-smime-mod 1		: id-smime-mod-cms
 id-smime-mod 2		: id-smime-mod-ess
 id-smime-mod 3		: id-smime-mod-oid
@@ -438,7 +438,7 @@ id-pkix 12		: id-cct
 id-pkix 21		: id-ppl
 id-pkix 48		: id-ad
 
-# PKIX Modules
+# PKIX packages
 id-pkix-mod 1		: id-pkix1-explicit-88
 id-pkix-mod 2		: id-pkix1-implicit-88
 id-pkix-mod 3		: id-pkix1-explicit-93
@@ -606,7 +606,7 @@ id-ad 5			: caRepository		: CA Repository
 
 
 !Alias id-pkix-OCSP ad-OCSP
-!module id-pkix-OCSP
+!package id-pkix-OCSP
 !Cname basic
 id-pkix-OCSP 1		: basicOCSPResponse	: Basic OCSP Response
 id-pkix-OCSP 2		: Nonce			: OCSP Nonce

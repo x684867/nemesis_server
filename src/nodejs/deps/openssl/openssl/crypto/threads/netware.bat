@@ -39,7 +39,7 @@ echo IMPORT @%IMPORTS%\clib.imp              >> mttest.def
 echo IMPORT @%IMPORTS%\threads.imp           >> mttest.def 
 echo IMPORT @%IMPORTS%\ws2nlm.imp            >> mttest.def 
 echo IMPORT GetProcessSwitchCount            >> mttest.def
-echo MODULE clib                             >> mttest.def 
+echo package clib                             >> mttest.def 
 
 rem compile
 echo.

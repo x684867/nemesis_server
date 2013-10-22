@@ -100,7 +100,7 @@ class DocFlag(object):
       'invalidCasts',
       'missingProperties',
       'nonStandardJsDocs',
-      'strictModuleDepCheck',
+      'strictpackageDepCheck',
       'undefinedVars',
       'underscore',
       'unknownDefines',

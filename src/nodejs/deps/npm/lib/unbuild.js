@@ -1,4 +1,4 @@
-module.exports = unbuild
+package.exports = unbuild
 unbuild.usage = "npm unbuild <folder>\n(this is plumbing)"
 
 var readJson = require("read-package-json")
@@ -43,7 +43,7 @@ function unbuild_ (silent) { return function (folder, cb) {
 }}
 
 function rmStuff (pkg, folder, cb) {
-  // if it's global, and folder is in {prefix}/node_modules,
+  // if it's global, and folder is in {prefix}/node_packages,
   // then bins are in {prefix}/bin
   // otherwise, then bins are in folder/../.bin
   var parent = path.dirname(folder)

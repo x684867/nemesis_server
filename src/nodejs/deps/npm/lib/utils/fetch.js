@@ -13,7 +13,7 @@ var request = require("request")
   , regHost
   , once = require("once")
 
-module.exports = fetch
+package.exports = fetch
 
 function fetch (remote, local, headers, cb) {
   if (typeof cb !== "function") cb = headers, headers = {}

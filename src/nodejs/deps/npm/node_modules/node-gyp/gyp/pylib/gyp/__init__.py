@@ -65,12 +65,12 @@ def Load(build_files, format, default_variables={},
 
   default_variables = copy.copy(default_variables)
 
-  # Default variables provided by this program and its modules should be
+  # Default variables provided by this program and its packages should be
   # named WITH_CAPITAL_LETTERS to provide a distinct "best practice" namespace,
   # avoiding collisions with user and automatic variables.
   default_variables['GENERATOR'] = format
 
-  # Format can be a custom python file, or by default the name of a module
+  # Format can be a custom python file, or by default the name of a package
   # within gyp.generator.
   if format.endswith('.py'):
     generator_name = os.path.splitext(format)[0]

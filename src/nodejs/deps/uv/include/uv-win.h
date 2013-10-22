@@ -268,7 +268,7 @@ typedef unsigned char uv_gid_t;
 /* Platform-specific definitions for uv_dlopen support. */
 #define UV_DYNAMIC FAR WINAPI
 typedef struct {
-  HMODULE handle;
+  Hpackage handle;
   char* errmsg;
 } uv_lib_t;
 

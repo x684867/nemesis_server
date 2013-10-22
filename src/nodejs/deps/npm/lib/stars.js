@@ -1,4 +1,4 @@
-module.exports = stars
+package.exports = stars
 
 stars.usage = "npm stars [username]"
 

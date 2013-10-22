@@ -22,7 +22,7 @@ npm ln (with any of the previous argument usage)</code></pre>
 symbolic link from <code>prefix/package-name</code> to the current folder.</p>
 
 <p>Next, in some other location, <code>npm link package-name</code> will create a
-symlink from the local <code>node_modules</code> folder to the global symlink.</p>
+symlink from the local <code>node_packages</code> folder to the global symlink.</p>
 
 <p>Note that <code>package-name</code> is taken from <code>package.json</code>,
 not from directory name.</p>
@@ -42,7 +42,7 @@ cd ~/projects/node-bloggy   # go into some other package directory.
 npm link redis              # link-install the package</code></pre>
 
 <p>Now, any changes to ~/projects/node-redis will be reflected in
-~/projects/node-bloggy/node_modules/redis/</p>
+~/projects/node-bloggy/node_packages/redis/</p>
 
 <p>You may also shortcut the two steps in one.  For example, to do the
 above use-case in a shorter way:</p>
@@ -56,7 +56,7 @@ npm link ../node-redis     # link the dir of your dependency</code></pre>
 npm link redis</code></pre>
 
 <p>That is, it first creates a global link, and then links the global
-installation target into your project&#39;s <code>node_modules</code> folder.</p>
+installation target into your project&#39;s <code>node_packages</code> folder.</p>
 
 <h2 id="SEE-ALSO">SEE ALSO</h2>
 

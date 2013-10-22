@@ -798,7 +798,7 @@ static int server_hello(SSL *s)
 	/* SSL2_ST_SEND_SERVER_HELLO_B */
  	/* If we are using TCP/IP, the performance is bad if we do 2
  	 * writes without a read between them.  This occurs when
- 	 * Session-id reuse is used, so I will put in a buffering module
+ 	 * Session-id reuse is used, so I will put in a buffering package
  	 */
  	if (s->hit)
  		{

@@ -157,7 +157,7 @@ class Target:
     # bundle, so don't do this for bundles for now.
     if flavor == 'win' or self.bundle:
       return False
-    return self.type in ('shared_library', 'loadable_module')
+    return self.type in ('shared_library', 'loadable_package')
 
   def PreActionInput(self, flavor):
     """Return the path, if any, that should be used as a dependency of
@@ -860,7 +860,7 @@ class NinjaWriter:
 
     command = {
       'executable':      'link',
-      'loadable_module': 'solink_module',
+      'loadable_package': 'solink_package',
       'shared_library':  'solink',
     }[spec['type']]
 
@@ -935,7 +935,7 @@ class NinjaWriter:
 
     self.target.binary = output
 
-    if command in ('solink', 'solink_module'):
+    if command in ('solink', 'solink_package'):
       extra_bindings.append(('soname', os.path.split(output)[1]))
       extra_bindings.append(('lib',
                             gyp.common.EncodePOSIXShellArgument(output)))
@@ -988,7 +988,7 @@ class NinjaWriter:
 
   def WriteMacBundle(self, spec, mac_bundle_depends):
     assert self.is_mac_bundle
-    package_framework = spec['type'] in ('shared_library', 'loadable_module')
+    package_framework = spec['type'] in ('shared_library', 'loadable_package')
     output = self.ComputeMacBundleOutput()
     postbuild = self.GetPostbuildCommand(spec, output, self.target.binary,
                                          is_command_start=not package_framework)
@@ -1094,7 +1094,7 @@ class NinjaWriter:
     # Compute filename prefix: the product prefix, or a default for
     # the product type.
     DEFAULT_PREFIX = {
-      'loadable_module': default_variables['SHARED_LIB_PREFIX'],
+      'loadable_package': default_variables['SHARED_LIB_PREFIX'],
       'shared_library': default_variables['SHARED_LIB_PREFIX'],
       'static_library': default_variables['STATIC_LIB_PREFIX'],
       'executable': default_variables['EXECUTABLE_PREFIX'],
@@ -1104,7 +1104,7 @@ class NinjaWriter:
     # Compute filename extension: the product extension, or a default
     # for the product type.
     DEFAULT_EXTENSION = {
-        'loadable_module': default_variables['SHARED_LIB_SUFFIX'],
+        'loadable_package': default_variables['SHARED_LIB_SUFFIX'],
         'shared_library': default_variables['SHARED_LIB_SUFFIX'],
         'static_library': default_variables['STATIC_LIB_SUFFIX'],
         'executable': default_variables['EXECUTABLE_SUFFIX'],
@@ -1125,7 +1125,7 @@ class NinjaWriter:
         # Snip out an extra 'lib' from libs if appropriate.
         target = StripPrefix(target, 'lib')
 
-    if type in ('static_library', 'loadable_module', 'shared_library',
+    if type in ('static_library', 'loadable_package', 'shared_library',
                         'executable'):
       return '%s%s%s' % (prefix, target, extension)
     elif type == 'none':
@@ -1147,7 +1147,7 @@ class NinjaWriter:
         return override
 
     if self.flavor == 'mac' and type in (
-        'static_library', 'executable', 'shared_library', 'loadable_module'):
+        'static_library', 'executable', 'shared_library', 'loadable_package'):
       filename = self.xcode_settings.GetExecutablePath()
     else:
       filename = self.ComputeOutputFileName(spec, type)
@@ -1158,7 +1158,7 @@ class NinjaWriter:
 
     # Some products go into the output root, libraries go into shared library
     # dir, and everything else goes into the normal place.
-    type_in_output_root = ['executable', 'loadable_module']
+    type_in_output_root = ['executable', 'loadable_package']
     if self.flavor == 'mac' and self.toolset == 'target':
       type_in_output_root += ['shared_library', 'static_library']
     elif self.flavor == 'win' and self.toolset == 'target':
@@ -1551,8 +1551,8 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params,
           'suffix': '-Wl,--whole-archive $in $solibs -Wl,--no-whole-archive '
           '$libs'}))
     master_ninja.rule(
-      'solink_module',
-      description='SOLINK(module) $lib',
+      'solink_package',
+      description='SOLINK(package) $lib',
       restat=True,
       command=(mtime_preserving_solink_base % {
           'suffix': '-Wl,--start-group $in $solibs -Wl,--end-group $libs'}))
@@ -1584,7 +1584,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params,
                       rspfile='$dll.rsp',
                       rspfile_content='$libs $in_newline $ldflags',
                       restat=True)
-    master_ninja.rule('solink_module', description=dlldesc, command=dllcmd,
+    master_ninja.rule('solink_package', description=dlldesc, command=dllcmd,
                       rspfile='$dll.rsp',
                       rspfile_content='$libs $in_newline $ldflags',
                       restat=True)
@@ -1643,8 +1643,8 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params,
               '{ otool -l $lib | grep LC_ID_DYLIB -A 5; '
               'nm -gP $lib | cut -f1-2 -d\' \' | grep -v U$$; true; }'})
 
-    # TODO(thakis): The solink_module rule is likely wrong. Xcode seems to pass
-    # -bundle -single_module here (for osmesa.so).
+    # TODO(thakis): The solink_package rule is likely wrong. Xcode seems to pass
+    # -bundle -single_package here (for osmesa.so).
     master_ninja.rule(
       'solink',
       description='SOLINK $lib, POSTBUILDS',
@@ -1652,8 +1652,8 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params,
       command=(mtime_preserving_solink_base % {
           'suffix': '$in $solibs $libs$postbuilds'}))
     master_ninja.rule(
-      'solink_module',
-      description='SOLINK(module) $lib, POSTBUILDS',
+      'solink_package',
+      description='SOLINK(package) $lib, POSTBUILDS',
       restat=True,
       command=(mtime_preserving_solink_base % {
           'suffix': '$in $solibs $libs$postbuilds'}))

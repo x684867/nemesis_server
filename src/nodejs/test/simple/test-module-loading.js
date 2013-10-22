@@ -27,15 +27,15 @@ var assert = require('assert');
 var path = require('path');
 var fs = require('fs');
 
-common.debug('load test-module-loading.js');
+common.debug('load test-package-loading.js');
 
-// assert that this is the main module.
-assert.equal(require.main.id, '.', 'main module should have id of \'.\'');
-assert.equal(require.main, module, 'require.main should === module');
-assert.equal(process.mainModule, module,
-             'process.mainModule should === module');
-// assert that it's *not* the main module in the required module.
-require('../fixtures/not-main-module.js');
+// assert that this is the main package.
+assert.equal(require.main.id, '.', 'main package should have id of \'.\'');
+assert.equal(require.main, package, 'require.main should === package');
+assert.equal(process.mainpackage, package,
+             'process.mainpackage should === package');
+// assert that it's *not* the main package in the required package.
+require('../fixtures/not-main-package.js');
 
 // require a file with a request that includes the extension
 var a_js = require('../fixtures/a.js');
@@ -79,7 +79,7 @@ assert.equal('D', d4.D());
 
 assert.ok((new a.SomeClass) instanceof c.SomeClass);
 
-common.debug('test index.js modules ids and relative loading');
+common.debug('test index.js packages ids and relative loading');
 var one = require('../fixtures/nested-index/one'),
     two = require('../fixtures/nested-index/two');
 assert.notEqual(one.hello, two.hello);
@@ -103,13 +103,13 @@ var root = require('../fixtures/cycles/root'),
 assert.equal(root.foo, foo);
 assert.equal(root.sayHello(), root.hello);
 
-common.debug('test node_modules folders');
+common.debug('test node_packages folders');
 // asserts are in the fixtures files themselves,
 // since they depend on the folder structure.
-require('../fixtures/node_modules/foo');
+require('../fixtures/node_packages/foo');
 
 common.debug('test name clashes');
-// this one exists and should import the local module
+// this one exists and should import the local package
 var my_path = require('./path');
 assert.ok(common.indirectInstanceOf(my_path.path_func, Function));
 // this one does not exist and should throw
@@ -126,12 +126,12 @@ try {
 assert.equal(require('path').dirname(__filename), __dirname);
 
 common.debug('load custom file types with extensions');
-require.extensions['.test'] = function(module, filename) {
+require.extensions['.test'] = function(package, filename) {
   var content = fs.readFileSync(filename).toString();
   assert.equal('this is custom source\n', content);
   content = content.replace('this is custom source',
                             'exports.test = \'passed\'');
-  module._compile(content, filename);
+  package._compile(content, filename);
 };
 
 assert.equal(require('../fixtures/registerExt').test, 'passed');
@@ -139,8 +139,8 @@ assert.equal(require('../fixtures/registerExt').test, 'passed');
 assert.equal(require('../fixtures/registerExt.hello.world').test, 'passed');
 
 common.debug('load custom file types that return non-strings');
-require.extensions['.test'] = function(module, filename) {
-  module.exports = {
+require.extensions['.test'] = function(package, filename) {
+  package.exports = {
     custom: 'passed'
   };
 };
@@ -148,7 +148,7 @@ require.extensions['.test'] = function(module, filename) {
 assert.equal(require('../fixtures/registerExt2').custom, 'passed');
 
 assert.equal(require('../fixtures/foo').foo, 'ok',
-             'require module with no extension');
+             'require package with no extension');
 
 assert.throws(function() {
   require.paths;
@@ -158,13 +158,13 @@ assert.throws(function() {
 try {
   require('../fixtures/empty');
 } catch (err) {
-  assert.equal(err.message, 'Cannot find module \'../fixtures/empty\'');
+  assert.equal(err.message, 'Cannot find package \'../fixtures/empty\'');
 }
 
 // Check load order is as expected
 common.debug('load order');
 
-var loadOrder = '../fixtures/module-load-order/',
+var loadOrder = '../fixtures/package-load-order/',
     msg = 'Load order incorrect.';
 
 require.extensions['.reg'] = require.extensions['.js'];
@@ -175,7 +175,7 @@ assert.equal(require(loadOrder + 'file2').file2, 'file2.js', msg);
 try {
   require(loadOrder + 'file3');
 } catch (e) {
-  // Not a real .node module, but we know we require'd the right thing.
+  // Not a real .node package, but we know we require'd the right thing.
   assert.ok(e.message.replace(/\\/g, '/').match(/file3\.node/));
 }
 assert.equal(require(loadOrder + 'file4').file4, 'file4.reg', msg);
@@ -190,10 +190,10 @@ assert.equal(require(loadOrder + 'file8').file8, 'file8/index.reg', msg);
 assert.equal(require(loadOrder + 'file9').file9, 'file9/index.reg2', msg);
 
 
-// make sure that module.require() is the same as
-// doing require() inside of that module.
-var parent = require('../fixtures/module-require/parent/');
-var child = require('../fixtures/module-require/child/');
+// make sure that package.require() is the same as
+// doing require() inside of that package.
+var parent = require('../fixtures/package-require/parent/');
+var child = require('../fixtures/package-require/child/');
 assert.equal(child.loaded, parent.loaded);
 
 
@@ -202,15 +202,15 @@ var json = require('../fixtures/packages/main/package.json');
 assert.deepEqual(json, {
   name: 'package-name',
   version: '1.2.3',
-  main: 'package-main-module'
+  main: 'package-main-package'
 });
 
 
-// now verify that module.children contains all the different
-// modules that we've required, and that all of them contain
+// now verify that package.children contains all the different
+// packages that we've required, and that all of them contain
 // the appropriate children, and so on.
 
-var children = module.children.reduce(function red(set, child) {
+var children = package.children.reduce(function red(set, child) {
   var id = path.relative(path.dirname(__dirname), child.id)
   id = id.replace(/\\/g, '/');
   set[id] = child.children.reduce(red, {});
@@ -219,7 +219,7 @@ var children = module.children.reduce(function red(set, child) {
 
 assert.deepEqual(children, {
   'common.js': {},
-  'fixtures/not-main-module.js': {},
+  'fixtures/not-main-package.js': {},
   'fixtures/a.js': {
     'fixtures/b/c.js': {
       'fixtures/b/d.js': {},
@@ -235,15 +235,15 @@ assert.deepEqual(children, {
   },
   'fixtures/nested-index/three.js': {},
   'fixtures/nested-index/three/index.js': {},
-  'fixtures/packages/main/package-main-module.js': {},
-  'fixtures/packages/main-index/package-main-module/index.js': {},
+  'fixtures/packages/main/package-main-package.js': {},
+  'fixtures/packages/main-index/package-main-package/index.js': {},
   'fixtures/cycles/root.js': {
     'fixtures/cycles/folder/foo.js': {}
   },
-  'fixtures/node_modules/foo.js': {
-    'fixtures/node_modules/baz/index.js': {
-      'fixtures/node_modules/bar.js': {},
-      'fixtures/node_modules/baz/node_modules/asdf.js': {}
+  'fixtures/node_packages/foo.js': {
+    'fixtures/node_packages/baz/index.js': {
+      'fixtures/node_packages/bar.js': {},
+      'fixtures/node_packages/baz/node_packages/asdf.js': {}
     }
   },
   'simple/path.js': {},
@@ -252,18 +252,18 @@ assert.deepEqual(children, {
   'fixtures/registerExt.hello.world': {},
   'fixtures/registerExt2.test': {},
   'fixtures/empty.js': {},
-  'fixtures/module-load-order/file1': {},
-  'fixtures/module-load-order/file2.js': {},
-  'fixtures/module-load-order/file3.node': {},
-  'fixtures/module-load-order/file4.reg': {},
-  'fixtures/module-load-order/file5.reg2': {},
-  'fixtures/module-load-order/file6/index.js': {},
-  'fixtures/module-load-order/file7/index.node': {},
-  'fixtures/module-load-order/file8/index.reg': {},
-  'fixtures/module-load-order/file9/index.reg2': {},
-  'fixtures/module-require/parent/index.js': {
-    'fixtures/module-require/child/index.js': {
-      'fixtures/module-require/child/node_modules/target.js': {}
+  'fixtures/package-load-order/file1': {},
+  'fixtures/package-load-order/file2.js': {},
+  'fixtures/package-load-order/file3.node': {},
+  'fixtures/package-load-order/file4.reg': {},
+  'fixtures/package-load-order/file5.reg2': {},
+  'fixtures/package-load-order/file6/index.js': {},
+  'fixtures/package-load-order/file7/index.node': {},
+  'fixtures/package-load-order/file8/index.reg': {},
+  'fixtures/package-load-order/file9/index.reg2': {},
+  'fixtures/package-require/parent/index.js': {
+    'fixtures/package-require/child/index.js': {
+      'fixtures/package-require/child/node_packages/target.js': {}
     }
   },
   'fixtures/packages/main/package.json': {}

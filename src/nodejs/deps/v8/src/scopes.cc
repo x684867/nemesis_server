@@ -113,9 +113,9 @@ Scope::Scope(Scope* outer_scope, ScopeType scope_type, Zone* zone)
       params_(4, zone),
       unresolved_(16, zone),
       decls_(4, zone),
-      interface_(FLAG_harmony_modules &&
-                 (scope_type == MODULE_SCOPE || scope_type == GLOBAL_SCOPE)
-                     ? Interface::NewModule(zone) : NULL),
+      interface_(FLAG_harmony_packages &&
+                 (scope_type == package_SCOPE || scope_type == GLOBAL_SCOPE)
+                     ? Interface::Newpackage(zone) : NULL),
       already_resolved_(false),
       zone_(zone) {
   SetDefaults(scope_type, outer_scope, Handle<ScopeInfo>::null());
@@ -202,8 +202,8 @@ void Scope::SetDefaults(ScopeType scope_type,
   num_var_or_const_ = 0;
   num_stack_slots_ = 0;
   num_heap_slots_ = 0;
-  num_modules_ = 0;
-  module_var_ = NULL,
+  num_packages_ = 0;
+  package_var_ = NULL,
   scope_info_ = scope_info;
   start_position_ = RelocInfo::kNoPosition;
   end_position_ = RelocInfo::kNoPosition;
@@ -238,10 +238,10 @@ Scope* Scope::DeserializeScopeChain(Context* context, Scope* global_scope,
                                       GLOBAL_SCOPE,
                                       Handle<ScopeInfo>(scope_info),
                                       zone);
-    } else if (context->IsModuleContext()) {
-      ScopeInfo* scope_info = ScopeInfo::cast(context->module()->scope_info());
+    } else if (context->IspackageContext()) {
+      ScopeInfo* scope_info = ScopeInfo::cast(context->package()->scope_info());
       current_scope = new(zone) Scope(current_scope,
-                                      MODULE_SCOPE,
+                                      package_SCOPE,
                                       Handle<ScopeInfo>(scope_info),
                                       zone);
     } else if (context->IsFunctionContext()) {
@@ -304,7 +304,7 @@ bool Scope::Analyze(CompilationInfo* info) {
     scope->Print();
   }
 
-  if (FLAG_harmony_modules && FLAG_print_interfaces && top->is_global_scope()) {
+  if (FLAG_harmony_packages && FLAG_print_interfaces && top->is_global_scope()) {
     PrintF("global : ");
     top->interface()->Print();
   }
@@ -654,10 +654,10 @@ bool Scope::AllocateVariables(CompilationInfo* info,
   }
   PropagateScopeInfo(outer_scope_calls_non_strict_eval);
 
-  // 2) Allocate module instances.
-  if (FLAG_harmony_modules && (is_global_scope() || is_module_scope())) {
-    ASSERT(num_modules_ == 0);
-    AllocateModulesRecursively(this);
+  // 2) Allocate package instances.
+  if (FLAG_harmony_packages && (is_global_scope() || is_package_scope())) {
+    ASSERT(num_packages_ == 0);
+    AllocatepackagesRecursively(this);
   }
 
   // 3) Resolve variables.
@@ -727,9 +727,9 @@ int Scope::ContextChainLength(Scope* scope) {
   for (Scope* s = this; s != scope; s = s->outer_scope_) {
     ASSERT(s != NULL);  // scope must be in the scope chain
     if (s->is_with_scope() || s->num_heap_slots() > 0) n++;
-    // Catch and module scopes always have heap slots.
+    // Catch and package scopes always have heap slots.
     ASSERT(!s->is_catch_scope() || s->num_heap_slots() > 0);
-    ASSERT(!s->is_module_scope() || s->num_heap_slots() > 0);
+    ASSERT(!s->is_package_scope() || s->num_heap_slots() > 0);
   }
   return n;
 }
@@ -784,7 +784,7 @@ static const char* Header(ScopeType scope_type) {
   switch (scope_type) {
     case EVAL_SCOPE: return "eval";
     case FUNCTION_SCOPE: return "function";
-    case MODULE_SCOPE: return "module";
+    case package_SCOPE: return "package";
     case GLOBAL_SCOPE: return "global";
     case CATCH_SCOPE: return "catch";
     case BLOCK_SCOPE: return "block";
@@ -1095,7 +1095,7 @@ bool Scope::ResolveVariable(CompilationInfo* info,
     return false;
   }
 
-  if (FLAG_harmony_modules) {
+  if (FLAG_harmony_packages) {
     bool ok;
 #ifdef DEBUG
     if (FLAG_print_interface_details)
@@ -1113,7 +1113,7 @@ bool Scope::ResolveVariable(CompilationInfo* info,
       }
 #endif
 
-      // Inconsistent use of module. Throw a syntax error.
+      // Inconsistent use of package. Throw a syntax error.
       // TODO(rossberg): generate more helpful error message.
       MessageLocation location(
           info->script(), proxy->position(), proxy->position());
@@ -1122,7 +1122,7 @@ bool Scope::ResolveVariable(CompilationInfo* info,
       Handle<JSArray> array = factory->NewJSArray(1);
       USE(JSObject::SetElement(array, 0, var->name(), NONE, kStrictMode));
       Handle<Object> result =
-          factory->NewSyntaxError("module_type_error", array);
+          factory->NewSyntaxError("package_type_error", array);
       isolate->Throw(*result, &location);
       return false;
     }
@@ -1186,7 +1186,7 @@ bool Scope::MustAllocate(Variable* var) {
        scope_contains_with_ ||
        is_catch_scope() ||
        is_block_scope() ||
-       is_module_scope() ||
+       is_package_scope() ||
        is_global_scope())) {
     var->set_is_used(true);
   }
@@ -1208,7 +1208,7 @@ bool Scope::MustAllocateInContext(Variable* var) {
   if (has_forced_context_allocation()) return true;
   if (var->mode() == TEMPORARY) return false;
   if (var->mode() == INTERNAL) return true;
-  if (is_catch_scope() || is_block_scope() || is_module_scope()) return true;
+  if (is_catch_scope() || is_block_scope() || is_package_scope()) return true;
   if (is_global_scope() && IsLexicalVariableMode(var->mode())) return true;
   return var->has_forced_context_allocation() ||
       scope_calls_eval_ ||
@@ -1362,8 +1362,8 @@ void Scope::AllocateVariablesRecursively() {
   // Force allocation of a context for this scope if necessary. For a 'with'
   // scope and for a function scope that makes an 'eval' call we need a context,
   // even if no local variables were statically allocated in the scope.
-  // Likewise for modules.
-  bool must_have_context = is_with_scope() || is_module_scope() ||
+  // Likewise for packages.
+  bool must_have_context = is_with_scope() || is_package_scope() ||
       (is_function_scope() && calls_eval());
 
   // If we didn't allocate any locals in the local context, then we only
@@ -1377,20 +1377,20 @@ void Scope::AllocateVariablesRecursively() {
 }
 
 
-void Scope::AllocateModulesRecursively(Scope* host_scope) {
+void Scope::AllocatepackagesRecursively(Scope* host_scope) {
   if (already_resolved()) return;
-  if (is_module_scope()) {
+  if (is_package_scope()) {
     ASSERT(interface_->IsFrozen());
     Handle<String> name = isolate_->factory()->InternalizeOneByteString(
-        STATIC_ASCII_VECTOR(".module"));
-    ASSERT(module_var_ == NULL);
-    module_var_ = host_scope->NewInternal(name);
-    ++host_scope->num_modules_;
+        STATIC_ASCII_VECTOR(".package"));
+    ASSERT(package_var_ == NULL);
+    package_var_ = host_scope->NewInternal(name);
+    ++host_scope->num_packages_;
   }
 
   for (int i = 0; i < inner_scopes_.length(); i++) {
     Scope* inner_scope = inner_scopes_.at(i);
-    inner_scope->AllocateModulesRecursively(host_scope);
+    inner_scope->AllocatepackagesRecursively(host_scope);
   }
 }
 

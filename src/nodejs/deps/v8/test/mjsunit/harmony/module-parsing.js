@@ -25,17 +25,17 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Flags: --harmony-modules
+// Flags: --harmony-packages
 
-// Test basic module syntax, with and without automatic semicolon insertion.
+// Test basic package syntax, with and without automatic semicolon insertion.
 
-module A {}
+package A {}
 
-module A1 = A
-module A2 = A;
-module A3 = A2
+package A1 = A
+package A2 = A;
+package A3 = A2
 
-module B {
+package B {
   export vx
   export vy, lz, c, f
 
@@ -47,11 +47,11 @@ module B {
   const c = 9
   function f() {}
 
-  module C0 {}
+  package C0 {}
 
-  export module C {
+  export package C {
     let x
-    export module D { export let x }
+    export package D { export let x }
     let y
   }
 
@@ -64,41 +64,41 @@ module B {
   export const z0 = 0
   export const z1 = 2, z2 = 3
   export function f0() {}
-  export module M1 {}
-  export module M2 = C.D
-  export module M3 at "http://where"
+  export package M1 {}
+  export package M2 = C.D
+  export package M3 at "http://where"
 
   import i0 from I
   import i1, i2, i3, M from I
   //import i4, i5 from "http://where"
 }
 
-module I {
+package I {
   export let i0, i1, i2, i3;
-  export module M {}
+  export package M {}
 }
 
-module C1 = B.C;
-module D1 = B.C.D
-module D2 = C1.D
-module D3 = D2
+package C1 = B.C;
+package D1 = B.C.D
+package D2 = C1.D
+package D3 = D2
 
-module E1 at "http://where"
-module E2 at "http://where";
-module E3 = E1
+package E1 at "http://where"
+package E2 at "http://where";
+package E3 = E1
 
 // Check that ASI does not interfere.
 
-module X
+package X
 {
 let x
 }
 
-module Y
+package Y
 =
 X
 
-module Z
+package Z
 at
 "file://local"
 
@@ -110,7 +110,7 @@ from
 B
 
 
-module Wrap {
+package Wrap {
 export
 x
 ,
@@ -142,7 +142,7 @@ f
 }
 
 export
-module V
+package V
 {
 }
 }
@@ -151,40 +151,40 @@ export A, A1, A2, A3, B, I, C1, D1, D2, D3, E1, E2, E3, X, Y, Z, Wrap, x, y, UU
 
 
 
-// Check that 'module' still works as an identifier.
+// Check that 'package' still works as an identifier.
 
-var module
-module = {}
-module["a"] = 6
-function module() {}
-function f(module) { return module }
-try {} catch (module) {}
+var package
+package = {}
+package["a"] = 6
+function package() {}
+function f(package) { return package }
+try {} catch (package) {}
 
-module
+package
 v = 20
 
 
 
-// Check that module declarations are rejected in eval or local scope.
+// Check that package declarations are rejected in eval or local scope.
 
-module M { export let x; }
+package M { export let x; }
 
 assertThrows("export x;", SyntaxError);  // It's using eval, so should throw.
 assertThrows("export let x;", SyntaxError);
 assertThrows("import x from M;", SyntaxError);
-assertThrows("module M {};", SyntaxError);
+assertThrows("package M {};", SyntaxError);
 
 assertThrows("{ export x; }", SyntaxError);
 assertThrows("{ export let x; }", SyntaxError);
 assertThrows("{ import x from M; }", SyntaxError);
-assertThrows("{ module M {}; }", SyntaxError);
+assertThrows("{ package M {}; }", SyntaxError);
 
 assertThrows("function f() { export x; }", SyntaxError);
 assertThrows("function f() { export let x; }", SyntaxError);
 assertThrows("function f() { import x from M; }", SyntaxError);
-assertThrows("function f() { module M {}; }", SyntaxError);
+assertThrows("function f() { package M {}; }", SyntaxError);
 
 assertThrows("function f() { { export x; } }", SyntaxError);
 assertThrows("function f() { { export let x; } }", SyntaxError);
 assertThrows("function f() { { import x from M; } }", SyntaxError);
-assertThrows("function f() { { module M {}; } }", SyntaxError);
+assertThrows("function f() { { package M {}; } }", SyntaxError);

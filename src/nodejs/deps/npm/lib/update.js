@@ -5,7 +5,7 @@ for each pkg in prefix that isn't a git repo
   if not, then update it
 */
 
-module.exports = update
+package.exports = update
 
 update.usage = "npm update [pkg]"
 

@@ -22,7 +22,7 @@ knowledge of several libraries:
  - Others. Look in `deps/` for what else is available.
 
 Node statically compiles all its dependencies into the executable.
-When compiling your module, you don't need to worry about linking to
+When compiling your package, you don't need to worry about linking to
 any of these libraries.
 
 All of the following examples are available for
@@ -34,7 +34,7 @@ used as a starting-point for your own Addon.
 To get started let's make a small Addon which is the C++ equivalent of
 the following JavaScript code:
 
-    module.exports.hello = function() { return 'world'; };
+    package.exports.hello = function() { return 'world'; };
 
 First we create a file `hello.cc`:
 
@@ -53,22 +53,22 @@ First we create a file `hello.cc`:
           FunctionTemplate::New(Method)->GetFunction());
     }
 
-    NODE_MODULE(hello, init)
+    NODE_package(hello, init)
 
 Note that all Node addons must export an initialization function:
 
     void Initialize (Handle<Object> exports);
-    NODE_MODULE(module_name, Initialize)
+    NODE_package(package_name, Initialize)
 
-There is no semi-colon after `NODE_MODULE` as it's not a function (see
+There is no semi-colon after `NODE_package` as it's not a function (see
 `node.h`).
 
-The `module_name` needs to match the filename of the final binary (minus the
+The `package_name` needs to match the filename of the final binary (minus the
 .node suffix).
 
 The source code needs to be built into `hello.node`, the binary Addon. To
 do this we create a file called `binding.gyp` which describes the configuration
-to build your module in a JSON-like format. This file gets compiled by
+to build your package in a JSON-like format. This file gets compiled by
 [node-gyp](https://github.com/TooTallNate/node-gyp).
 
     {
@@ -91,7 +91,7 @@ Now you have your compiled `.node` bindings file! The compiled bindings end up
 in `build/Release/`.
 
 You can now use the binary addon in a Node project `hello.js` by pointing
-`require` to the recently built `hello.node` module:
+`require` to the recently built `hello.node` package:
 
     var addon = require('./build/Release/hello');
 
@@ -167,7 +167,7 @@ function calls and return a result. This is the main and only needed source
           FunctionTemplate::New(Add)->GetFunction());
     }
 
-    NODE_MODULE(addon, Init)
+    NODE_package(addon, Init)
 
 You can test it with the following JavaScript snippet:
 
@@ -197,15 +197,15 @@ there. Here's `addon.cc`:
       return scope.Close(Undefined(isolate));
     }
 
-    void Init(Handle<Object> exports, Handle<Object> module) {
-      module->Set(String::NewSymbol("exports"),
+    void Init(Handle<Object> exports, Handle<Object> package) {
+      package->Set(String::NewSymbol("exports"),
           FunctionTemplate::New(RunCallback)->GetFunction());
     }
 
-    NODE_MODULE(addon, Init)
+    NODE_package(addon, Init)
 
 Note that this example uses a two-argument form of `Init()` that receives
-the full `module` object as the second argument. This allows the addon
+the full `package` object as the second argument. This allows the addon
 to completely overwrite `exports` with a single function instead of
 adding the function as a property of `exports`.
 
@@ -238,12 +238,12 @@ the string passed to `createObject()`:
       return scope.Close(obj);
     }
 
-    void Init(Handle<Object> exports, Handle<Object> module) {
-      module->Set(String::NewSymbol("exports"),
+    void Init(Handle<Object> exports, Handle<Object> package) {
+      package->Set(String::NewSymbol("exports"),
           FunctionTemplate::New(CreateObject)->GetFunction());
     }
 
-    NODE_MODULE(addon, Init)
+    NODE_package(addon, Init)
 
 To test it in JavaScript:
 
@@ -282,12 +282,12 @@ wraps a C++ function:
       return scope.Close(fn);
     }
 
-    void Init(Handle<Object> exports, Handle<Object> module) {
-      module->Set(String::NewSymbol("exports"),
+    void Init(Handle<Object> exports, Handle<Object> package) {
+      package->Set(String::NewSymbol("exports"),
           FunctionTemplate::New(CreateFunction)->GetFunction());
     }
 
-    NODE_MODULE(addon, Init)
+    NODE_package(addon, Init)
 
 To test:
 
@@ -301,7 +301,7 @@ To test:
 
 Here we will create a wrapper for a C++ object/class `MyObject` that can be
 instantiated in JavaScript through the `new` operator. First prepare the main
-module `addon.cc`:
+package `addon.cc`:
 
     #include <node.h>
     #include "myobject.h"
@@ -312,7 +312,7 @@ module `addon.cc`:
       MyObject::Init(exports);
     }
 
-    NODE_MODULE(addon, InitAll)
+    NODE_package(addon, InitAll)
 
 Then in `myobject.h` make your wrapper inherit from `node::ObjectWrap`:
 
@@ -418,14 +418,14 @@ Let's register our `createObject` method in `addon.cc`:
       return scope.Close(MyObject::NewInstance(args));
     }
 
-    void InitAll(Handle<Object> exports, Handle<Object> module) {
+    void InitAll(Handle<Object> exports, Handle<Object> package) {
       MyObject::Init();
 
-      module->Set(String::NewSymbol("exports"),
+      package->Set(String::NewSymbol("exports"),
           FunctionTemplate::New(CreateObject)->GetFunction());
     }
 
-    NODE_MODULE(addon, InitAll)
+    NODE_package(addon, InitAll)
 
 In `myobject.h` we now introduce the static method `NewInstance` that takes
 care of instantiating the object (i.e. it does the job of `new` in JavaScript):
@@ -566,7 +566,7 @@ In the following `addon.cc` we introduce a function `add()` that can take on two
           FunctionTemplate::New(Add)->GetFunction());
     }
 
-    NODE_MODULE(addon, InitAll)
+    NODE_package(addon, InitAll)
 
 To make things interesting we introduce a public method in `myobject.h` so we
 can probe private values after unwrapping the object:

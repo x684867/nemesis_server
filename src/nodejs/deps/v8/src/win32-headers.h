@@ -66,11 +66,11 @@
 #define _WIN32_WINNT 0x501
 #endif  // __MINGW32__
 #if !defined(__MINGW32__) || defined(__MINGW64_VERSION_MAJOR)
-#include <dbghelp.h>  // For SymLoadModule64 and al.
+#include <dbghelp.h>  // For SymLoadpackage64 and al.
 #include <errno.h>  // For STRUNCATE
 #endif  // !defined(__MINGW32__) || defined(__MINGW64_VERSION_MAJOR)
 #include <limits.h>  // For INT_MAX and al.
-#include <tlhelp32.h>  // For Module32First and al.
+#include <tlhelp32.h>  // For package32First and al.
 
 // These additional WIN32 includes have to be right here as the #undef's below
 // makes it impossible to have them elsewhere.

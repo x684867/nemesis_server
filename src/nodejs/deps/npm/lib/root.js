@@ -1,4 +1,4 @@
-module.exports = root
+package.exports = root
 
 var npm = require("./npm.js")
 

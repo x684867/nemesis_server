@@ -121,7 +121,7 @@
 #include <wincrypt.h>
 #include <tlhelp32.h>
 
-/* Limit the time spent walking through the heap, processes, threads and modules to
+/* Limit the time spent walking through the heap, processes, threads and packages to
    a maximum of 1000 miliseconds each, unless CryptoGenRandom failed */
 #define MAXDELAY 1000
 
@@ -173,7 +173,7 @@ typedef BOOL (WINAPI *HEAP32NEXT)(LPHEAPENTRY32);
 typedef BOOL (WINAPI *HEAP32LIST)(HANDLE, LPHEAPLIST32);
 typedef BOOL (WINAPI *PROCESS32)(HANDLE, LPPROCESSENTRY32);
 typedef BOOL (WINAPI *THREAD32)(HANDLE, LPTHREADENTRY32);
-typedef BOOL (WINAPI *MODULE32)(HANDLE, LPMODULEENTRY32);
+typedef BOOL (WINAPI *package32)(HANDLE, LPpackageENTRY32);
 
 #include <lmcons.h>
 #include <lmstats.h>
@@ -236,10 +236,10 @@ int RAND_poll(void)
 	 */
 	{
 	/* load functions dynamically - not available on all systems */
-	HMODULE advapi = LoadLibrary(TEXT("ADVAPI32.DLL"));
-	HMODULE kernel = LoadLibrary(TEXT("KERNEL32.DLL"));
-	HMODULE user = NULL;
-	HMODULE netapi = LoadLibrary(TEXT("NETAPI32.DLL"));
+	Hpackage advapi = LoadLibrary(TEXT("ADVAPI32.DLL"));
+	Hpackage kernel = LoadLibrary(TEXT("KERNEL32.DLL"));
+	Hpackage user = NULL;
+	Hpackage netapi = LoadLibrary(TEXT("NETAPI32.DLL"));
 	CRYPTACQUIRECONTEXTW acquire = NULL;
 	CRYPTGENRANDOM gen = NULL;
 	CRYPTRELEASECONTEXT release = NULL;
@@ -432,7 +432,7 @@ int RAND_poll(void)
 		FreeLibrary(user);
 		}
 
-	/* Toolhelp32 snapshot: enumerate processes, threads, modules and heap
+	/* Toolhelp32 snapshot: enumerate processes, threads, packages and heap
 	 * http://msdn.microsoft.com/library/psdk/winbase/toolhelp_5pfd.htm
 	 * (Win 9x and 2000 only, not available on NT)
 	 *
@@ -456,13 +456,13 @@ int RAND_poll(void)
 		HEAP32LIST heaplist_first, heaplist_next;
 		PROCESS32 process_first, process_next;
 		THREAD32 thread_first, thread_next;
-		MODULE32 module_first, module_next;
+		package32 package_first, package_next;
 
 		HEAPLIST32 hlist;
 		HEAPENTRY32 hentry;
 		PROCESSENTRY32 p;
 		THREADENTRY32 t;
-		MODULEENTRY32 m;
+		packageENTRY32 m;
 		DWORD starttime = 0;
 
 		snap = (CREATETOOLHELP32SNAPSHOT)
@@ -477,13 +477,13 @@ int RAND_poll(void)
 		process_next = (PROCESS32) GetProcAddress(kernel, "Process32Next");
 		thread_first = (THREAD32) GetProcAddress(kernel, "Thread32First");
 		thread_next = (THREAD32) GetProcAddress(kernel, "Thread32Next");
-		module_first = (MODULE32) GetProcAddress(kernel, "Module32First");
-		module_next = (MODULE32) GetProcAddress(kernel, "Module32Next");
+		package_first = (package32) GetProcAddress(kernel, "package32First");
+		package_next = (package32) GetProcAddress(kernel, "package32Next");
 
 		if (snap && heap_first && heap_next && heaplist_first &&
 			heaplist_next && process_first && process_next &&
-			thread_first && thread_next && module_first &&
-			module_next && (handle = snap(TH32CS_SNAPALL,0))
+			thread_first && thread_next && package_first &&
+			package_next && (handle = snap(TH32CS_SNAPALL,0))
 			!= INVALID_HANDLE_VALUE)
 			{
 			/* heap list and heap walking */
@@ -589,17 +589,17 @@ int RAND_poll(void)
 					RAND_add(&t, t.dwSize, 6);
 				while (thread_next(handle, &t) && (!good || (GetTickCount()-starttime)<MAXDELAY));
 
-			/* module walking */
-                        /* MODULEENTRY32 contains 9 fields that will change
+			/* package walking */
+                        /* packageENTRY32 contains 9 fields that will change
                          * with each entry.  Consider each field a source of
                          * 1 byte of entropy.
                          */
-			m.dwSize = sizeof(MODULEENTRY32);
+			m.dwSize = sizeof(packageENTRY32);
 			if (good) starttime = GetTickCount();
-			if (module_first(handle, &m))
+			if (package_first(handle, &m))
 				do
 					RAND_add(&m, m.dwSize, 9);
-				while (module_next(handle, &m)
+				while (package_next(handle, &m)
 					       	&& (!good || (GetTickCount()-starttime)<MAXDELAY));
 			if (close_snap)
 				close_snap(handle);

@@ -170,7 +170,7 @@ if "%test%"=="test-all" set test_args=%test_args%
 :build-node-weak
 @rem Build node-weak if required
 if "%buildnodeweak%"=="" goto run-tests
-"%config%\node" deps\npm\node_modules\node-gyp\bin\node-gyp rebuild --directory="%~dp0test\gc\node_modules\weak" --nodedir="%~dp0."
+"%config%\node" deps\npm\node_packages\node-gyp\bin\node-gyp rebuild --directory="%~dp0test\gc\node_packages\weak" --nodedir="%~dp0."
 if errorlevel 1 goto build-node-weak-failed
 goto run-tests
 

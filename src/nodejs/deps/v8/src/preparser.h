@@ -137,7 +137,7 @@ class PreParser {
 
   bool allow_natives_syntax() const { return allow_natives_syntax_; }
   bool allow_lazy() const { return allow_lazy_; }
-  bool allow_modules() const { return scanner_->HarmonyModules(); }
+  bool allow_packages() const { return scanner_->Harmonypackages(); }
   bool allow_harmony_scoping() const { return scanner_->HarmonyScoping(); }
   bool allow_generators() const { return allow_generators_; }
   bool allow_for_of() const { return allow_for_of_; }
@@ -147,7 +147,7 @@ class PreParser {
 
   void set_allow_natives_syntax(bool allow) { allow_natives_syntax_ = allow; }
   void set_allow_lazy(bool allow) { allow_lazy_ = allow; }
-  void set_allow_modules(bool allow) { scanner_->SetHarmonyModules(allow); }
+  void set_allow_packages(bool allow) { scanner_->SetHarmonypackages(allow); }
   void set_allow_harmony_scoping(bool allow) {
     scanner_->SetHarmonyScoping(allow);
   }

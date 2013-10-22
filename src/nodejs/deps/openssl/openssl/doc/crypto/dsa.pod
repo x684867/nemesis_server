@@ -86,7 +86,7 @@ The B<DSA> structure consists of several BIGNUM components.
 In public keys, B<priv_key> is NULL.
 
 Note that DSA keys may use non-standard B<DSA_METHOD> implementations,
-either directly or by the use of B<ENGINE> modules. In some cases (eg. an
+either directly or by the use of B<ENGINE> packages. In some cases (eg. an
 ENGINE providing support for hardware-embedded keys), these BIGNUM values
 will not be used by the implementation or may be used for alternative data
 storage. For this reason, applications should generally avoid using DSA

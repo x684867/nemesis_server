@@ -310,8 +310,8 @@ namespace internal {
   /* ES5 */ \
   F(ObjectFreeze, 1, 1) \
   \
-  /* Harmony modules */ \
-  F(IsJSModule, 1, 1) \
+  /* Harmony packages */ \
+  F(IsJSpackage, 1, 1) \
   \
   /* Harmony symbols */ \
   F(CreateSymbol, 1, 1) \
@@ -411,7 +411,7 @@ namespace internal {
   F(PushWithContext, 2, 1) \
   F(PushCatchContext, 3, 1) \
   F(PushBlockContext, 2, 1) \
-  F(PushModuleContext, 2, 1) \
+  F(PushpackageContext, 2, 1) \
   F(DeleteContextSlot, 2, 1) \
   F(LoadContextSlot, 2, 2) \
   F(LoadContextSlotNoReferenceError, 2, 2) \
@@ -419,7 +419,7 @@ namespace internal {
   \
   /* Declarations and initialization */ \
   F(DeclareGlobals, 3, 1) \
-  F(DeclareModules, 1, 1) \
+  F(Declarepackages, 1, 1) \
   F(DeclareContextSlot, 4, 1) \
   F(InitializeVarGlobal, -1 /* 2 or 3 */, 1) \
   F(InitializeConstGlobal, 2, 1) \

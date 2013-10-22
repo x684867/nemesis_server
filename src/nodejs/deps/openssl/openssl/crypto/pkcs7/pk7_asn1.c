@@ -62,7 +62,7 @@
 #include <openssl/pkcs7.h>
 #include <openssl/x509.h>
 
-/* PKCS#7 ASN1 module */
+/* PKCS#7 ASN1 package */
 
 /* This is the ANY DEFINED BY table for the top level PKCS#7 structure */
 

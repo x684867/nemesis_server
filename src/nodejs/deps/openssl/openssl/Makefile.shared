@@ -36,7 +36,7 @@ APPNAME=
 #OBJECTS=foo.o
 OBJECTS=
 
-# LIBEXTRAS contains extra modules to link together with the library.
+# LIBEXTRAS contains extra packages to link together with the library.
 # For example, if a second library, say libbar.a needs to be linked into
 # libfoo.so, you need to do the following:
 #LIBEXTRAS=libbar.a
@@ -208,21 +208,21 @@ link_app.bsd:
 
 # For Darwin AKA Mac OS/X (dyld)
 # Originally link_o.darwin produced .so, because it was hard-coded
-# in dso_dlfcn module. At later point dso_dlfcn switched to .dylib
+# in dso_dlfcn package. At later point dso_dlfcn switched to .dylib
 # extension in order to allow for run-time linking with vendor-
 # supplied shared libraries such as libz, so that link_o.darwin had
 # to be harmonized with it. This caused minor controversy, because
 # it was believed that dlopen can't be used to dynamically load
-# .dylib-s, only so called bundle modules (ones linked with -bundle
+# .dylib-s, only so called bundle packages (ones linked with -bundle
 # flag). The belief seems to be originating from pre-10.4 release,
 # where dlfcn functionality was emulated by dlcompat add-on. In
 # 10.4 dlopen was rewritten as native part of dyld and is documented
 # to be capable of loading both dynamic libraries and bundles. In
-# order to provide compatibility with pre-10.4 dlopen, modules are
+# order to provide compatibility with pre-10.4 dlopen, packages are
 # linked with -bundle flag, which makes .dylib extension misleading.
 # It works, because dlopen is [and always was] extension-agnostic.
 # Alternative to this heuristic approach is to develop specific
-# MacOS X dso module relying on whichever "native" dyld interface.
+# MacOS X dso package relying on whichever "native" dyld interface.
 link_o.darwin:
 	@ $(CALC_VERSIONS); \
 	SHLIB=lib$(LIBNAME); \

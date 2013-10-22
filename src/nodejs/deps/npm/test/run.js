@@ -28,7 +28,7 @@ var pathEnvSplit = process.platform === "win32" ? ";" : ":"
   , pathEnv = process.env.PATH.split(pathEnvSplit)
   , npmPath = process.platform === "win32" ? root : path.join(root, "bin")
 
-pathEnv.unshift(npmPath, path.join(root, "node_modules", ".bin"))
+pathEnv.unshift(npmPath, path.join(root, "node_packages", ".bin"))
 
 // lastly, make sure that we get the same node that is being used to do
 // run this script.  That's very important, especially when running this
@@ -46,7 +46,7 @@ env.npm_config_global = "true"
 // have to set this to false, or it'll try to test itself forever
 env.npm_config_npat = "false"
 env.PATH = pathEnv.join(pathEnvSplit)
-env.NODE_PATH = path.join(root, "node_modules")
+env.NODE_PATH = path.join(root, "node_packages")
 
 
 

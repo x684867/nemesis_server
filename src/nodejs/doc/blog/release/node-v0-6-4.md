@@ -13,7 +13,7 @@ slug: node-v0-6-4
 <li>polish Windows installer (Igor Zinkovsky, Isaac Schlueter)</li>
 <li>punycode: upgrade to v0.2.1 (Mathias Bynens)</li>
 <li>build: add --without-npm flag to configure script</li>
-<li>sys: deprecate module some more, print stack trace if NODE_DEBUG=sys</li>
+<li>sys: deprecate package some more, print stack trace if NODE_DEBUG=sys</li>
 <li>cli: add -p switch, prints result of --eval</li>
 <li>#1997: fix Blowfish ECB encryption and decryption (Ingmar Runge)</li>
 <li>#2223: fix socket 'close' event being emitted twice</li>

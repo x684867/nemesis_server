@@ -69,10 +69,10 @@ name is B<openssl_conf> which is used by the B<openssl> utility. Other
 applications may use an alternative name such as B<myapplicaton_conf>.
 
 The configuration section should consist of a set of name value pairs which
-contain specific module configuration information. The B<name> represents
-the name of the I<configuration module> the meaning of the B<value> is 
-module specific: it may, for example, represent a further configuration
-section containing configuration module specific information. E.g.
+contain specific package configuration information. The B<name> represents
+the name of the I<configuration package> the meaning of the B<value> is 
+package specific: it may, for example, represent a further configuration
+section containing configuration package specific information. E.g.
 
  openssl_conf = openssl_init
 
@@ -89,16 +89,16 @@ section containing configuration module specific information. E.g.
 
  ... engine stuff here ...
 
-Currently there are two configuration modules. One for ASN1 objects another
+Currently there are two configuration packages. One for ASN1 objects another
 for ENGINE configuration.
 
-=head2 ASN1 OBJECT CONFIGURATION MODULE
+=head2 ASN1 OBJECT CONFIGURATION package
 
-This module has the name B<oid_section>. The value of this variable points
+This package has the name B<oid_section>. The value of this variable points
 to a section containing name value pairs of OIDs: the name is the OID short
 and long name, the value is the numerical form of the OID. Although some of
 the B<openssl> utility sub commands already have their own ASN1 OBJECT section
-functionality not all do. By using the ASN1 OBJECT configuration module
+functionality not all do. By using the ASN1 OBJECT configuration package
 B<all> the B<openssl> utility sub commands can see the new objects as well
 as any compliant applications. For example:
 
@@ -112,9 +112,9 @@ by a comma and the numerical OID form. For example:
 
  shortName = some object long name, 1.2.3.4
 
-=head2 ENGINE CONFIGURATION MODULE
+=head2 ENGINE CONFIGURATION package
 
-This ENGINE configuration module has the name B<engines>. The value of this
+This ENGINE configuration package has the name B<engines>. The value of this
 variable points to a section containing further ENGINE configuration
 information.
 

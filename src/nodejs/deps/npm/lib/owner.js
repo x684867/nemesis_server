@@ -1,5 +1,5 @@
 
-module.exports = owner
+package.exports = owner
 
 owner.usage = "npm owner add <username> <pkg>"
             + "\nnpm owner rm <username> <pkg>"

@@ -2,12 +2,12 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
 #
-# This module implements support for Intel AES-NI extension. In
+# This package implements support for Intel AES-NI extension. In
 # OpenSSL context it's used with Intel engine, but can also be used as
 # drop-in replacement for crypto/aes/asm/aes-586.pl [see below for
 # details].
@@ -31,12 +31,12 @@
 
 # January 2011
 #
-# See aesni-x86_64.pl for details. Unlike x86_64 version this module
+# See aesni-x86_64.pl for details. Unlike x86_64 version this package
 # interleaves at most 6 aes[enc|dec] instructions, because there are
 # not enough registers for 8x interleave [which should be optimal for
 # Sandy Bridge]. Actually, performance results for 6x interleave
 # factor presented in aesni-x86_64.pl (except for CTR) are for this
-# module.
+# package.
 
 # April 2011
 #

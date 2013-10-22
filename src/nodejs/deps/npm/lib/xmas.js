@@ -2,7 +2,7 @@
 var npm = require("./npm.js")
   , log = require("npmlog")
 
-module.exports = function (args, cb) {
+package.exports = function (args, cb) {
 var s = process.platform === "win32" ? " *" : " \u2605"
   , f = "\uFF0F"
   , b = "\uFF3C"
@@ -49,8 +49,8 @@ log.npm("loves you", "Happy Xmas, Noders!")
 cb()
 }
 var dg=false
-Object.defineProperty(module.exports, "usage", {get:function () {
-  if (dg) module.exports([], function () {})
+Object.defineProperty(package.exports, "usage", {get:function () {
+  if (dg) package.exports([], function () {})
   dg = true
   return " "
 }})

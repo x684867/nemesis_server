@@ -69,18 +69,18 @@
 #endif
 
 
-/* Algorithm configuration module. */
+/* Algorithm configuration package. */
 
-static int alg_module_init(CONF_IMODULE *md, const CONF *cnf)
+static int alg_package_init(CONF_Ipackage *md, const CONF *cnf)
 	{
 	int i;
 	const char *oid_section;
 	STACK_OF(CONF_VALUE) *sktmp;
 	CONF_VALUE *oval;
-	oid_section = CONF_imodule_get_value(md);
+	oid_section = CONF_ipackage_get_value(md);
 	if(!(sktmp = NCONF_get_section(cnf, oid_section)))
 		{
-		EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_ERROR_LOADING_SECTION);
+		EVPerr(EVP_F_ALG_package_INIT, EVP_R_ERROR_LOADING_SECTION);
 		return 0;
 		}
 	for(i = 0; i < sk_CONF_VALUE_num(sktmp); i++)
@@ -91,7 +91,7 @@ static int alg_module_init(CONF_IMODULE *md, const CONF *cnf)
 			int m;
 			if (!X509V3_get_value_bool(oval, &m))
 				{
-				EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_INVALID_FIPS_MODE);
+				EVPerr(EVP_F_ALG_package_INIT, EVP_R_INVALID_FIPS_MODE);
 				return 0;
 				}
 			if (m > 0)
@@ -99,18 +99,18 @@ static int alg_module_init(CONF_IMODULE *md, const CONF *cnf)
 #ifdef OPENSSL_FIPS
 				if (!FIPS_mode() && !FIPS_mode_set(1))
 					{
-					EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_ERROR_SETTING_FIPS_MODE);
+					EVPerr(EVP_F_ALG_package_INIT, EVP_R_ERROR_SETTING_FIPS_MODE);
 					return 0;
 					}
 #else
-				EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_FIPS_MODE_NOT_SUPPORTED);
+				EVPerr(EVP_F_ALG_package_INIT, EVP_R_FIPS_MODE_NOT_SUPPORTED);
 				return 0;
 #endif
 				}
 			}
 		else
 			{
-			EVPerr(EVP_F_ALG_MODULE_INIT, EVP_R_UNKNOWN_OPTION);
+			EVPerr(EVP_F_ALG_package_INIT, EVP_R_UNKNOWN_OPTION);
 			ERR_add_error_data(4, "name=", oval->name,
 						", value=", oval->value);
 			}
@@ -119,7 +119,7 @@ static int alg_module_init(CONF_IMODULE *md, const CONF *cnf)
 	return 1;
 	}
 
-void EVP_add_alg_module(void)
+void EVP_add_alg_package(void)
 	{
-	CONF_module_add("alg_section", alg_module_init, 0);
+	CONF_package_add("alg_section", alg_package_init, 0);
 	}

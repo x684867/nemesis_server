@@ -6,12 +6,12 @@
 // there's a lot of state associated with an "install" operation, including
 // packages that are already installed, parent packages, current shrinkwrap, and
 // so on. We maintain this state in a "context" object that gets passed around.
-// every time we dive into a deeper node_modules folder, the "family" list that
+// every time we dive into a deeper node_packages folder, the "family" list that
 // gets passed along uses the previous "family" list as its __proto__.  Any
 // "resolved precise dependency" things that aren't already on this object get
 // added, and then that's passed to the next generation of installation.
 
-module.exports = install
+package.exports = install
 
 install.usage = "npm install"
               + "\nnpm install <pkg>"
@@ -99,7 +99,7 @@ function install (args, cb_) {
     })
   }
 
-  // the /path/to/node_modules/..
+  // the /path/to/node_packages/..
   var where = path.resolve(npm.dir, "..")
 
   // internal api: install(where, what, cb)
@@ -138,7 +138,7 @@ function install (args, cb_) {
                       , wrap: null }
 
         if (data.name === path.basename(where) &&
-            path.basename(path.dirname(where)) === "node_modules") {
+            path.basename(path.dirname(where)) === "node_packages") {
           // Only include in ancestry if it can actually be required.
           // Otherwise, it does not count.
           context.family[data.name] =
@@ -393,9 +393,9 @@ function save (where, installed, tree, pretty, hasArguments, cb) {
 }
 
 
-// Outputting *all* the installed modules is a bit confusing,
+// Outputting *all* the installed packages is a bit confusing,
 // because the length of the path does not make it clear
-// that the submodules are not immediately require()able.
+// that the subpackages are not immediately require()able.
 // TODO: Show the complete tree, ls-style, but only if --long is provided
 function prettify (tree, installed) {
   if (npm.config.get("json")) {
@@ -487,7 +487,7 @@ function treeify (installed) {
 
 
 // just like installMany, but also add the existing packages in
-// where/node_modules to the family object.
+// where/node_packages to the family object.
 function installManyTop (what, where, context, cb_) {
   function cb (er, d) {
     if (context.explicit || er) return cb_(er, d)
@@ -512,7 +512,7 @@ function installManyTop (what, where, context, cb_) {
 }
 
 function installManyTop_ (what, where, context, cb) {
-  var nm = path.resolve(where, "node_modules")
+  var nm = path.resolve(where, "node_packages")
     , names = context.explicit
             ? what.map(function (w) { return w.split(/@/).shift() })
             : []
@@ -531,7 +531,7 @@ function installManyTop_ (what, where, context, cb) {
         return cb(null, [[data.name, data.version]])
       })
     }, function (er, packages) {
-      // if there's nothing in node_modules, then don't freak out.
+      // if there's nothing in node_packages, then don't freak out.
       if (er) packages = []
       // add all the existing packages to the family list.
       // however, do not add to the ancestors list.
@@ -603,7 +603,7 @@ function installMany (what, where, context, cb) {
 
 function targetResolver (where, context, deps) {
   var alreadyInstalledManually = context.explicit ? [] : null
-    , nm = path.resolve(where, "node_modules")
+    , nm = path.resolve(where, "node_packages")
     , parent = context.parent
     , wrap = context.wrap
 
@@ -762,7 +762,7 @@ function localLink (target, where, context, cb) {
 }
 
 function resultList (target, where, parentId) {
-  var nm = path.resolve(where, "node_modules")
+  var nm = path.resolve(where, "node_packages")
     , targetFolder = path.resolve(nm, target.name)
     , prettyWhere = where
 
@@ -793,7 +793,7 @@ function isIncompatibleInstallOneInProgress(target, where) {
 }
 
 function installOne_ (target, where, context, cb) {
-  var nm = path.resolve(where, "node_modules")
+  var nm = path.resolve(where, "node_packages")
     , targetFolder = path.resolve(nm, target.name)
     , prettyWhere = path.relative(process.cwd(), where)
     , parent = context.parent
@@ -962,7 +962,7 @@ function checkGit (folder, cb) {
 function checkGit_ (folder, cb) {
   fs.stat(path.resolve(folder, ".git"), function (er, s) {
     if (!er && s.isDirectory()) {
-      var e = new Error("Appears to be a git repo or submodule.")
+      var e = new Error("Appears to be a git repo or subpackage.")
       e.path = folder
       e.code = "EISGIT"
       return cb(e)
@@ -1001,7 +1001,7 @@ function write (target, targetFolder, context, cb_) {
       , function (cb) {
           if (!target.bundleDependencies) return cb()
 
-          var bd = path.resolve(targetFolder, "node_modules")
+          var bd = path.resolve(targetFolder, "node_packages")
           fs.readdir(bd, function (er, b) {
             // nothing bundled, maybe
             if (er) return cb()

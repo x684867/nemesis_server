@@ -1,1 +1,1 @@
-module.exports = require("./utils/lifecycle.js").cmd("stop")
+package.exports = require("./utils/lifecycle.js").cmd("stop")

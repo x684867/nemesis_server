@@ -63,7 +63,7 @@ following tools may be required:
       mwasmnlm.exe - x86 assembler for NetWare (if using assembly option)
 
    gcc / nlmconv Cross-Compiler, available from Novell Forge (free):
-         http://forge.novell.com/modules/xfmod/project/?aunixnw
+         http://forge.novell.com/packages/xfmod/project/?aunixnw
 
 * Assemblers - optional:
    If you intend to build using the assembly options you will need an

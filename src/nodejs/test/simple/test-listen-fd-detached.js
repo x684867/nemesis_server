@@ -41,7 +41,7 @@ switch (process.argv[2]) {
 // WARNING: This is an example of listening on some arbitrary FD number
 // that has already been bound elsewhere in advance.  However, binding
 // server handles to stdio fd's is NOT a good or reliable way to do
-// concurrency in HTTP servers!  Use the cluster module, or if you want
+// concurrency in HTTP servers!  Use the cluster package, or if you want
 // a more low-level approach, use child process IPC manually.
 function test() {
   var parent = spawn(process.execPath, [__filename, 'parent'], {

@@ -22,7 +22,7 @@ slug: node-v0-5-0-unstable
 <li> add reading/writing of floats and doubles from/to buffers (Brian White)
 <li> Allow script to be read from stdin
 <li> #477 add Buffer::fill method to do memset (Konstantin Käfer)
-<li> #573 Diffie-Hellman support to crypto module (Håvard Stranden)
+<li> #573 Diffie-Hellman support to crypto package (Håvard Stranden)
 <li> #695 add 'hex' encoding to buffer (isaacs)
 <li> #851 Update how REPLServer uses contexts (Ben Weaver)
 <li> #853 add fs.lchow, fs.lchmod, fs.fchmod, fs.fchown (isaacs)
@@ -30,7 +30,7 @@ slug: node-v0-5-0-unstable
 <li> #926 OpenSSL NPN support (Fedor Indutny)
 <li> #955 Change ^C handling in REPL (isaacs)
 <li> #979 add support for Unix Domain Sockets to HTTP (Mark Cavage)
-<li> #1173 #1170 add AMD, asynchronous module definition (isaacs)
+<li> #1173 #1170 add AMD, asynchronous package definition (isaacs)
 <li> DTrace probes: support X-Forwarded-For (Dave Pacheco) </ul>
 Download: <a href="http://nodejs.org/dist/node-v0.5.0.tar.gz">http://nodejs.org/dist/node-v0.5.0.tar.gz</a>
 

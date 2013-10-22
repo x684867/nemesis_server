@@ -35,8 +35,8 @@ static unsigned int ares_initialized;
 static int          ares_init_flags;
 
 #ifdef USE_WINSOCK
-static HMODULE hnd_iphlpapi;
-static HMODULE hnd_advapi32;
+static Hpackage hnd_iphlpapi;
+static Hpackage hnd_advapi32;
 #endif
 
 

@@ -28,7 +28,7 @@
   this.global = this;
 
   function startup() {
-    var EventEmitter = NativeModule.require('events').EventEmitter;
+    var EventEmitter = Nativepackage.require('events').EventEmitter;
 
     process.__proto__ = Object.create(EventEmitter.prototype, {
       constructor: {
@@ -64,17 +64,17 @@
     // others like the debugger or running --eval arguments. Here we decide
     // which mode we run in.
 
-    if (NativeModule.exists('_third_party_main')) {
+    if (Nativepackage.exists('_third_party_main')) {
       // To allow people to extend Node in different ways, this hook allows
       // one to drop a file lib/_third_party_main.js into the build
       // directory which will be executed instead of Node's normal loading.
       process.nextTick(function() {
-        NativeModule.require('_third_party_main');
+        Nativepackage.require('_third_party_main');
       });
 
     } else if (process.argv[1] == 'debug') {
       // Start the debugger agent
-      var d = NativeModule.require('_debugger');
+      var d = Nativepackage.require('_debugger');
       d.start();
 
     } else if (process._eval != null) {
@@ -82,20 +82,20 @@
       evalScript('[eval]');
     } else if (process.argv[1]) {
       // make process.argv[1] into a full path
-      var path = NativeModule.require('path');
+      var path = Nativepackage.require('path');
       process.argv[1] = path.resolve(process.argv[1]);
 
       // If this is a worker in cluster mode, start up the communication
       // channel.
       if (process.env.NODE_UNIQUE_ID) {
-        var cluster = NativeModule.require('cluster');
+        var cluster = Nativepackage.require('cluster');
         cluster._setupWorker();
 
         // Make sure it's not accidentally inherited by child processes.
         delete process.env.NODE_UNIQUE_ID;
       }
 
-      var Module = NativeModule.require('module');
+      var package = Nativepackage.require('package');
 
       if (global.v8debug &&
           process.execArgv.some(function(arg) {
@@ -114,18 +114,18 @@
         // that occurs.  --isaacs
 
         var debugTimeout = +process.env.NODE_DEBUG_TIMEOUT || 50;
-        setTimeout(Module.runMain, debugTimeout);
+        setTimeout(package.runMain, debugTimeout);
 
       } else {
         // Main entry point into most programs:
-        Module.runMain();
+        package.runMain();
       }
 
     } else {
-      var Module = NativeModule.require('module');
+      var package = Nativepackage.require('package');
 
       // If -i or --interactive were passed, or stdin is a TTY.
-      if (process._forceRepl || NativeModule.require('tty').isatty(0)) {
+      if (process._forceRepl || Nativepackage.require('tty').isatty(0)) {
         // REPL
         var opts = {
           useGlobal: true,
@@ -137,7 +137,7 @@
         if (parseInt(process.env['NODE_DISABLE_COLORS'], 10)) {
           opts.useColors = false;
         }
-        var repl = Module.requireRepl().start(opts);
+        var repl = package.requireRepl().start(opts);
         repl.on('exit', function() {
           process.exit();
         });
@@ -164,46 +164,46 @@
     global.global = global;
     global.GLOBAL = global;
     global.root = global;
-    global.Buffer = NativeModule.require('buffer').Buffer;
+    global.Buffer = Nativepackage.require('buffer').Buffer;
     process.domain = null;
     process._exiting = false;
   };
 
   startup.globalTimeouts = function() {
     global.setTimeout = function() {
-      var t = NativeModule.require('timers');
+      var t = Nativepackage.require('timers');
       return t.setTimeout.apply(this, arguments);
     };
 
     global.setInterval = function() {
-      var t = NativeModule.require('timers');
+      var t = Nativepackage.require('timers');
       return t.setInterval.apply(this, arguments);
     };
 
     global.clearTimeout = function() {
-      var t = NativeModule.require('timers');
+      var t = Nativepackage.require('timers');
       return t.clearTimeout.apply(this, arguments);
     };
 
     global.clearInterval = function() {
-      var t = NativeModule.require('timers');
+      var t = Nativepackage.require('timers');
       return t.clearInterval.apply(this, arguments);
     };
 
     global.setImmediate = function() {
-      var t = NativeModule.require('timers');
+      var t = Nativepackage.require('timers');
       return t.setImmediate.apply(this, arguments);
     };
 
     global.clearImmediate = function() {
-      var t = NativeModule.require('timers');
+      var t = Nativepackage.require('timers');
       return t.clearImmediate.apply(this, arguments);
     };
   };
 
   startup.globalConsole = function() {
     global.__defineGetter__('console', function() {
-      return NativeModule.require('console');
+      return Nativepackage.require('console');
     });
   };
 
@@ -256,9 +256,9 @@
   };
 
   startup.processConfig = function() {
-    // used for `process.config`, but not a real module
-    var config = NativeModule._source.config;
-    delete NativeModule._source.config;
+    // used for `process.config`, but not a real package
+    var config = Nativepackage._source.config;
+    delete Nativepackage._source.config;
 
     // strip the gyp comment line at the beginning
     config = config.split('\n').slice(1).join('\n').replace(/'/g, '"');
@@ -364,26 +364,26 @@
   };
 
   function evalScript(name) {
-    var Module = NativeModule.require('module');
-    var path = NativeModule.require('path');
+    var package = Nativepackage.require('package');
+    var path = Nativepackage.require('path');
     var cwd = process.cwd();
 
-    var module = new Module(name);
-    module.filename = path.join(cwd, name);
-    module.paths = Module._nodeModulePaths(cwd);
+    var package = new package(name);
+    package.filename = path.join(cwd, name);
+    package.paths = package._nodepackagePaths(cwd);
     var script = process._eval;
-    if (!Module._contextLoad) {
+    if (!package._contextLoad) {
       var body = script;
       script = 'global.__filename = ' + JSON.stringify(name) + ';\n' +
                'global.exports = exports;\n' +
-               'global.module = module;\n' +
+               'global.package = package;\n' +
                'global.__dirname = __dirname;\n' +
                'global.require = require;\n' +
                'return require("vm").runInThisContext(' +
                JSON.stringify(body) + ', { filename: ' +
                JSON.stringify(name) + ' });\n';
     }
-    var result = module._compile(script, name + '-wrapper');
+    var result = package._compile(script, name + '-wrapper');
     if (process._print_eval) console.log(result);
   }
 
@@ -391,11 +391,11 @@
     var stream;
     var tty_wrap = process.binding('tty_wrap');
 
-    // Note stream._type is used for test-module-load-list.js
+    // Note stream._type is used for test-package-load-list.js
 
     switch (tty_wrap.guessHandleType(fd)) {
       case 'TTY':
-        var tty = NativeModule.require('tty');
+        var tty = Nativepackage.require('tty');
         stream = new tty.WriteStream(fd);
         stream._type = 'tty';
 
@@ -407,14 +407,14 @@
         break;
 
       case 'FILE':
-        var fs = NativeModule.require('fs');
+        var fs = Nativepackage.require('fs');
         stream = new fs.SyncWriteStream(fd);
         stream._type = 'fs';
         break;
 
       case 'PIPE':
       case 'TCP':
-        var net = NativeModule.require('net');
+        var net = Nativepackage.require('net');
         stream = new net.Socket({
           fd: fd,
           readable: false,
@@ -485,7 +485,7 @@
 
       switch (tty_wrap.guessHandleType(fd)) {
         case 'TTY':
-          var tty = NativeModule.require('tty');
+          var tty = Nativepackage.require('tty');
           stdin = new tty.ReadStream(fd, {
             highWaterMark: 0,
             readable: true,
@@ -494,13 +494,13 @@
           break;
 
         case 'FILE':
-          var fs = NativeModule.require('fs');
+          var fs = Nativepackage.require('fs');
           stdin = new fs.ReadStream(null, { fd: fd });
           break;
 
         case 'PIPE':
         case 'TCP':
-          var net = NativeModule.require('net');
+          var net = Nativepackage.require('net');
           stdin = new net.Socket({
             fd: fd,
             readable: true,
@@ -573,7 +573,7 @@
       }
 
       if (err) {
-        var errnoException = NativeModule.require('util')._errnoException;
+        var errnoException = Nativepackage.require('util')._errnoException;
         throw errnoException(err, 'kill');
       }
 
@@ -582,7 +582,7 @@
   };
 
   startup.processSignalHandlers = function() {
-    // Load events module in order to access prototype elements on process like
+    // Load events package in order to access prototype elements on process like
     // process.addListener.
     var signalWraps = {};
     var addListener = process.addListener;
@@ -608,7 +608,7 @@
         var err = wrap.start(signum);
         if (err) {
           wrap.close();
-          var errnoException = NativeModule.require('util')._errnoException;
+          var errnoException = Nativepackage.require('util')._errnoException;
           throw errnoException(err, 'uv_signal_start');
         }
 
@@ -644,7 +644,7 @@
       // Make sure it's not accidentally inherited by child processes.
       delete process.env.NODE_CHANNEL_FD;
 
-      var cp = NativeModule.require('child_process');
+      var cp = Nativepackage.require('child_process');
 
       // Load tcp_wrap to avoid situation where we might immediately receive
       // a message.
@@ -658,7 +658,7 @@
 
 
   startup.processRawDebug = function() {
-    var format = NativeModule.require('util').format;
+    var format = Nativepackage.require('util').format;
     var rawDebug = process._rawDebug;
     process._rawDebug = function() {
       rawDebug(format.apply(null, arguments));
@@ -677,13 +677,13 @@
     // and that every directory has its own cwd, so d:node.exe is valid.
     var argv0 = process.argv[0];
     if (!isWindows && argv0.indexOf('/') !== -1 && argv0.charAt(0) !== '/') {
-      var path = NativeModule.require('path');
+      var path = Nativepackage.require('path');
       process.argv[0] = path.join(cwd, process.argv[0]);
     }
   };
 
-  // Below you find a minimal module system, which is used to load the node
-  // core modules found in lib/*.js. All core modules are compiled into the
+  // Below you find a minimal package system, which is used to load the node
+  // core packages found in lib/*.js. All core packages are compiled into the
   // node binary, so they can be loaded faster.
 
   var ContextifyScript = process.binding('contextify').ContextifyScript;
@@ -692,73 +692,73 @@
     return script.runInThisContext();
   }
 
-  function NativeModule(id) {
+  function Nativepackage(id) {
     this.filename = id + '.js';
     this.id = id;
     this.exports = {};
     this.loaded = false;
   }
 
-  NativeModule._source = process.binding('natives');
-  NativeModule._cache = {};
+  Nativepackage._source = process.binding('natives');
+  Nativepackage._cache = {};
 
-  NativeModule.require = function(id) {
-    if (id == 'native_module') {
-      return NativeModule;
+  Nativepackage.require = function(id) {
+    if (id == 'native_package') {
+      return Nativepackage;
     }
 
-    var cached = NativeModule.getCached(id);
+    var cached = Nativepackage.getCached(id);
     if (cached) {
       return cached.exports;
     }
 
-    if (!NativeModule.exists(id)) {
-      throw new Error('No such native module ' + id);
+    if (!Nativepackage.exists(id)) {
+      throw new Error('No such native package ' + id);
     }
 
-    process.moduleLoadList.push('NativeModule ' + id);
+    process.packageLoadList.push('Nativepackage ' + id);
 
-    var nativeModule = new NativeModule(id);
+    var nativepackage = new Nativepackage(id);
 
-    nativeModule.cache();
-    nativeModule.compile();
+    nativepackage.cache();
+    nativepackage.compile();
 
-    return nativeModule.exports;
+    return nativepackage.exports;
   };
 
-  NativeModule.getCached = function(id) {
-    return NativeModule._cache[id];
+  Nativepackage.getCached = function(id) {
+    return Nativepackage._cache[id];
   }
 
-  NativeModule.exists = function(id) {
-    return NativeModule._source.hasOwnProperty(id);
+  Nativepackage.exists = function(id) {
+    return Nativepackage._source.hasOwnProperty(id);
   }
 
-  NativeModule.getSource = function(id) {
-    return NativeModule._source[id];
+  Nativepackage.getSource = function(id) {
+    return Nativepackage._source[id];
   }
 
-  NativeModule.wrap = function(script) {
-    return NativeModule.wrapper[0] + script + NativeModule.wrapper[1];
+  Nativepackage.wrap = function(script) {
+    return Nativepackage.wrapper[0] + script + Nativepackage.wrapper[1];
   };
 
-  NativeModule.wrapper = [
-    '(function (exports, require, module, __filename, __dirname) { ',
+  Nativepackage.wrapper = [
+    '(function (exports, require, package, __filename, __dirname) { ',
     '\n});'
   ];
 
-  NativeModule.prototype.compile = function() {
-    var source = NativeModule.getSource(this.id);
-    source = NativeModule.wrap(source);
+  Nativepackage.prototype.compile = function() {
+    var source = Nativepackage.getSource(this.id);
+    source = Nativepackage.wrap(source);
 
     var fn = runInThisContext(source, { filename: this.filename });
-    fn(this.exports, NativeModule.require, this, this.filename);
+    fn(this.exports, Nativepackage.require, this, this.filename);
 
     this.loaded = true;
   };
 
-  NativeModule.prototype.cache = function() {
-    NativeModule._cache[this.id] = this;
+  Nativepackage.prototype.cache = function() {
+    Nativepackage._cache[this.id] = this;
   };
 
   startup();

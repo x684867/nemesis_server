@@ -1,11 +1,11 @@
-module.exports = substack
+package.exports = substack
 var npm = require("./npm.js")
 
 var isms =
   [ "\033[32mbeep \033[35mboop\033[m"
   , "Replace your configs with services"
   , "SEPARATE ALL THE CONCERNS!"
-  , "MODULE ALL THE THINGS!"
+  , "package ALL THE THINGS!"
   , "\\o/"
   , "but first, burritos"
   , "full time mad scientist here"

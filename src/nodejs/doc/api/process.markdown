@@ -53,7 +53,7 @@ cases:
 ## Event: 'exit'
 
 Emitted when the process is about to exit.  This is a good hook to perform
-constant time checks of the module's state (like for unit tests).  The main
+constant time checks of the package's state (like for unit tests).  The main
 event loop will no longer be run after the 'exit' callback finishes, so
 timers may not be scheduled.
 
@@ -417,7 +417,7 @@ Will print something like:
       ares: '1.9.0-DEV',
       uv: '0.10.3',
       zlib: '1.2.3',
-      modules: '11',
+      packages: '11',
       openssl: '1.0.1e' }
 
 ## process.config

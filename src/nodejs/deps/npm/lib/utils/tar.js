@@ -259,7 +259,7 @@ function gunzTarPerm (tarball, target, dMode, fMode, uid, gid, cb_) {
   fst.on("data", function OD (c) {
     // detect what it is.
     // Then, depending on that, we'll figure out whether it's
-    // a single-file module, gzipped tarball, or naked tarball.
+    // a single-file package, gzipped tarball, or naked tarball.
     // gzipped files all start with 1f8b08
     if (c[0] === 0x1F &&
         c[1] === 0x8B &&

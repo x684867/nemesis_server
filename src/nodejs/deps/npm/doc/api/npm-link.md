@@ -13,7 +13,7 @@ Package linking is a two-step process.
 Without parameters, link will create a globally-installed
 symbolic link from `prefix/package-name` to the current folder.
 
-With a parameters, link will create a symlink from the local `node_modules`
+With a parameters, link will create a symlink from the local `node_packages`
 folder to the global symlink.
 
 When creating tarballs for `npm publish`, the linked packages are

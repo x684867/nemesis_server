@@ -916,12 +916,12 @@ void FullCodeGenerator::VisitFunctionDeclaration(
 }
 
 
-void FullCodeGenerator::VisitModuleDeclaration(ModuleDeclaration* declaration) {
+void FullCodeGenerator::VisitpackageDeclaration(packageDeclaration* declaration) {
   Variable* variable = declaration->proxy()->var();
   ASSERT(variable->location() == Variable::CONTEXT);
   ASSERT(variable->interface()->IsFrozen());
 
-  Comment cmnt(masm_, "[ ModuleDeclaration");
+  Comment cmnt(masm_, "[ packageDeclaration");
   EmitDebugCheckDeclarationContext(variable);
 
   // Load instance object.
@@ -931,7 +931,7 @@ void FullCodeGenerator::VisitModuleDeclaration(ModuleDeclaration* declaration) {
 
   // Assign it.
   __ sw(a1, ContextOperand(cp, variable->index()));
-  // We know that we have written a module, which is not a smi.
+  // We know that we have written a package, which is not a smi.
   __ RecordWriteContextSlot(cp,
                             Context::SlotOffset(variable->index()),
                             a1,
@@ -943,7 +943,7 @@ void FullCodeGenerator::VisitModuleDeclaration(ModuleDeclaration* declaration) {
   PrepareForBailoutForId(declaration->proxy()->id(), NO_REGISTERS);
 
   // Traverse into body.
-  Visit(declaration->module());
+  Visit(declaration->package());
 }
 
 
@@ -986,10 +986,10 @@ void FullCodeGenerator::DeclareGlobals(Handle<FixedArray> pairs) {
 }
 
 
-void FullCodeGenerator::DeclareModules(Handle<FixedArray> descriptions) {
-  // Call the runtime to declare the modules.
+void FullCodeGenerator::Declarepackages(Handle<FixedArray> descriptions) {
+  // Call the runtime to declare the packages.
   __ Push(descriptions);
-  __ CallRuntime(Runtime::kDeclareModules, 1);
+  __ CallRuntime(Runtime::kDeclarepackages, 1);
   // Return value is ignored.
 }
 
@@ -4807,7 +4807,7 @@ void FullCodeGenerator::LoadContextField(Register dst, int context_index) {
 void FullCodeGenerator::PushFunctionArgumentForContextAllocation() {
   Scope* declaration_scope = scope()->DeclarationScope();
   if (declaration_scope->is_global_scope() ||
-      declaration_scope->is_module_scope()) {
+      declaration_scope->is_package_scope()) {
     // Contexts nested in the native context have a canonical empty function
     // as their closure, not the anonymous closure containing the global
     // code.  Pass a smi sentinel and let the runtime look up the empty

@@ -1,1 +1,1 @@
-module.exports = require("./utils/lifecycle.js").cmd("restart")
+package.exports = require("./utils/lifecycle.js").cmd("restart")

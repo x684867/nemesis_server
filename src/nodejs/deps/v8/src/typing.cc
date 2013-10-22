@@ -664,13 +664,13 @@ void AstTyper::VisitFunctionDeclaration(FunctionDeclaration* declaration) {
 }
 
 
-void AstTyper::VisitModuleDeclaration(ModuleDeclaration* declaration) {
-  RECURSE(Visit(declaration->module()));
+void AstTyper::VisitpackageDeclaration(packageDeclaration* declaration) {
+  RECURSE(Visit(declaration->package()));
 }
 
 
 void AstTyper::VisitImportDeclaration(ImportDeclaration* declaration) {
-  RECURSE(Visit(declaration->module()));
+  RECURSE(Visit(declaration->package()));
 }
 
 
@@ -678,25 +678,25 @@ void AstTyper::VisitExportDeclaration(ExportDeclaration* declaration) {
 }
 
 
-void AstTyper::VisitModuleLiteral(ModuleLiteral* module) {
-  RECURSE(Visit(module->body()));
+void AstTyper::VisitpackageLiteral(packageLiteral* package) {
+  RECURSE(Visit(package->body()));
 }
 
 
-void AstTyper::VisitModuleVariable(ModuleVariable* module) {
+void AstTyper::VisitpackageVariable(packageVariable* package) {
 }
 
 
-void AstTyper::VisitModulePath(ModulePath* module) {
-  RECURSE(Visit(module->module()));
+void AstTyper::VisitpackagePath(packagePath* package) {
+  RECURSE(Visit(package->package()));
 }
 
 
-void AstTyper::VisitModuleUrl(ModuleUrl* module) {
+void AstTyper::VisitpackageUrl(packageUrl* package) {
 }
 
 
-void AstTyper::VisitModuleStatement(ModuleStatement* stmt) {
+void AstTyper::VisitpackageStatement(packageStatement* stmt) {
   RECURSE(Visit(stmt->body()));
 }
 

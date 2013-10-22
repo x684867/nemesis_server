@@ -14,8 +14,8 @@ slug: node-v0-5-5
 <li>remove support for UNIX datagram sockets (--use-uv only)
 <li>UDP support for Windows (Bert Belder)
 <li>#1572 improve tab completion for objects in the REPL (Nathan Rajlich)
-<li>#1563 fix buffer overflow in child_process module (reported by Dean McNamee)
-<li>#1546 fix performance regression in http module (reported by Brian Geffon)
+<li>#1563 fix buffer overflow in child_process package (reported by Dean McNamee)
+<li>#1546 fix performance regression in http package (reported by Brian Geffon)
 <li>#1491 add PBKDF2 crypto support (Glen Low)
 <li>#1447 remove deprecated http.cat() function (Mikeal Rogers)
 <li>#1140 fix incorrect dispatch of vm.runInContext's filename argument<br />

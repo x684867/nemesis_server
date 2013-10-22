@@ -1,5 +1,5 @@
 
-module.exports = docs
+package.exports = docs
 
 docs.usage = "npm docs <pkgname>"
 

@@ -6,7 +6,7 @@
 		
 	"language"	:"en-US.UTF-8",
 	
-	"moduleLoader":"/srv/nemesis/app/moduleLoader.js",
+	"packageLoader":"/srv/nemesis/app/packageLoader.js",
 
-	"modules":"/srv/nemesis/modules/"
+	"packages":"/srv/nemesis/packages/"
 }

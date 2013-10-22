@@ -64,20 +64,20 @@
 #include <openssl/dso.h>
 #include <openssl/x509.h>
 
-/* Simple ASN1 OID module: add all objects in a given section */
+/* Simple ASN1 OID package: add all objects in a given section */
 
 static int do_create(char *value, char *name);
 
-static int oid_module_init(CONF_IMODULE *md, const CONF *cnf)
+static int oid_package_init(CONF_Ipackage *md, const CONF *cnf)
 	{
 	int i;
 	const char *oid_section;
 	STACK_OF(CONF_VALUE) *sktmp;
 	CONF_VALUE *oval;
-	oid_section = CONF_imodule_get_value(md);
+	oid_section = CONF_ipackage_get_value(md);
 	if(!(sktmp = NCONF_get_section(cnf, oid_section)))
 		{
-		ASN1err(ASN1_F_OID_MODULE_INIT, ASN1_R_ERROR_LOADING_SECTION);
+		ASN1err(ASN1_F_OID_package_INIT, ASN1_R_ERROR_LOADING_SECTION);
 		return 0;
 		}
 	for(i = 0; i < sk_CONF_VALUE_num(sktmp); i++)
@@ -85,21 +85,21 @@ static int oid_module_init(CONF_IMODULE *md, const CONF *cnf)
 		oval = sk_CONF_VALUE_value(sktmp, i);
 		if(!do_create(oval->value, oval->name))
 			{
-			ASN1err(ASN1_F_OID_MODULE_INIT, ASN1_R_ADDING_OBJECT);
+			ASN1err(ASN1_F_OID_package_INIT, ASN1_R_ADDING_OBJECT);
 			return 0;
 			}
 		}
 	return 1;
 	}
 
-static void oid_module_finish(CONF_IMODULE *md)
+static void oid_package_finish(CONF_Ipackage *md)
 	{
 	OBJ_cleanup();
 	}
 
-void ASN1_add_oid_module(void)
+void ASN1_add_oid_package(void)
 	{
-	CONF_module_add("oid_section", oid_module_init, oid_module_finish);
+	CONF_package_add("oid_section", oid_package_init, oid_package_finish);
 	}
 
 /* Create an OID based on a name value pair. Accept two formats.

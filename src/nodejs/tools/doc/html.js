@@ -23,7 +23,7 @@ var fs = require('fs');
 var marked = require('marked');
 var path = require('path');
 
-module.exports = toHTML;
+package.exports = toHTML;
 
 function toHTML(input, filename, template, cb) {
   var lexed = marked.lexer(input);

@@ -80,7 +80,7 @@ uninstall:
 doc: $(mandocs) $(htmldocs)
 
 ronnclean:
-	rm -rf node_modules/ronn node_modules/.bin/ronn .building_ronn
+	rm -rf node_packages/ronn node_packages/.bin/ronn .building_ronn
 
 docclean: doc-clean
 doc-clean:
@@ -151,9 +151,9 @@ html/doc/misc/%.html: doc/misc/%.md $(html_docdeps)
 
 
 
-ronn: node_modules/.bin/ronn
+ronn: node_packages/.bin/ronn
 
-node_modules/.bin/ronn:
+node_packages/.bin/ronn:
 	node cli.js install ronn
 
 doc: man

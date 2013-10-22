@@ -13,7 +13,7 @@ test("not every pkg.name can be required", function (t) {
     npm.install(".", function (err) {
       if (err) return t.fail(err)
       t.ok(existsSync(__dirname +
-        "/false_name/node_modules/tap/node_modules/buffer-equal"))
+        "/false_name/node_packages/tap/node_packages/buffer-equal"))
     })
   })
 })
@@ -21,8 +21,8 @@ test("not every pkg.name can be required", function (t) {
 function setup (cb) {
   process.chdir(__dirname + "/false_name")
   npm.load(function () {
-    rimraf.sync(__dirname + "/false_name/node_modules")
-    fs.mkdirSync(__dirname + "/false_name/node_modules")
+    rimraf.sync(__dirname + "/false_name/node_packages")
+    fs.mkdirSync(__dirname + "/false_name/node_packages")
     cb()
   })
 }

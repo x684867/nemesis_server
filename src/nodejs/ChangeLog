@@ -118,7 +118,7 @@
 
 * os: add mac address to networkInterfaces() output (Brian White)
 
-* smalloc: introduce smalloc module (Trevor Norris)
+* smalloc: introduce smalloc package (Trevor Norris)
 
 * stream: Simplify flowing, passive data listening (streams3) (isaacs)
 
@@ -204,7 +204,7 @@
 
 * util: Add debuglog, deprecate console lookalikes (isaacs)
 
-* module: use path.sep instead of a custom solution (Robert Kowalski)
+* package: use path.sep instead of a custom solution (Robert Kowalski)
 
 * http: don't escape request path, reject bad chars (Ben Noordhuis)
 
@@ -254,7 +254,7 @@
 
 * uv: Upgrade to v0.11.1
 
-* http: split into multiple separate modules (Timothy J Fontaine)
+* http: split into multiple separate packages (Timothy J Fontaine)
 
 * http: escape unsafe characters in request path (Ben Noordhuis)
 
@@ -515,7 +515,7 @@
 
 2013.05.14, Version 0.10.6 (Stable), 5deb1672f2b5794f8be19498a425ea4dc0b0711f
 
-* module: Deprecate require.extensions (isaacs)
+* package: Deprecate require.extensions (isaacs)
 
 * stream: make Readable.wrap support objectMode, empty streams (Daniel Moore)
 
@@ -569,7 +569,7 @@
 
 * crypto: dh secret should be left-padded (Fedor Indutny)
 
-* process: expose NODE_MODULE_VERSION in process.versions (Rod Vagg)
+* process: expose NODE_package_VERSION in process.versions (Rod Vagg)
 
 * crypto: fix constructor call in crypto streams (Andreas Madsen)
 
@@ -837,7 +837,7 @@
 
 * stream: Correct Transform class backpressure (isaacs)
 
-* addon: Pass module object to NODE_MODULE init function (isaacs, Rod Vagg)
+* addon: Pass package object to NODE_package init function (isaacs, Rod Vagg)
 
 * buffer: slow buffer copy compatibility fix (Trevor Norris)
 
@@ -875,7 +875,7 @@
 
 * punycode: Upgrade to 1.2.0 (Mathias Bynens)
 
-* repl: make built-in modules available by default (Felix Böhm)
+* repl: make built-in packages available by default (Felix Böhm)
 
 * windows: add support for '_Total' perf counters (Scott Blomquist)
 
@@ -889,7 +889,7 @@
 
 * TypedArrays: Improve dataview perf without endian param (Dean McNamee)
 
-* module: assert require() called with a non-empty string (Felix Böhm, James Campos)
+* package: assert require() called with a non-empty string (Felix Böhm, James Campos)
 
 * stdio: Set readable/writable flags properly (isaacs)
 
@@ -1633,7 +1633,7 @@
 
 * Code cleanup to pass 'use strict' (Jonas Westerlund)
 
-* module: add filename to require() json errors (TJ Holowaychuk)
+* package: add filename to require() json errors (TJ Holowaychuk)
 
 * readline: fix for unicode prompts (Tim Macfarlane)
 
@@ -1865,7 +1865,7 @@
 
 * http: make http.get() accept a URL (Adam Malcontenti-Wilson)
 
-* Cleanup vm module memory leakage (Marcel Laverdet)
+* Cleanup vm package memory leakage (Marcel Laverdet)
 
 * Optimize writing strings with Socket.write (Bert Belder)
 
@@ -1981,7 +1981,7 @@
 
 * url: Ignore empty port component (Łukasz Walukiewicz)
 
-* module: replace 'children' array (isaacs)
+* package: replace 'children' array (isaacs)
 
 * tls: parse multiple values of a key in ssl certificate (Sambasiva Suda)
 
@@ -2100,7 +2100,7 @@
 
 * build: compile release build too if BUILDTYPE=Debug (Ben Noordhuis)
 
-* module: fix --debug-brk on symlinked scripts (Fedor Indutny)
+* package: fix --debug-brk on symlinked scripts (Fedor Indutny)
 
 * zlib: fix `Failed to set dictionary` issue (Fedor Indutny)
 
@@ -2162,7 +2162,7 @@
 
 * fs: no end emit after createReadStream.pause() (Andreas Madsen)
 
-* vm: cleanup module memory leakage (Marcel Laverdet)
+* vm: cleanup package memory leakage (Marcel Laverdet)
 
 * unix: fix loop starvation under high network load (Ben Noordhuis)
 
@@ -2191,7 +2191,7 @@
 
 * pipe_wrap: don't assert() on pipe accept errors (Ben Noordhuis)
 
-* Better exception output for module load and process.nextTick (Felix Geisendörfer)
+* Better exception output for package load and process.nextTick (Felix Geisendörfer)
 
 * zlib: fix error reporting (Ben Noordhuis)
 
@@ -2352,8 +2352,8 @@
   - windows fixes
   - Bundle nested bundleDependencies properly
   - install: support --save with url install targets
-  - shrinkwrap: behave properly with url-installed modules
-  - support installing uncompressed tars or single file modules from urls etc.
+  - shrinkwrap: behave properly with url-installed packages
+  - support installing uncompressed tars or single file packages from urls etc.
   - don't run make clean on rebuild
   - support HTTPS-over-HTTP proxy tunneling
 
@@ -2430,7 +2430,7 @@
 
 * zlib: Fix #2365 crashes on invalid input (Nicolas LaCasse)
 
-* module: fix --debug-brk on symlinked scripts (Fedor Indutny)
+* package: fix --debug-brk on symlinked scripts (Fedor Indutny)
 
 * Documentation Restyling (Matthew Fitzsimmons)
 
@@ -2546,7 +2546,7 @@
 
 * build: add –without-npm flag to configure script
 
-* sys: deprecate module some more, print stack trace if NODE_DEBUG=sys
+* sys: deprecate package some more, print stack trace if NODE_DEBUG=sys
 
 * cli: add -p switch, prints result of –eval
 
@@ -2688,7 +2688,7 @@
 
 * util.inspect improvements (Nathan Rajlich)
 
-* cluster module api changes
+* cluster package api changes
 
 * Downgrade V8 to 3.6.6.6
 
@@ -2915,9 +2915,9 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * #1572 improve tab completion for objects in the REPL (Nathan Rajlich)
 
-* #1563 fix buffer overflow in child_process module (reported by Dean McNamee)
+* #1563 fix buffer overflow in child_process package (reported by Dean McNamee)
 
-* #1546 fix performance regression in http module (reported by Brian Geffon)
+* #1546 fix performance regression in http package (reported by Brian Geffon)
 
 * #1491 add PBKDF2 crypto support (Glen Low)
 
@@ -3047,7 +3047,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * #1199, #1094 Fix fs can't handle large file on 64bit platform (koichik)
 
-* #1281 Make require a public member of module (isaacs)
+* #1281 Make require a public member of package (isaacs)
 
 * #1303 Stream.pipe returns the destination (Elijah Insua)
 
@@ -3091,7 +3091,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * #477 add Buffer::fill method to do memset (Konstantin Käfer)
 
-* #573 Diffie-Hellman support to crypto module (Håvard Stranden)
+* #573 Diffie-Hellman support to crypto package (Håvard Stranden)
 
 * #695 add 'hex' encoding to buffer (isaacs)
 
@@ -3108,7 +3108,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * #979 add support for Unix Domain Sockets to HTTP (Mark Cavage)
 
-* #1173 #1170 add AMD, asynchronous module definition (isaacs)
+* #1173 #1170 add AMD, asynchronous package definition (isaacs)
 
 * DTrace probes: support X-Forwarded-For (Dave Pacheco)
 
@@ -3211,14 +3211,14 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 * #1166 Support for signature verification with RSA/DSA public keys
   (Mark Cavage)
 
-* #1177 Remove node_modules lookup optimization to better support
+* #1177 Remove node_packages lookup optimization to better support
   nested project structures (Mathias Buus)
 
 * #1203 Add missing scope.Close to fs.sendfileSync
 
 * #1187 Support multiple 'link' headers
 
-* #1196 Fix -e/--eval can't load module from node_modules (Koichi Kobayashi)
+* #1196 Fix -e/--eval can't load package from node_packages (Koichi Kobayashi)
 
 * Upgrade V8 to 3.1.8.25, upgrade http-parser.
 
@@ -3288,7 +3288,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 * Auto completion of built-in debugger suggests prefix match rather than
 	partial match. (koichik)
 
-* circular reference in vm modules. #822 (Jakub Lekstan)
+* circular reference in vm packages. #822 (Jakub Lekstan)
 
 * http response.readable should be false after 'end' #867 (Abe Fettig)
 
@@ -3385,7 +3385,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * Fix memleak in vm.runInNewContext
 
-* Do not cache modules that throw exceptions (Felix Geisendörfer)
+* Do not cache packages that throw exceptions (Felix Geisendörfer)
 
 * Build system changes for libnode (Aria Stewart)
 
@@ -3399,7 +3399,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * REPL bug fixes (isaacs)
 
-* node_modules folders should be highest priority (isaacs)
+* node_packages folders should be highest priority (isaacs)
 
 * URL parse more safely (isaacs)
 
@@ -3419,7 +3419,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 * Fixed field merging with progressive fields on writeHead()
   (TJ Holowaychuk)
 
-* Make the repl respect node_modules folders (isaacs)
+* Make the repl respect node_packages folders (isaacs)
 
 * Fix for DNS fail in HTTP request (Richard Rodger)
 
@@ -3448,7 +3448,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * require() improvements (isaacs)
   - understand package.json (isaacs)
-  - look for 'node_modules' dir
+  - look for 'node_packages' dir
 
 * cmake fixes (Daniel Gröber)
 
@@ -3486,7 +3486,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * Add process.stderr.
 
-* require.main is the main module. (Isaac Schlueter)
+* require.main is the main package. (Isaac Schlueter)
 
 * dgram: setMulticastTTL, setMulticastLoopback and addMembership.
   (Joe Walnes)
@@ -3521,7 +3521,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * Fixing bug in http request default encoding (Ali Farhadi)
 
-* require: A module ID with a trailing slash must be a dir.
+* require: A package ID with a trailing slash must be a dir.
   (isaacs)
 
 * Add ext_key_usage to getPeerCertificate (Greg Hughes)
@@ -3551,14 +3551,14 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 * Add setsid, setuid, setgid options to child_process.spawn
   (Isaac Schlueter)
 
-* tty module improvements.
+* tty package improvements.
 
 * Upgrade libev to 4.3, libeio to latest, c-ares to 1.7.4
 
-* Allow third party hooks before main module load.
+* Allow third party hooks before main package load.
   (See 496be457b6a2bc5b01ec13644b9c9783976159b2)
 
-* Don't stat() on cached modules. (Felix Geisendörfer)
+* Don't stat() on cached packages. (Felix Geisendörfer)
 
 
 2011.01.08, Version 0.3.4 (unstable), 73f53e12e4a5b9ef7dbb4792bd5f8ad403094441
@@ -3569,7 +3569,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * Built in debugger 'node debug script.js'
 
-* realpath files during module load (Mihai Călin Bazon)
+* realpath files during package load (Mihai Călin Bazon)
 
 * Rename net.Stream to net.Socket (existing name will continue to be
   supported)
@@ -3605,11 +3605,11 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 * Rip out the old (broken) TLS implementation introduce new tested
   implementation and API. See docs. HTTPS not supported in this release.
 
-* Introduce 'os' and 'tty' modules.
+* Introduce 'os' and 'tty' packages.
 
 * Callback parameters for socket.write() and socket.connect().
 
-* Support CNAME lookups in DNS module. (Ben Noordhuis)
+* Support CNAME lookups in DNS package. (Ben Noordhuis)
 
 * cmake support (Tom Hughes)
 
@@ -3644,7 +3644,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * Add C++ API for constructing fast buffer from string
 
-* Move idle timers into its own module
+* Move idle timers into its own package
 
 * Gracefully handle EMFILE and server.maxConnections
 
@@ -3723,12 +3723,12 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * http 100-continue support (Mark Nottingham)
 
-* Module system simplifications (Herbert Vojčík, isaacs, Tim-Smart)
+* package system simplifications (Herbert Vojčík, isaacs, Tim-Smart)
   - remove require.async
   - remove registerExtension, add .extensions
   - expose require.resolve
   - expose require.cache
-  - require looks in  node_modules folders
+  - require looks in  node_packages folders
 
 * Add --eval command line option (TJ Holowaychuk)
 
@@ -3744,7 +3744,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * TCP clients now buffer writes before connection
 
-* Rename sys module to 'util' (Micheil Smith)
+* Rename sys package to 'util' (Micheil Smith)
 
 * Properly set stdio handlers to blocking on SIGTERM and SIGINT
   (Tom Hughes)
@@ -3829,7 +3829,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * Fix Buffer.toString() on 0-length slices. (Peter Griess)
 
-* Cache modules based on filename rather than ID (Isaac Schlueter)
+* Cache packages based on filename rather than ID (Isaac Schlueter)
 
 * querystring improvments (Jan Kassens, Micheil Smith)
 
@@ -3842,8 +3842,8 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 * Added env to child_process.exec (Сергей Крыжановский)
 
-* Allow modules to optionally be loaded in separate contexts
-  with env var NODE_MODULE_CONTEXTS=1.
+* Allow packages to optionally be loaded in separate contexts
+  with env var NODE_package_CONTEXTS=1.
 
 * setTTL and setBroadcast for dgram (Matt Ranney)
 
@@ -3984,8 +3984,8 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 2010.05.06, Version 0.1.94, f711d5343b29d1e72e87107315708e40951a7826
 
-* Look in /usr/local/lib/node for modules, so that there's a way
-  to install modules globally (Issac Schlueter)
+* Look in /usr/local/lib/node for packages, so that there's a way
+  to install packages globally (Issac Schlueter)
 
 * SSL improvements (Rhys Jones, Paulo Matias)
 
@@ -4015,7 +4015,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
   * Fixed no 'end' event on long chunked HTTP messages
     https://github.com/joyent/node/issues/77
 
-  * Remove legacy modules http_old and tcp_old
+  * Remove legacy packages http_old and tcp_old
 
   * Support DNS MX queries (Jérémy Lal)
 
@@ -4074,7 +4074,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
    - Support UNIX sockets, Pipes
    - Uniform stream API
    - Currently no SSL
-   - Legacy modules can be accessed at 'http_old' and 'tcp_old'
+   - Legacy packages can be accessed at 'http_old' and 'tcp_old'
 
   * Replace udns with c-ares. (Krishna Rajendran)
 
@@ -4123,7 +4123,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 2010.03.05, Version 0.1.31, 39b63dfe1737d46a8c8818c92773ef181fd174b3
 
-  * API: - Move process.watchFile into fs module
+  * API: - Move process.watchFile into fs package
          - Move process.inherits to sys
 
   * Improve Solaris port
@@ -4193,7 +4193,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 2010.02.17, Version 0.1.29, 87d5e5b316a4276bcf881f176971c1a237dcdc7a
 
   * Major API Changes
-    - Remove 'file' module
+    - Remove 'file' package
     - require('posix') -----------------> require('fs')
     - fs.cat ---------------------------> fs.readFile
     - file.write -----------------------> fs.writeFile
@@ -4241,7 +4241,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
   * stdio bugfix (test by Mikeal Rogers)
 
-  * Module system refactor (Felix Geisendörfer, Blaine Cook)
+  * package system refactor (Felix Geisendörfer, Blaine Cook)
 
   * Add process.setuid(), getuid() (Michael Carter)
 
@@ -4265,7 +4265,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
   * Removed inline require call for querystring
     (self@cloudhead.net)
 
-  * Add support for MX, TXT, and SRV records in DNS module.
+  * Add support for MX, TXT, and SRV records in DNS package.
     (Blaine Cook)
 
   * Bugfix: HTTP client automatically reconnecting
@@ -4290,7 +4290,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
   * Better error message on SyntaxError
 
-  * API: Move Promise and EventEmitter into 'events' module
+  * API: Move Promise and EventEmitter into 'events' package
 
   * API: Add process.nextTick()
 
@@ -4311,10 +4311,10 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
   * sys.inspect() improvements (Tim Caswell)
 
-  * path module improvements (isaacs, Benjamin Thomas)
+  * path package improvements (isaacs, Benjamin Thomas)
 
   * API: request.uri -> request.url
-    It is no longer an object, but a string. The 'url' module
+    It is no longer an object, but a string. The 'url' package
     was addded to parse that string. That is, node no longer
     parses the request URL automatically.
 
@@ -4357,11 +4357,11 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 2009.12.19, Version 0.1.22, a2d809fe902f6c4102dba8f2e3e9551aad137c0f
 
-  * Bugfix: child modules get wrong id with "index.js" (isaacs)
+  * Bugfix: child packages get wrong id with "index.js" (isaacs)
 
   * Bugfix: require("../foo") cycles (isaacs)
 
-  * Bugfix: require() should throw error if module does.
+  * Bugfix: require() should throw error if package does.
 
   * New URI parser stolen from Narwhal (isaacs)
 
@@ -4474,16 +4474,16 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 2009.11.03, Version 0.1.16, 726865af7bbafe58435986f4a193ff11c84e4bfe
 
-  * API: Use CommonJS-style module requiring
+  * API: Use CommonJS-style package requiring
     - require("/sys.js") becomes require("sys")
     - require("circle.js") becomes require("./circle")
     - process.path.join() becomes require("path").join()
-    - __module becomes module
+    - __package becomes package
 
   * API: Many namespacing changes
     - Move node.* into process.*
-    - Move node.dns into module "dns"
-    - Move node.fs into module "posix"
+    - Move node.dns into package "dns"
+    - Move node.fs into package "posix"
     - process is no longer the global object. GLOBAL is.
 
   For more information on the API changes see:
@@ -4535,7 +4535,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
   * Don't use /bin/sh to create child process except with exec()
 
-  * API: Add __module to reference current module
+  * API: Add __package to reference current package
 
   * API: Remove include() add node.mixin()
 
@@ -4573,7 +4573,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 2009.09.24, Version 0.1.12, 2f56ccb45e87510de712f56705598b3b4e3548ec
 
-  * Feature: System modules, node.libraryPaths
+  * Feature: System packages, node.libraryPaths
 
   * API: Remove "raw" encoding, rename "raws" to "binary".
 
@@ -4616,7 +4616,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
   * Feature: add isDirectory, isFile, isSocket, ... methods
     to stats object.
 
-  * Bugfix: Internally use full paths when loading modules
+  * Bugfix: Internally use full paths when loading packages
     this fixes a shebang loading problem.
 
   * Bugfix: Add '--' command line argument for seperating v8
@@ -4636,7 +4636,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 2009.09.04, Version 0.1.8, e6d712a937b61567e81b15085edba863be16ba96
 
-  * Feature: External modules
+  * Feature: External packages
 
   * Feature: setTimeout() for node.tcp.Connection
 
@@ -4814,7 +4814,7 @@ koichik, Maciej Małecki, Guglielmo Ferri, isaacs)
 
 2009.06.24, Version 0.0.6, fbe0be19ebfb422d8fa20ea5204c1713e9214d5f
 
-  * Load modules via HTTP URLs (Urban Hafner)
+  * Load packages via HTTP URLs (Urban Hafner)
 
   * Bugfix: Add HTTPConnection->size() and HTTPServer->size()
 

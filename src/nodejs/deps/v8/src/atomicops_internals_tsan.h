@@ -38,7 +38,7 @@ namespace internal {
 #ifndef TSAN_INTERFACE_ATOMIC_H
 #define TSAN_INTERFACE_ATOMIC_H
 
-// This struct is not part of the public API of this module; clients may not
+// This struct is not part of the public API of this package; clients may not
 // use it.  (However, it's exported via BASE_EXPORT because clients implicitly
 // do use it at link time by inlining these functions.)
 // Features of this x86.  Values may not be correct before main() is run,

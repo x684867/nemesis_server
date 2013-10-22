@@ -62,7 +62,7 @@ after packing it up into a tarball (b)\.
 \fBnpm install\fR (in package directory, no arguments):
 .
 .IP
-Install the dependencies in the local node_modules folder\.
+Install the dependencies in the local node_packages folder\.
 .
 .IP
 In global mode (ie, with \fB\-g\fR or \fB\-\-global\fR appended to the command),
@@ -124,7 +124,7 @@ Do a \fB<name>@<tag>\fR install, where \fB<tag>\fR is the "tag" config\. (npm he
 .
 .IP
 In most cases, this will install the latest version
-of the module published on npm\.
+of the package published on npm\.
 .
 .IP
 Example:
@@ -297,7 +297,7 @@ shrinkwrap file and use the package\.json instead\.
 .
 .P
 The \fB\-\-nodedir=/path/to/node/source\fR argument will allow npm to find the
-node source code so that npm can compile native modules\.
+node source code so that npm can compile native packages\.
 .
 .P
 npm help  See \fBnpm\-config\fR\|\.  Many of the configuration params have some
@@ -310,14 +310,14 @@ To install a package, npm uses the following algorithm:
 .
 .nf
 install(where, what, family, ancestors)
-fetch what, unpack to <where>/node_modules/<what>
+fetch what, unpack to <where>/node_packages/<what>
 for each dep in what\.dependencies
   resolve dep to precise version
 for each dep@version in what\.dependencies
-    not in <where>/node_modules/<what>/node_modules/*
+    not in <where>/node_packages/<what>/node_packages/*
     and not in <family>
   add precise version deps to <family>
-  install(<where>/node_modules/<what>, dep, family)
+  install(<where>/node_packages/<what>, dep, family)
 .
 .fi
 .

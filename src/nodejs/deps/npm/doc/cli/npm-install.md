@@ -37,7 +37,7 @@ after packing it up into a tarball (b).
 
 * `npm install` (in package directory, no arguments):
 
-    Install the dependencies in the local node_modules folder.
+    Install the dependencies in the local node_packages folder.
 
     In global mode (ie, with `-g` or `--global` appended to the command),
     it installs the current package context (ie, the current working
@@ -73,7 +73,7 @@ after packing it up into a tarball (b).
     `npm-config(7)`.)
 
     In most cases, this will install the latest version
-    of the module published on npm.
+    of the package published on npm.
 
     Example:
 
@@ -172,7 +172,7 @@ The `--no-shrinkwrap` argument, which will ignore an available
 shrinkwrap file and use the package.json instead.
 
 The `--nodedir=/path/to/node/source` argument will allow npm to find the
-node source code so that npm can compile native modules.
+node source code so that npm can compile native packages.
 
 See `npm-config(7)`.  Many of the configuration params have some
 effect on installation, since that's most of what npm does.
@@ -182,14 +182,14 @@ effect on installation, since that's most of what npm does.
 To install a package, npm uses the following algorithm:
 
     install(where, what, family, ancestors)
-    fetch what, unpack to <where>/node_modules/<what>
+    fetch what, unpack to <where>/node_packages/<what>
     for each dep in what.dependencies
       resolve dep to precise version
     for each dep@version in what.dependencies
-        not in <where>/node_modules/<what>/node_modules/*
+        not in <where>/node_packages/<what>/node_packages/*
         and not in <family>
       add precise version deps to <family>
-      install(<where>/node_modules/<what>, dep, family)
+      install(<where>/node_packages/<what>, dep, family)
 
 For this `package{dep}` structure: `A{B,C}, B{C}, C{D}`,
 this algorithm produces:

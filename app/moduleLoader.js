@@ -1,74 +1,78 @@
 /*
-		Nemesis Application Core Module Loader
-		/srv/nemesis/core/core.modules.js
+		Nemesis Application Core package Loader
+		/srv/nemesis/core/core.packages.js
 		(c) Sam Caldwell.  All Rights Reserved.
 		
-		This file exports an object used to load the modules defined in 
-		root.config.modules (defined by bootstrap.js).
+		This file exports an object used to load the packages defined in 
+		root.config.packages (defined by bootstrap.js).
  */
-module.exports=init;
+package.exports=init;
 /* */
 function init(){
 
 	/*Inspect the root.config object to validate the Application configuration.*/
 	if(typeof(root.config)!='object') throw new Error('root.config not defined as object');
 	if(typeof(root.config.app)!='object') throw new Error('root.config.app not defined as object');
-	if(typeof(root.config.app.modules)!='string') throw new Error('root.config.app.modules not defined as string');
-	/*Verify that the modules directory (provided by root.config.app.modules) exists.*/
-	if( !require('fs').statSync(root.config.app.modules).isDirectory() ) throw new Error('root.config.app.modules is not a valid directory');
-	/*Initialize root.modules where modules will be loaded.*/
-	root.modules={};
+	if(typeof(root.config.app.packages)!='string') throw new Error('root.config.app.packages not defined as string');
+	/*Verify that the packages directory (provided by root.config.app.packages) exists.*/
+	if( !require('fs').statSync(root.config.app.packages).isDirectory() ) throw new Error('root.config.app.packages is not a valid directory');
+	/*Initialize root.packages where packages will be loaded.*/
+	root.packages={};
 
-	root.modules.load=function(modName){
+	root.packages.load=function(modName){
 		var fs=require('fs');
-		require('fs').readdirSync(root.config.app.modules).forEach(function(modName){
-			if(typeof(root.modules[modName])=='undefined'){
-				/*Module is not loaded*/
-				console.log('Module ['+modName+'] loading...');
-				var module_path=root.config.app.modules+modName+"/";
-				if(fs.statSync(module_path).isDirectory()){
-					/*Module directory exists*/
-					var module_manifest=module_path+"manifest.json";
-					if(fs.statSync(module_manifest).isFile()){
-						/*The module manifest file is found.*/
-						console.log("     loading module ["+module_manifest+"] manifest.");
-						root.modules[modName]={};
-						root.modules[modName].manifest=require(module_manifest);
-						if(typeof(root.modules[modName].manifest)!='object'){
-							throw new Error('ERROR! Failed to load module manifest ['+modName+']');
+		require('fs').readdirSync(root.config.app.packages).forEach(function(modName){
+			if(typeof(root.packages[modName])=='undefined'){
+				console.log('package ['+modName+'] loading...');
+				/*
+					Load the manifest and determine if there are dependencies.
+				*/
+				
+				var package_path=root.config.app.packages+modName+"/";
+				
+				if(fs.statSync(package_path).isDirectory()){
+					/*package directory exists*/
+					var package_manifest=package_path+"manifest.json";
+					if(fs.statSync(package_manifest).isFile()){
+						/*The package manifest file is found.*/
+						console.log("     loading package ["+package_manifest+"] manifest.");
+						root.packages[modName]={};
+						root.packages[modName].manifest=require(package_manifest);
+						if(typeof(root.packages[modName].manifest)!='object'){
+							throw new Error('ERROR! Failed to load package manifest ['+modName+']');
 						}
-						console.log("dumping module....");
-						console.dir(root.modules[modName]);
+						console.log("dumping package....");
+						console.dir(root.packages[modName]);
 						console.log("-----------------------------------");
 						
-						if (isManifestValid(root.modules[modName].manifest)){
+						if (isManifestValid(root.packages[modName].manifest)){
 							/*Satisfy the dependencies*/
-							root.modules[modName].manifest.dependencies.forEach(function(dependencies,index,array){load_module_files(module_path,dependencies);});
-							/*Then load the module in question*/
-							load_module_files(module_path,modName);
+							root.packages[modName].manifest.dependencies.forEach(function(dependencies,index,array){load_package_files(package_path,dependencies);});
+							/*Then load the package in question*/
+							load_package_files(package_path,modName);
 						}else{
-							throw new Error('     Module('+modName+') manifest file is invalid.');
+							throw new Error('     package('+modName+') manifest file is invalid.');
 						}
 					}else{
-						throw new Error('     Module ('+modName+') manifest file not found.  Check ('+module_manifest+')');
+						throw new Error('     package ('+modName+') manifest file not found.  Check ('+package_manifest+')');
 					}
 				}else{
-					throw new Error('module ('+modName+') not found.  Check ('+module_path+')');
+					throw new Error('package ('+modName+') not found.  Check ('+package_path+')');
 				}
 			}else{
-				console.log('Module ['+modName+'] loaded already...skipping');
+				console.log('package ['+modName+'] loaded already...skipping');
 			}
 		});
 	}
 }
 /* */
-function load_module_files(module_path,modName){
-	/*Load the module configuration*/
-	root.config[modName]=require(root.modules[modName].manifest.config);
-	/*Load the module error localization file*/
-	root.error[modName]=require(module_path+"errors"+process.env.LANG+".json");
-	root.messages[modName]=require(module_path+"messages"+process.env.LANG+".json");
-	root.modules[modName].main=require(root.modules[modName].manifest.main);
+function load_package_files(package_path,modName){
+	/*Load the package configuration*/
+	root.config[modName]=require(root.packages[modName].manifest.config);
+	/*Load the package error localization file*/
+	root.error[modName]=require(package_path+"errors"+process.env.LANG+".json");
+	root.messages[modName]=require(package_path+"messages"+process.env.LANG+".json");
+	root.packages[modName].main=require(root.packages[modName].manifest.main);
 }
 /* */
 function isManifestValid(manifest){
@@ -90,5 +94,5 @@ function isManifestValid(manifest){
 		else
 			throw new Error('Invalid manifest.name.  Expected string.');
 	else
-		throw new Error('Invalid manifest detected for module.  Expected object.');
+		throw new Error('Invalid manifest detected for package.  Expected object.');
 }

@@ -9,7 +9,7 @@ This document will tell you what it puts where.
 
 ### tl;dr
 
-* Local install (default): puts stuff in `./node_modules` of the current
+* Local install (default): puts stuff in `./node_packages` of the current
   package root.
 * Global install (with `-g`): puts stuff in /usr/local or wherever node
   is installed.
@@ -31,15 +31,15 @@ When the `global` flag is set, npm installs things into this prefix.
 When it is not set, it uses the root of the current package, or the
 current working directory if not in a package already.
 
-### Node Modules
+### Node packages
 
-Packages are dropped into the `node_modules` folder under the `prefix`.
+Packages are dropped into the `node_packages` folder under the `prefix`.
 When installing locally, this means that you can
-`require("packagename")` to load its main module, or
-`require("packagename/lib/path/to/sub/module")` to load other modules.
+`require("packagename")` to load its main package, or
+`require("packagename/lib/path/to/sub/package")` to load other packages.
 
-Global installs on Unix systems go to `{prefix}/lib/node_modules`.
-Global installs on Windows go to `{prefix}/node_modules` (that is, no
+Global installs on Unix systems go to `{prefix}/lib/node_packages`.
+Global installs on Windows go to `{prefix}/node_packages` (that is, no
 `lib` folder.)
 
 If you wish to `require()` a package, then install it locally.
@@ -50,7 +50,7 @@ When in global mode, executables are linked into `{prefix}/bin` on Unix,
 or directly into `{prefix}` on Windows.
 
 When in local mode, executables are linked into
-`./node_modules/.bin` so that they can be made available to scripts run
+`./node_packages/.bin` so that they can be made available to scripts run
 through npm.  (For example, so that a test runner will be in the path
 when you run `npm test`.)
 
@@ -86,7 +86,7 @@ to the sensible root of your package, even if you happen to have `cd`ed
 into some other folder.
 
 Starting at the $PWD, npm will walk up the folder tree checking for a
-folder that contains either a `package.json` file, or a `node_modules`
+folder that contains either a `package.json` file, or a `node_packages`
 folder.  If such a thing is found, then that is treated as the effective
 "current directory" for the purpose of running npm commands.  (This
 behavior is inspired by and similar to git's .git-folder seeking
@@ -95,11 +95,11 @@ logic when running git commands in a working dir.)
 If no package root is found, then the current folder is used.
 
 When you run `npm install foo@1.2.3`, then the package is loaded into
-the cache, and then unpacked into `./node_modules/foo`.  Then, any of
+the cache, and then unpacked into `./node_packages/foo`.  Then, any of
 foo's dependencies are similarly unpacked into
-`./node_modules/foo/node_modules/...`.
+`./node_packages/foo/node_packages/...`.
 
-Any bin files are symlinked to `./node_modules/.bin/`, so that they may
+Any bin files are symlinked to `./node_packages/.bin/`, so that they may
 be found by npm scripts when necessary.
 
 ### Global Installation
@@ -112,22 +112,22 @@ but using the folders described above.
 
 ### Cycles, Conflicts, and Folder Parsimony
 
-Cycles are handled using the property of node's module system that it
-walks up the directories looking for `node_modules` folders.  So, at every
-stage, if a package is already installed in an ancestor `node_modules`
+Cycles are handled using the property of node's package system that it
+walks up the directories looking for `node_packages` folders.  So, at every
+stage, if a package is already installed in an ancestor `node_packages`
 folder, then it is not installed at the current location.
 
 Consider the case above, where `foo -> bar -> baz`.  Imagine if, in
 addition to that, baz depended on bar, so you'd have:
 `foo -> bar -> baz -> bar -> baz ...`.  However, since the folder
-structure is: `foo/node_modules/bar/node_modules/baz`, there's no need to
-put another copy of bar into `.../baz/node_modules`, since when it calls
+structure is: `foo/node_packages/bar/node_packages/baz`, there's no need to
+put another copy of bar into `.../baz/node_packages`, since when it calls
 require("bar"), it will get the copy that is installed in
-`foo/node_modules/bar`.
+`foo/node_packages/bar`.
 
 This shortcut is only used if the exact same
-version would be installed in multiple nested `node_modules` folders.  It
-is still possible to have `a/node_modules/b/node_modules/a` if the two
+version would be installed in multiple nested `node_packages` folders.  It
+is still possible to have `a/node_packages/b/node_packages/a` if the two
 "a" packages are different versions.  However, without repeating the
 exact same package multiple times, an infinite regress will always be
 prevented.
@@ -154,20 +154,20 @@ Consider this dependency graph:
 In this case, we might expect a folder structure like this:
 
     foo
-    +-- node_modules
+    +-- node_packages
         +-- blerg (1.2.5) <---[A]
         +-- bar (1.2.3) <---[B]
-        |   `-- node_modules
+        |   `-- node_packages
         |       +-- baz (2.0.2) <---[C]
-        |       |   `-- node_modules
+        |       |   `-- node_packages
         |       |       `-- quux (3.2.0)
         |       `-- asdf (2.3.4)
         `-- baz (1.2.3) <---[D]
-            `-- node_modules
+            `-- node_packages
                 `-- quux (3.2.0) <---[E]
 
 Since foo depends directly on `bar@1.2.3` and `baz@1.2.3`, those are
-installed in foo's `node_modules` folder.
+installed in foo's `node_packages` folder.
 
 Even though the latest copy of blerg is 1.3.7, foo has a specific
 dependency on version 1.2.5.  So, that gets installed at [A].  Since the
@@ -175,8 +175,8 @@ parent installation of blerg satisfies bar's dependency on `blerg@1.x`,
 it does not install another copy under [B].
 
 Bar [B] also has dependencies on baz and asdf, so those are installed in
-bar's `node_modules` folder.  Because it depends on `baz@2.x`, it cannot
-re-use the `baz@1.2.3` installed in the parent `node_modules` folder [D],
+bar's `node_packages` folder.  Because it depends on `baz@2.x`, it cannot
+re-use the `baz@1.2.3` installed in the parent `node_packages` folder [D],
 and must install its own copy [C].
 
 Underneath bar, the `baz -> quux -> bar` dependency creates a cycle.
@@ -190,7 +190,7 @@ For a graphical breakdown of what is installed where, use `npm ls`.
 
 ### Publishing
 
-Upon publishing, npm will look in the `node_modules` folder.  If any of
+Upon publishing, npm will look in the `node_packages` folder.  If any of
 the items there are not in the `bundledDependencies` array, then they will
 not be included in the package tarball.
 

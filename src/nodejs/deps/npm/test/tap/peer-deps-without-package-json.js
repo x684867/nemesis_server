@@ -17,7 +17,7 @@ var js = new Buffer(
 ' * }\n' +
 ' **/\n' +
 '\n' +
-'module.exports = "I\'m just a lonely index, naked as the day I was born."\n')
+'package.exports = "I\'m just a lonely index, naked as the day I was born."\n')
 
 var server
 test("setup", function(t) {
@@ -33,8 +33,8 @@ test("setup", function(t) {
 
 test("installing a peerDependencies-using package without a package.json present (GH-3049)", function (t) {
 
-  rimraf.sync(__dirname + "/peer-deps-without-package-json/node_modules")
-  fs.mkdirSync(__dirname + "/peer-deps-without-package-json/node_modules")
+  rimraf.sync(__dirname + "/peer-deps-without-package-json/node_packages")
+  fs.mkdirSync(__dirname + "/peer-deps-without-package-json/node_packages")
   process.chdir(__dirname + "/peer-deps-without-package-json")
 
   npm.load(function () {
@@ -42,8 +42,8 @@ test("installing a peerDependencies-using package without a package.json present
       if (err) {
         t.fail(err)
       } else {
-        t.ok(fs.existsSync(__dirname + "/peer-deps-without-package-json/node_modules/npm-test-peer-deps-file"))
-        t.ok(fs.existsSync(__dirname + "/peer-deps-without-package-json/node_modules/dict"))
+        t.ok(fs.existsSync(__dirname + "/peer-deps-without-package-json/node_packages/npm-test-peer-deps-file"))
+        t.ok(fs.existsSync(__dirname + "/peer-deps-without-package-json/node_packages/dict"))
       }
       t.end()
     })

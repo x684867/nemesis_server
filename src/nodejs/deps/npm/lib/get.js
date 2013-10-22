@@ -1,5 +1,5 @@
 
-module.exports = get
+package.exports = get
 
 get.usage = "npm get <key> <value> (See `npm config`)"
 

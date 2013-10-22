@@ -232,7 +232,7 @@
               "[!/+=]?\\)") 1 'font-lock-keyword-face t)
     ;; Type of target
     (list (concat "['\"]\\("
-              (regexp-opt (list "loadable_module" "static_library"
+              (regexp-opt (list "loadable_package" "static_library"
                                 "shared_library" "executable" "none"))
               "\\)") 1 'font-lock-type-face t)
     (list "\\(?:target\\|action\\)_name['\"]\\s-*:\\s-*['\"]\\([^ '\"]*\\)" 1

@@ -2,13 +2,13 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-"""gypsh output module
+"""gypsh output package
 
 gypsh is a GYP shell.  It's not really a generator per se.  All it does is
 fire up an interactive Python session with a few local variables set to the
 variables passed to the generator.  Like gypd, it's intended as a debugging
 aid, to facilitate the exploration of .gyp structures after being processed
-by the input module.
+by the input package.
 
 The expected usage is "gyp -f gypsh -D OS=desired_os".
 """
@@ -19,7 +19,7 @@ import sys
 
 
 # All of this stuff about generator variables was lovingly ripped from gypd.py.
-# That module has a much better description of what's going on and why.
+# That package has a much better description of what's going on and why.
 _generator_identity_variables = [
   'EXECUTABLE_PREFIX',
   'EXECUTABLE_SUFFIX',

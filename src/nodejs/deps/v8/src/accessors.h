@@ -85,7 +85,7 @@ class Accessors : public AllStatic {
                                                       void*);
 
   // Accessor infos.
-  static Handle<AccessorInfo> MakeModuleExport(
+  static Handle<AccessorInfo> MakepackageExport(
       Handle<String> name, int index, PropertyAttributes attributes);
 
  private:

@@ -1,2 +1,2 @@
 exports.loaded = require('target');
-exports.module = module;
+exports.package = package;

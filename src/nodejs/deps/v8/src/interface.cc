@@ -42,7 +42,7 @@ static bool Match(void* key1, void* key2) {
 
 
 Interface* Interface::Lookup(Handle<String> name, Zone* zone) {
-  ASSERT(IsModule());
+  ASSERT(Ispackage());
   ZoneHashMap* map = Chase()->exports_;
   if (map == NULL) return NULL;
   ZoneAllocationPolicy allocator(zone);
@@ -72,7 +72,7 @@ int Nesting::current_ = 0;
 
 void Interface::DoAdd(
     void* name, uint32_t hash, Interface* interface, Zone* zone, bool* ok) {
-  MakeModule(ok);
+  Makepackage(ok);
   if (!*ok) return;
 
 #ifdef DEBUG
@@ -219,8 +219,8 @@ void Interface::Print(int n) {
     PrintF("const\n");
   } else if (IsValue()) {
     PrintF("value\n");
-  } else if (IsModule()) {
-    PrintF("module %d %s{", Index(), IsFrozen() ? "" : "(unresolved) ");
+  } else if (Ispackage()) {
+    PrintF("package %d %s{", Index(), IsFrozen() ? "" : "(unresolved) ");
     ZoneHashMap* map = Chase()->exports_;
     if (map == NULL || map->occupancy() == 0) {
       PrintF("}\n");

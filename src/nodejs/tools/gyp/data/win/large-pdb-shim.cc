@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 // This file is used to generate an empty .pdb -- with a 4KB pagesize -- that is
-// then used during the final link for modules that have large PDBs. Otherwise,
+// then used during the final link for packages that have large PDBs. Otherwise,
 // the linker will generate a pdb with a page size of 1KB, which imposes a limit
 // of 1GB on the .pdb. By generating an initial empty .pdb with the compiler
 // (rather than the linker), this limit is avoided. With this in place PDBs may

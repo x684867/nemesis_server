@@ -13,24 +13,24 @@ mv *.tgz release
 cd release
 tar xzf *.tgz
 
-mkdir node_modules
-mv package node_modules/npm
+mkdir node_packages
+mv package node_packages/npm
 
 # make the zip for windows users
-cp node_modules/npm/bin/*.cmd .
+cp node_packages/npm/bin/*.cmd .
 zipname=npm-$(npm -v).zip
-zip -q -9 -r -X "$zipname" *.cmd node_modules
+zip -q -9 -r -X "$zipname" *.cmd node_packages
 
 # make the tar for node's deps
-cd node_modules
+cd node_packages
 tarname=npm-$(npm -v).tgz
 tar czf "$tarname" npm
 
 cd ..
-mv "node_modules/$tarname" .
+mv "node_packages/$tarname" .
 
 rm -rf *.cmd
-rm -rf node_modules
+rm -rf node_packages
 
 echo "release/$tarname"
 echo "release/$zipname"

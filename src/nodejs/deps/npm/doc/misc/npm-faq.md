@@ -26,11 +26,11 @@ See `npm-folders(5)`
 
 tl;dr:
 
-* Use the `npm root` command to see where modules go, and the `npm bin`
+* Use the `npm root` command to see where packages go, and the `npm bin`
   command to see where executables go
 * Global installs are different from local installs.  If you install
   something with the `-g` flag, then its executables go in `npm bin -g`
-  and its modules go in `npm root -g`.
+  and its packages go in `npm root -g`.
 
 ## How do I install something on my computer in a central location?
 
@@ -45,7 +45,7 @@ Install it locally.
 The global install location is a place for command-line utilities
 to put their bins in the system `PATH`.  It's not for use with `require()`.
 
-If you `require()` a module in your code, then that means it's a
+If you `require()` a package in your code, then that means it's a
 dependency, and a part of your program.  You need to install it locally
 in your program.
 
@@ -72,17 +72,17 @@ Write your own package manager, then.  It's not that hard.
 
 npm will not help you do something that is known to be a bad idea.
 
-## Should I check my `node_modules` folder into git?
+## Should I check my `node_packages` folder into git?
 
 Mikeal Rogers answered this question very well:
 
-<http://www.mikealrogers.com/posts/nodemodules-in-git.html>
+<http://www.mikealrogers.com/posts/nodepackages-in-git.html>
 
 tl;dr
 
-* Check `node_modules` into git for things you **deploy**, such as
+* Check `node_packages` into git for things you **deploy**, such as
   websites and apps.
-* Do not check `node_modules` into git for libraries and modules
+* Do not check `node_packages` into git for libraries and packages
   intended to be reused.
 * Use npm to manage dependencies in your dev environment, but not in
   your deployment scripts.
@@ -173,51 +173,51 @@ Git urls can be of the form:
 The `commit-ish` can be any tag, sha, or branch which can be supplied as
 an argument to `git checkout`.  The default is `master`.
 
-## What is a `module`?
+## What is a `package`?
 
-A module is anything that can be loaded with `require()` in a Node.js
+A package is anything that can be loaded with `require()` in a Node.js
 program.  The following things are all examples of things that can be
-loaded as modules:
+loaded as packages:
 
 * A folder with a `package.json` file containing a `main` field.
 * A folder with an `index.js` file in it.
 * A JavaScript file.
 
-Most npm packages are modules, because they are libraries that you
+Most npm packages are packages, because they are libraries that you
 load with `require`.  However, there's no requirement that an npm
-package be a module!  Some only contain an executable command-line
+package be a package!  Some only contain an executable command-line
 interface, and don't provide a `main` field for use in Node programs.
 
 Almost all npm packages (at least, those that are Node programs)
-*contain* many modules within them (because every file they load with
-`require()` is a module).
+*contain* many packages within them (because every file they load with
+`require()` is a package).
 
-In the context of a Node program, the `module` is also the thing that
+In the context of a Node program, the `package` is also the thing that
 was loaded *from* a file.  For example, in the following program:
 
     var req = require('request')
 
-we might say that "The variable `req` refers to the `request` module".
+we might say that "The variable `req` refers to the `request` package".
 
-## So, why is it the "`node_modules`" folder, but "`package.json`" file?  Why not `node_packages` or `module.json`?
+## So, why is it the "`node_packages`" folder, but "`package.json`" file?  Why not `node_packages` or `package.json`?
 
 The `package.json` file defines the package.  (See "What is a
 package?" above.)
 
-The `node_modules` folder is the place Node.js looks for modules.
-(See "What is a module?" above.)
+The `node_packages` folder is the place Node.js looks for packages.
+(See "What is a package?" above.)
 
-For example, if you create a file at `node_modules/foo.js` and then
+For example, if you create a file at `node_packages/foo.js` and then
 had a program that did `var f = require('foo.js')` then it would load
-the module.  However, `foo.js` is not a "package" in this case,
+the package.  However, `foo.js` is not a "package" in this case,
 because it does not have a package.json.
 
 Alternatively, if you create a package which does not have an
 `index.js` or a `"main"` field in the `package.json` file, then it is
-not a module.  Even if it's installed in `node_modules`, it can't be
+not a package.  Even if it's installed in `node_packages`, it can't be
 an argument to `require()`.
 
-## `"node_modules"` is the name of my deity's arch-rival, and a Forbidden Word in my religion.  Can I configure npm to use a different folder?
+## `"node_packages"` is the name of my deity's arch-rival, and a Forbidden Word in my religion.  Can I configure npm to use a different folder?
 
 No.  This will never happen.  This question comes up sometimes,
 because it seems silly from the outside that npm couldn't just be
@@ -225,33 +225,33 @@ configured to put stuff somewhere else, and then npm could load them
 from there.  It's an arbitrary spelling choice, right?  What's the big
 deal?
 
-At the time of this writing, the string `'node_modules'` appears 151
+At the time of this writing, the string `'node_packages'` appears 151
 times in 53 separate files in npm and node core (excluding tests and
 documentation).
 
-Some of these references are in node's built-in module loader.  Since
+Some of these references are in node's built-in package loader.  Since
 npm is not involved **at all** at run-time, node itself would have to
 be configured to know where you've decided to stick stuff.  Complexity
-hurdle #1.  Since the Node module system is locked, this cannot be
+hurdle #1.  Since the Node package system is locked, this cannot be
 changed, and is enough to kill this request.  But I'll continue, in
 deference to your deity's delicate feelings regarding spelling.
 
 Many of the others are in dependencies that npm uses, which are not
 necessarily tightly coupled to npm (in the sense that they do not read
 npm's configuration files, etc.)  Each of these would have to be
-configured to take the name of the `node_modules` folder as a
+configured to take the name of the `node_packages` folder as a
 parameter.  Complexity hurdle #2.
 
 Furthermore, npm has the ability to "bundle" dependencies by adding
 the dep names to the `"bundledDependencies"` list in package.json,
 which causes the folder to be included in the package tarball.  What
-if the author of a module bundles its dependencies, and they use a
-different spelling for `node_modules`?  npm would have to rename the
+if the author of a package bundles its dependencies, and they use a
+different spelling for `node_packages`?  npm would have to rename the
 folder at publish time, and then be smart enough to unpack it using
 your locally configured name.  Complexity hurdle #3.
 
 Furthermore, what happens when you *change* this name?  Fine, it's
-easy enough the first time, just rename the `node_modules` folders to
+easy enough the first time, just rename the `node_packages` folders to
 `./blergyblerp/` or whatever name you choose.  But what about when you
 change it again?  npm doesn't currently track any state about past
 configuration settings, so this would be rather difficult to do
@@ -259,7 +259,7 @@ properly.  It would have to track every previous value for this
 config, and always accept any of them, or else yesterday's install may
 be broken tomorrow.  Complexity hurdle #5.
 
-Never going to happen.  The folder is named `node_modules`.  It is
+Never going to happen.  The folder is named `node_packages`.  It is
 written indelibly in the Node Way, handed down from the ancient times
 of Node 0.3.
 

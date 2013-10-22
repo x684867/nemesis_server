@@ -221,14 +221,14 @@ up by the files array\.  The "\.npmignore" file works just like a
 "\.gitignore"\.
 .
 .SH "main"
-The main field is a module ID that is the primary entry point to your program\.
-That is, if your package is named \fBfoo\fR, and a user installs it, and then does \fBrequire("foo")\fR, then your main module\'s exports object will be returned\.
+The main field is a package ID that is the primary entry point to your program\.
+That is, if your package is named \fBfoo\fR, and a user installs it, and then does \fBrequire("foo")\fR, then your main package\'s exports object will be returned\.
 .
 .P
-This should be a module ID relative to the root of your package folder\.
+This should be a package ID relative to the root of your package folder\.
 .
 .P
-For most modules, it makes the most sense to have a main script and often not
+For most packages, it makes the most sense to have a main script and often not
 much else\.
 .
 .SH "bin"
@@ -238,7 +238,7 @@ feature to install the "npm" executable\.)
 .
 .P
 To use this, supply a \fBbin\fR field in your package\.json which is a map of
-command name to local file name\. On install, npm will symlink that file into \fBprefix/bin\fR for global installs, or \fB\|\./node_modules/\.bin/\fR for local
+command name to local file name\. On install, npm will symlink that file into \fBprefix/bin\fR for global installs, or \fB\|\./node_packages/\.bin/\fR for local
 installs\.
 .
 .P
@@ -563,7 +563,7 @@ As of version 1\.1\.65, you can refer to GitHub urls as just "foo": "user/foo\-p
 }\fR
 .
 .SH "devDependencies"
-If someone is planning on downloading and using your module in their
+If someone is planning on downloading and using your package in their
 program, then they probably don\'t want or need to download and build
 the external test or documentation framework that you use\.
 .
@@ -682,7 +682,7 @@ Note that, unless the user has set the \fBengine\-strict\fR config flag, this
 field is advisory only\.
 .
 .SH "engineStrict"
-If you are sure that your module will \fIdefinitely not\fR run properly on
+If you are sure that your package will \fIdefinitely not\fR run properly on
 versions of Node/npm other than those specified in the \fBengines\fR hash,
 then you can set \fB"engineStrict": true\fR in your package\.json file\.
 This will override the user\'s \fBengine\-strict\fR config setting\.
@@ -696,7 +696,7 @@ people abuse it, it will be removed in a future version of npm\.
 .
 .SH "os"
 You can specify which operating systems your
-module will run on:
+package will run on:
 .
 .IP "" 4
 .

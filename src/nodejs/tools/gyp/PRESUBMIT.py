@@ -24,7 +24,7 @@ PYLINT_BLACKLIST = [
 
 PYLINT_DISABLED_WARNINGS = [
     # TODO: fix me.
-    # Many tests include modules they don't use.
+    # Many tests include packages they don't use.
     'W0611',
     # Include order doesn't properly include local files?
     'F0401',
@@ -60,7 +60,7 @@ PYLINT_DISABLED_WARNINGS = [
     # Others, too many to sort.
     'W0201', 'W0232', 'E1103', 'W0621', 'W0108', 'W0223', 'W0231',
     'R0201', 'E0101', 'C0321',
-    # ************* Module copy
+    # ************* package copy
     # W0104:427,12:_test.odict.__setitem__: Statement seems to have no effect
     'W0104',
 ]

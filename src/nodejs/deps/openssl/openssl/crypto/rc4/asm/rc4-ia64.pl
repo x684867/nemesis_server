@@ -135,7 +135,7 @@
 #     buffer is properly aligned, if need be, by encoding the
 #     first few bytes separately).
 #   - There is no space for a "br.ctop" instruction.  For this
-#     reason we can't use module-loop support in IA-64 and have
+#     reason we can't use package-loop support in IA-64 and have
 #     to do a traditional, purely software-pipelined loop.
 #   - We can't replace any of the remaining "add/zxt1" pairs with
 #     "padd1" because the latency for that instruction is too high

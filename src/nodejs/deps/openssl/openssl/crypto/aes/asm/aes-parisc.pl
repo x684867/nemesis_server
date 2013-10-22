@@ -2,7 +2,7 @@
 
 # ====================================================================
 # Written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -11,7 +11,7 @@
 #
 # June 2009.
 #
-# The module is mechanical transliteration of aes-sparcv9.pl, but with
+# The package is mechanical transliteration of aes-sparcv9.pl, but with
 # a twist: S-boxes are compressed even further down to 1K+256B. On
 # PA-7100LC performance is ~40% better than gcc 3.2 generated code and
 # is about 33 cycles per byte processed with 128-bit key. Newer CPUs

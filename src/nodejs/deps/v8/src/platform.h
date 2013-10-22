@@ -25,9 +25,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This module contains the platform-specific code. This make the rest of the
+// This package contains the platform-specific code. This make the rest of the
 // code less dependent on operating system, compilers and runtime libraries.
-// This module does specifically not deal with differences between different
+// This package does specifically not deal with differences between different
 // processor architecture.
 // The platform classes have the same definition for all platforms. The
 // implementation for a particular platform is put in platform_<os>.cc.

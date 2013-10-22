@@ -12,7 +12,7 @@ slug: node-v0-5-1
 <li> Export $CC and $CXX to uv and V8's build systems
 <li> Include pthread-win32 static libraries in build (Igor Zinkovsky)
 <li> #1199, #1094 Fix fs can't handle large file on 64bit platform (koichik)
-<li> #1281 Make require a public member of module (isaacs)
+<li> #1281 Make require a public member of package (isaacs)
 <li> #1303 Stream.pipe returns the destination (Elijah Insua)
 <li> #1229 Addons should not -DEV_MULTIPLICITY=0 (Brian White)
 <li> libuv backend improvements

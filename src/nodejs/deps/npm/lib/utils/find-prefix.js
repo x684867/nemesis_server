@@ -1,6 +1,6 @@
 // try to find the most reasonable prefix to use
 
-module.exports = findPrefix
+package.exports = findPrefix
 
 var fs = require("graceful-fs")
   , path = require("path")
@@ -14,11 +14,11 @@ function findPrefix (p, cb_) {
   }
 
   p = path.resolve(p)
-  // if there's no node_modules folder, then
+  // if there's no node_packages folder, then
   // walk up until we hopefully find one.
   // if none anywhere, then use cwd.
   var walkedUp = false
-  while (path.basename(p) === "node_modules") {
+  while (path.basename(p) === "node_packages") {
     p = path.dirname(p)
     walkedUp = true
   }
@@ -44,7 +44,7 @@ function findPrefix_ (p, original, cb) {
     // walked up too high or something.
     if (er) return cb(null, original)
 
-    if (files.indexOf("node_modules") !== -1
+    if (files.indexOf("node_packages") !== -1
         || files.indexOf("package.json") !== -1) {
       return cb(null, p)
     }

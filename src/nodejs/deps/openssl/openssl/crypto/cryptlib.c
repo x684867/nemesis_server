@@ -790,7 +790,7 @@ int OPENSSL_isservice(void)
   static union { void *p; int (*f)(void); } _OPENSSL_isservice = { NULL };
 
     if (_OPENSSL_isservice.p == NULL) {
-	HANDLE h = GetModuleHandle(NULL);
+	HANDLE h = GetpackageHandle(NULL);
 	if (h != NULL)
 	    _OPENSSL_isservice.p = GetProcAddress(h,"_OPENSSL_isservice");
 	if (_OPENSSL_isservice.p == NULL)

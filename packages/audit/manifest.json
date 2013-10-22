@@ -1,0 +1,14 @@
+{
+	"_name":"audit/manifest.json",
+	"_desc":"Nemesis Audit Web Services Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+	"name":"audit",
+		
+	"dependencies":[
+		"types","error","logger","ipc","process",
+		"web","worker","storeClient"
+	]
+}

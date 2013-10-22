@@ -25,14 +25,14 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Flags: --harmony-modules --harmony-scoping
+// Flags: --harmony-packages --harmony-scoping
 
-// Test basic module linking and initialization.
+// Test basic package linking and initialization.
 
 "use strict";
 
-module R {
-  // At this point, only functions and modules are initialized.
+package R {
+  // At this point, only functions and packages are initialized.
   assertEquals(undefined, v)
   assertEquals(undefined, vv)
   assertEquals(undefined, R.v)
@@ -139,8 +139,8 @@ module R {
   assertEquals(3, c)
   assertEquals(3, R.c)
 
-  // Initialize nested module.
-  export module M {
+  // Initialize nested package.
+  export package M {
     export var v = 11
     export let l = 12
     export const c = 13
@@ -164,8 +164,8 @@ module R {
   assertEquals(22, ll)
   assertEquals(23, cc)
 
-  // Initialize non-exported module.
-  module MM {
+  // Initialize non-exported package.
+  package MM {
     export var v = 31
     export let l = 32
     export const c = 33
@@ -177,11 +177,11 @@ module R {
   assertEquals(33, MM.c)
 
   // Recursive self reference.
-  export module RR = R
+  export package RR = R
 }
 
-// Initialize sibling module that was forward-used.
-module F {
+// Initialize sibling package that was forward-used.
+package F {
   assertEquals(undefined, v)
   assertEquals(undefined, F.v)
   assertThrows(function() { l }, ReferenceError)
@@ -202,45 +202,45 @@ module F {
   assertEquals(43, F.c)
 }
 
-// Define recursive module alias.
-module G = R.M
+// Define recursive package alias.
+package G = R.M
 
 
 
-// Second test with side effects and more module nesting.
+// Second test with side effects and more package nesting.
 
 let log = "";
 
 export let x = (log += "1");
 
-export module B = A.B
+export package B = A.B
 
-export module A {
+export package A {
   export let x = (log += "2");
   let y = (log += "3");
   export function f() { log += "5" };
-  export module B {
-    module BB = B;
+  export package B {
+    package BB = B;
     export BB, x;
     let x = (log += "4");
     f();
     let y = (log += "6");
   }
   export let z = (log += "7");
-  export module C {
+  export package C {
     export let z = (log += "8");
-    export module D = B
-    export module C = A.C
+    export package D = B
+    export package C = A.C
   }
-  module D {}
+  package D {}
 }
 
-export module M1 {
-  export module A2 = M2;
+export package M1 {
+  export package A2 = M2;
   export let x = (log += "9");
 }
-export module M2 {
-  export module A1 = M1;
+export package M2 {
+  export package A1 = M1;
   export let x = (log += "0");
 }
 

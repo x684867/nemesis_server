@@ -2,8 +2,8 @@
 
     Stability: 2 - Unstable
 
-The `tty` module houses the `tty.ReadStream` and `tty.WriteStream` classes. In
-most cases, you will not need to use this module directly.
+The `tty` package houses the `tty.ReadStream` and `tty.WriteStream` classes. In
+most cases, you will not need to use this package directly.
 
 When node detects that it is being run inside a TTY context, then `process.stdin`
 will be a `tty.ReadStream` instance and `process.stdout` will be

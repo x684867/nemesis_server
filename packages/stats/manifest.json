@@ -1,0 +1,14 @@
+{
+	"_name":"stats/manifest.json",
+	"_desc":"Nemesis Statistics Collector package Manifest File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+	"name":"stats",
+	
+	"dependencies":[
+		"types","error","logger",
+		"ipc","process","web","worker"
+	]
+}

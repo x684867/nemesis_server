@@ -305,7 +305,7 @@ GET_SCRIPT_NAME_CASE = """\
 def JS2C(source, target, env):
   ids = []
   debugger_ids = []
-  modules = []
+  packages = []
   # Locate the macros file name.
   consts = []
   macros = []
@@ -313,14 +313,14 @@ def JS2C(source, target, env):
     if 'macros.py' == (os.path.split(str(s))[1]):
       (consts, macros) = ReadMacros(ReadLines(str(s)))
     else:
-      modules.append(s)
+      packages.append(s)
 
   minifier = jsmin.JavaScriptMinifier()
 
-  module_offset = 0
+  package_offset = 0
   all_sources = []
-  for module in modules:
-    filename = str(module)
+  for package in packages:
+    filename = str(package)
     debugger = filename.endswith('-debugger.js')
     lines = ReadFile(filename)
     lines = ExpandConstants(lines, consts)
@@ -331,12 +331,12 @@ def JS2C(source, target, env):
     if debugger: id = id[:-9]
     raw_length = len(lines)
     if debugger:
-      debugger_ids.append((id, raw_length, module_offset))
+      debugger_ids.append((id, raw_length, package_offset))
     else:
-      ids.append((id, raw_length, module_offset))
+      ids.append((id, raw_length, package_offset))
     all_sources.append(lines)
-    module_offset += raw_length
-  total_length = raw_total_length = module_offset
+    package_offset += raw_length
+  total_length = raw_total_length = package_offset
 
   if env['COMPRESSION'] == 'off':
     raw_sources_declaration = RAW_SOURCES_DECLARATION
@@ -354,11 +354,11 @@ def JS2C(source, target, env):
   get_script_name_cases = [ ]
 
   i = 0
-  for (id, raw_length, module_offset) in debugger_ids + ids:
+  for (id, raw_length, package_offset) in debugger_ids + ids:
     native_name = "native %s.js" % id
     get_index_cases.append(GET_INDEX_CASE % { 'id': id, 'i': i })
     get_raw_script_source_cases.append(GET_RAW_SCRIPT_SOURCE_CASE % {
-        'offset': module_offset,
+        'offset': package_offset,
         'raw_length': raw_length,
         'i': i
         })

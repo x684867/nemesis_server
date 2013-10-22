@@ -171,9 +171,9 @@ typedef struct dso_meth_st
 	int (*init)(DSO *dso);
 	int (*finish)(DSO *dso);
 
-	/* Return pathname of the module containing location */
+	/* Return pathname of the package containing location */
 	int (*pathbyaddr)(void *addr,char *path,int sz);
-	/* Perform global symbol lookup, i.e. among *all* modules */
+	/* Perform global symbol lookup, i.e. among *all* packages */
 	void *(*globallookup)(const char *symname);
 	} DSO_METHOD;
 
@@ -301,7 +301,7 @@ DSO_METHOD *DSO_METHOD_win32(void);
 /* If VMS is defined, use shared images. If not, return NULL. */
 DSO_METHOD *DSO_METHOD_vms(void);
 
-/* This function writes null-terminated pathname of DSO module
+/* This function writes null-terminated pathname of DSO package
  * containing 'addr' into 'sz' large caller-provided 'path' and
  * returns the number of characters [including trailing zero]
  * written to it. If 'sz' is 0 or negative, 'path' is ignored and
@@ -313,7 +313,7 @@ DSO_METHOD *DSO_METHOD_vms(void);
 int DSO_pathbyaddr(void *addr,char *path,int sz);
 
 /* This function should be used with caution! It looks up symbols in
- * *all* loaded modules and if module gets unloaded by somebody else
+ * *all* loaded packages and if package gets unloaded by somebody else
  * attempt to dereference the pointer is doomed to have fatal
  * consequences. Primary usage for this function is to probe *core*
  * system functionality, e.g. check if getnameinfo(3) is available

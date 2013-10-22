@@ -1,4 +1,4 @@
-Configuration modules. These are a set of modules which can perform
+Configuration packages. These are a set of packages which can perform
 various configuration functions.
 
 Currently the routines should be called at most once when an application
@@ -12,12 +12,12 @@ openssl_conf=init_section
 
 [init_section]
 
-module1=value1
-#Second instance of module1
-module1.1=valueX
-module2=value2
-module3=dso_literal
-module4=dso_section
+package1=value1
+#Second instance of package1
+package1.1=valueX
+package2=value2
+package3=dso_literal
+package4=dso_section
 
 [dso_section]
 
@@ -25,46 +25,46 @@ path=/some/path/to/some/dso.so
 other_stuff=other_value
 ----
 
-When this file is loaded a configuration module with the specified string
-(module* in the above example) is looked up and its init function called as:
+When this file is loaded a configuration package with the specified string
+(package* in the above example) is looked up and its init function called as:
 
-int conf_init_func(CONF_IMODULE *md, CONF *cnf);
+int conf_init_func(CONF_Ipackage *md, CONF *cnf);
 
 The function can then take whatever action is appropriate, for example further
-lookups based on the value. Multiple instances of the same config module can be
+lookups based on the value. Multiple instances of the same config package can be
 loaded.
 
-When the application closes down the modules are cleaned up by calling an
+When the application closes down the packages are cleaned up by calling an
 optional finish function:
 
-void conf_finish_func(CONF_IMODULE *md);
+void conf_finish_func(CONF_Ipackage *md);
 
-The finish functions are called in reverse order: that is the last module
+The finish functions are called in reverse order: that is the last package
 loaded is the first one cleaned up.
 
-If no module exists with a given name then an attempt is made to load a DSO
-with the supplied name. This might mean that "module3" attempts to load a DSO
-called libmodule3.so or module3.dll for example. An explicit DSO name can be
-given by including a separate section as in the module4 example above.
+If no package exists with a given name then an attempt is made to load a DSO
+with the supplied name. This might mean that "package3" attempts to load a DSO
+called libpackage3.so or package3.dll for example. An explicit DSO name can be
+given by including a separate section as in the package4 example above.
 
 The DSO is expected to at least contain an initialization function:
 
-int OPENSSL_init(CONF_IMODULE *md, CONF *cnf);
+int OPENSSL_init(CONF_Ipackage *md, CONF *cnf);
 
 and may also include a finish function:
 
-void OPENSSL_finish(CONF_IMODULE *md);
+void OPENSSL_finish(CONF_Ipackage *md);
 
-Static modules can also be added using,
+Static packages can also be added using,
 
-int CONF_module_add(char *name, dso_mod_init_func *ifunc, dso_mod_finish_func
+int CONF_package_add(char *name, dso_mod_init_func *ifunc, dso_mod_finish_func
 *ffunc);
 
 where "name" is the name in the configuration file this function corresponds
 to.
 
-A set of builtin modules (currently only an ASN1 non functional test module)
-can be added by calling OPENSSL_load_builtin_modules(). 
+A set of builtin packages (currently only an ASN1 non functional test package)
+can be added by calling OPENSSL_load_builtin_packages(). 
 
 The function OPENSSL_config() is intended as a simple configuration function
 that any application can call to perform various default configuration tasks.

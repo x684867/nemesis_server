@@ -154,7 +154,7 @@ are made available regarding the setup of npm and the current state of
 the process\.
 .
 .SS "path"
-If you depend on modules that define executable scripts, like test
+If you depend on packages that define executable scripts, like test
 suites, then those executables will be added to the \fBPATH\fR for
 executing the scripts\.  So, if your package\.json has this:
 .
@@ -171,7 +171,7 @@ executing the scripts\.  So, if your package\.json has this:
 .
 .P
 then you could run \fBnpm start\fR to execute the \fBbar\fR script, which is
-exported into the \fBnode_modules/\.bin\fR directory on \fBnpm install\fR\|\.
+exported into the \fBnode_packages/\.bin\fR directory on \fBnpm install\fR\|\.
 .
 .SS "package\.json vars"
 The package\.json fields are tacked onto the \fBnpm_package_\fR prefix\. So,
@@ -300,7 +300,7 @@ If you want to run a specific script at a specific lifecycle event for
 ALL packages, then you can use a hook script\.
 .
 .P
-Place an executable file at \fBnode_modules/\.hooks/{eventname}\fR, and
+Place an executable file at \fBnode_packages/\.hooks/{eventname}\fR, and
 it\'ll get run for all packages when they are going through that point
 in the package lifecycle for any packages installed in that root\.
 .

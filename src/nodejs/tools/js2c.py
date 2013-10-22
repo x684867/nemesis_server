@@ -263,7 +263,7 @@ GET_DELAY_SCRIPT_NAME_CASE = """\
 def JS2C(source, target):
   ids = []
   delay_ids = []
-  modules = []
+  packages = []
   # Locate the macros file name.
   consts = {}
   macros = {}
@@ -273,7 +273,7 @@ def JS2C(source, target):
     if (os.path.split(str(s))[1]).endswith('macros.py'):
       macro_lines.extend(ReadLines(str(s)))
     else:
-      modules.append(s)
+      packages.append(s)
 
   # Process input from all *macro.py files
   (consts, macros) = ReadMacros(macro_lines)
@@ -284,7 +284,7 @@ def JS2C(source, target):
 
   native_lines = []
 
-  for s in modules:
+  for s in packages:
     delay = str(s).endswith('-delay.js')
     lines = ReadFile(str(s))
     do_jsmin = lines.find('// jsminify this file, js2c: jsmin') != -1

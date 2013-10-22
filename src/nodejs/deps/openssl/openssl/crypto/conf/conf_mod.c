@@ -69,59 +69,59 @@
 #define DSO_mod_finish_name "OPENSSL_finish"
 
 
-/* This structure contains a data about supported modules.
+/* This structure contains a data about supported packages.
  * entries in this table correspond to either dynamic or
- * static modules.
+ * static packages.
  */
 
-struct conf_module_st
+struct conf_package_st
 	{
-	/* DSO of this module or NULL if static */
+	/* DSO of this package or NULL if static */
 	DSO *dso;
-	/* Name of the module */
+	/* Name of the package */
 	char *name;
 	/* Init function */
 	conf_init_func *init; 
 	/* Finish function */
 	conf_finish_func *finish;
-	/* Number of successfully initialized modules */
+	/* Number of successfully initialized packages */
 	int links;
 	void *usr_data;
 	};
 
 
-/* This structure contains information about modules that have been
+/* This structure contains information about packages that have been
  * successfully initialized. There may be more than one entry for a
- * given module.
+ * given package.
  */
 
-struct conf_imodule_st
+struct conf_ipackage_st
 	{
-	CONF_MODULE *pmod;
+	CONF_package *pmod;
 	char *name;
 	char *value;
 	unsigned long flags;
 	void *usr_data;
 	};
 
-static STACK_OF(CONF_MODULE) *supported_modules = NULL;
-static STACK_OF(CONF_IMODULE) *initialized_modules = NULL;
+static STACK_OF(CONF_package) *supported_packages = NULL;
+static STACK_OF(CONF_Ipackage) *initialized_packages = NULL;
 
-static void module_free(CONF_MODULE *md);
-static void module_finish(CONF_IMODULE *imod);
-static int module_run(const CONF *cnf, char *name, char *value,
+static void package_free(CONF_package *md);
+static void package_finish(CONF_Ipackage *imod);
+static int package_run(const CONF *cnf, char *name, char *value,
 					  unsigned long flags);
-static CONF_MODULE *module_add(DSO *dso, const char *name,
+static CONF_package *package_add(DSO *dso, const char *name,
 			conf_init_func *ifunc, conf_finish_func *ffunc);
-static CONF_MODULE *module_find(char *name);
-static int module_init(CONF_MODULE *pmod, char *name, char *value,
+static CONF_package *package_find(char *name);
+static int package_init(CONF_package *pmod, char *name, char *value,
 					   const CONF *cnf);
-static CONF_MODULE *module_load_dso(const CONF *cnf, char *name, char *value,
+static CONF_package *package_load_dso(const CONF *cnf, char *name, char *value,
 									unsigned long flags);
 
-/* Main function: load modules from a CONF structure */
+/* Main function: load packages from a CONF structure */
 
-int CONF_modules_load(const CONF *cnf, const char *appname,
+int CONF_packages_load(const CONF *cnf, const char *appname,
 		      unsigned long flags)
 	{
 	STACK_OF(CONF_VALUE) *values;
@@ -153,7 +153,7 @@ int CONF_modules_load(const CONF *cnf, const char *appname,
 	for (i = 0; i < sk_CONF_VALUE_num(values); i++)
 		{
 		vl = sk_CONF_VALUE_value(values, i);
-		ret = module_run(cnf, vl->name, vl->value, flags);
+		ret = package_run(cnf, vl->name, vl->value, flags);
 		if (ret <= 0)
 			if(!(flags & CONF_MFLAGS_IGNORE_ERRORS))
 				return ret;
@@ -163,7 +163,7 @@ int CONF_modules_load(const CONF *cnf, const char *appname,
 
 	}
 
-int CONF_modules_load_file(const char *filename, const char *appname,
+int CONF_packages_load_file(const char *filename, const char *appname,
 			   unsigned long flags)
 	{
 	char *file = NULL;
@@ -193,7 +193,7 @@ int CONF_modules_load_file(const char *filename, const char *appname,
 		goto err;
 		}
 
-	ret = CONF_modules_load(conf, appname, flags);
+	ret = CONF_packages_load(conf, appname, flags);
 
 	err:
 	if (filename == NULL)
@@ -203,46 +203,46 @@ int CONF_modules_load_file(const char *filename, const char *appname,
 	return ret;
 	}
 
-static int module_run(const CONF *cnf, char *name, char *value,
+static int package_run(const CONF *cnf, char *name, char *value,
 		      unsigned long flags)
 	{
-	CONF_MODULE *md;
+	CONF_package *md;
 	int ret;
 
-	md = module_find(name);
+	md = package_find(name);
 
-	/* Module not found: try to load DSO */
+	/* package not found: try to load DSO */
 	if (!md && !(flags & CONF_MFLAGS_NO_DSO))
-		md = module_load_dso(cnf, name, value, flags);
+		md = package_load_dso(cnf, name, value, flags);
 
 	if (!md)
 		{
 		if (!(flags & CONF_MFLAGS_SILENT))
 			{
-			CONFerr(CONF_F_MODULE_RUN, CONF_R_UNKNOWN_MODULE_NAME);
-			ERR_add_error_data(2, "module=", name);
+			CONFerr(CONF_F_package_RUN, CONF_R_UNKNOWN_package_NAME);
+			ERR_add_error_data(2, "package=", name);
 			}
 		return -1;
 		}
 
-	ret = module_init(md, name, value, cnf);
+	ret = package_init(md, name, value, cnf);
 
 	if (ret <= 0)
 		{
 		if (!(flags & CONF_MFLAGS_SILENT))
 			{
 			char rcode[DECIMAL_SIZE(ret)+1];
-			CONFerr(CONF_F_MODULE_RUN, CONF_R_MODULE_INITIALIZATION_ERROR);
+			CONFerr(CONF_F_package_RUN, CONF_R_package_INITIALIZATION_ERROR);
 			BIO_snprintf(rcode, sizeof rcode, "%-8d", ret);
-			ERR_add_error_data(6, "module=", name, ", value=", value, ", retcode=", rcode);
+			ERR_add_error_data(6, "package=", name, ", value=", value, ", retcode=", rcode);
 			}
 		}
 
 	return ret;
 	}
 
-/* Load a module from a DSO */
-static CONF_MODULE *module_load_dso(const CONF *cnf, char *name, char *value,
+/* Load a package from a DSO */
+static CONF_package *package_load_dso(const CONF *cnf, char *name, char *value,
 				    unsigned long flags)
 	{
 	DSO *dso = NULL;
@@ -250,8 +250,8 @@ static CONF_MODULE *module_load_dso(const CONF *cnf, char *name, char *value,
 	conf_finish_func *ffunc;
 	char *path = NULL;
 	int errcode = 0;
-	CONF_MODULE *md;
-	/* Look for alternative path in module section */
+	CONF_package *md;
+	/* Look for alternative path in package section */
 	path = NCONF_get_string(cnf, value, "path");
 	if (!path)
 		{
@@ -271,8 +271,8 @@ static CONF_MODULE *module_load_dso(const CONF *cnf, char *name, char *value,
 		goto err;
 		}
         ffunc = (conf_finish_func *)DSO_bind_func(dso, DSO_mod_finish_name);
-	/* All OK, add module */
-	md = module_add(dso, name, ifunc, ffunc);
+	/* All OK, add package */
+	md = package_add(dso, name, ifunc, ffunc);
 
 	if (!md)
 		goto err;
@@ -282,21 +282,21 @@ static CONF_MODULE *module_load_dso(const CONF *cnf, char *name, char *value,
 	err:
 	if (dso)
 		DSO_free(dso);
-	CONFerr(CONF_F_MODULE_LOAD_DSO, errcode);
-	ERR_add_error_data(4, "module=", name, ", path=", path);
+	CONFerr(CONF_F_package_LOAD_DSO, errcode);
+	ERR_add_error_data(4, "package=", name, ", path=", path);
 	return NULL;
 	}
 
-/* add module to list */
-static CONF_MODULE *module_add(DSO *dso, const char *name,
+/* add package to list */
+static CONF_package *package_add(DSO *dso, const char *name,
 			       conf_init_func *ifunc, conf_finish_func *ffunc)
 	{
-	CONF_MODULE *tmod = NULL;
-	if (supported_modules == NULL)
-		supported_modules = sk_CONF_MODULE_new_null();
-	if (supported_modules == NULL)
+	CONF_package *tmod = NULL;
+	if (supported_packages == NULL)
+		supported_packages = sk_CONF_package_new_null();
+	if (supported_packages == NULL)
 		return NULL;
-	tmod = OPENSSL_malloc(sizeof(CONF_MODULE));
+	tmod = OPENSSL_malloc(sizeof(CONF_package));
 	if (tmod == NULL)
 		return NULL;
 
@@ -306,7 +306,7 @@ static CONF_MODULE *module_add(DSO *dso, const char *name,
 	tmod->finish = ffunc;
 	tmod->links = 0;
 
-	if (!sk_CONF_MODULE_push(supported_modules, tmod))
+	if (!sk_CONF_package_push(supported_packages, tmod))
 		{
 		OPENSSL_free(tmod);
 		return NULL;
@@ -315,14 +315,14 @@ static CONF_MODULE *module_add(DSO *dso, const char *name,
 	return tmod;
 	}
 
-/* Find a module from the list. We allow module names of the
+/* Find a package from the list. We allow package names of the
  * form modname.XXXX to just search for modname to allow the
- * same module to be initialized more than once.
+ * same package to be initialized more than once.
  */
 
-static CONF_MODULE *module_find(char *name)
+static CONF_package *package_find(char *name)
 	{
-	CONF_MODULE *tmod;
+	CONF_package *tmod;
 	int i, nchar;
 	char *p;
 	p = strrchr(name, '.');
@@ -332,9 +332,9 @@ static CONF_MODULE *module_find(char *name)
 	else 
 		nchar = strlen(name);
 
-	for (i = 0; i < sk_CONF_MODULE_num(supported_modules); i++)
+	for (i = 0; i < sk_CONF_package_num(supported_packages); i++)
 		{
-		tmod = sk_CONF_MODULE_value(supported_modules, i);
+		tmod = sk_CONF_package_value(supported_packages, i);
 		if (!strncmp(tmod->name, name, nchar))
 			return tmod;
 		}
@@ -343,16 +343,16 @@ static CONF_MODULE *module_find(char *name)
 
 	}
 
-/* initialize a module */
-static int module_init(CONF_MODULE *pmod, char *name, char *value,
+/* initialize a package */
+static int package_init(CONF_package *pmod, char *name, char *value,
 		       const CONF *cnf)
 	{
 	int ret = 1;
 	int init_called = 0;
-	CONF_IMODULE *imod = NULL;
+	CONF_Ipackage *imod = NULL;
 
-	/* Otherwise add initialized module to list */
-	imod = OPENSSL_malloc(sizeof(CONF_IMODULE));
+	/* Otherwise add initialized package to list */
+	imod = OPENSSL_malloc(sizeof(CONF_Ipackage));
 	if (!imod)
 		goto err;
 
@@ -364,7 +364,7 @@ static int module_init(CONF_MODULE *pmod, char *name, char *value,
 	if (!imod->name || !imod->value)
 		goto memerr;
 
-	/* Try to initialize module */
+	/* Try to initialize package */
 	if(pmod->init)
 		{
 		ret = pmod->init(imod, cnf);
@@ -374,19 +374,19 @@ static int module_init(CONF_MODULE *pmod, char *name, char *value,
 			goto err;
 		}
 
-	if (initialized_modules == NULL)
+	if (initialized_packages == NULL)
 		{
-		initialized_modules = sk_CONF_IMODULE_new_null();
-		if (!initialized_modules)
+		initialized_packages = sk_CONF_Ipackage_new_null();
+		if (!initialized_packages)
 			{
-			CONFerr(CONF_F_MODULE_INIT, ERR_R_MALLOC_FAILURE);
+			CONFerr(CONF_F_package_INIT, ERR_R_MALLOC_FAILURE);
 			goto err;
 			}
 		}
 
-	if (!sk_CONF_IMODULE_push(initialized_modules, imod))
+	if (!sk_CONF_Ipackage_push(initialized_packages, imod))
 		{
-		CONFerr(CONF_F_MODULE_INIT, ERR_R_MALLOC_FAILURE);
+		CONFerr(CONF_F_package_INIT, ERR_R_MALLOC_FAILURE);
 		goto err;
 		}
 
@@ -396,7 +396,7 @@ static int module_init(CONF_MODULE *pmod, char *name, char *value,
 
 	err:
 
-	/* We've started the module so we'd better finish it */
+	/* We've started the package so we'd better finish it */
 	if (pmod->finish && init_called)
 		pmod->finish(imod);
 
@@ -414,36 +414,36 @@ static int module_init(CONF_MODULE *pmod, char *name, char *value,
 
 	}
 
-/* Unload any dynamic modules that have a link count of zero:
- * i.e. have no active initialized modules. If 'all' is set
- * then all modules are unloaded including static ones.
+/* Unload any dynamic packages that have a link count of zero:
+ * i.e. have no active initialized packages. If 'all' is set
+ * then all packages are unloaded including static ones.
  */
 
-void CONF_modules_unload(int all)
+void CONF_packages_unload(int all)
 	{
 	int i;
-	CONF_MODULE *md;
-	CONF_modules_finish();
-	/* unload modules in reverse order */
-	for (i = sk_CONF_MODULE_num(supported_modules) - 1; i >= 0; i--)
+	CONF_package *md;
+	CONF_packages_finish();
+	/* unload packages in reverse order */
+	for (i = sk_CONF_package_num(supported_packages) - 1; i >= 0; i--)
 		{
-		md = sk_CONF_MODULE_value(supported_modules, i);
+		md = sk_CONF_package_value(supported_packages, i);
 		/* If static or in use and 'all' not set ignore it */
 		if (((md->links > 0) || !md->dso) && !all)
 			continue;
 		/* Since we're working in reverse this is OK */
-		(void)sk_CONF_MODULE_delete(supported_modules, i);
-		module_free(md);
+		(void)sk_CONF_package_delete(supported_packages, i);
+		package_free(md);
 		}
-	if (sk_CONF_MODULE_num(supported_modules) == 0)
+	if (sk_CONF_package_num(supported_packages) == 0)
 		{
-		sk_CONF_MODULE_free(supported_modules);
-		supported_modules = NULL;
+		sk_CONF_package_free(supported_packages);
+		supported_packages = NULL;
 		}
 	}
 
-/* unload a single module */
-static void module_free(CONF_MODULE *md)
+/* unload a single package */
+static void package_free(CONF_package *md)
 	{
 	if (md->dso)
 		DSO_free(md->dso);
@@ -451,23 +451,23 @@ static void module_free(CONF_MODULE *md)
 	OPENSSL_free(md);
 	}
 
-/* finish and free up all modules instances */
+/* finish and free up all packages instances */
 
-void CONF_modules_finish(void)
+void CONF_packages_finish(void)
 	{
-	CONF_IMODULE *imod;
-	while (sk_CONF_IMODULE_num(initialized_modules) > 0)
+	CONF_Ipackage *imod;
+	while (sk_CONF_Ipackage_num(initialized_packages) > 0)
 		{
-		imod = sk_CONF_IMODULE_pop(initialized_modules);
-		module_finish(imod);
+		imod = sk_CONF_Ipackage_pop(initialized_packages);
+		package_finish(imod);
 		}
-	sk_CONF_IMODULE_free(initialized_modules);
-	initialized_modules = NULL;
+	sk_CONF_Ipackage_free(initialized_packages);
+	initialized_packages = NULL;
 	}
 
-/* finish a module instance */
+/* finish a package instance */
 
-static void module_finish(CONF_IMODULE *imod)
+static void package_finish(CONF_Ipackage *imod)
 	{
 	if (imod->pmod->finish)
 		imod->pmod->finish(imod);
@@ -477,66 +477,66 @@ static void module_finish(CONF_IMODULE *imod)
 	OPENSSL_free(imod);
 	}
 
-/* Add a static module to OpenSSL */
+/* Add a static package to OpenSSL */
 
-int CONF_module_add(const char *name, conf_init_func *ifunc, 
+int CONF_package_add(const char *name, conf_init_func *ifunc, 
 		    conf_finish_func *ffunc)
 	{
-	if (module_add(NULL, name, ifunc, ffunc))
+	if (package_add(NULL, name, ifunc, ffunc))
 		return 1;
 	else
 		return 0;
 	}
 
-void CONF_modules_free(void)
+void CONF_packages_free(void)
 	{
-	CONF_modules_finish();
-	CONF_modules_unload(1);
+	CONF_packages_finish();
+	CONF_packages_unload(1);
 	}
 
 /* Utility functions */
 
-const char *CONF_imodule_get_name(const CONF_IMODULE *md)
+const char *CONF_ipackage_get_name(const CONF_Ipackage *md)
 	{
 	return md->name;
 	}
 
-const char *CONF_imodule_get_value(const CONF_IMODULE *md)
+const char *CONF_ipackage_get_value(const CONF_Ipackage *md)
 	{
 	return md->value;
 	}
 
-void *CONF_imodule_get_usr_data(const CONF_IMODULE *md)
+void *CONF_ipackage_get_usr_data(const CONF_Ipackage *md)
 	{
 	return md->usr_data;
 	}
 
-void CONF_imodule_set_usr_data(CONF_IMODULE *md, void *usr_data)
+void CONF_ipackage_set_usr_data(CONF_Ipackage *md, void *usr_data)
 	{
 	md->usr_data = usr_data;
 	}
 
-CONF_MODULE *CONF_imodule_get_module(const CONF_IMODULE *md)
+CONF_package *CONF_ipackage_get_package(const CONF_Ipackage *md)
 	{
 	return md->pmod;
 	}
 
-unsigned long CONF_imodule_get_flags(const CONF_IMODULE *md)
+unsigned long CONF_ipackage_get_flags(const CONF_Ipackage *md)
 	{
 	return md->flags;
 	}
 
-void CONF_imodule_set_flags(CONF_IMODULE *md, unsigned long flags)
+void CONF_ipackage_set_flags(CONF_Ipackage *md, unsigned long flags)
 	{
 	md->flags = flags;
 	}
 
-void *CONF_module_get_usr_data(CONF_MODULE *pmod)
+void *CONF_package_get_usr_data(CONF_package *pmod)
 	{
 	return pmod->usr_data;
 	}
 
-void CONF_module_set_usr_data(CONF_MODULE *pmod, void *usr_data)
+void CONF_package_set_usr_data(CONF_package *pmod, void *usr_data)
 	{
 	pmod->usr_data = usr_data;
 	}

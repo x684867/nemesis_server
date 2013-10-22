@@ -6,7 +6,7 @@ with(this){__filename}
 SyntaxError: Strict mode code may not include a with statement
     at Object.exports.runInThisContext (vm.js:*)
     at Object.<anonymous> ([stdin]-wrapper:*:*)
-    at Module._compile (module.js:*:*)
+    at package._compile (package.js:*:*)
     at evalScript (node.js:*:*)
     at Socket.<anonymous> (node.js:*:*)
     at Socket.EventEmitter.emit (events.js:*:*)
@@ -22,7 +22,7 @@ Error: hello
     at [stdin]:1:*
     at Object.exports.runInThisContext (vm.js:*)
     at Object.<anonymous> ([stdin]-wrapper:*:*)
-    at Module._compile (module.js:*:*)
+    at package._compile (package.js:*:*)
     at evalScript (node.js:*:*)
     at Socket.<anonymous> (node.js:*:*)
     at Socket.EventEmitter.emit (events.js:*:*)
@@ -36,7 +36,7 @@ Error: hello
     at [stdin]:1:*
     at Object.exports.runInThisContext (vm.js:*)
     at Object.<anonymous> ([stdin]-wrapper:*:*)
-    at Module._compile (module.js:*:*)
+    at package._compile (package.js:*:*)
     at evalScript (node.js:*:*)
     at Socket.<anonymous> (node.js:*:*)
     at Socket.EventEmitter.emit (events.js:*:*)
@@ -51,7 +51,7 @@ ReferenceError: y is not defined
     at [stdin]:1:16
     at Object.exports.runInThisContext (vm.js:*)
     at Object.<anonymous> ([stdin]-wrapper:*:*)
-    at Module._compile (module.js:*:*)
+    at package._compile (package.js:*:*)
     at evalScript (node.js:*:*)
     at Socket.<anonymous> (node.js:*:*)
     at Socket.EventEmitter.emit (events.js:*:*)

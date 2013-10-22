@@ -792,7 +792,7 @@ TEST(CrossScriptReferences) {
 TEST(CrossScriptReferencesHarmony) {
   i::FLAG_use_strict = true;
   i::FLAG_harmony_scoping = true;
-  i::FLAG_harmony_modules = true;
+  i::FLAG_harmony_packages = true;
 
   HandleScope scope(Isolate::GetCurrent());
 
@@ -801,7 +801,7 @@ TEST(CrossScriptReferencesHarmony) {
     "function x() { return 1 }; x()", "x()", "this.x()",
     "let x = 1; x", "x", "this.x",
     "const x = 1; x", "x", "this.x",
-    "module x { export let a = 1 }; x.a", "x.a", "this.x.a",
+    "package x { export let a = 1 }; x.a", "x.a", "this.x.a",
     NULL
   };
 
@@ -820,7 +820,7 @@ TEST(CrossScriptReferencesHarmony) {
 TEST(CrossScriptConflicts) {
   i::FLAG_use_strict = true;
   i::FLAG_harmony_scoping = true;
-  i::FLAG_harmony_modules = true;
+  i::FLAG_harmony_packages = true;
 
   HandleScope scope(Isolate::GetCurrent());
 
@@ -829,7 +829,7 @@ TEST(CrossScriptConflicts) {
     "function x() { return 1 }; x()",
     "let x = 1; x",
     "const x = 1; x",
-    "module x { export let a = 1 }; x.a",
+    "package x { export let a = 1 }; x.a",
     NULL
   };
   const char* seconds[] = {
@@ -837,7 +837,7 @@ TEST(CrossScriptConflicts) {
     "function x() { return 2 }; x()",
     "let x = 2; x",
     "const x = 2; x",
-    "module x { export let a = 2 }; x.a",
+    "package x { export let a = 2 }; x.a",
     NULL
   };
 

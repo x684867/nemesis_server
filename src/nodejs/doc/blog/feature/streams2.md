@@ -26,7 +26,7 @@ category: feature
 Throughout the life of Node, we've been gradually iterating on the
 ideal event-based API for handling data.  Over time, this developed
 into the "Stream" interface that you see throughout Node's core
-modules and many of the modules in npm.
+packages and many of the packages in npm.
 
 Consistent interfaces increase the portability and reliability of our
 programs and libraries.  Overall, the move from domain-specific events
@@ -72,7 +72,7 @@ are making a significant change to the Stream implementation.  You may
 have seen conversations on twitter or IRC or the mailing list about
 "streams2".  I also gave [a talk in
 November](https://dl.dropbox.com/u/3685/presentations/streams2/streams2-ko.pdf)
-about this subject.  A lot of node module authors have been involved
+about this subject.  A lot of node package authors have been involved
 with the development of streams2 (and of course the node core team).
 
 ## streams2
@@ -88,7 +88,7 @@ recommend trying this release and providing feedback before it lands
 in a stable version.
 
 As of writing this post, there are some known performance regressions,
-especially in the http module.  We are fanatical about maintaining
+especially in the http package.  We are fanatical about maintaining
 performance in Node.js, so of course this will have to be fixed before
 the v0.10 stable release.  (Watch for a future blog post on the tools
 and techniques that have been useful in tracking down these issues.)
@@ -99,7 +99,7 @@ complete.  It correctly does all the things we need it to do, it just
 doesn't do them quite well enough yet.  As always, be wary of running
 unstable releases in production, of course, but I encourage you to try
 it out and see what you think.  Especially, if you have tests that you
-can run on your modules and libraries, that would be extremely useful
+can run on your packages and libraries, that would be extremely useful
 feedback.
 
 --------
@@ -407,7 +407,7 @@ as its data source.
 For example:
 
 ```javascript
-var OldReader = require('./old-api-module.js').OldReader;
+var OldReader = require('./old-api-package.js').OldReader;
 var oreader = new OldReader;
 var Readable = require('stream').Readable;
 var myReader = new Readable().wrap(oreader);

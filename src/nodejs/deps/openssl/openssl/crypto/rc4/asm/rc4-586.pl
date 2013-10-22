@@ -2,7 +2,7 @@
 
 # ====================================================================
 # [Re]written by Andy Polyakov <appro@fy.chalmers.se> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
+# project. The package is, however, dual licensed under OpenSSL and
 # CRYPTOGAMS licenses depending on where you obtain it. For further
 # details see http://www.openssl.org/~appro/cryptogams/.
 # ====================================================================
@@ -32,7 +32,7 @@
 #
 # Optimize for Core2 and Westmere [and incidentally Opteron]. Current
 # performance in cycles per processed byte (less is better) and
-# improvement relative to previous version of this module is:
+# improvement relative to previous version of this package is:
 #
 # Pentium	10.2			# original numbers
 # Pentium III	7.8(*)

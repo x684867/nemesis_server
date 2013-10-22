@@ -22,22 +22,22 @@
 var common = require('../common');
 var assert = require('assert');
 
-(function testInjectFakeModule() {
+(function testInjectFakepackage() {
   var relativePath = '../fixtures/semicolon';
   var absolutePath = require.resolve(relativePath);
-  var fakeModule = {};
+  var fakepackage = {};
 
-  require.cache[absolutePath] = {exports: fakeModule};
+  require.cache[absolutePath] = {exports: fakepackage};
 
-  assert.strictEqual(require(relativePath), fakeModule);
+  assert.strictEqual(require(relativePath), fakepackage);
 })();
 
 
-(function testInjectFakeNativeModule() {
+(function testInjectFakeNativepackage() {
   var relativePath = 'fs';
-  var fakeModule = {};
+  var fakepackage = {};
 
-  require.cache[relativePath] = {exports: fakeModule};
+  require.cache[relativePath] = {exports: fakepackage};
 
-  assert.strictEqual(require(relativePath), fakeModule);
+  assert.strictEqual(require(relativePath), fakepackage);
 })();

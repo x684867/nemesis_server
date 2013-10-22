@@ -1,5 +1,5 @@
 
-exports = module.exports = lifecycle
+exports = package.exports = lifecycle
 exports.cmd = cmd
 
 var log = require("npmlog")
@@ -68,7 +68,7 @@ function checkForLink (pkg, cb) {
 
 function lifecycle_ (pkg, stage, wd, env, unsafe, failOk, cb) {
   var pathArr = []
-    , p = wd.split("node_modules")
+    , p = wd.split("node_packages")
     , acc = path.resolve(p.shift())
 
   // first add the directory containing the `node` executable currently
@@ -77,10 +77,10 @@ function lifecycle_ (pkg, stage, wd, env, unsafe, failOk, cb) {
   pathArr.unshift(path.dirname(process.execPath))
 
   p.forEach(function (pp) {
-    pathArr.unshift(path.join(acc, "node_modules", ".bin"))
-    acc = path.join(acc, "node_modules", pp)
+    pathArr.unshift(path.join(acc, "node_packages", ".bin"))
+    acc = path.join(acc, "node_packages", pp)
   })
-  pathArr.unshift(path.join(acc, "node_modules", ".bin"))
+  pathArr.unshift(path.join(acc, "node_packages", ".bin"))
 
   // we also unshift the bundled node-gyp-bin folder so that
   // the bundled one will be used for installing things.

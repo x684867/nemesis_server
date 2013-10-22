@@ -28,7 +28,7 @@ asymmetric algorithms.
 Algorithms are loaded with OpenSSL_add_all_algorithms(3).
 
 All the symmetric algorithms (ciphers), digests and asymmetric algorithms
-(public key algorithms) can be replaced by ENGINE modules providing alternative
+(public key algorithms) can be replaced by ENGINE packages providing alternative
 implementations. If ENGINE implementations of ciphers or digests are registered
 as defaults, then the various EVP functions will automatically use those
 implementations automatically in preference to built in software

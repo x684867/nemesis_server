@@ -5,7 +5,7 @@
 	This is the audit web service.
 	
 */
-module.exports=Audit;
+package.exports=Audit;
 
 const LOGGER_SOURCE='server.audit';
 const LOGGER_CLASS='/srv/nemesis/app/logger/logger.js';

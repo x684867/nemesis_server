@@ -67,7 +67,7 @@ TEST(ScanKeywords) {
       i::Scanner scanner(&unicode_cache);
       // The scanner should parse Harmony keywords for this test.
       scanner.SetHarmonyScoping(true);
-      scanner.SetHarmonyModules(true);
+      scanner.SetHarmonypackages(true);
       scanner.Initialize(&stream);
       CHECK_EQ(key_token.token, scanner.Next());
       CHECK_EQ(i::Token::EOS, scanner.Next());
@@ -1083,7 +1083,7 @@ enum ParserFlag {
   kAllowLazy,
   kAllowNativesSyntax,
   kAllowHarmonyScoping,
-  kAllowModules,
+  kAllowpackages,
   kAllowGenerators,
   kAllowForOf,
   kAllowHarmonyNumericLiterals,
@@ -1102,7 +1102,7 @@ static bool checkParserFlag(unsigned flags, ParserFlag flag) {
                                                   kAllowNativesSyntax)); \
   parser.set_allow_harmony_scoping(checkParserFlag(flags, \
                                                    kAllowHarmonyScoping)); \
-  parser.set_allow_modules(checkParserFlag(flags, kAllowModules)); \
+  parser.set_allow_packages(checkParserFlag(flags, kAllowpackages)); \
   parser.set_allow_generators(checkParserFlag(flags, kAllowGenerators)); \
   parser.set_allow_for_of(checkParserFlag(flags, kAllowForOf)); \
   parser.set_allow_harmony_numeric_literals( \

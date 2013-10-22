@@ -70,7 +70,7 @@ DSO_METHOD *DSO_METHOD_win32(void)
 
 #ifdef _WIN32_WCE
 # if _WIN32_WCE < 300
-static FARPROC GetProcAddressA(HMODULE hModule,LPCSTR lpProcName)
+static FARPROC GetProcAddressA(Hpackage hpackage,LPCSTR lpProcName)
 	{
 	WCHAR lpProcNameW[64];
 	int i;
@@ -80,7 +80,7 @@ static FARPROC GetProcAddressA(HMODULE hModule,LPCSTR lpProcName)
 	if (i==64) return NULL;
 	lpProcNameW[i] = 0;
 
-	return GetProcAddressW(hModule,lpProcNameW);
+	return GetProcAddressW(hpackage,lpProcNameW);
 	}
 # endif
 # undef GetProcAddress
@@ -671,24 +671,24 @@ static const char *openssl_strnchr(const char *string, int c, size_t len)
 #ifdef _WIN32_WCE
 # define DLLNAME "TOOLHELP.DLL"
 #else
-# ifdef MODULEENTRY32
-# undef MODULEENTRY32	/* unmask the ASCII version! */
+# ifdef packageENTRY32
+# undef packageENTRY32	/* unmask the ASCII version! */
 # endif
 # define DLLNAME "KERNEL32.DLL"
 #endif
 
 typedef HANDLE (WINAPI *CREATETOOLHELP32SNAPSHOT)(DWORD, DWORD);
 typedef BOOL (WINAPI *CLOSETOOLHELP32SNAPSHOT)(HANDLE);
-typedef BOOL (WINAPI *MODULE32)(HANDLE, MODULEENTRY32 *);
+typedef BOOL (WINAPI *package32)(HANDLE, packageENTRY32 *);
 
 static int win32_pathbyaddr(void *addr,char *path,int sz)
 	{
-	HMODULE dll;
-	HANDLE hModuleSnap = INVALID_HANDLE_VALUE; 
-	MODULEENTRY32 me32; 
+	Hpackage dll;
+	HANDLE hpackageSnap = INVALID_HANDLE_VALUE; 
+	packageENTRY32 me32; 
 	CREATETOOLHELP32SNAPSHOT create_snap;
 	CLOSETOOLHELP32SNAPSHOT  close_snap;
-	MODULE32 module_first, module_next;
+	package32 package_first, package_next;
 	int len;
  
 	if (addr == NULL)
@@ -720,11 +720,11 @@ static int win32_pathbyaddr(void *addr,char *path,int sz)
 #else
 	close_snap = (CLOSETOOLHELP32SNAPSHOT)CloseHandle;
 #endif
-	module_first = (MODULE32)GetProcAddress(dll,"Module32First");
-	module_next  = (MODULE32)GetProcAddress(dll,"Module32Next");
+	package_first = (package32)GetProcAddress(dll,"package32First");
+	package_next  = (package32)GetProcAddress(dll,"package32Next");
 
-	hModuleSnap = (*create_snap)(TH32CS_SNAPMODULE,0); 
-	if( hModuleSnap == INVALID_HANDLE_VALUE ) 
+	hpackageSnap = (*create_snap)(TH32CS_SNAPpackage,0); 
+	if( hpackageSnap == INVALID_HANDLE_VALUE ) 
 		{ 
 		FreeLibrary(dll);
 		DSOerr(DSO_F_WIN32_PATHBYADDR,DSO_R_UNSUPPORTED);
@@ -733,9 +733,9 @@ static int win32_pathbyaddr(void *addr,char *path,int sz)
  
 	me32.dwSize = sizeof(me32); 
  
-	if(!(*module_first)(hModuleSnap,&me32)) 
+	if(!(*package_first)(hpackageSnap,&me32)) 
 		{ 
-		(*close_snap)(hModuleSnap);
+		(*close_snap)(hpackageSnap);
 		FreeLibrary(dll);
 		DSOerr(DSO_F_WIN32_PATHBYADDR,DSO_R_FAILURE);
 		return -1;
@@ -745,7 +745,7 @@ static int win32_pathbyaddr(void *addr,char *path,int sz)
 		if ((BYTE *)addr >= me32.modBaseAddr &&
 		    (BYTE *)addr <  me32.modBaseAddr+me32.modBaseSize)
 			{
-			(*close_snap)(hModuleSnap);
+			(*close_snap)(hpackageSnap);
 			FreeLibrary(dll);
 #ifdef _WIN32_WCE
 # if _WIN32_WCE >= 101
@@ -769,21 +769,21 @@ static int win32_pathbyaddr(void *addr,char *path,int sz)
 			return len;
 #endif
 			} 
-		} while((*module_next)(hModuleSnap, &me32)); 
+		} while((*package_next)(hpackageSnap, &me32)); 
  
-	(*close_snap)(hModuleSnap); 
+	(*close_snap)(hpackageSnap); 
 	FreeLibrary(dll);
 	return 0;
 	}
 
 static void *win32_globallookup(const char *name)
 	{
-	HMODULE dll;
-	HANDLE hModuleSnap = INVALID_HANDLE_VALUE;
-	MODULEENTRY32 me32;
+	Hpackage dll;
+	HANDLE hpackageSnap = INVALID_HANDLE_VALUE;
+	packageENTRY32 me32;
 	CREATETOOLHELP32SNAPSHOT create_snap;
 	CLOSETOOLHELP32SNAPSHOT  close_snap;
-	MODULE32 module_first, module_next;
+	package32 package_first, package_next;
 	FARPROC ret=NULL;
 
 	dll = LoadLibrary(TEXT(DLLNAME));
@@ -808,11 +808,11 @@ static void *win32_globallookup(const char *name)
 #else
 	close_snap = (CLOSETOOLHELP32SNAPSHOT)CloseHandle;
 #endif
-	module_first = (MODULE32)GetProcAddress(dll,"Module32First");
-	module_next  = (MODULE32)GetProcAddress(dll,"Module32Next");
+	package_first = (package32)GetProcAddress(dll,"package32First");
+	package_next  = (package32)GetProcAddress(dll,"package32Next");
 
-	hModuleSnap = (*create_snap)(TH32CS_SNAPMODULE,0);
-	if( hModuleSnap == INVALID_HANDLE_VALUE )
+	hpackageSnap = (*create_snap)(TH32CS_SNAPpackage,0);
+	if( hpackageSnap == INVALID_HANDLE_VALUE )
 		{
 		FreeLibrary(dll);
 		DSOerr(DSO_F_WIN32_GLOBALLOOKUP,DSO_R_UNSUPPORTED);
@@ -821,23 +821,23 @@ static void *win32_globallookup(const char *name)
 
 	me32.dwSize = sizeof(me32);
 
-	if (!(*module_first)(hModuleSnap,&me32))
+	if (!(*package_first)(hpackageSnap,&me32))
 		{
-		(*close_snap)(hModuleSnap);
+		(*close_snap)(hpackageSnap);
 		FreeLibrary(dll);
 		return NULL;
 		}
 
 	do	{
-		if ((ret = GetProcAddress(me32.hModule,name)))
+		if ((ret = GetProcAddress(me32.hpackage,name)))
 			{
-			(*close_snap)(hModuleSnap);
+			(*close_snap)(hpackageSnap);
 			FreeLibrary(dll);
 			return ret;
 			}
-		} while((*module_next)(hModuleSnap,&me32));
+		} while((*package_next)(hpackageSnap,&me32));
 
-	(*close_snap)(hModuleSnap); 
+	(*close_snap)(hpackageSnap); 
 	FreeLibrary(dll);
 	return NULL;
 	}

@@ -29,7 +29,7 @@ namespace node {
 using v8::JitCodeEvent;
 using v8::V8;
 
-HMODULE advapi;
+Hpackage advapi;
 REGHANDLE node_provider;
 EventRegisterFunc event_register;
 EventUnregisterFunc event_unregister;
@@ -91,7 +91,7 @@ int FilterCodeEvents(const char* name, size_t len) {
 }
 
 
-// callback from V8 module passes symbol and address info for stack walk
+// callback from V8 package passes symbol and address info for stack walk
 void CodeAddressNotification(const JitCodeEvent* jevent) {
   int pre_offset = 0;
   if (NODE_V8SYMBOL_ENABLED()) {

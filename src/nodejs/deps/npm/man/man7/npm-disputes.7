@@ -4,7 +4,7 @@
 .TH "NPM\-DISPUTES" "7" "September 2013" "" ""
 .
 .SH "NAME"
-\fBnpm-disputes\fR \-\- Handling Module Name Disputes
+\fBnpm-disputes\fR \-\- Handling package Name Disputes
 .
 .SH "SYNOPSIS"
 .
@@ -23,18 +23,18 @@ After a few weeks, if there\'s no resolution, we\'ll sort it out\.
 Don\'t squat on package names\.  Publish code or move out of the way\.
 .
 .SH "DESCRIPTION"
-There sometimes arise cases where a user publishes a module, and then
+There sometimes arise cases where a user publishes a package, and then
 later, some other user wants to use that name\.  Here are some common
 ways that happens (each of these is based on actual events\.)
 .
 .IP "1" 4
-Joe writes a JavaScript module \fBfoo\fR, which is not node\-specific\.
+Joe writes a JavaScript package \fBfoo\fR, which is not node\-specific\.
 Joe doesn\'t use node at all\.  Bob   wants to use \fBfoo\fR in node, so he
-wraps it in an npm module\.  Some time later, Joe starts using node,
+wraps it in an npm package\.  Some time later, Joe starts using node,
 and wants to take over management of his program\.
 .
 .IP "2" 4
-Bob writes an npm module \fBfoo\fR, and publishes it\.  Perhaps much
+Bob writes an npm package \fBfoo\fR, and publishes it\.  Perhaps much
 later, Joe finds a bug in \fBfoo\fR, and fixes it\.  He sends a pull
 request to Bob, but Bob doesn\'t have the time to deal with it,
 because he has a new job and a new baby and is focused on his new
@@ -68,7 +68,7 @@ owner (Bob)\.
 .
 .IP "2" 4
 Joe emails Bob, explaining the situation \fBas respectfully as possible\fR,
-and what he would like to do with the module name\.  He adds
+and what he would like to do with the package name\.  He adds
 isaacs \fIi@izs\.me\fR to the CC list of the email\.  Mention in the email
 that Bob can run \fBnpm owner add joe foo\fR to add Joe as an owner of
 the \fBfoo\fR package\.
@@ -87,7 +87,7 @@ really do want to be reasonable, and are probably not even aware that
 they\'re in your way\.
 .
 .P
-Module ecosystems are most vibrant and powerful when they are as
+package ecosystems are most vibrant and powerful when they are as
 self\-directed as possible\.  If an admin one day deletes something you
 had worked on, then that is going to make most people quite upset,
 regardless of the justification\.  When humans solve their problems by

@@ -21,7 +21,7 @@
 
 var repl = require('../simple/helper-debugger-repl.js');
 
-repl.startDebugger('break-in-module/main.js');
+repl.startDebugger('break-in-package/main.js');
 
 // -- SET BREAKPOINT --
 
@@ -65,7 +65,7 @@ repl.addTest('c', [
   /21/, /22/, /23/, /24/, /25/
 ]);
 
-// -- CLEAR BREAKPOINT SET IN MODULE TO BE LOADED --
+// -- CLEAR BREAKPOINT SET IN package TO BE LOADED --
 
 repl.addTest('cb("mod.js", 23)', [
   /18/, /./, /./, /./, /./, /./, /./, /./, /26/

@@ -1,5 +1,5 @@
 
-module.exports = publish
+package.exports = publish
 
 var npm = require("./npm.js")
   , log = require("npmlog")
@@ -86,7 +86,7 @@ function publish_ (arg, data, isRetry, cachedir, cb) {
   data._npmUser = { name: npm.config.get("username")
                   , email: npm.config.get("email") }
 
-  delete data.modules
+  delete data.packages
   if (data.private) return cb(new Error
     ("This package has been marked as private\n"
     +"Remove the 'private' field from the package.json to publish it."))

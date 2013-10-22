@@ -1,6 +1,6 @@
 // npm version <newver>
 
-module.exports = version
+package.exports = version
 
 var exec = require("child_process").execFile
   , semver = require("semver")

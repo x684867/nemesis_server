@@ -42,13 +42,13 @@
       an <code>ObjectWrap</code> which improved performance.
 
       <li> With a good amount of experience now, some modifications to the
-      module loading system were made to better support package managers.
+      package loading system were made to better support package managers.
       In particular, npm was forced to resort to deep symlinks and "shim"
-      modules to work around missing features in <code>require()</code>. The main
+      packages to work around missing features in <code>require()</code>. The main
       changes are:
       <ol>
         <li><code>require()</code> calls realpath. That is,
-        it resolves symbolic links. This allows symlinked modules to make
+        it resolves symbolic links. This allows symlinked packages to make
         relative requires.
 
         <li><code>require()</code> now has a primitive understanding of
@@ -56,14 +56,14 @@
         script. This allows <code>require()</code> to work on package
         directories directly.
 
-        <li>A specially named directory, <code>node_modules/</code>, is
-        searched in the current directory for any modules. This will
-        hopefully encourage programmers to bundle modules rather than
+        <li>A specially named directory, <code>node_packages/</code>, is
+        searched in the current directory for any packages. This will
+        hopefully encourage programmers to bundle packages rather than
         rely on a global namespace.
       </ol>
       Read more about these features in <a
-        href="https://github.com/ry/node/blob/01a864a29d64119054401784cd9255c3a813bdbc/doc/api/modules.markdown">the
-        module documentation</a>.
+        href="https://github.com/ry/node/blob/01a864a29d64119054401784cd9255c3a813bdbc/doc/api/packages.markdown">the
+        package documentation</a>.
 
       <li> A half-complete but good start a native windows build with MinGW
       is underway by Bert Builder. Build instructions can be found <a
@@ -83,7 +83,7 @@
       some <a
         href="https://github.com/ry/node/blob/01a864a29d64119054401784cd9255c3a813bdbc/doc/api/debugger.markdown">documentation</a>.
 
-      <li>An <code>os</code> module was added by Brian White which exposes
+      <li>An <code>os</code> package was added by Brian White which exposes
       a lot of basic but useful system information: <code>os.cpus(),
         os.freemem(), os.totalmem(), os.loadavg()</code>
 

@@ -5,7 +5,7 @@
 <!--name=fs-->
 
 File I/O is provided by simple wrappers around standard POSIX functions.  To
-use this module do `require('fs')`. All the methods have asynchronous and
+use this package do `require('fs')`. All the methods have asynchronous and
 synchronous forms.
 
 The asynchronous form always take a completion callback as its last argument.

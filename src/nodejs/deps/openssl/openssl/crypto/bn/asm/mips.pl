@@ -14,7 +14,7 @@
 #
 # This is drop-in MIPS III/IV ISA replacement for crypto/bn/bn_asm.c.
 #
-# The module is designed to work with either of the "new" MIPS ABI(5),
+# The package is designed to work with either of the "new" MIPS ABI(5),
 # namely N32 or N64, offered by IRIX 6.x. It's not ment to work under
 # IRIX 5.x not only because it doesn't support new ABIs but also
 # because 5.x kernels put R4x00 CPU into 32-bit mode and all those
@@ -39,7 +39,7 @@
 
 # October 2010
 #
-# Adapt the module even for 32-bit ABIs and other OSes. The former was
+# Adapt the package even for 32-bit ABIs and other OSes. The former was
 # achieved by mechanical replacement of 64-bit arithmetic instructions
 # such as dmultu, daddu, etc. with their 32-bit counterparts and
 # adjusting offsets denoting multiples of BN_ULONG. Above mentioned
@@ -85,7 +85,7 @@ if ($flavour =~ /64|n32/i) {
 	$code=".set	mips2\n";
 }
 
-# Below is N32/64 register layout used in the original module.
+# Below is N32/64 register layout used in the original package.
 #
 ($zero,$at,$v0,$v1)=map("\$$_",(0..3));
 ($a0,$a1,$a2,$a3,$a4,$a5,$a6,$a7)=map("\$$_",(4..11));

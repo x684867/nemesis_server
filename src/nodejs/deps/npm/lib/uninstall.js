@@ -1,7 +1,7 @@
 
 // remove a package.
 
-module.exports = uninstall
+package.exports = uninstall
 
 uninstall.usage = "npm uninstall <name>[@<version> [<name>[@<version>] ...]"
                 + "\nnpm rm <name>[@<version> [<name>[@<version>] ...]"
@@ -49,7 +49,7 @@ function uninstall_ (args, nm, cb) {
   }
 
   asyncMap(args, function (arg, cb) {
-    // uninstall .. should not delete /usr/local/lib/node_modules/..
+    // uninstall .. should not delete /usr/local/lib/node_packages/..
     var p = path.join(path.resolve(nm), path.join("/", arg))
     if (path.resolve(p) === nm) {
       log.warn("uninstall", "invalid argument: %j", arg)

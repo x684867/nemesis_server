@@ -20,7 +20,7 @@
  */
 
 /*
- * mdb(1M) module for debugging the V8 JavaScript engine.  This implementation
+ * mdb(1M) package for debugging the V8 JavaScript engine.  This implementation
  * makes heavy use of metadata defined in the V8 binary for inspecting in-memory
  * structures.  Canned configurations can be manually loaded for V8 binaries
  * that predate this metadata.  See mdb_v8_cfg.c for details.
@@ -35,7 +35,7 @@
  */
 
 /*
- * We hard-code our MDB_API_VERSION to be 3 to allow this module to be
+ * We hard-code our MDB_API_VERSION to be 3 to allow this package to be
  * compiled on systems with higher version numbers, but still allow the
  * resulting binary object to be used on older systems.  (We do not make use
  * of functionality present in versions later than 3.)  This is particularly
@@ -434,7 +434,7 @@ autoconfigure(v8_cfg_t *cfgp)
 	};
 
 	/*
-	 * Load various constants used directly in the module.
+	 * Load various constants used directly in the package.
 	 */
 	for (ii = 0; ii < v8_nconstants; ii++) {
 		cnp = &v8_constants[ii];
@@ -3943,7 +3943,7 @@ dcmd_v8load_help(void)
 	    "To traverse in-memory V8 structures, the V8 dmod requires\n"
 	    "configuration that describes the layout of various V8 structures\n"
 	    "in memory.  Normally, this information is pulled from metadata\n"
-	    "in the target binary.  However, it's possible to use the module\n"
+	    "in the target binary.  However, it's possible to use the package\n"
 	    "with a binary not built with metadata by loading one of the\n"
 	    "canned configurations.\n\n");
 
@@ -3966,7 +3966,7 @@ dcmd_v8load(uintptr_t addr, uint_t flags, int argc, const mdb_arg_t *argv)
 	v8_cfg_t *cfgp = NULL, **cfgpp;
 
 	if (v8_classes != NULL) {
-		mdb_warn("v8 module already configured\n");
+		mdb_warn("v8 package already configured\n");
 		return (DCMD_ERR);
 	}
 
