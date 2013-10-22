@@ -30,12 +30,13 @@ function init(){
 				var package_path=root.config.app.packages+pkgName + "/";
 				if(fs.statSync(package_path).isDirectory()){
 					console.log('   package_path is a valid directory');
-					root.packages.loadManifest(pkgName);
-					root.packages[pkgName].manifest.dependencies.forEach(function(p){
+					var manifest=root.packages.loadManifest(pkgName);
+					manifest.dependencies.forEach(function(p){
 						console.log('     dependency found: '+p);
 						root.packages.load(p);
 					});
 					console.log('     -----Dependencies loaded-----');
+					root.packages[pkgName]={};
 					root.packages.loadConfig(pkgName);
 					root.packages.loadErrors(pkgName);
 					root.messages.loadMessages(pkgName);
@@ -50,8 +51,7 @@ function init(){
 		});
 	}
 	root.packages.loadManifest=function(pkgName){
-		root.packages[pkgName]={};
-		root.packages[pkgName].manifest=require(root.config.app.packages+pkgName + "/manifest.json");
+		return require(root.config.app.packages+pkgName + "/manifest.json");
 	}
 	root.packages.loadConfig=function(pkgName){
 	root.config[pkgName]={};
