@@ -1,1 +1,0 @@
-﻿package.exports = 42;
