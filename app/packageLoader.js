@@ -31,9 +31,9 @@ function init(){
 				if(fs.statSync(package_path).isDirectory()){
 					console.log('   package_path is a valid directory');
 					root.packages.loadManifest(pkgName);
-					root.packages[pkgName].manifest.dependencies.forEach(function(pkgName){
-						console.log('     dependency found: '+pkgName);
-						root.packages.load(pkgName);
+					root.packages[pkgName].manifest.dependencies.forEach(function(p){
+						console.log('     dependency found: '+p);
+						root.packages.load(p);
 					});
 					console.log('     -----Dependencies loaded-----');
 					root.packages.loadConfig(pkgName);
