@@ -52,10 +52,10 @@ function init(){
 	root.config[pkgName].config=require(root.config.app.packages+pkgName + "/config.json");
 	}
 	root.packages.loadErrors=function(pkgName){
-		root.error[pkgName]=require(root.config.app.packages+pkgName + "/errors-"+process.env.LANG+".json);
+		root.error[pkgName]=require(root.config.app.packages+pkgName + "/errors-"+process.env.LANG+".json");
 	}
 	root.messages.loadMessages=function(pkgName){
-		root.messages[pkgName]=require(root.config.app.packages+pkgName + "/messages-"+process.env.LANG+".json);
+		root.messages[pkgName]=require(root.config.app.packages+pkgName + "/messages-"+process.env.LANG+".json");
 	}
 	root.messages.LoadMain=function(pkgName){
 		root.packages[pkgName].main=require(root.config.app.packages+pkgName + "/main.js");
