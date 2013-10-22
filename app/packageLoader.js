@@ -30,8 +30,8 @@ function init(){
 				var package_path=root.config.app.packages+pkgName + "/";
 				if(fs.statSync(package_path).isDirectory()){
 					console.log('   package_path is a valid directory');
-					var manifest=root.packages.loadManifest(pkgName);
-					manifest.dependencies.forEach(function(p){
+					
+					root.packages.loadManifest(pkgName).dependencies.forEach(function(p){
 						console.log('     dependency found: '+p);
 						root.packages.load(p);
 					});
