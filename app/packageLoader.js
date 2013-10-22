@@ -29,14 +29,18 @@ function init(){
 				*/
 				var package_path=root.config.app.packages+pkgName + "/";
 				if(fs.statSync(package_path).isDirectory()){
+					console.log('   package_path is a valid directory');
 					root.packages.loadManifest(pkgName);
 					root.packages[pkgName].manifest.dependencies.forEach(function(pkgName){
+						console.log('     dependency found: '+pkgName);
 						root.packages.load(pkgName);
 					});
+					console.log('     -----Dependencies loaded-----');
 					root.packages.loadConfig(pkgName);
 					root.packages.loadErrors(pkgName);
 					root.messages.loadMessages(pkgName);
 					root.messages.LoadMain(pkgName);
+					console.log('     Package Loaded.');
 				}else{
 					console.log("skipping non-directory: "+package_path);
 				}
