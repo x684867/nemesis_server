@@ -7,8 +7,5 @@
 
 	"name":"audit",
 		
-	"dependencies":[
-		"types","error","logger","ipc","process",
-		"web","worker","storeClient"
-	]
+	"dependencies":["web","worker","storeClient"]
 }
