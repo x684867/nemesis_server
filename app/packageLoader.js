@@ -18,7 +18,6 @@ function init(){
 	if( !require('fs').statSync(root.config.app.packages).isDirectory() ) throw new Error('root.config.app.packages is not a valid directory');
 	/*Initialize root.packages where packages will be loaded.*/
 	root.packages={};
-
 	root.packages.load=function(pkgName){
 		var fs=require('fs');
 		require('fs').readdirSync(root.config.app.packages).forEach(function(pkgName){
