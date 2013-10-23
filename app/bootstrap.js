@@ -32,7 +32,7 @@ root.app={};
 root.config={};
 root.error={};
 root.messages={};
-oot.packages={};
+root.packages={};
 root.ipc={};
 
 /* Load application configuration data*/
