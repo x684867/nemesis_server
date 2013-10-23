@@ -7,7 +7,7 @@
  
  function init(){
  
- 	if(typeof(root.JSON.commented)=='object'){
+ 	if(typeof(root.JSON.commented)=='undefined'){
  	
 	 	root.JSON.commented={}
 	 	root.JSON.commented.parse=function(jsonString){
