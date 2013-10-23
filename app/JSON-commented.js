@@ -19,7 +19,7 @@
 	 	}
 	 	root.JSON.commented.load=function(jsonFile){
 	 		if(typeof(jsonFile)=='string'){
-	 			if(require('fs').lstatFileSync(jsonFile).isFile){
+	 			if(require('fs').lstatSync(jsonFile).isFile){
 	 				return this.parse(require('fs').readFileSync(jsonFile));
 	 			}else{
 	 				console.log('jsonFile does not exist: '+jsonFile);
