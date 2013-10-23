@@ -27,7 +27,7 @@ function loader(manifestFile,launchMode){
 	
 		var pkgDir=manifest.package_dir;
 	
-		if(require('fs').lstatFileSync(pkgDir).isDirectory()){
+		if(require('fs').lstatSync(pkgDir).isDirectory()){
 			
 			/*Load the application framework (core) packages*/
 			manifest.corePackages.forEach(function(index,array){load_package(pkgDir,pkgName);});

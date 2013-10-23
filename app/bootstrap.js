@@ -36,7 +36,12 @@ root.packages={};
 root.ipc={};
 
 /* Load application configuration data*/
-root.config.app=JSON.commented.load('./app.conf.json');
+const app_conf='./app.conf.json';
+if(require('fs').lstatSync(app_conf).isFile()){
+	root.config.app=JSON.commented.load(app_conf);
+}else{
+	throw new Error('app_conf file not found.  Check '+app_conf);
+}
 /* Load all packages in the manifest.*/
 root.packages.loader=require(root.config.app.packageLoader)('./package.manifest.json',launch_mode);
 
