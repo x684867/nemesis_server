@@ -8,7 +8,7 @@
  function init(){
  
  	if(typeof(root.JSON.commented)=='undefined'){
- 		console.log("loading "+module.filename());
+ 		console.log("loading JSON.commented object");
 	 	root.JSON.commented={}
 	 	root.JSON.commented.parse=function(jsonString){
 	 		if(typeof(jsonString)=='string'){
