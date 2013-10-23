@@ -21,23 +21,25 @@
 	
 	---------------------------------------------------------------------------------
 */
+JSON.commented=require('./JSON-commented.js')();
+
 root.title="Nemesis"
 root.version="2013.10.17.12.52"; /*Update when pushing to master branch.*/
-root.conf_dir='/srv/nemesis/app/';
 
-/* Initialize the framework object tree*/
-root.app={};root.config={};root.error={};root.messages={};root.packages={};root.ipc={};
+var launch_mode=process.argv[2]
+
+root.app={};
+root.config={};
+root.error={};
+root.messages={};
+oot.packages={};
+root.ipc={};
 
 /* Load application configuration data*/
-root.config.app=require(root.conf_dir+'/app.conf.json');
+root.config.app=JSON.commented.load('./app.conf.json');
+/* Load all packages in the manifest.*/
+root.packages.loader=require(root.config.app.packageLoader)('./package.manifest.json',launch_mode);
 
-root.packages.init=require(root.config.app.packageLoader)();
-
-console.log('bootstrap loading types: ');root.packages.load("types");
-console.log('bootstrap loading error: ');root.packages.load("error");
-console.log('bootstrap loading logger: ');root.packages.load("logger");
-console.log('bootstrap loading ipc: ');root.packages.load("ipc");
-console.log('bootstrap loading all packages: ');root.packages.loadall();
 /*
 	Define the application
 */
@@ -48,4 +50,4 @@ root.app.monitor={};
 root.app.monitor.watchdog=root.packages.watchdog.init();
 root.app.monitor.stats=root.packages.stats.init();
 /*Initialize then launch the application with the specified service (using arg[2])*/
-root.app.main(process.argv[2]);
+root.app.main(launch_mode);

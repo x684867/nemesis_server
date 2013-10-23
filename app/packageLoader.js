@@ -6,66 +6,63 @@
 		This file exports an object used to load the packages defined in 
 		root.config.packages (defined by bootstrap.js).
  */
-module.exports=init;
+module.exports=loader;
 /* */
-function init(){
+function loader(manifestFile,launchMode){
+	
+	JSON.commented=require('./JSON-commented.js')();
+	
+	/*Load the JSON manifest file.*/
+	var manifest=JSON.commented.load(manifestFile);
+	
+	/*Make sure the launchMode has an associated serverPackage.*/
+	if(manifest.serverPackages.indexOf(launchMode)==-1){
+		console.log("ERROR! Invalid launch mode: "+launchMode);
+		throw new Error('Invalid Launch Mode');
+	}}
+	
+	root.package={};
+	
+	if(typeof(manifest.package_dir)=='string'){
+	
+		var pkgDir=manifest.package_dir;
+	
+		if(require('fs').lstatFileSync(pkgDir).isDirectory()){
+			
+			/*Load the application framework (core) packages*/
+			manifest.corePackages.forEach(function(index,array){load_package(pkgDir,pkgName);});
+			
+			/*Load the server package.*/
+			load_package(pkgDir,launchMode);
+			
+			/*Load the appPackages*/
+			manifest.appPackages.forEach(function(pkgName){load_package(pkgDir,pkgName);});
+			
+		}else{
+			throw new Error('package_dir does not exist')
+		}
+	}
+}
 
-	/*Inspect the root.config object to validate the Application configuration.*/
-	if(typeof(root.config)!='object') throw new Error('root.config not defined as object');
-	if(typeof(root.config.app)!='object') throw new Error('root.config.app not defined as object');
-	if(typeof(root.config.app.packages)!='string') throw new Error('root.config.app.packages not defined as string');
-	/*Verify that the packages directory (provided by root.config.app.packages) exists.*/
-	if( !require('fs').statSync(root.config.app.packages).isDirectory() ) throw new Error('root.config.app.packages is not a valid directory');
-	/*Initialize root.packages where packages will be loaded.*/
-	root.packages={};
-	root.packages.load=function(pkgName){
-		var fs=require('fs');
-		require('fs').readdirSync(root.config.app.packages).forEach(function(pkgName){
-			if(typeof(root.packages[pkgName])=='undefined'){
-				console.log('package [' + pkgName + '] loading...');
-				/*
-					Load the manifest and determine if there are dependencies.
-				*/
-				var package_path=root.config.app.packages+pkgName + "/";
-				if(fs.statSync(package_path).isDirectory()){
-					console.log('   package_path is a valid directory');
-					
-					root.packages.loadManifest(pkgName).dependencies.forEach(function(p){
-						console.log('     dependency found: '+p);
-						root.packages.load(p);
-					});
-					console.log('     -----Dependencies loaded-----');
-					root.packages[pkgName]={};
-					root.packages.loadConfig(pkgName);
-					root.packages.loadErrors(pkgName);
-					root.messages.loadMessages(pkgName);
-					root.messages.LoadMain(pkgName);
-					console.log('     Package Loaded.');
-				}else{
-					console.log("skipping non-directory: "+package_path);
-				}
-			}else{
-				console.log("package ["+pkgName+"] already loaded.  Skipping...");
-			}
-		});
-	}
-	root.packages.loadManifest=function(pkgName){
-		return require(root.config.app.packages+pkgName + "/manifest.json");
-	}
-	root.packages.loadConfig=function(pkgName){
-	root.config[pkgName]={};
-	root.config[pkgName].config=require(root.config.app.packages+pkgName + "/config.json");
-	}
-	root.packages.loadErrors=function(pkgName){
-		root.error[pkgName]={};
-		root.error[pkgName]=require(root.config.app.packages+pkgName + "/errors-"+process.env.LANG+".json");
-	}
-	root.messages.loadMessages=function(pkgName){
-		root.messages[pkgName]={};
-		root.messages[pkgName]=require(root.config.app.packages+pkgName + "/messages-"+process.env.LANG+".json");
-	}
-	root.messages.LoadMain=function(pkgName){
-		root.packages[pkgName]={};
-		root.packages[pkgName].main=require(root.config.app.packages+pkgName + "/main.js");
+function load_package(packageDirectory,packageName){
+	if(typeof(packageName)=='string'){
+		console.log('loading package ['+packageName+']');
+
+		if(packageDirectory[packageDirectory.length-1] != '/'){
+			packageDirectory+='/';
+		}
+		var p=packageDirectory+packageName;
+		
+		console.log('     loading config');
+		root.config[packageName]=JSON.commented.load(p+'/config.json');
+		console.log('     loading errors strings file');
+		root.errors[packageName]=JSON.commented.load(p+'/errors-'+process.env.LANG+'.json');
+		console.log('     loading the messages strings file');
+		root.errors[packageName]=JSON.commented.load(p+'/messages-'+process.env.LANG+'.json');
+		console.log('     loading the package constructor');
+		root.packages[packageName]=JSON.commented.load(p+'/main.js');
+		console.log('Package has been loaded ['+packageName+']');
+	}else{
+		console.log('packageName type mismatch.  Expected string.');
 	}
 }
