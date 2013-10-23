@@ -21,7 +21,7 @@
 	
 	---------------------------------------------------------------------------------
 */
-JSON.commented=require('./JSON-commented.js')();
+require('./JSON-commented.js')();
 
 root.title="Nemesis"
 root.version="2013.10.17.12.52"; /*Update when pushing to master branch.*/

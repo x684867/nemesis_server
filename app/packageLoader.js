@@ -10,7 +10,7 @@ module.exports=loader;
 /* */
 function loader(manifestFile,launchMode){
 	
-	JSON.commented=require('./JSON-commented.js')();
+	require('./JSON-commented.js')();
 	
 	/*Load the JSON manifest file.*/
 	var manifest=JSON.commented.load(manifestFile);
