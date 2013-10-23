@@ -28,6 +28,9 @@
 	 			console.log('jsonFile is not a string (filename) as expected');
 	 		}
 		}
+		if(typeof(root.JSON.commented)!='object') console.log("failed to create JSON.commented object.");
+		if(typeof(root.JSON.commented.parse)!='function') console.log("failed to create JSON.commented.parse() method.");
+		if(typeof(root.JSON.commented.load)!='function') console.log("failed to create JSON.commented.load() method.");
 	}else{
 		console.log('root.JSON.commented already loaded.');
 	}
