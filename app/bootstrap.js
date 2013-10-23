@@ -36,7 +36,7 @@ root.packages={};
 root.ipc={};
 
 /* Load application configuration data*/
-const app_conf='./app.conf.json';
+const app_conf='/srv/nemesis/app/app.conf.json';
 if(require('fs').lstatSync(app_conf).isFile()){
 	root.config.app=JSON.commented.load(app_conf);
 }else{
