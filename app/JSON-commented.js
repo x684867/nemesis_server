@@ -2,36 +2,31 @@
 	JSON Commented (JSON Object Extension)
 	(c) 2013 Sam Caldwell.  Public Domain
  */
- 
  module.exports=init;
  
  function init(){
  
  	if(typeof(root.JSON.commented)=='undefined'){
- 		console.log("loading JSON.commented object");
-	 	root.JSON.commented={}
-	 	root.JSON.commented.parse=function(jsonString){
-	 		if(typeof(jsonString)=='string'){
-	 			return JSON.parse(jsonString.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm,''));
-	 		}else{
-	 			console.log('jsonString is not a string as expected.');
-	 		}
-	 	}
-	 	root.JSON.commented.load=function(jsonFile){
-	 		if(typeof(jsonFile)=='string'){
-	 			if(require('fs').lstatSync(jsonFile).isFile){
-	 				return this.parse(require('fs').readFileSync(jsonFile));
-	 			}else{
-	 				console.log('jsonFile does not exist: '+jsonFile);
-	 			}
-	 		}else{
-	 			console.log('jsonFile is not a string (filename) as expected');
-	 		}
+	 	JSON.commented={
+		 	parse:function(jsonString){
+	 			if(typeof(jsonString)=='string')
+	 				return JSON.parse(jsonString.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm,''));
+	 			else
+	 				throw new Error('jsonString is not a string as expected.');
+	 		},
+	 		load:function(jsonFile){
+	 			var fs=require('fs');
+	 			if(typeof(jsonFile)=='string')
+	 				if(fs.lstatSync(jsonFile).isFile){
+	 					console.log('jsonFile ['+jsonFile+'] exist!');
+	 					return JSON.commented.parse(fs.readFileSync(jsonFile,{"encoding":"utf8"}));
+	 				}else
+	 					throw new Error('jsonFile does not exist: '+jsonFile);
+	 			else
+	 				throw new Error('jsonFile is not a string (filename) as expected');
+			}
 		}
-		if(typeof(root.JSON.commented)!='object') console.log("failed to create JSON.commented object.");
-		if(typeof(root.JSON.commented.parse)!='function') console.log("failed to create JSON.commented.parse() method.");
-		if(typeof(root.JSON.commented.load)!='function') console.log("failed to create JSON.commented.load() method.");
 	}else{
-		console.log('root.JSON.commented already loaded.');
+		console.log('JSON.commented was already defined.  Not reloading.');
 	}
 }

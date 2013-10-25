@@ -10,16 +10,21 @@ module.exports=loader;
 /* */
 function loader(manifestFile,launchMode){
 	
+	console.log('     loader is starting....');
+	
 	require('./JSON-commented.js')();
 	
 	/*Load the JSON manifest file.*/
-	var manifest=JSON.commented.load(manifestFile);
-	
+	if(require('fs').lstatSync(manifestFile).isFile())
+		var manifest=JSON.commented.load(manifestFile);
+	else
+		throw('manifest file not found ['+manifestFile+'].');
+
 	/*Make sure the launchMode has an associated serverPackage.*/
 	if(manifest.serverPackages.indexOf(launchMode)==-1){
 		console.log("ERROR! Invalid launch mode: "+launchMode);
 		throw new Error('Invalid Launch Mode');
-	}}
+	}
 	
 	root.package={};
 	
@@ -38,9 +43,8 @@ function loader(manifestFile,launchMode){
 			/*Load the appPackages*/
 			manifest.appPackages.forEach(function(pkgName){load_package(pkgDir,pkgName);});
 			
-		}else{
+		}else
 			throw new Error('package_dir does not exist')
-		}
 	}
 }
 
