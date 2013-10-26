@@ -110,7 +110,7 @@ function load_package(packageDirectory,packageName){
 function load_file(pfile){
 
 	var file_content='';
-	console.log("package file ['+pfile+'] loading (load_file)....");
+	console.log("package file ["+pfile+"] loading (load_file)....");
 	if(require('fs').lstatSync(pfile).isFile()){
 		file_content=JSON.commented.load(pfile);
 		console.log('\nFILE LOADED:['+pfile+']');

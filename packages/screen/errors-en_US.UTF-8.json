@@ -1,0 +1,38 @@
+/*
+	Nemesis Global Screen Management Package
+	/srv/nemesis/packages/screen/
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
+	
+	This package creates a global screen management package for writing output through
+	console.log() to the terminal.  The screen object extends the functionality of the
+	console object by adding a process.on('resize') event, line-drawing methods and other
+	pretty output features.
+		
+	USE:
+		root.screen
+		
+	DOCUMENTATION:
+	
+		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Screen
+	
+*/
+{
+	"_name":"screen/errors-en_US.UTF-8.json",
+	"_desc":"Nemesis Global Screen Management Package Error Localization File",
+	
+	"_author":"Sam Caldwell <mail@samcaldwell.net>",
+	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+
+	"success":{
+		"code":0,
+		"type":0,
+		"text":"Success",
+		"_note":"The type is hard-coded 0 since types are not initialized."
+	},
+	"failure":{
+		"code":1,
+		"type":1,
+		"text":"General Failure",
+		"_note":"The type is hard-coded 1 since types are not initialized."
+	}
+}

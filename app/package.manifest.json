@@ -16,6 +16,7 @@
 	*/	
 	"corePackages":[
 		"types",
+		"screen",
 		"error",
 		"logger",
 		"ipc",

@@ -1,9 +1,19 @@
-/* 
-	Nemesis Core Data Type Utility Object
-	/srv/nemesis/core/core.types.js
+/*
+	Nemesis Global Types Management Package
+	/srv/nemesis/packages/types/
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	
-	This file provides type-checking and type-management functionality.
+	This package creates a centralized type-management package for the Nemesis application.
+	Type-checking and generic type-tokenization functionality are provided within this 
+	package for the entire system.
+	
+	USE:
+		root.types
+		
+	DOCUMENTATION:
+	
+		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Types
+	
 */
 {
 	init=function(){
