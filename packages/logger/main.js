@@ -1,38 +1,44 @@
 /*
-	/srv/nemsis/core/core.logger.js
-	Nemesis Logger
+	Nemesis SYSLOG / Console Log Package
+	/srv/nemesis/packages/logger/
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	
-	This file creates a syslog logging tool.
+	This package provides centralized logging for the application/framework
+	through console and SYSLOG by overloading the screen.log() method to 
+	tee writes to screen.log() both to the screen and to the logger's alternate
+	output streams (e.g. log file).
 	
-	Currently only TCP connections are supported.  This will go production with 
-	encrypted communications over TLS (TCP).
-*/
-module.exports=init;
-
-require('util');
-/*
-*/
-function init(source,pid,options){
-	if(!root.types.isString(source))
-		root.error.raise(root.error.logger.init.invalidSourceInput);
-	if(!root.types.isNumber(pid)) 
-		root.error.raise(root.error.logger.init.invalidPID);
-	if((!root.types.isUndefined(options)) && (!root.types.isObject(options)))
-		root.error.raise(root.error.logger.init.invalidOptions);
-	
-	var hasConsole=(isBoolean(options.hasConsole) && (options.hasConsole))?true:false;
-		hasConsole=(isUndefined(options.hasConsole))?true:hasConsole;
 		
-	var hasSyslog=(isBoolean(options.hasSyslog) && (options.hasSyslog))?true:false;
-		hasSyslog=(isUndefined(options.hasSyslog))?false:hasSyslog;
+	USE:
+		root.logger
+		
+	DOCUMENTATION:
 	
-	c=hasConsole?new ConsoleWriter():undefined,
-	s=hasSyslog?new SyslogWriter():undefined
+		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Logger
 	
-	var logWriter=new writerHead(c,s);
-	logWriter.banner(['log initializing','source:'+source+' process PID:'+pid]);
-	return logWriter;
+*/
+{
+	init=function(source,pid,options){
+		if(!root.types.isString(source))
+			root.error.raise(root.error.logger.init.invalidSourceInput);
+		if(!root.types.isNumber(pid)) 
+			root.error.raise(root.error.logger.init.invalidPID);
+		if((!root.types.isUndefined(options)) && (!root.types.isObject(options)))
+			root.error.raise(root.error.logger.init.invalidOptions);
+		
+		var hasConsole=(isBoolean(options.hasConsole) && (options.hasConsole))?true:false;
+			hasConsole=(isUndefined(options.hasConsole))?true:hasConsole;
+			
+		var hasSyslog=(isBoolean(options.hasSyslog) && (options.hasSyslog))?true:false;
+			hasSyslog=(isUndefined(options.hasSyslog))?false:hasSyslog;
+		
+		c=hasConsole?new ConsoleWriter():undefined,
+		s=hasSyslog?new SyslogWriter():undefined
+		
+		var logWriter=new writerHead(c,s);
+		logWriter.banner(['log initializing','source:'+source+' process PID:'+pid]);
+		return logWriter;
+	}
 }
 /*
 */

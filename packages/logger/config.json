@@ -1,3 +1,22 @@
+/*
+	Nemesis SYSLOG / Console Log Package
+	/srv/nemesis/packages/logger/
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
+	
+	This package provides centralized logging for the application/framework
+	through console and SYSLOG by overloading the screen.log() method to 
+	tee writes to screen.log() both to the screen and to the logger's alternate
+	output streams (e.g. log file).
+	
+		
+	USE:
+		root.logger
+		
+	DOCUMENTATION:
+	
+		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Logger
+	
+*/
 {
 	"_name":"logger/config.json",
 	"_desc":"Nemesis Syslog package Configuration",
