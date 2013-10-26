@@ -9,7 +9,7 @@
 		subdirectory for each package.  For example, the "types" package would consist of a subdirectory named
 		/srv/nemesis/packages/types/ which would contain all of the files making up the package.
 	*/
-	"package_dir":"/srv/nemesis/packages",
+	"package_dir":"./packages",
 	/*
 		Core Packages are packages shared by all of the serverPackages.  They are listed in the order in which
 		they must be loaded to satisfy dependency chains.
@@ -47,5 +47,5 @@
 	"appPackages":[
 		"main",
 		"start"
-	],
+	]
 }

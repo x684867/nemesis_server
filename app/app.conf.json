@@ -8,7 +8,7 @@
 	
 	"packageLoader":"./packageLoader.js",
 
-	"packageManifest":"./package.manifest.json",
+	"packageManifest":"./app/package.manifest.json",
 	
 	"packages":"./packages/"
 }

@@ -17,16 +17,18 @@
 	 		load:function(jsonFile){
 	 			var fs=require('fs');
 	 			if(typeof(jsonFile)=='string')
-	 				if(fs.lstatSync(jsonFile).isFile){
+	 				if(fs.lstatSync(jsonFile).isFile()){
 	 					console.log('jsonFile ['+jsonFile+'] exist!');
-	 					return JSON.commented.parse(fs.readFileSync(jsonFile,{"encoding":"utf8"}));
+	 					return JSON.commented.parse(
+	 						fs.readFileSync( jsonFile, {"encoding":"utf8"} )
+	 					);
 	 				}else
-	 					throw new Error('jsonFile does not exist: '+jsonFile);
+	 					throw new Error('     jsonFile does not exist: '+jsonFile);
 	 			else
 	 				throw new Error('jsonFile is not a string (filename) as expected');
 			}
 		}
 	}else{
-		console.log('JSON.commented was already defined.  Not reloading.');
+		console.log('     JSON.commented was already defined.  Not reloading.');
 	}
 }
