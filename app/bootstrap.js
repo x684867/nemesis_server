@@ -30,7 +30,7 @@ if(typeof(launch_mode)!='string') throw new Error('Invalid launch_mode passed to
 
 console.log('Starting ['+app.title+':v'+app.version+'] as '+launch_mode+'...\n\n');
 
-require('./JSON-commented.js')();
+require('./JSON-active.js')();
 
 /* Load application configuration data*/
 const app_conf='./app/app.conf.json';

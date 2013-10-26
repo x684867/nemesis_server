@@ -86,11 +86,21 @@ function load_package(packageDirectory,packageName){
 		if(typeof(root.errors)=='undefined') root.errors={};
 		if(typeof(root.messages)=='undefined') root.messages={};
 		if(typeof(root.packages)=='undefined') root.packages={};
-		
+		console.log('----CONFIG----');		
 		root.config[packageName]=load_file(p+'/config.json');
+		console.log('----ERRORS----');
 		root.errors[packageName]=load_file(p+'/errors-'+process.env.LANG+'.json');
+		console.log('----MESSAGES----');
 		root.messages[packageName]=load_file(p+'/messages-'+process.env.LANG+'.json');
-		root.packages[packageName]=JSON.commented.load(p+'/main.js');
+		console.log('----PKG_MAIN----');
+		root.packages[packageName]=JSON.active.load(p+'/main.js');
+		if(typeof(root.packages[packageName].init)=='function'){
+			console.log('***Package ['+packageName+'] has initializer.  Executing init()');
+			root.packages[packageName].init();
+		}else{
+			console.log('***Package ['+packageName+'] does NOT have an initializer.');
+		}
+		console.log('----DONE----');
 	}else{
 		console.log('packageName type mismatch.  Expected string.');
 	}
@@ -100,13 +110,13 @@ function load_package(packageDirectory,packageName){
 function load_file(pfile){
 
 	var file_content='';
-	console.log("package file loading (load_file)....");
+	console.log("package file ['+pfile+'] loading (load_file)....");
 	if(require('fs').lstatSync(pfile).isFile()){
 		file_content=JSON.commented.load(pfile);
-		console.log('\nLOADING errors strings file');
+		console.log('\nFILE LOADED:['+pfile+']');
 	}else{
-		throw new Error('load_file failed.  missing file: '+pfile);
+		throw new Error('load_file ['+pfile+'] failed.  missing file: '+pfile);
 	}
 	return file_content;	
-	console.log("package file load finished (load_file).");
+	console.log("package file load ["+pfile+"] finished (load_file).");
 }
