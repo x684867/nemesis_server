@@ -34,19 +34,24 @@
 		"type":"warning",
 		"text":"General Failure"
 	},
+	"invalidMessageType":{
+		"code":2,
+		"type":"fatal",
+		"text":"Invalid message type passed into the logger."
+	},
 	"init":{
 		"invalidSourceInput":{
-			"code":2,
+			"code":10,
 			"type":"fatal",
 			"text":"Invalid source parameter passed to init().  Expected string."
 		},
 		"invalidPID":{
-			"code":3,
+			"code":11,
 			"type":"fatal",
 			"text":"Invalid PID parameter passed to init().  Expected number."
 		},
 		"invalidOptions":{
-			"code":4,
+			"code":12,
 			"type":"fatal",
 			"text":"Invalid options object passed to init().  Expected JSON object."
 		}

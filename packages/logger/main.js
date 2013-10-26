@@ -19,6 +19,19 @@
 */
 {
 	init=function(source,pid,options){
+		if(validate_configuration()){
+			root.logger={
+				log:function(o){
+					switch(typeof(o)){
+						'string':
+						'object':
+						default:
+							root.error.raise(root.error.logger.invalidMessageType);
+					}
+				}
+			}; 
+	
+	
 		if(!root.types.isString(source))
 			root.error.raise(root.error.logger.init.invalidSourceInput);
 		if(!root.types.isNumber(pid)) 
