@@ -1,7 +1,6 @@
 nemesis_server
 ==============
 
-<<<<<<< HEAD
 Branching
 --------------------------------------------------------------------------------------
 *Master: Current Production / Staging code
@@ -63,4 +62,3 @@ Nemesis servers (audit, broker, cipher, keys)
   to maintain synchronization between dev, qa, stage and
   prod environments over time--reducing the amount of 
   problems during the project lifetime.
->>>>>>> a72eb8640b2cd93f4abd898718a083969261d46d
