@@ -23,13 +23,17 @@
 			root.logger={
 				log:function(o){
 					switch(typeof(o)){
-						'string':
-						'object':
+						case 'string':
+						case 'object':
 						default:
 							root.error.raise(root.error.logger.invalidMessageType);
 					}
 				}
+				
 			}; 
+			root.syslog={
+			
+			};
 	
 	
 		if(!root.types.isString(source))
