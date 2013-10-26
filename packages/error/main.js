@@ -29,30 +29,29 @@
 function evaluate_error(errorJSON,detail){
 	root.screen.drawDoubleLine();
 	switch(typeof(errorJSON)){
-			case "object":
-				root.screen.log("      CODE:"+errorJSON.code);
-				root.screen.log("   MESSAGE:"+errorJSON.text);
-				if(typeof(detail)=='string') root.screen.log("    DETAIL:"+detail);  
-				if((typeof(errorJSON.code.fatal)=='boolean') && errorJSON.code.fatal ){
-					root.screen.log("----STACK TRACE----");
-					console.trace();
-					/*
-						Need a debugging stack trace.
-					*/
-					process.exit(errorJSON.code);
-				}
-				break;
-				
-			case "string":
-			case "number":
-			case "boolean":
-				root.screen.log("   MESSAGE:"+errorJSON);
-				break;
-				
-			default:
-				root.screen.log("   UNEXPECTED ERROR TYPE:"+typeof(e));
-				root.screen.log("   MESSAGE:"+errorJSON);
-				break;
-		}
+		case "object":
+			root.screen.log("      CODE:"+errorJSON.code);
+			root.screen.log("   MESSAGE:"+errorJSON.text);
+			if(typeof(detail)=='string') root.screen.log("    DETAIL:"+detail);  
+			if((typeof(errorJSON.code.fatal)=='boolean') && errorJSON.code.fatal ){
+				root.screen.log("----STACK TRACE----");
+				console.trace();
+				/*
+					Need a debugging stack trace.
+				*/
+				process.exit(errorJSON.code);
+			}
+			break;
+			
+		case "string":
+		case "number":
+		case "boolean":
+			root.screen.log("   MESSAGE:"+errorJSON);
+			break;
+			
+		default:
+			root.screen.log("   UNEXPECTED ERROR TYPE:"+typeof(e));
+			root.screen.log("   MESSAGE:"+errorJSON);
+			break;
 	}
 }
