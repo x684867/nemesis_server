@@ -18,42 +18,52 @@
 	
 */
 {
-	"_name":"logger/errors-en_US.UTF-8.json",
-	"_desc":"Nemesis Error Localization File",
-	
-	"_author":"Sam Caldwell <mail@samcaldwell.net>",
-	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
-
-	"success":{
-		"code":0,
-		"type":"success",
-		"text":"Success"
-	},
-	"failure":{
-		"code":1,
-		"type":"warning",
-		"text":"General Failure"
-	},
-	"invalidMessageType":{
-		"code":2,
-		"type":"fatal",
-		"text":"Invalid message type passed into the logger."
-	},
 	"init":{
-		"invalidSourceInput":{
-			"code":10,
-			"type":"fatal",
-			"text":"Invalid source parameter passed to init().  Expected string."
+		"invalidConfig":{
+			"syslog":{
+				"code":1,
+				"type":"fatal",
+				"text":"Syslog object in the configuration is not valid."
+			},
+			"syslogIp":{
+				"code":2,
+				"type":"fatal",
+				"text":"Syslog IP address is invalid."
+			},
+			"syslogPort":{
+				"code":3,
+				"type":"fatal",
+				"text":"Syslog TCP Port is invalid."
+			},
+			"syslogTLS":{
+				"code":4,
+				"type":"fatal",
+				"text":"Syslog TLS object is not valid."
+			},
+			"syslogTLSkey":{
+				"code":5,
+				"type":"fatal",
+				"text":"Syslog TLS Private Key is not valid."
+			},
+			"syslogTLScert":{
+				"code":6,
+				"type":"fatal",
+				"text":"Syslog TLS Certificate is not valid."
+			},
+			"syslogTLSca":{
+				"code":7,
+				"type":"fatal",
+				"text":"Syslog TLS CA Certificate is not valid."
+			}
 		},
-		"invalidPID":{
-			"code":11,
-			"type":"fatal",
-			"text":"Invalid PID parameter passed to init().  Expected number."
-		},
-		"invalidOptions":{
-			"code":12,
-			"type":"fatal",
-			"text":"Invalid options object passed to init().  Expected JSON object."
+		"missingInput":{
+			
 		}
+	},
+	"constructor":{
+	
+	},
+	"log":{
+	
 	}
 }

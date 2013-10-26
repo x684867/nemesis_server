@@ -15,98 +15,69 @@
 	DOCUMENTATION:
 	
 		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Logger
-	
+
 */
 {
-	init=function(source,pid,options){
+	init=function(source,pid){
 		if(validate_configuration()){
-			root.logger={
-				log:function(o){
-					switch(typeof(o)){
-						case 'string':
-						case 'object':
-						default:
-							root.error.raise(root.error.logger.invalidMessageType);
-					}
-				}
+			
+			/*Create the global logger if not already defined*/
+			if(root.types.isUndefined(root.logger)){
+			
+				screen.log("     global logger not found....creating [pid:"+process.pid+"]");
+				root.logger=new logger_class(root.app.title,process.pid);
 				
-			}; 
-			root.syslog={
+			}else{
 			
-			};
-	
-	
-		if(!root.types.isString(source))
-			root.error.raise(root.error.logger.init.invalidSourceInput);
-		if(!root.types.isNumber(pid)) 
-			root.error.raise(root.error.logger.init.invalidPID);
-		if((!root.types.isUndefined(options)) && (!root.types.isObject(options)))
-			root.error.raise(root.error.logger.init.invalidOptions);
-		
-		var hasConsole=(isBoolean(options.hasConsole) && (options.hasConsole))?true:false;
-			hasConsole=(isUndefined(options.hasConsole))?true:hasConsole;
+				screen.log("     global logger exists.");
+				
+			}		
+			if(root.types.isString(source) || root.types.isNumber(pid)){
 			
-		var hasSyslog=(isBoolean(options.hasSyslog) && (options.hasSyslog))?true:false;
-			hasSyslog=(isUndefined(options.hasSyslog))?false:hasSyslog;
-		
-		c=hasConsole?new ConsoleWriter():undefined,
-		s=hasSyslog?new SyslogWriter():undefined
-		
-		var logWriter=new writerHead(c,s);
-		logWriter.banner(['log initializing','source:'+source+' process PID:'+pid]);
-		return logWriter;
-	}
-}
-/*
-*/
-function ConsoleWriter(){
-	this.write=function(timestamp,text){console.log('['+timestamp+']:'+text);};
-}
-/*
-*/
-function SyslogWriter(){
-	this.write=function(timestamp,text){/*Not implemented*/};
-}
-/*
-*/
-function writerHead(consoleWriter,syslogWriter){
-
-	this.write=function(text){
-		var timestamp=(new Date).toISOString();
-		if(consoleWriter) consoleWriter.write(timestamp,text);
-		if(syslogWriter)  syslogWriter.write(timestamp,text);
-	}
-	
-	this.drawLine=function(){
-		var lineText=Array(root.config.logger.width).join('-');
-		this.write(lineText);
-	}
-	
-	this.drawDoubleLine=function(){
-		var lineText=Array(root.config.logger.width).join('=');
-		this.write(lineText);
-	}
-	
-	this.banner=function(text){
-		this.drawLine();
-		if(isArray(text)){
-			text.forEach(function(d,i,a){
-				this.write("("+i+")"+d);
-			});
+				screen.log("     local logger ["+source+"] for process [pid:"+pid+"] requested.");
+				return new logger_class(source,pid);
+				
+			}else{
+			
+				error.warn("Invalid inputs...diagnosing....");
+				if(!root.types.isString(source))
+					raise(root.errors.logger.init.missingInput.Source);
+				else
+					raise(root.errors.logger.init.missingInput.PID);
+			}
+			/* */
 		}else{
-			this.write(text);
-		}
-		this.drawDoubleLine();
-	}
-	this.error=function(errorJSON,errorObj){
-		this.write("["+errorJSON.code+"]:"+errorJSON.message);
-		if(data.type.isObject(errorObj)){
-			this.write(
-				 "EXCEPTION:\n"
-				+"\n\t["+exceptionObject.code+"]:"
-						+exceptionObject.message+"\n"
-			);
+		
+			root.error.warn("Invalid package configuration file...diagnosing....");
+			
+			switch(validate_configuration){
+				case messages.logger.validate.codes.invalidConfig.syslog:
+					errors.raise(errors.logger.init.invalidConfig.syslog);break;
+				case messages.logger.validate.codes.invalidConfig.syslogIp:
+					errors.raise(errors.logger.init.invalidConfig.syslogIp);break;
+				case messages.logger.validate.codes.invalidConfig.syslogPort:
+					errors.raise(errors.logger.init.invalidConfig.syslogPort);break;
+				case messages.logger.validate.codes.invalidConfig.syslogTLS:
+					errors.raise(errors.logger.init.invalidConfig.syslogTLS);break;
+				case messages.logger.validate.codes.invalidConfig.syslogTLSkey:
+					errors.raise(errors.logger.init.invalidConfig.syslogTLSkey);break;
+				case messages.logger.validate.codes.invalidConfig.syslogTLScert:
+					errors.raise(errors.logger.init.invalidConfig.syslogTLScert);break;
+				case messages.logger.validate.codes.invalidConfig.syslogTLSca:
+					errors.raise(errors.logger.init.invalidConfig.syslogTLSca);break;
+				default:
+					errors.raise(errors.logger.init.invalidConfig.unknown);break;
+			}/*end of switch*/			
 		}
 	}
 }
+
+function logger(source.pid){
+
+
+}
+
+function validate_configuration(){
+
+}	
 
