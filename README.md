@@ -1,6 +1,7 @@
 nemesis_server
 ==============
 
+<<<<<<< HEAD
 Branching
 --------------------------------------------------------------------------------------
 *Master: Current Production / Staging code
@@ -47,3 +48,19 @@ Diary
 
 
 
+=======
+Nemesis servers (audit, broker, cipher, keys)
+
+*Status (master branch) 14 October 2013: Not operational.  
+  Work is in the Development branch but this branch will
+  only deploy servers and setup a foundation for the 
+  application.
+
+  This is part of my DevOps-first philosophy, where the 
+  beginning of any project should be establishing a very
+  solid and reproducible platform before developing the 
+  application.  By doing this, the project is guaranteed
+  to maintain synchronization between dev, qa, stage and
+  prod environments over time--reducing the amount of 
+  problems during the project lifetime.
+>>>>>>> a72eb8640b2cd93f4abd898718a083969261d46d
