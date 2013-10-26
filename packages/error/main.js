@@ -20,47 +20,21 @@
 {
 	init=function(){
 		root.error.raise=function(errorJSON,detail){ evaluate_error(errorJSON,detail); }
-		root.error.warn=function(message){ display_error(message);}
-		root.error.write_log(message){console.log(message);/*Generic output method for overloading.*/}
-		
-		process.stdout.on('resize'
-		
+		root.error.warn=function(message){screen.log("WARNING! "+message);}	
 	}
 }
 
-var util=require('util');
+/*----------------*/
 
-const timestamp_width=19;
-/*
-	timestamp_width is determined by
-	
-	1. require('util').log('');
-	2. copy the result (below, see #3)
-	3. Execute the following for size...
-	
-			'25 Oct 22:08:56 - '.length +1
-			
-	4. Add one for \n presumed.
-*/
-
-function get_default_timestamp(){
-	var d=new Date();
-	
-function drawDoubleLine(){util.log(Array(process.stdout.columns - timestamp_width));}
-function drawSingleLine(){util.log(Array(process.stdout.columns - timestamp_width));}
-function display_error(message){
-
-}
 function evaluate_error(errorJSON,detail){
-	var util=require('util');
-	util.log(Array(60).join('=')+"\nERROR:");
+	root.screen.drawDoubleLine();
 	switch(typeof(errorJSON)){
 			case "object":
-				util.log("      CODE:"+errorJSON.code);
-				util.log("   MESSAGE:"+errorJSON.text);
-				if(typeof(detail)=='string') util.log("    DETAIL:"+detail);  
+				root.screen.log("      CODE:"+errorJSON.code);
+				root.screen.log("   MESSAGE:"+errorJSON.text);
+				if(typeof(detail)=='string') root.screen.log("    DETAIL:"+detail);  
 				if((typeof(errorJSON.code.fatal)=='boolean') && errorJSON.code.fatal ){
-					util.log("----STACK TRACE----");
+					root.screen.log("----STACK TRACE----");
 					console.trace();
 					/*
 						Need a debugging stack trace.
@@ -72,12 +46,12 @@ function evaluate_error(errorJSON,detail){
 			case "string":
 			case "number":
 			case "boolean":
-				util.log("   MESSAGE:"+errorJSON);
+				root.screen.log("   MESSAGE:"+errorJSON);
 				break;
 				
 			default:
-				util.log("   UNEXPECTED ERROR TYPE:"+typeof(e));
-				util.log("   MESSAGE:"+errorJSON);
+				root.screen.log("   UNEXPECTED ERROR TYPE:"+typeof(e));
+				root.screen.log("   MESSAGE:"+errorJSON);
 				break;
 		}
 	}
