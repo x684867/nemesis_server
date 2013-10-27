@@ -47,12 +47,21 @@ if(require('fs').lstatSync(app_conf).isFile()){
 console.log('loader:  '+typeof(root.config.packageLoader));
 console.log('manifest:'+typeof(root.config.packageManifest));
 console.log('CALLING LOADER...');
+root.packages={};
 root.packages.loader=require(root.config.packageLoader)(root.config.packageManifest,launch_mode);
 console.log('...RETURNED FROM LOADER.');
 /*
 	Define the application
 */
-root.app.log=root.packages.logger.init(package.filename,process.pid,{"console":true,"syslog":true});
+console.log("testing logger...");
+
+if(root.type.isUndefined(root.logger)){
+	console.log("root.logger is undefined");
+}else{
+	console.log("root.logger is defined");
+}
+
+
 root.app.main=root.packages.main.init();
 root.app.start=root.packages.start.init();
 root.app.monitor={};

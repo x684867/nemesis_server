@@ -21,14 +21,14 @@
 		"logger",
 		"ipc",
 		"process",
-		"web",
+		"web"/*,
 		"worker",
 		"storeServer",
 		"storeClient",
 		"marco",
 		"polo",
 		"stats",
-		"watchdog"
+		"watchdog"*/
 	],
 	/*
 		The serverPackages are what this entire framework is built for.  They must be loaded in the second

@@ -16,6 +16,7 @@
 	
 */
 {
+	"debug":true,
 	"syslog":{
 		"facilities":[	
 			"kern","user","mail","daemon","auth","syslog","lpr","news","uucp","clock",

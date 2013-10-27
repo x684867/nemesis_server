@@ -1,9 +1,21 @@
-{
-	"_name"		:"app.conf.json",
-	"_desc"		:"Nemesis Application Configuration File",
-	"_author"	:"Sam Caldwell <mail@samcaldwell.net>",
-	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
+/*
+	Nemesis Application Configuration
+	/srv/nemesis/app/app.conf.json
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
+	
+	This is the main configuration for the Nemesis application which determines
+	how the application loads and configures itself.
+	
+	USE:
+		root.config
 		
+	DOCUMENTATION:
+	
+		See https://github.com/x684867/nemesis_server/wiki/Framework:-App:Config
+	
+*/
+{
+	
 	"language"	:"en-US.UTF-8",
 	
 	"packageLoader":"./packageLoader.js",

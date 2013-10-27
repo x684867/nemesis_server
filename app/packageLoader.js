@@ -86,21 +86,39 @@ function load_package(packageDirectory,packageName){
 		if(typeof(root.errors)=='undefined') root.errors={};
 		if(typeof(root.messages)=='undefined') root.messages={};
 		if(typeof(root.packages)=='undefined') root.packages={};
+		
 		console.log('----CONFIG----');		
 		root.config[packageName]=load_file(p+'/config.json');
+		
 		console.log('----ERRORS----');
 		root.errors[packageName]=load_file(p+'/errors-'+process.env.LANG+'.json');
+		
 		console.log('----MESSAGES----');
 		root.messages[packageName]=load_file(p+'/messages-'+process.env.LANG+'.json');
+		
 		console.log('----PKG_MAIN----');
-		root.packages[packageName]=JSON.active.load(p+'/main.js');
+		root.packages[packageName]=require("../"+p+'/main.js');
+			
+		console.log("+++++++++++++++++++++++++++++++++++++++");
+		console.log("content:\n"+root.packages[packageName].toString())
+		console.log("+++++++++++++++++++++++++++++++++++++++\nExecuting this object");
+		
+		root.packages[packageName]();
+		
+		console.log("+++++++++++++++++++++++++++++++++++++++");
+		process.exit(1)
+		//if(typeof(root.packages[packageName])!='object') throw new Error('Invalid package object:');
+		
+		
 		if(typeof(root.packages[packageName].init)=='function'){
 			console.log('***Package ['+packageName+'] has initializer.  Executing init()');
 			root.packages[packageName].init();
 		}else{
 			console.log('***Package ['+packageName+'] does NOT have an initializer.');
 		}
+		
 		console.log('----DONE----');
+	
 	}else{
 		console.log('packageName type mismatch.  Expected string.');
 	}

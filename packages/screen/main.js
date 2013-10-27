@@ -30,6 +30,7 @@
 			The screen features...
 		*/
 		root.screen={}
+		
 		root.screen.write=function(message){console.log(message);}
 		root.screen.log=function(message){root.screen.write(root.screen.now()+message);}
 		

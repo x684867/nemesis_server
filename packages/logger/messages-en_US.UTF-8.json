@@ -23,17 +23,17 @@
 		pass returns between functions 
 		symbolically.
 	 */
-	validate:{
-		codes:{
-			invalidConfig:{
-				unknown:1,
-				syslog:100,
-				syslogIp:101,
-				syslogPort:102,
-				syslogTLS:110,
-				syslogTLSkey:111,
-				syslogTLScert:112,
-				syslogTLSca:113
+	"validate":{
+		"codes":{
+			"invalidConfig":{
+				"unknown"			:1,
+				"syslog"			:100,
+				"syslogIp"			:101,
+				"syslogPort"		:102,
+				"syslogTLS"			:110,
+				"syslogTLSkey"		:111,
+				"syslogTLScert"		:112,
+				"syslogTLSca"		:113
 			}
 		}
 	}
