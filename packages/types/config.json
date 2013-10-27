@@ -23,5 +23,6 @@
 			"local2","local3","local4","local5","local6","local7"
 		],
 		"priorities":["emerg","alert","crit","err","warn","notice","info","debug"]
-	}
+					/*   0        1      2     3      4       5       6      7   */
+ 	}
 }

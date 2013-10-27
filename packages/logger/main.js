@@ -34,10 +34,13 @@
 		loggerClass=require('./packages/logger/loggerClass.js');
 
 		if(types.isUndefined(root.logger)){
-
 			/*Create the system global logger instance if it doesn't exist.*/
-			root.logger=new loggerClass('app',process.pid);
-
+			root.logger=new loggerClass(
+										'app',
+										process.pid,
+										types.syslog.priority.warn,
+										types.syslog.facility.local1
+			);
 		}
 		if( types.isString(source) &&
 			types.isNumber(pid) &&
@@ -45,7 +48,12 @@
 			types.isSyslogFacility(facility)
 		){
 			/*Create a local logger instance if the arguments don't exist.*/
-			return new loggerClass(source,pid,priority,facility);
+			return new loggerClass(
+									source,
+									pid,
+									priority,
+									facility
+			);
 		}else{
 			root.error.raise(error.logger.init.invalidInput);
 		}

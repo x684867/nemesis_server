@@ -7,7 +7,6 @@
 	through console and SYSLOG by overloading the screen.log() method to 
 	tee writes to screen.log() both to the screen and to the logger's alternate
 	output streams (e.g. log file).
-	
 		
 	USE:
 		root.logger
@@ -15,48 +14,18 @@
 	DOCUMENTATION:
 	
 		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Logger
-	
 */
 {
 	"screen":{
-		/*
-			minDisplayPriority determines the minimum display 
-			priority level below which traffic will be sent
-			to the screen.
-		*/
 		"minDisplayPriority":4
 	},
-	/*
-		syslog:{...} defines the syslog client configuration for
-		communications with a syslog server.
-		
-		ip	:	IPv4 address
-		port:	TCP port number syslog server is listening on.
-		tls	:	TLS Encryption configuration (cleartext syslog is not supported)
-	*/
 	"syslog":{
-		/*
-			minSyslogPriority determines the minimum syslog
-			priority level below which traffic will be sent
-			to the syslog client.
-		*/
 		"minDisplayPriority":4,
 		"ip":"127.0.0.1",
 		"port":514,
 		"tls":{
-			/*
-				TLS provides for client-side authentication.
-				This means that each SYSLOG client must have
-				a SYSLOG client TLS certificate with which
-				the client will authenticate to the server.
-			*/
 			"key":"/etc/ssl/private/syslog_client.key",
 			"cert":"/etc/ssl/certs/syslog_client.cert",
-			/*
-				Even in the case of self-signed certificates,
-				the client must have the server's CA certificate
-				in order to prove the chain of trust.
-			*/
 			"ca":"/etc/ssl/certs/syslog_server.ca.cert"
 		}
 	}
