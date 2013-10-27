@@ -52,6 +52,6 @@
 			}
 		},
 		root.config.types.syslog.priorities.forEach(function(p,i,a){root.types.syslog.priority[p]=i;});
-		root.config.types.syslog.facilities.forEach(function(p,i,a){root.types.priority.priority[p]=i;});
+		root.config.types.syslog.facilities.forEach(function(p,i,a){root.types.syslog.faclity[p]=i;});
 	}	
 }
