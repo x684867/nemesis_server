@@ -27,12 +27,6 @@
 			"success":"success",
 			"warning":"warning",
 			"failure":"fatal",
-	
-			"tobj":'object',
-			"tstr":'string',
-			"tnum":'number',
-			"tbool":'boolean',
-			"tfunc":'function',
 		
 			isArray:function(o){	return root.type.isObject(o) && root.type.isFunction(0);},
 			isBoolean:function(o){	return (typeof(o)=='boolean')?true:false;				},
