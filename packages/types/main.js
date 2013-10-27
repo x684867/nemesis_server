@@ -27,6 +27,7 @@
 			"success":"success",
 			"warning":"warning",
 			"failure":"fatal",
+			"notfound":-1,
 		
 			isArray:function(o){	return root.type.isObject(o) && root.type.isFunction(0);},
 			isBoolean:function(o){	return (typeof(o)=='boolean')?true:false;				},
@@ -43,7 +44,12 @@
 				return test(new RegExp(/\X[0-9a-f]{3}\-[0-9a-f]{4}\-[0-9a-f]{4}/));
 				/*Needs work to check and see if the UUID exists in the index.*/
 			},
-	
+			isSyslogPriority:function(o){
+				return (root.config.types.syslog.priorities.indexOf(o)==root.type.notfound)?false:true;
+			},
+			isSyslogFacility:function(o){
+				return (root.config.types.syslog.facilities.indexOf(o)==root.type.notfound)?false:true;
+			}
 		}
 	}	
 }
