@@ -22,7 +22,7 @@ module.exports=function(){
 		console.log("----------------------------");
 		console.log("    TYPES CONFIG:");	
 		console.log("----------------------------");
-		console.dir(root.config.types.syslog);	
+		console.dir(root.config.types);	
 		console.log("----------------------------");
 	}
 		

@@ -1,3 +1,4 @@
+
 /*
 	Nemesis Global Error Handler Package
 	/srv/nemesis/packages/error/
@@ -18,9 +19,5 @@
 	
 */
 {
-	"_name":"error/config.json",
-	"_desc":"Nemesis Error Handler package",
-	
-	"_author":"Sam Caldwell <mail@samcaldwell.net>",
-	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved."
+	"debug":true
 }

@@ -17,39 +17,48 @@
 		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Error
 	
 */
-{
-	init=function(){
-		root.error.raise=function(errorJSON,detail){ evaluate_error(errorJSON,detail); }
-		root.error.warn=function(message){screen.log("WARNING! "+message);}	
-	}
-}
+module.exports=function(){
 
-function evaluate_error(errorJSON,detail){
-	root.screen.drawDoubleLine();
-	switch(typeof(errorJSON)){
-		case "object":
+	if((typeof(root.config.error.debug)=='boolean')&&(root.config.types.debug)){
+		console.log("starting error constructor.");
+		console.log("----------------------------");
+		console.log("    ERROR CONFIG:");	
+		console.log("----------------------------");
+		console.dir(root.config.error);	
+		console.log("----------------------------");
+	}
+
+		
+	root.error.warn=function(message){
+		screen.log("WARNING! "+message);
+	};
+		
+	root.error.raise=function(errorJSON,detail){ 
+		root.screen.drawDoubleLine();
+		if(isObject(errorJSON)){
 			root.screen.log("      CODE:"+errorJSON.code);
 			root.screen.log("   MESSAGE:"+errorJSON.text);
 			if(typeof(detail)=='string') root.screen.log("    DETAIL:"+detail);  
 			if((typeof(errorJSON.code.fatal)=='boolean') && errorJSON.code.fatal ){
-				root.screen.log("----STACK TRACE----");
 				console.trace();
-				/*
-					Need a debugging stack trace.
-				*/
-				process.exit(errorJSON.code);
+				if(errorJSON.type=='fatal'){
+					process.exit(errorJSON.code);
+				}else{
+					root.screen.log("ERROR IS NON-FATAL!  Type:"+errorJSON.type);
+				}
 			}
-			break;
-			
-		case "string":
-		case "number":
-		case "boolean":
-			root.screen.log("   MESSAGE:"+errorJSON);
-			break;
-			
-		default:
+		}else{
 			root.screen.log("   UNEXPECTED ERROR TYPE:"+typeof(e));
 			root.screen.log("   MESSAGE:"+errorJSON);
-			break;
+		}
 	}
+	
+	if((typeof(root.config.error.debug)=='boolean')&&(root.config.error.debug)){
+		console.log("----------------------------");
+		console.log("    ERROR PACKAGE:");	
+		console.log("----------------------------");
+		console.dir(root.error);	
+		console.log("----------------------------");
+	}	
 }
+

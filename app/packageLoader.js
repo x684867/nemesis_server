@@ -12,19 +12,21 @@ function loader(manifestFile,launchMode){
 	
 	var fs=require('fs');
 	
-	console.log('     loader is starting....');
+	if(root.config.debug) console.log('     loader is starting....');
 	
 	require('./JSON-commented.js')();
 	
 	/*Load the JSON manifest file.*/
-	console.log("     verifying manifest before loading:"+manifestFile);
+	if(root.config.debug) console.log("     verifying manifest before loading:"+manifestFile);
 	if(fs.lstatSync(manifestFile).isFile()){
-		console.log("          loading...");
+		if(root.config.debug) console.log("          loading...");
 		var manifest=JSON.commented.load(manifestFile);
-		console.log("          returning from manifest load.");
-		console.log(" manifest:"+typeof(manifest));
-		console.dir(manifest);
-		console.log(" ---------------------------");
+		if(root.config.debug){
+			console.log("          returning from manifest load.");
+			console.log(" manifest:"+typeof(manifest));
+			console.dir(manifest);
+			console.log(" ---------------------------");
+		}
 	}else
 		throw('manifest file not found ['+manifestFile+'].');
 
@@ -39,13 +41,14 @@ function loader(manifestFile,launchMode){
 	
 	if(typeof(manifest.package_dir)=='string'){
 	
-		console.log('manifest.package_dir ['+manifest.package_dir+'] is a valid (string) data type.');
+		if(root.config.debug)
+			console.log('manifest.package_dir ['+manifest.package_dir+'] is a valid (string) data type.');
 	
 		var pkgDir=manifest.package_dir;
 	
 		if(fs.lstatSync(manifest.package_dir).isDirectory()){
 			
-			console.log("     package_dir exists!");
+			if(root.config.debug) console.log("     package_dir exists!");
 					
 			/*Load the application framework (core) packages*/
 			manifest.corePackages.forEach(function(pkgName,index,array){load_package(manifest.package_dir,pkgName);});
@@ -66,70 +69,72 @@ function load_package(packageDirectory,packageName){
 
 	var fs=require('fs');
 
-	console.log("LOADING PACKAGE! ["+packageDirectory+", "+packageName+"]");
+	if(root.config.debug) console.log("LOADING PACKAGE! ["+packageDirectory+", "+packageName+"]");
 	if(typeof(packageName)=='string'){
-		console.log('LOADING PACKAGE ['+packageName+']');
+		if(root.config.debug) console.log('LOADING PACKAGE ['+packageName+']');
 
 		if(packageDirectory[packageDirectory.length-1] != '/'){
-			console.log('     Appending a trailing slash(/) character');
+			if(root.config.debug) console.log('     Appending a trailing slash(/) character');
 			packageDirectory+='/';
 		}else{
-			console.log('     NOT Appending a trailing slash(/) character');
+			if(root.config.debug) console.log('     NOT Appending a trailing slash(/) character');
 		}
 		
 		var p=packageDirectory+packageName;
 		var pfile;/*reusable package filename*/
 		
-		console.log('\nLOADING config ['+p+']');
+		if(root.config.debug) console.log('\nLOADING config ['+p+']');
 		
 		if(typeof(root.config)=='undefined') root.config={};
 		if(typeof(root.errors)=='undefined') root.errors={};
 		if(typeof(root.messages)=='undefined') root.messages={};
 		if(typeof(root.packages)=='undefined') root.packages={};
 		
-		console.log('----CONFIG----');		
+		if(root.config.debug) console.log('----CONFIG----');		
 		root.config[packageName]=load_file(p+'/config.json');
 		
-		console.log('----ERRORS----');
+		if(root.config.debug) console.log('----ERRORS----');
 		root.errors[packageName]=load_file(p+'/errors-'+process.env.LANG+'.json');
 		
-		console.log('----MESSAGES----');
+		if(root.config.debug) console.log('----MESSAGES----');
 		root.messages[packageName]=load_file(p+'/messages-'+process.env.LANG+'.json');
 		
-		console.log('----PKG_MAIN----');
+		if(root.config.debug) console.log('----PKG_MAIN----');
 		root.packages[packageName]=require("../"+p+'/main.js');
 			
-		console.log("+++++++++++++++++++++++++++++++++++++++");
-		console.log("content:\n"+root.packages[packageName].toString())
-		console.log("+++++++++++++++++++++++++++++++++++++++\nExecuting this object");
+		if(root.config.debug){
+			console.log("+++++++++++++++++++++++++++++++++++++++");
+			console.log("content:\n"+root.packages[packageName].toString())
+			console.log("+++++++++++++++++++++++++++++++++++++++\nExecuting this object");
+		}
 		
 		root.packages[packageName]();	
 		
 		if(typeof(root.packages[packageName].init)=='function'){
-			console.log('***Package ['+packageName+'] has initializer.  Executing init()');
+			if(root.config.debug) console.log('***Package ['+packageName+'] has initializer.  Executing init()');
 			root.packages[packageName].init();
 		}else{
-			console.log('***Package ['+packageName+'] does NOT have an initializer.');
+			if(root.config.debug) console.log('***Package ['+packageName+'] does NOT have an initializer.');
 		}
 		
-		console.log('----DONE----');
+		if(root.config.debug) console.log('----DONE----');
 	
 	}else{
-		console.log('packageName type mismatch.  Expected string.');
+		if(root.config.debug) console.log('packageName type mismatch.  Expected string.');
 	}
-	console.log('load_package() is completed.');
+	if(root.config.debug) console.log('load_package() is completed.');
 }
 
 function load_file(pfile){
 
 	var file_content='';
-	console.log("package file ["+pfile+"] loading (load_file)....");
+	if(root.config.debug) console.log("package file ["+pfile+"] loading (load_file)....");
 	if(require('fs').lstatSync(pfile).isFile()){
 		file_content=JSON.commented.load(pfile);
-		console.log('\nFILE LOADED:['+pfile+']');
+		if(root.config.debug) console.log('\nFILE LOADED:['+pfile+']');
 	}else{
 		throw new Error('load_file ['+pfile+'] failed.  missing file: '+pfile);
 	}
 	return file_content;	
-	console.log("package file load ["+pfile+"] finished (load_file).");
+	if(root.config.debug) console.log("package file load ["+pfile+"] finished (load_file).");
 }
