@@ -17,7 +17,7 @@
 
 */
 {
-	init=function(source,priority,facility, pid){
+	init=function(source,pid,priority,facility){
 		/*Validate the configuration file*/
 		switch(false){
 			case types.isObject(config.logger.syslog):			errors.raise(errors.logger.init.invalidConfig.syslog);			break;
@@ -34,11 +34,20 @@
 		loggerClass=require('./packages/logger/loggerClass.js');
 
 		if(types.isUndefined(root.logger)){
+
+			/*Create the system global logger instance if it doesn't exist.*/
 			root.logger=new loggerClass('app',process.pid);
+
 		}
-		if(	types.isString(source) && types.isNumber(pid)){ 
-			return new loggerClass(source,pid);
-			screen.log('creating local logger');
+		if( types.isString(source) &&
+			types.isNumber(pid) &&
+			types.isSyslogPriority(priority) &&
+			types.isSyslogFacility(facility)
+		){
+			/*Create a local logger instance if the arguments don't exist.*/
+			return new loggerClass(source,pid,priority,facility);
+		}else{
+			root.error.raise(error.logger.init.invalidInput);
 		}
 	}
 }

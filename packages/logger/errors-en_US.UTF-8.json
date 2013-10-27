@@ -19,6 +19,11 @@
 */
 {
 	"init":{
+		"invalidInput":{
+			"code":1,
+			"type":"fatal",
+			"text":"Invalid input passed to logger/main.js init() method."
+		},
 		"invalidConfig":{
 			"unknown":{
 				"code":10,
@@ -119,8 +124,5 @@
 			"type":"fatal",
 			"text":"Invalid syslog facility value passed to loggerClass setter"
 		}		
-	},
-	"constructor":{
-	
 	}
 }
