@@ -16,22 +16,14 @@
 	
 */
 {
-	"_name":"types/errors-en_US.UTF-8.json",
-	"_desc":"Nemesis Error Localization File",
-	
-	"_author":"Sam Caldwell <mail@samcaldwell.net>",
-	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
-
 	"success":{
 		"code":0,
 		"type":0,
-		"text":"Success",
-		"_note":"The type is hard-coded 0 since types are not initialized."
+		"text":"Success"
 	},
 	"failure":{
 		"code":1,
 		"type":1,
-		"text":"General Failure",
-		"_note":"The type is hard-coded 1 since types are not initialized."
+		"text":"General Failure"
 	}
 }

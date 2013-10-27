@@ -18,10 +18,13 @@
 	
 */
 {
-	"console":{
-		"logLevels":[
-			
-		]
+	"screen":{
+		/*
+			minDisplayPriority determines the minimum display 
+			priority level below which traffic will be sent
+			to the screen.
+		*/
+		"minDisplayPriority":4
 	},
 	/*
 		syslog:{...} defines the syslog client configuration for
@@ -32,8 +35,12 @@
 		tls	:	TLS Encryption configuration (cleartext syslog is not supported)
 	*/
 	"syslog":{
-		"logLevels":[
-		],
+		/*
+			minSyslogPriority determines the minimum syslog
+			priority level below which traffic will be sent
+			to the syslog client.
+		*/
+		"minSyslogPriority":4,
 		"ip":"127.0.0.1",
 		"port":514,
 		"tls":{
