@@ -14,10 +14,10 @@
 	DOCUMENTATION:
 	
 		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Logger
-
 */
 {
 	init=function(source,pid,priority,facility){
+	
 		/*Validate the configuration file*/
 		switch(false){
 			case types.isObject(config.logger.syslog):			errors.raise(errors.logger.init.invalidConfig.syslog);			break;
@@ -29,6 +29,7 @@
 			case types.isString(config.logger.syslog.tls.ca):	errors.raise(errors.logger.init.invalidConfig.syslogTLSca);		break;
 			default: return messages.logger.validate.codes.invalidConfig.unknown; break;
 		}
+
 		screen.log('logger configuration is valid.');
 
 		loggerClass=require('./packages/logger/loggerClass.js');
@@ -42,6 +43,7 @@
 										types.syslog.facility.local1
 			);
 		}
+
 		if( types.isString(source) &&
 			types.isNumber(pid) &&
 			types.isSyslogPriority(priority) &&
