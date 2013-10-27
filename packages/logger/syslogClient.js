@@ -20,9 +20,11 @@ module.exports=syslogClient;
 
 function syslogClient(){
 	screen.log("syslogClient() launched.");
+	screen.log("syslogClient() is not implemented");
 	
 	this.log=function(message){
 		screen.log("syslogClient.log() fired. [msg:"+message+"]");
+		screen.log("syslogClient.log() is not implemented in "+module.filename);
 	}
 	
 	screen.log("syslogClient() constructor finished.");
