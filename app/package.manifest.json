@@ -18,7 +18,7 @@
 		"types",
 		"screen",
 		"error",
-		"logger",
+		"logger"/*,
 		"ipc",
 		"process",
 		"web"/*,

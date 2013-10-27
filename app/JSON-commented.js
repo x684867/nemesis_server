@@ -18,9 +18,7 @@
 	
 	
  */
- module.exports=init;
- 
- function init(){
+module.exports=function(){
  
  	JSON.showWarnings=false;
  	
@@ -36,7 +34,9 @@
 	 			var fs=require('fs');
 	 			if(typeof(jsonFile)=='string')
 	 				if(fs.lstatSync(jsonFile).isFile()){
-	 					console.log('jsonFile ['+jsonFile+'] exist!');
+	 					if((typeof(JSON.showWarnings)=='boolean') && JSON.showWarnings){
+	 						console.log('jsonFile ['+jsonFile+'] exist!');
+	 					}
 	 					return JSON.commented.parse(
 	 						fs.readFileSync( jsonFile, {"encoding":"utf8"} )
 	 					);

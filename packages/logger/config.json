@@ -16,6 +16,7 @@
 		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Logger
 */
 {
+	"debug":true,
 	"screen":{
 		"minDisplayPriority":4
 	},

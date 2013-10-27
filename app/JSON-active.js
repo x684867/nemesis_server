@@ -26,13 +26,12 @@
 	console.log if the showWarning property is set.
 		
  */
- module.exports=init;
+module.exports=function(){
  
- function init(){
- 
+ 	JSON.showWarnings=false,
  	require('./JSON-commented.js')();
  	
- 	JSON.showWarnings=false;
+ 	
  	
  	if(typeof(root.JSON.active)=='undefined'){
 	 	JSON.active={
@@ -46,7 +45,9 @@
 	 			var fs=require('fs');
 	 			if(typeof(jsonFile)=='string')
 	 				if(fs.lstatSync(jsonFile).isFile()){
-	 					console.log('jsonFile ['+jsonFile+'] exist!');
+	 					if((typeof(JSON.showWarnings)=='boolean') && JSON.showWarnings){
+	 						console.log('jsonFile ['+jsonFile+'] exist!');
+	 					}
 	 					return eval(
 	 						fs.readFileSync( jsonFile, {"encoding":"utf8"} )
 	 					);

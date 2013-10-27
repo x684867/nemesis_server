@@ -19,7 +19,7 @@
 */
 module.exports=function(){
 
-	if((typeof(root.config.error.debug)=='boolean')&&(root.config.types.debug)){
+	if((typeof(root.config.error.debug)=='boolean')&&(root.config.error.debug)){
 		console.log("starting error constructor.");
 		console.log("----------------------------");
 		console.log("    ERROR CONFIG:");	

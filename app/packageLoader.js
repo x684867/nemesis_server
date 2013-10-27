@@ -6,13 +6,10 @@
 		This file exports an object used to load the packages defined in 
 		root.config.packages (defined by bootstrap.js).
  */
-module.exports=loader;
-/* */
-function loader(manifestFile,launchMode){
-	
+module.exports=function(manifestFile,launchMode){
 	var fs=require('fs');
-	
-	if(root.config.debug) console.log('     loader is starting....');
+	if(typeof(root.config.debug)!='boolean') throw new Error('root.config.debug must be boolean');
+	if(root.config.debug) console.log('     packageLoader is starting....');
 	
 	require('./JSON-commented.js')();
 	

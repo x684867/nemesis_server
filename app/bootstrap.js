@@ -1,71 +1,58 @@
 /*
-	/srv/nemesis/app/app.bootstrap.js
+	/srv/nemesis/app/bootstrap.js
 	Nemesis Web Services Master Process Script
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
-	
-	root.app
-	
+
 	This is the master process (app.bootstrap.js) for the Nemesis web services.
 	
-	Each of the four (4) web services (audit,broker,cipher,keys) are launched
-	using this app.js script, passing in a path and filename to the specific 
-	web service's configuration file.  These config files contain a general 
-	description of the environment to be established for the web service(s) 
-	and the configuration data for each service's workers.
-
-	This process is the command and control for all processes spawned
-	as workers for the given web service.  The mission of this app.js
-	script is to launch the required threads and then to monitor them
-	in real time and respawn any worker process which may die or become
-	unresponsive.
+	USE:
+		root.app
+		
+	DOCUMENTATION:
 	
+		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Logger	
 	---------------------------------------------------------------------------------
 */
 root.app={};
 root.app.title="Nemesis"
 root.app.version="2013.10.17.12.52"; /*Update when pushing to master branch.*/
-
+const app_conf='./app/app.conf.json';
+/*
+	Validate the command-line inputs.
+*/
 var launch_mode=process.argv[2]
 if(typeof(launch_mode)!='string') throw new Error('Invalid launch_mode passed to boostrap.js');
 
-console.log('Starting ['+app.title+':v'+app.version+'] as '+launch_mode+'...\n\n');
+console.log( Array(process.stdout.rows).join('\n')+Array(process.stdout.columns).join('=')+
+             '\nStarting ['+app.title+':v'+app.version+'] as '+launch_mode+' at '+
+             (new Date).toString()+'...\n\n'
+);
 
 require('./JSON-active.js')();
-
-/* Load application configuration data*/
-const app_conf='./app/app.conf.json';
+/* 
+	Load application configuration data
+*/
 if(require('fs').lstatSync(app_conf).isFile()){
-	console.log('loading app_conf');
+	console.log('LOADING app_conf');
 	root.config=JSON.commented.load(app_conf);
-	if((typeof(root.config.debug)=='boolean')&&(root.config.debug)){
-		console.log('---k-Config----');
+	if(typeof(root.config.debug)!='boolean') throw new Error('root.config.debug must be boolean');
+
+	if(root.config.debug){
+		console.log('\n-----------------Application Config-----------------');
 		console.dir(root.config);
-		console.log('--------------');
+		console.log('----------------------------------------------------\n');
 	}
 }else{
 	throw new Error('app_conf file not found.  Check '+app_conf);
 }
-/* Load all packages in the manifest.*/
-if((typeof(root.config.debug)=='boolean')&&(root.config.debug)){
-	console.log('loader:  '+typeof(root.config.packageLoader));
-	console.log('manifest:'+typeof(root.config.packageManifest));
-	console.log('CALLING LOADER...');
-}
+/* 
+	Load all packages in the manifest.
+*/
 root.packages={};
 root.packages.loader=require(root.config.packageLoader)(root.config.packageManifest,launch_mode);
-if((typeof(root.config.debug)=='boolean')&&(root.config.debug)) console.log('...RETURNED FROM LOADER.');
 /*
 	Define the application
 */
-console.log("testing logger...");
-
-if(root.type.isUndefined(root.logger)){
-	console.log("root.logger is undefined");
-}else{
-	console.log("root.logger is defined");
-}
-
-
 root.app.main=root.packages.main.init();
 root.app.start=root.packages.start.init();
 root.app.monitor={};
