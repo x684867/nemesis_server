@@ -17,11 +17,7 @@
 	
 */
 {
-	"_name":"screen/config.json",
-	"_desc":"Nemesis Global Screen Management Package",
-	
-	"_author":"Sam Caldwell <mail@samcaldwell.net>",
-	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved."
+	"debug":true
 
 
 }

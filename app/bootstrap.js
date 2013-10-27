@@ -37,19 +37,23 @@ const app_conf='./app/app.conf.json';
 if(require('fs').lstatSync(app_conf).isFile()){
 	console.log('loading app_conf');
 	root.config=JSON.commented.load(app_conf);
-	console.log('---k-Config----');
-	console.dir(root.config);
-	console.log('--------------');
+	if((typeof(root.config.debug)=='boolean')&&(root.config.debug)){
+		console.log('---k-Config----');
+		console.dir(root.config);
+		console.log('--------------');
+	}
 }else{
 	throw new Error('app_conf file not found.  Check '+app_conf);
 }
 /* Load all packages in the manifest.*/
-console.log('loader:  '+typeof(root.config.packageLoader));
-console.log('manifest:'+typeof(root.config.packageManifest));
-console.log('CALLING LOADER...');
+if((typeof(root.config.debug)=='boolean')&&(root.config.debug)){
+	console.log('loader:  '+typeof(root.config.packageLoader));
+	console.log('manifest:'+typeof(root.config.packageManifest));
+	console.log('CALLING LOADER...');
+}
 root.packages={};
 root.packages.loader=require(root.config.packageLoader)(root.config.packageManifest,launch_mode);
-console.log('...RETURNED FROM LOADER.');
+if((typeof(root.config.debug)=='boolean')&&(root.config.debug)) console.log('...RETURNED FROM LOADER.');
 /*
 	Define the application
 */

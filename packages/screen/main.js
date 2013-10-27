@@ -16,43 +16,52 @@
 		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Screen
 	
 */
-{
-	init=function(){
+module.exports=function(){
+
+	if((typeof(root.config.screen.debug)=='boolean')&&(root.config.screen.debug)){
+		console.log("starting types constructor.");
+		console.log("----------------------------");
+		console.log("    SCREEN  CONFIG:");	
+		console.log("----------------------------");
+		console.dir(root.config.screen.syslog);	
+		console.log("----------------------------");
+	};
 	
-		/*
-			The screen is smart and knows our current dimensions.
-		*/
+	/*
+		The screen is smart and knows our current dimensions.
+	 */
+	root.screen={};	
+	root.screen.width=process.stdout.columns;
+	root.screen.height=process.stdout.rows;
+	
+	/*
+		The screen features...
+	 */
+	root.screen.write=function(message){console.log(message);}
+	root.screen.log=function(message){root.screen.write(root.screen.now()+message);}
 		
+	root.screen.repeat=function(s,n){root.screen.write(Array(n).join(s));}
+	root.screen.drawSingleLine=function(){root.screen.repeat('-',root.screen.width);}
+	root.screen.drawDoubleLine=function(){root.screen.repeat('=',root.screen.width);}
+	root.screen.drawDottedLine=function(){root.screen.repeat('.',root.screen.width);}
+	root.screen.clear=function(){root.screen.repeat('\n',root.screen.width);}
+	
+	root.screen.now=function(){
+		var d=new Date;
+		return d.getFullYear()+'/'+d.getMonth()+'/'+d.getDate()+'@'
+			  +d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+	};
+	
+	/*
+		The resize event fires to ensure that our screen dimensions
+		are updated in real time.
+	*/
+	process.on('resize',function(){
 		root.screen.width=process.stdout.columns;
 		root.screen.height=process.stdout.rows;
+	});
+	
+	if((typeof(root.config.screen.debug)=='boolean')&&(root.config.screen.debug)){
 		
-		/*
-			The screen features...
-		*/
-		root.screen={}
-		
-		root.screen.write=function(message){console.log(message);}
-		root.screen.log=function(message){root.screen.write(root.screen.now()+message);}
-		
-		root.screen.repeat=function(s,n){root.screen.write(Array(n).join(s));}
-		root.screen.drawSingleLine=function(){root.screen.repeat('-',root.screen.width);}
-		root.screen.drawDoubleLine=function(){root.screen.repeat('=',root.screen.width);}
-		root.screen.drawDottedLine=function(){root.screen.repeat('.',root.screen.width);}
-		root.screen.clear=function(){root.screen.repeat('\n',root.screen.width);}
-		
-		root.screen.now=function(){
-			var d=new Date;
-			return d.getFullYear()+'/'+d.getMonth()+'/'+d.getDate()+'@'
-				  +d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-		};
-		
-		/*
-			The resize event fires to ensure that our screen dimensions
-			are updated in real time.
-		*/
-		process.on('resize',function(){
-			root.screen.width=process.stdout.columns;
-			root.screen.height=process.stdout.rows;
-		});
-	}	
-}
+	}
+}	

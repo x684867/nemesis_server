@@ -103,12 +103,7 @@ function load_package(packageDirectory,packageName){
 		console.log("content:\n"+root.packages[packageName].toString())
 		console.log("+++++++++++++++++++++++++++++++++++++++\nExecuting this object");
 		
-		root.packages[packageName]();
-		
-		console.log("+++++++++++++++++++++++++++++++++++++++");
-		process.exit(1)
-		//if(typeof(root.packages[packageName])!='object') throw new Error('Invalid package object:');
-		
+		root.packages[packageName]();	
 		
 		if(typeof(root.packages[packageName].init)=='function'){
 			console.log('***Package ['+packageName+'] has initializer.  Executing init()');
