@@ -34,7 +34,6 @@
 		loggerClass=require('./packages/logger/loggerClass.js');
 
 		if(types.isUndefined(root.logger)){
-			overloadScreenLog();
 			root.logger=new loggerClass('app',process.pid);
 		}
 		if(	types.isString(source) && types.isNumber(pid)){ 
