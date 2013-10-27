@@ -18,18 +18,23 @@
 	
 */
 {
-	"_name":"logger/messages-en_US.UTF-8.json",
-	"_desc":"Nemesis Logger Localization File",
-	
-	"_author":"Sam Caldwell <mail@samcaldwell.net>",
-	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
-
-	"success":{
-		"code":0,
-		"text":"Message"
-	},
-	"failure":{
-		"code":1,
-		"text":"General Message"
+	/*
+		Locally unique numeric codes used to 
+		pass returns between functions 
+		symbolically.
+	 */
+	validate:{
+		codes:{
+			invalidConfig:{
+				unknown:1,
+				syslog:100,
+				syslogIp:101,
+				syslogPort:102,
+				syslogTLS:110,
+				syslogTLSkey:111,
+				syslogTLScert:112,
+				syslogTLSca:113
+			}
+		}
 	}
 }

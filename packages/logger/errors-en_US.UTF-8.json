@@ -20,50 +20,107 @@
 {
 	"init":{
 		"invalidConfig":{
+			"unknown":{
+				"code":10,
+				"type":"fatal",
+				"text":"Unknown error when evaluating configuration file."
+			},
 			"syslog":{
-				"code":1,
+				"code":11,
 				"type":"fatal",
 				"text":"Syslog object in the configuration is not valid."
 			},
 			"syslogIp":{
-				"code":2,
+				"code":12,
 				"type":"fatal",
 				"text":"Syslog IP address is invalid."
 			},
 			"syslogPort":{
-				"code":3,
+				"code":13,
 				"type":"fatal",
 				"text":"Syslog TCP Port is invalid."
 			},
 			"syslogTLS":{
-				"code":4,
+				"code":14,
 				"type":"fatal",
 				"text":"Syslog TLS object is not valid."
 			},
 			"syslogTLSkey":{
-				"code":5,
+				"code":15,
 				"type":"fatal",
 				"text":"Syslog TLS Private Key is not valid."
 			},
 			"syslogTLScert":{
-				"code":6,
+				"code":16,
 				"type":"fatal",
 				"text":"Syslog TLS Certificate is not valid."
 			},
 			"syslogTLSca":{
-				"code":7,
+				"code":17,
 				"type":"fatal",
 				"text":"Syslog TLS CA Certificate is not valid."
 			}
 		},
-		"missingInput":{
-			
+		"logWriter":{
+			"invalidInput":{
+				"code":101,
+				"type":"fatal",
+				"text":"logWriter: Invalid input.  Expected JSON object." 
+			}
 		}
 	},
-	"constructor":{
-	
-	},
 	"log":{
+		"invalidMessageInput":{
+			"code":201,
+			"type":"fatal",
+			"text":"logger->log() has invalid message input"
+		}
+	},
+	"getter":{
+		"nonStringSource":{
+			"code":301,
+			"type":"fatal",
+			"text":"non-string source passed to loggerClass getter"
+		},
+		"nonNumberPID":{
+			"code":302,
+			"type":"fatal",
+			"text":"non-number process PID passed to loggerClass getter"
+		},
+		"nonSysLogPriorityValue":{
+			"code":303,
+			"type":"fatal",
+			"text":"Invalid syslog priority value passed to loggerClass getter"
+		},
+		"nonSyslogFacilityValue":{
+			"code":304,
+			"type":"fatal",
+			"text":"Invalid syslog facility value passed to loggerClass getter"
+		}
+	},
+	"setter":{
+		"nonStringSource":{
+			"code":401,
+			"type":"fatal",
+			"text":"non-string source passed to loggerClass setter"
+		},
+		"nonNumberPID":{
+			"code":402,
+			"type":"fatal",
+			"text":"non-number process PID passed to loggerClass setter"
+		},
+		"nonSysLogPriorityValue":{
+			"code":403,
+			"type":"fatal",
+			"text":"Invalid syslog priority value passed to loggerClass setter"
+		},
+		"nonSyslogFacilityValue":{
+			"code":404,
+			"type":"fatal",
+			"text":"Invalid syslog facility value passed to loggerClass setter"
+		}		
+	},
+	"constructor":{
 	
 	}
 }

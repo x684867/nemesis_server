@@ -16,11 +16,11 @@
 	
 */
 {
-	"_name":"types/config.json",
-	"_desc":"Nemesis Type Management package",
-	
-	"_author":"Sam Caldwell <mail@samcaldwell.net>",
-	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved."
-
-
+	"syslog":{
+		"facilities":[	"kern","user","mail","daemon","auth","syslog","lpr","news","uucp","clock",
+						"authpriv","ftp","NTP","logAudit","logAlert","cron","local0","local1",
+						"local2","local3","local4","local5","local6","local7"
+		],
+		"priorities":["emerg","alert","crit","err","warn","notice","info","debug"]
+	}
 }

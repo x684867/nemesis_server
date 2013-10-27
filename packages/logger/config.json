@@ -18,6 +18,11 @@
 	
 */
 {
+	"console":{
+		"logLevels":[
+			
+		]
+	},
 	/*
 		syslog:{...} defines the syslog client configuration for
 		communications with a syslog server.
@@ -27,6 +32,8 @@
 		tls	:	TLS Encryption configuration (cleartext syslog is not supported)
 	*/
 	"syslog":{
+		"logLevels":[
+		],
 		"ip":"127.0.0.1",
 		"port":514,
 		"tls":{
