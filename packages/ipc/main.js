@@ -1,14 +1,23 @@
 /*
-	Nemesis Interprocess Message Helper
-	/srv/nemesis/packages/ipc/main.js
-	(c) 2013 Sam Caldwell.  All Rights Reserved.  
+	Nemesis IPC Management Package
+	/srv/nemesis/packages/ipc/
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	
+	This package provides interprocess communication through a message-passing API.  This package
+	will be extended over time to facilitate inter-host IPC message passing as well.  For now, it
+	simply manages message passing in a single local host.
 	
- */
+	USE:
+		root.ipc
+		
+	DOCUMENTATION:
+	
+		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-IPC
+	
+*/
 module.exports=init;
 /* */
 
-/* */
 function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}
 /* */
 

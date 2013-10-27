@@ -24,8 +24,6 @@
 	}
 }
 
-/*----------------*/
-
 function evaluate_error(errorJSON,detail){
 	root.screen.drawDoubleLine();
 	switch(typeof(errorJSON)){
