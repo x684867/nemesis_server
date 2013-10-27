@@ -21,7 +21,7 @@
 		
 		root.error.type.success="success",
 		root.error.type.failure="fatal",
-	
+		
 		root.type={
 	
 			"success":"success",
@@ -50,6 +50,8 @@
 			isSyslogFacility:function(o){
 				return (root.config.types.syslog.facilities.indexOf(o)==root.type.notfound)?false:true;
 			}
-		}
+		},
+		root.config.types.syslog.priorities.forEach(function(p,i,a){root.types.syslog.priority[p]=i;});
+		root.config.types.syslog.facilities.forEach(function(p,i,a){root.types.priority.priority[p]=i;});
 	}	
 }
