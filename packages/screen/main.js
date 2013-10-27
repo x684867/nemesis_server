@@ -23,7 +23,7 @@ module.exports=function(){
 		console.log("----------------------------");
 		console.log("    SCREEN  CONFIG:");	
 		console.log("----------------------------");
-		console.dir(root.config.screen.syslog);	
+		console.dir(root.config.screen);	
 		console.log("----------------------------");
 	};
 	
