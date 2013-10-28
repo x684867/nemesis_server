@@ -17,12 +17,8 @@
 {
 	
 	"language"	:"en-US.UTF-8",
-	
 	"packageLoader":"./packageLoader.js",
-
 	"packageManifest":"./app/package.manifest.json",
-	
 	"packages":"./packages/",
-	
 	"debug":true
 }

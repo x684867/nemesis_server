@@ -17,16 +17,16 @@ module.exports=function(){
 	require('./JSON-commented.js')();
  	JSON.showWarnings=false;
  	if(typeof(JSON.showWarnings)!='boolean') throw new Error('JSON.showWarnings must be a boolean value');
-
  	if(typeof(root.JSON.config)=='undefined'){
 	 	JSON.config={};
 	 	JSON.config.loadValidJSON=function(fname){
-			pFile=JSON.commented.load(fname+'.pattern');
-			jFile=JSON.commented.load(fname);
-			if((typeof(pFile) == 'object') && (typeof(jFile)=='object')){
+			p=JSON.commented.load(fname+'.pattern');
+			o=JSON.commented.load(fname);
+			if((typeof(p)=='object') && (typeof(o)=='object')){
+				if(arrayCompare(decay(0,p),decay(1,o))) return o;
 			}else
 				throw new Error(
-					(typeof(pFile)=='object')
+					(typeof(p)=='object')
 						?"loadValidJSON(): json file not valid object."
 						:"loadValidJSON(): pattern file not valid object."
 				);
@@ -45,7 +45,7 @@ module.exports=function(){
 		are both generated using the decayPattern() function which normalizes all values as
 		data types for samplePatterns and the templatePattern defines an identical structure.
  */
-function arrayCompare(lhs,rhs){return(lhs.sort().join('|')==rhs.sort().join('|'))?true:false;}
+function arrayCompare(a,b){return(a.sort().join('|')==b.sort().join('|'))?true:false;}
 /*
 	decayPattern(patternType,objPattern):
 		patternType (number)	: {0:templatePattern, 1:samplePattern} Determines how a pattern is decayed.
@@ -54,13 +54,21 @@ function arrayCompare(lhs,rhs){return(lhs.sort().join('|')==rhs.sort().join('|')
 		This function will decay a pattern using recursive calls to either an object or array handling
 		function and the result is returned as an array. 
  */
-function decay(pType,objPattern){
-	if([samplePattern,templatePattern].indexOf(pType)==-1)
-		throw new Error('invalid patternType passed to decayPattern()');
-	switch(objPattern){
-		case 'object':return oDecay(pType,objPattern,null,0); break;
-		case 'array':return aDecay(pType,objPattern,null,0); break;
-		default:throw new Error('decay_pattern() expects an object or array input.'); break;
+function decay(p,o){
+	if([0,1].indexOf(p)==-1) throw new Error('invalid patternType passed to decayPattern()');
+	var result=undefined;
+	switch(typeof(o)){
+		case 'object':
+			result=oDecay(p,o,null,0); 
+			return result;
+			break;
+		case 'array':
+			result=aDecay(p,o,null,0); 
+			return result;
+			break;
+		default:
+			throw new Error('decay_pattern() expects an object or array input.');
+			break;
 	}
 }
 /*
@@ -77,23 +85,16 @@ function decay(pType,objPattern){
 		the result of typeof() for the current element.
 */
 function oDecay(pt,c,pn){
-	var r=Array();/*this is the decayed array pattern*/
-	Object.keys.forEach(
-		function(n){/*n: elementName*/
-			r.push(
-				JSON.stringify(
-					{
-						"n":pn+"."+n, /*create fully qualified parent.child name string*/
-						"t":(pt==templatePattern)?c[n]:typeof(c[n])
-					}
-				)
-			);
-			/*append recursively generated array to the end of our current results.*/
-			r=r.concat(
-						(typeof(c[n])=='object')
-							?oDecay(pt,c[n],n)
-							:aDecay(pt,c[n],n)
-			); 
+	var r=Array();
+	Object.keys(c).forEach(
+		function(n){
+			switch(typeof(c[n])){
+				default:/*fall-through*/
+					r.push(JSON.stringify({"n":pn+"."+n,"t":(pt==templatePattern)?c[n]:typeof(c[n])}));
+					break;
+				case 'object':r=r.concat(oDecay(pt,c[n],n)); break;
+				case 'array' :r=r.concat(aDecay(pt,c[n],n)); break;
+			}
 		}
 	);
 	return r;
@@ -111,24 +112,18 @@ function oDecay(pt,c,pn){
 		accept the current element's value as a type.  But otherwise the function will store
 		the result of typeof() for the current element.
 */
+
 function aDecay(pt,c,pn){
-	var r=Array();/*this is the decayed array pattern*/
-	aCurrent.forEach(
-		function(n){/*n: elementName*/
-			r.push(
-				JSON.stringify(
-					{
-						"n":pn+"."+n, /*create fully qualified parent.child name string*/
-						"t":(pt==templatePattern)?c[n]:typeof(c[n])
-					}
-				)
-			);
-			/*append recursively generated array to the end of our current results.*/
-			r=r.concat(
-						(typeof(c[n])=='object')
-							?oDecay(pt,c[n],n)
-							:aDecay(pt,c[n],n)
-			);
+	var r=Array();
+	c.forEach(
+		function(n){
+			switch(typeof(c[n])){
+				default:/*fall-through*/
+					r.push(JSON.stringify({"n":pn+"."+n,"t":(pt==templatePattern)?c[n]:typeof(c[n])}));
+					break;
+				case 'object':r=r.concat(oDecay(pt,c[n],n)); break;
+				case 'array' :r=r.concat(aDecay(pt,c[n],n)); break;
+			}
 		}
 	);
 	return r;
