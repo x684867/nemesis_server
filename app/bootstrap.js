@@ -17,6 +17,9 @@ root.app={};
 root.app.title="Nemesis"
 root.app.version="2013.10.17.12.52"; /*Update when pushing to master branch.*/
 const app_conf='./app/app.conf.json';
+require('./JSON-commented.js')();
+require('./JSON-active.js')();
+require('./JSON-config.js')();
 /*
 	Validate the command-line inputs.
 */
@@ -27,8 +30,6 @@ console.log( Array(process.stdout.rows).join('\n')+Array(process.stdout.columns)
              '\nStarting ['+app.title+':v'+app.version+'] as '+launch_mode+' at '+
              (new Date).toString()+'...\n\n'
 );
-
-require('./JSON-active.js')();
 /* 
 	Load application configuration data
 */

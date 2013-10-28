@@ -8,16 +8,14 @@
 	require('JSON-config.js')();
 	
 	If the above line appears more than once, no harm will occur.  A simple notice will appear in 
-	console.log if the showWarning property is set.
-	
-	
+	console.log if the showWarning property is set.	
  */
 const templatePattern=0;
 const samplePattern=1;
 
 module.exports=function(){
  	JSON.showWarnings=false;
- 	if(typeof(showWarnings)!='boolean') throw new Error('JSON.showWarnings must be a boolean value');
+ 	if(typeof(JSON.showWarnings)!='boolean') throw new Error('JSON.showWarnings must be a boolean value');
  	/*
  		If root.JSON.config is undefined then either the JSON.config has not
  		been loaded, or it was loaded and somehow was destroyed.  In either 
@@ -25,20 +23,20 @@ module.exports=function(){
  	*/
  	if(typeof(root.JSON.config)=='undefined'){
 	 	JSON.config={
-	 		var arrPattern=Array();
-			Object.defineProperty(JSON.config,'pattern',{
-				get:function(){return arrPattern;}
-				set:function(objPattern){
-					if(typeof(objPattern)=='object')
-						arrPattern=objPattern;
-					else
-						throw new Error('JSON.config.pattern must be a object.');
-				}
-			});
+	 		arrPattern:Array(),
 			isValid:function(json){
 				return arrayCompare(decay(samplePattern,json),arrPattern);
 			}
 		}
+		Object.defineProperty(JSON.config,'pattern',{
+			get:function(){return arrPattern;},
+			set:function(objPattern){
+				if(typeof(objPattern)=='object')
+					arrPattern=objPattern;
+				else
+					throw new Error('JSON.config.pattern must be a object.');
+			}
+		});
 	}else{
 		if((typeof(JSON.showWarnings)=='boolean') && JSON.showWarnings){
 			console.log('     JSON.config was already defined.  Not reloading.');
@@ -56,7 +54,7 @@ module.exports=function(){
 		are both generated using the decayPattern() function which normalizes all values as
 		data types for samplePatterns and the templatePattern defines an identical structure.
  */
-function arrayCompare(lhs,rhs){return(lhs.sort.().join('|')==rhs.sort().join('|'))?true:false;}
+function arrayCompare(lhs,rhs){return(lhs.sort().join('|')==rhs.sort().join('|'))?true:false;}
 /*
 	decayPattern(patternType,objPattern):
 		patternType (number)	: {0:templatePattern, 1:samplePattern} Determines how a pattern is decayed.
@@ -121,7 +119,7 @@ function aDecay(pt,c,pn){
 			"t":(pt==templatePattern)?c[n]:typeof(c[n])
 		}));
 		/*append recursively generated array to the end of our current results.*/
-		r=r.concat(((typeof(c[n])=='object')?oDecay(pt,c[n],n):aDecay(pt,c[n],n)); 
+		r=r.concat((typeof(c[n])=='object')?oDecay(pt,c[n],n):aDecay(pt,c[n],n)); 
 	});
 	return r;
 }

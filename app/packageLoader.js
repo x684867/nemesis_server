@@ -9,23 +9,21 @@
 module.exports=function(manifestFile,launchMode){
 	var fs=require('fs');
 	if(typeof(root.config.debug)!='boolean') throw new Error('root.config.debug must be boolean');
-	if(root.config.debug) console.log('     packageLoader is starting....');
-	
-	require('./JSON-commented.js')();
+	if(root.config.debug) console.log('  packageLoader is starting....');
 	
 	/*Load the JSON manifest file.*/
-	if(root.config.debug) console.log("     verifying manifest before loading:"+manifestFile);
+	if(root.config.debug) console.log("  verifying manifest before loading:"+manifestFile);
 	if(fs.lstatSync(manifestFile).isFile()){
-		if(root.config.debug) console.log("          loading...");
+		if(root.config.debug) console.log("    loading...");
 		var manifest=JSON.commented.load(manifestFile);
 		if(root.config.debug){
-			console.log("          returning from manifest load.");
-			console.log(" manifest:"+typeof(manifest));
+			console.log("    returning from manifest load.");
+			console.log("    manifest:"+typeof(manifest));
 			console.dir(manifest);
-			console.log(" ---------------------------");
+			console.log("  ---------------------------");
 		}
 	}else
-		throw('manifest file not found ['+manifestFile+'].');
+		throw('    manifest file not found ['+manifestFile+'].');
 
 	/*Make sure the launchMode has an associated serverPackage.*/
 	if(manifest.serverPackages.indexOf(launchMode)==-1){
