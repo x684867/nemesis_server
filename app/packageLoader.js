@@ -125,7 +125,7 @@ function load_file(pfile){
 	var file_content='';
 	if(root.config.debug) console.log("package file ["+pfile+"] loading (load_file)....");
 	if(require('fs').lstatSync(pfile).isFile()){
-		file_content=JSON.commented.load(pfile);
+		file_content=JSON.config.loadValidJSON(pfile);
 		if(root.config.debug) console.log('\nFILE LOADED:['+pfile+']');
 	}else{
 		throw new Error('load_file ['+pfile+'] failed.  missing file: '+pfile);
