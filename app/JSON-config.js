@@ -17,28 +17,22 @@ module.exports=function(){
 	require('./JSON-commented.js')();
  	JSON.showWarnings=false;
  	if(typeof(JSON.showWarnings)!='boolean') throw new Error('JSON.showWarnings must be a boolean value');
- 	/*
- 		If root.JSON.config is undefined then either the JSON.config has not
- 		been loaded, or it was loaded and somehow was destroyed.  In either 
- 		case, we will reload the utility.
- 	*/
- 	if(typeof(root.JSON.config)=='undefined')
-	 	JSON.config={
-			isValid:function(lhs,rhs){
-				return (arrayCompare(decay(samplePattern,lhs),decay(templatePattern,rhs)))?true:false;
-			},
-			loadValidJSON:function(fname){
-				lhs=JSON.commented.load(fname);
-				rhs=JSON.commented.load(fname+'.pattern');
-				if(arrayCompare(decay(samplePattern,lhs),decay(templatePattern,rhs)))
-					return lhs;
-				else
-					throw new Error('app.conf.json does not match app.conf.pattern.json');
-			}
+
+ 	if(typeof(root.JSON.config)=='undefined'){
+	 	JSON.config={};
+	 	JSON.config.loadValidJSON=function(fname){
+			pFile=JSON.commented.load(fname+'.pattern');
+			jFile=JSON.commented.load(fname);
+			if((typeof(pFile) == 'object') && (typeof(jFile)=='object')){
+			}else
+				throw new Error(
+					(typeof(pFile)=='object')
+						?"loadValidJSON(): json file not valid object."
+						:"loadValidJSON(): pattern file not valid object."
+				);
 		}
-	else
-		if((typeof(JSON.showWarnings)=='boolean') && JSON.showWarnings)
-			console.log('     JSON.config was already defined.  Not reloading.');
+	}else if((typeof(JSON.showWarnings)=='boolean') && JSON.showWarnings)
+		console.log('     JSON.config was already defined.  Not reloading.');
 }
 /*
 	arrayCompare(lhs,rhs):
@@ -60,15 +54,14 @@ function arrayCompare(lhs,rhs){return(lhs.sort().join('|')==rhs.sort().join('|')
 		This function will decay a pattern using recursive calls to either an object or array handling
 		function and the result is returned as an array. 
  */
-function decay(patternType,objPattern){
-	if([samplePattern,templatePattern].indexOf(patternType)==-1)
+function decay(pType,objPattern){
+	if([samplePattern,templatePattern].indexOf(pType)==-1)
 		throw new Error('invalid patternType passed to decayPattern()');
-	else
-		switch(objPattern){
-			case 'object':return oDecay(patternType,objPattern,null,0); break;
-			case 'array':return aDecay(patternType,objPattern,null,0); break;
-			default:throw new Error('decay_pattern() expects an object or array input.'); break;
-		}
+	switch(objPattern){
+		case 'object':return oDecay(pType,objPattern,null,0); break;
+		case 'array':return aDecay(pType,objPattern,null,0); break;
+		default:throw new Error('decay_pattern() expects an object or array input.'); break;
+	}
 }
 /*
 	oDecay(): Recursive Object Decay
