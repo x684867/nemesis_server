@@ -1,0 +1,7 @@
+{
+	"debug":"boolean",
+	"syslog":{
+		"facilities":"Array",
+		"priorities":"Array"
+ 	}
+}

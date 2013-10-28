@@ -56,19 +56,10 @@ function arrayCompare(a,b){return(a.sort().join('|')==b.sort().join('|'))?true:f
  */
 function decay(p,o){
 	if([0,1].indexOf(p)==-1) throw new Error('invalid patternType passed to decayPattern()');
-	var result=undefined;
 	switch(typeof(o)){
-		case 'object':
-			result=oDecay(p,o,null,0); 
-			return result;
-			break;
-		case 'array':
-			result=aDecay(p,o,null,0); 
-			return result;
-			break;
-		default:
-			throw new Error('decay_pattern() expects an object or array input.');
-			break;
+		case 'object':return oDecay(p,o,null,0); break;
+		case 'array':return aDecay(p,o,null,0); break;
+		default:throw new Error('decay_pattern() expects an object or array input.');break;
 	}
 }
 /*
@@ -86,17 +77,13 @@ function decay(p,o){
 */
 function oDecay(pt,c,pn){
 	var r=Array();
-	Object.keys(c).forEach(
-		function(n){
-			switch(typeof(c[n])){
-				default:/*fall-through*/
-					r.push(JSON.stringify({"n":pn+"."+n,"t":(pt==templatePattern)?c[n]:typeof(c[n])}));
-					break;
-				case 'object':r=r.concat(oDecay(pt,c[n],n)); break;
-				case 'array' :r=r.concat(aDecay(pt,c[n],n)); break;
-			}
+	Object.keys(c).forEach(function(n){
+		switch(typeof(c[n])){
+			default:r.push(JSON.stringify({"n":pn+"."+n,"t":(pt==0)?c[n]:typeof(c[n])}));break;
+			case 'object':r=r.concat(oDecay(pt,c[n],n)); break;
+			case 'array' :r=r.concat(aDecay(pt,c[n],n)); break;
 		}
-	);
+	});
 	return r;
 }
 /*	
@@ -115,16 +102,12 @@ function oDecay(pt,c,pn){
 
 function aDecay(pt,c,pn){
 	var r=Array();
-	c.forEach(
-		function(n){
-			switch(typeof(c[n])){
-				default:/*fall-through*/
-					r.push(JSON.stringify({"n":pn+"."+n,"t":(pt==templatePattern)?c[n]:typeof(c[n])}));
-					break;
-				case 'object':r=r.concat(oDecay(pt,c[n],n)); break;
-				case 'array' :r=r.concat(aDecay(pt,c[n],n)); break;
-			}
+	c.forEach(function(n){
+		switch(typeof(c[n])){
+			default:r.push(JSON.stringify({"n":pn+"."+n,"t":(pt==0)?c[n]:typeof(c[n])}));break;
+			case 'object':r=r.concat(oDecay(pt,c[n],n)); break;
+			case 'array' :r=r.concat(aDecay(pt,c[n],n)); break;
 		}
-	);
+	});
 	return r;
 }
