@@ -12,9 +12,17 @@
 	
 	
  */
-module.exports=function(){
+const templatePattern=0;
+const samplePattern=1;
 
+module.exports=function(){
  	JSON.showWarnings=false;
+ 	if(typeof(showWarnings)!='boolean') throw new Error('JSON.showWarnings must be a boolean value');
+ 	/*
+ 		If root.JSON.config is undefined then either the JSON.config has not
+ 		been loaded, or it was loaded and somehow was destroyed.  In either 
+ 		case, we will reload the utility.
+ 	*/
  	if(typeof(root.JSON.config)=='undefined'){
 	 	JSON.config={
 	 		var arrPattern=Array();
@@ -22,13 +30,13 @@ module.exports=function(){
 				get:function(){return arrPattern;}
 				set:function(objPattern){
 					if(typeof(objPattern)=='object')
-						arrPattern=decayPattern(objPattern);
+						arrPattern=objPattern;
 					else
 						throw new Error('JSON.config.pattern must be a object.');
 				}
 			});
-			isValid:function(json){ 
-				return arrayCompare(decayPattern(json),arrPattern); 
+			isValid:function(json){
+				return arrayCompare(decay(samplePattern,json),arrPattern);
 			}
 		}
 	}else{
@@ -37,81 +45,83 @@ module.exports=function(){
 		}
 	}
 }
-
-function decayPattern(objPattern){
-	switch(objPattern){
-		case 'object':return recursive_object_decay(objPattern,null,0); break;
-		case 'array':return recursive_array_decay(objPattern,null,0); break;
-		default:throw new Error('decay_pattern() expects an object or array input.'); break;
-	}
-}
-
-function arrayCompare(lhsPattern,rhsPattern){
-	var result=true;
-	lhsPattern.forEach(function(e,i){
-		if(
-			(e.id	!= e.id) && 
-			(e.name != rhsPattern[i].name) &&
-			(e.type != rhsPattern[i].type)
-		) result=false;
-	});
-	return result
-}
-
-function push_to_pattern(arrPattern,id,name,type){
-	arrPattern.push({"id":nestLevel+i,"name":strParentName+":"+elementName,"type":typeof(objCurrent[elementName])});
+/*
+	arrayCompare(lhs,rhs):
+		lhs (array)	:	left-hand array in comparison.
+		rhs (array)	:	right-hand array in comparison.
+		
+		This function will stringify the two arrays using the .sort() and .join() methods to 
+		produce compatible signature strings.  These can then be compared to determine if they 
+		are identical.  For purposes of JSON.config, this works because the lhs and rhs arrays 
+		are both generated using the decayPattern() function which normalizes all values as
+		data types for samplePatterns and the templatePattern defines an identical structure.
+ */
+function arrayCompare(lhs,rhs){return(lhs.sort.().join('|')==rhs.sort().join('|'))?true:false;}
+/*
+	decayPattern(patternType,objPattern):
+		patternType (number)	: {0:templatePattern, 1:samplePattern} Determines how a pattern is decayed.
+		objPattern				: JSON object to be decayed.
+		
+		This function will decay a pattern using recursive calls to either an object or array handling
+		function and the result is returned as an array. 
+ */
+function decay(patternType,objPattern){
+	if([samplePattern,templatePattern].indexOf(patternType)==-1)
+		throw new Error('invalid patternType passed to decayPattern()');
+	else
+		switch(objPattern){
+			case 'object':return oDecay(patternType,objPattern,null,0); break;
+			case 'array':return aDecay(patternType,objPattern,null,0); break;
+			default:throw new Error('decay_pattern() expects an object or array input.'); break;
+		}
 }
 /*
-	recursive_object_delay():
-		objCurrent (object)		:	current json object being decayed.
-		strParentName  (string)	:	name of the parent object.
-		nestLevel  (number)		:	depth of nested objects within the original json object.
+	oDecay(): Recursive Object Decay
+		pt 	(number):determines how types must be evaluated.
+		c 	(object):current json object being decayed.
+		pn 	(string):name of the parent object.
 		
 		This function recursively calls itself to examine the contents of the current
 		element if that element is an object or array.
+		
+		If the function is called with patternType==templatePattern, then the function will
+		accept the current element's value as a type.  But otherwise the function will store
+		the result of typeof() for the current element.
 */
-function recursive_object_decay(objCurrent,strParentName,nestLevel){
-	var arrPattern=Array();
-	Object.keys.forEach(function(elementName,elementIndex){
-		var id=nestLevel+i;
-		push_to_pattern(
-							arrPattern , 
-							id , 
-							strParentName+":"+elementName , 
-							typeof(objCurrent[elementName]) 
-		);
-		switch(typeof(objCurrent[elementName])){
-			case 'array': recursive_array_decay(objCurrent[elementName],elementName,10*(id+1)); break;
-			case 'object': recursive_object_decay(objCurrent[elementName],elementName,10*(id+1)); break;
-		}
+function oDecay(pt,c,pn){
+	var r=Array();/*this is the decayed array pattern*/
+	Object.keys.forEach(function(n){/*n: elementName*/
+		r.push(JSON.stringify({
+			"n":pn+"."+n, /*create fully qualified parent.child name string*/
+			"t":(pt==templatePattern)?c[n]:typeof(c[n])
+		}));
+		/*append recursively generated array to the end of our current results.*/
+		r=r.concat((typeof(c[n])=='object')?oDecay(pt,c[n],n):aDecay(pt,c[n],n)); 
 	});
+	return r;
 }
 /*	
-	recursive_array_decay():
-		arrCurrent (array)		:	current json array being decayed.
-		strParentName  (string)	:	name of the parent object.
-		nestLevel  (number)		:	depth of nested objects within the original json object.
+	aDecay(): Recursive Array Decay
+		pt	(number):determines how types must be evaluated.
+		c	(array)	:current json array being decayed.
+		pn  (string):name of the parent object.
 		
 		This function recursively calls itself to examine the contents of the current
 		element if that element is an object or array.
+		
+		If the function is called with patternType==templatePattern, then the function will
+		accept the current element's value as a type.  But otherwise the function will store
+		the result of typeof() for the current element.
 */
-function recursive_array_decay(arrCurrent,strParentName,id){
-	/*
-		Note arrays do not count elements since that is part of the value.  
-		So the id we are given will be assigned to all elements of the array.
-	*/
-	var arrPattern=Array();
-	arrCurrent.forEach(function(elementName,elementIndex){
-		push_to_pattern(
-							arrPattern , 
-							id , 
-							strParentName+":"+elementName , 
-							typeof(arrCurrent[elementIndex]) 
-		);
-		switch(typeof(arrCurrent[elementIndex])){
-			case 'array': recursive_array_decay(arrCurrent[elementIndex],elementName,10*(id+1)); break;
-			case 'object': recursive_object_decay(arrCurrent[elementIndex],elementName,10*(id+1)); break;
-		}
+function aDecay(pt,c,pn){
+	var r=Array();/*this is the decayed array pattern*/
+	aCurrent.forEach(function(n){/*n: elementName*/
+		r.push(JSON.stringify({
+			"n":pn+"."+n, /*create fully qualified parent.child name string*/
+			"t":(pt==templatePattern)?c[n]:typeof(c[n])
+		}));
+		/*append recursively generated array to the end of our current results.*/
+		r=r.concat(((typeof(c[n])=='object')?oDecay(pt,c[n],n):aDecay(pt,c[n],n)); 
 	});
-	return arrPattern;
+	return r;
 }
