@@ -22,24 +22,23 @@ module.exports=function(){
  		been loaded, or it was loaded and somehow was destroyed.  In either 
  		case, we will reload the utility.
  	*/
- 	if(typeof(root.JSON.config)=='undefined'){
+ 	if(typeof(root.JSON.config)=='undefined')
 	 	JSON.config={
 			isValid:function(lhs,rhs){
 				return (arrayCompare(decay(samplePattern,lhs),decay(templatePattern,rhs)))?true:false;
 			},
 			loadValidJSON:function(fname){
-				lhs=JSON.commented.load(fname),
-				rhs=JSON.commented.load(fname+'.pattern'),
+				lhs=JSON.commented.load(fname);
+				rhs=JSON.commented.load(fname+'.pattern');
 				if(arrayCompare(decay(samplePattern,lhs),decay(templatePattern,rhs)))
 					return lhs;
 				else
 					throw new Error('app.conf.json does not match app.conf.pattern.json');
 			}
 		}
-	}else
-		if((typeof(JSON.showWarnings)=='boolean') && JSON.showWarnings){
+	else
+		if((typeof(JSON.showWarnings)=='boolean') && JSON.showWarnings)
 			console.log('     JSON.config was already defined.  Not reloading.');
-		}
 }
 /*
 	arrayCompare(lhs,rhs):
@@ -86,14 +85,24 @@ function decay(patternType,objPattern){
 */
 function oDecay(pt,c,pn){
 	var r=Array();/*this is the decayed array pattern*/
-	Object.keys.forEach(function(n){/*n: elementName*/
-		r.push(JSON.stringify({
-			"n":pn+"."+n, /*create fully qualified parent.child name string*/
-			"t":(pt==templatePattern)?c[n]:typeof(c[n])
-		}));
-		/*append recursively generated array to the end of our current results.*/
-		r=r.concat((typeof(c[n])=='object')?oDecay(pt,c[n],n):aDecay(pt,c[n],n)); 
-	});
+	Object.keys.forEach(
+		function(n){/*n: elementName*/
+			r.push(
+				JSON.stringify(
+					{
+						"n":pn+"."+n, /*create fully qualified parent.child name string*/
+						"t":(pt==templatePattern)?c[n]:typeof(c[n])
+					}
+				)
+			);
+			/*append recursively generated array to the end of our current results.*/
+			r=r.concat(
+						(typeof(c[n])=='object')
+							?oDecay(pt,c[n],n)
+							:aDecay(pt,c[n],n)
+			); 
+		}
+	);
 	return r;
 }
 /*	
@@ -111,13 +120,23 @@ function oDecay(pt,c,pn){
 */
 function aDecay(pt,c,pn){
 	var r=Array();/*this is the decayed array pattern*/
-	aCurrent.forEach(function(n){/*n: elementName*/
-		r.push(JSON.stringify({
-			"n":pn+"."+n, /*create fully qualified parent.child name string*/
-			"t":(pt==templatePattern)?c[n]:typeof(c[n])
-		}));
-		/*append recursively generated array to the end of our current results.*/
-		r=r.concat((typeof(c[n])=='object')?oDecay(pt,c[n],n):aDecay(pt,c[n],n)); 
-	});
+	aCurrent.forEach(
+		function(n){/*n: elementName*/
+			r.push(
+				JSON.stringify(
+					{
+						"n":pn+"."+n, /*create fully qualified parent.child name string*/
+						"t":(pt==templatePattern)?c[n]:typeof(c[n])
+					}
+				)
+			);
+			/*append recursively generated array to the end of our current results.*/
+			r=r.concat(
+						(typeof(c[n])=='object')
+							?oDecay(pt,c[n],n)
+							:aDecay(pt,c[n],n)
+			);
+		}
+	);
 	return r;
 }
