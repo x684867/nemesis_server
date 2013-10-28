@@ -14,6 +14,7 @@ const templatePattern=0;
 const samplePattern=1;
 
 module.exports=function(){
+	require('./JSON-commented.js')();
  	JSON.showWarnings=false;
  	if(typeof(JSON.showWarnings)!='boolean') throw new Error('JSON.showWarnings must be a boolean value');
  	/*
@@ -23,25 +24,22 @@ module.exports=function(){
  	*/
  	if(typeof(root.JSON.config)=='undefined'){
 	 	JSON.config={
-	 		arrPattern:Array(),
-			isValid:function(json){
-				return arrayCompare(decay(samplePattern,json),arrPattern);
+			isValid:function(lhs,rhs){
+				return (arrayCompare(decay(samplePattern,lhs),decay(templatePattern,rhs)))?true:false;
+			},
+			loadValidJSON:function(fname){
+				lhs=JSON.commented.load(fname),
+				rhs=JSON.commented.load(fname+'.pattern'),
+				if(arrayCompare(decay(samplePattern,lhs),decay(templatePattern,rhs)))
+					return lhs;
+				else
+					throw new Error('app.conf.json does not match app.conf.pattern.json');
 			}
 		}
-		Object.defineProperty(JSON.config,'pattern',{
-			get:function(){return arrPattern;},
-			set:function(objPattern){
-				if(typeof(objPattern)=='object')
-					arrPattern=objPattern;
-				else
-					throw new Error('JSON.config.pattern must be a object.');
-			}
-		});
-	}else{
+	}else
 		if((typeof(JSON.showWarnings)=='boolean') && JSON.showWarnings){
 			console.log('     JSON.config was already defined.  Not reloading.');
 		}
-	}
 }
 /*
 	arrayCompare(lhs,rhs):

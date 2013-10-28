@@ -35,7 +35,8 @@ console.log( Array(process.stdout.rows).join('\n')+Array(process.stdout.columns)
 */
 if(require('fs').lstatSync(app_conf).isFile()){
 	console.log('LOADING app_conf');
-	root.config=JSON.commented.load(app_conf);
+
+	root.config=JSON.config.loadValidJSON(app_conf)){
 	if(typeof(root.config.debug)!='boolean') throw new Error('root.config.debug must be boolean');
 
 	if(root.config.debug){
