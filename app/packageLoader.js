@@ -86,13 +86,13 @@ function load_package(packageDirectory,packageName){
 		if(typeof(root.packages)=='undefined') root.packages={};
 		
 		if(root.config.debug) console.log('----CONFIG----');		
-		root.config[packageName]=load_file(p+'/config.json');
+		root.config[packageName]=loadJSONfile(p+'/config.json',p+'/config.pattern.json');
 		
 		if(root.config.debug) console.log('----ERRORS----');
-		root.errors[packageName]=load_file(p+'/errors-'+process.env.LANG+'.json');
+		root.errors[packageName]=loadJSONfile(p+'/errors-'+process.env.LANG+'.json',p+'/errors.pattern.json');
 		
 		if(root.config.debug) console.log('----MESSAGES----');
-		root.messages[packageName]=load_file(p+'/messages-'+process.env.LANG+'.json');
+		root.messages[packageName]=loadJSONfile(p+'/messages-'+process.env.LANG+'.json',p+'/messages.pattern.json');
 		
 		if(root.config.debug) console.log('----PKG_MAIN----');
 		root.packages[packageName]=require("../"+p+'/main.js');
@@ -120,16 +120,16 @@ function load_package(packageDirectory,packageName){
 	if(root.config.debug) console.log('load_package() is completed.');
 }
 
-function load_file(pfile){
+function loadJSONfile(jfile,pfile){
 
 	var file_content='';
-	if(root.config.debug) console.log("package file ["+pfile+"] loading (load_file)....");
-	if(require('fs').lstatSync(pfile).isFile()){
-		file_content=JSON.config.loadValidJSON(pfile);
-		if(root.config.debug) console.log('\nFILE LOADED:['+pfile+']');
+	if(root.config.debug) console.log("package file ["+jfile+"] loading (load_file)....");
+	if(require('fs').lstatSync(jfile).isFile()){
+		file_content=JSON.config.loadValidJSON(jfile,pfile);
+		if(root.config.debug) console.log('\nFILE LOADED:['+jfile+']');
 	}else{
-		throw new Error('load_file ['+pfile+'] failed.  missing file: '+pfile);
+		throw new Error('load_file ['+jfile+'] failed.  missing file: '+jfile);
 	}
 	return file_content;	
-	if(root.config.debug) console.log("package file load ["+pfile+"] finished (load_file).");
+	if(root.config.debug) console.log("package file load ["+jfile+"] finished (load_file).");
 }

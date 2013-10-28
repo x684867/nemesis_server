@@ -17,6 +17,7 @@ root.app={};
 root.app.title="Nemesis"
 root.app.version="2013.10.17.12.52"; /*Update when pushing to master branch.*/
 const app_conf='./app/app.conf.json';
+const app_conf_pattern='./app/app.conf.pattern.json';
 require('./JSON-commented.js')();
 require('./JSON-active.js')();
 require('./JSON-config.js')();
@@ -35,7 +36,7 @@ console.log( Array(process.stdout.rows).join('\n')+Array(process.stdout.columns)
 */
 if(require('fs').lstatSync(app_conf).isFile()){
 	console.log('LOADING app_conf');
-	root.config=JSON.config.loadValidJSON(app_conf);
+	root.config=JSON.config.loadValidJSON(app_conf,app_conf_pattern);
 	if(typeof(root.config.debug)!='boolean') throw new Error('root.config.debug must be boolean');
 
 	if(root.config.debug){

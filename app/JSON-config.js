@@ -19,8 +19,8 @@ module.exports=function(){
  	if(typeof(JSON.showWarnings)!='boolean') throw new Error('JSON.showWarnings must be a boolean value');
  	if(typeof(root.JSON.config)=='undefined'){
 	 	JSON.config={};
-	 	JSON.config.loadValidJSON=function(fname){
-			p=JSON.commented.load(fname+'.pattern');
+	 	JSON.config.loadValidJSON=function(fname,pname){
+			p=JSON.commented.load(pname);
 			o=JSON.commented.load(fname);
 			if((typeof(p)=='object') && (typeof(o)=='object')){
 				if(arrayCompare(decay(0,p),decay(1,o))) return o;
