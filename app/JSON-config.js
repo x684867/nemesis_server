@@ -15,15 +15,33 @@ const samplePattern=1;
 
 module.exports=function(){
 	require('./JSON-commented.js')();
- 	JSON.showWarnings=false;
+ 	JSON.showWarnings=true;
  	if(typeof(JSON.showWarnings)!='boolean') throw new Error('JSON.showWarnings must be a boolean value');
  	if(typeof(root.JSON.config)=='undefined'){
 	 	JSON.config={};
 	 	JSON.config.loadValidJSON=function(fname,pname){
 			p=JSON.commented.load(pname);
 			o=JSON.commented.load(fname);
+			if(JSON.showWarnings) console.log("preparing to test config syntax");
 			if((typeof(p)=='object') && (typeof(o)=='object')){
-				if(arrayCompare(decay(0,p),decay(1,o))) return o;
+				if(JSON.showWarnings) 
+					console.log('both objects passed to JSON.config.loadValidJSON() are objects.');
+				if(arrayCompare(decay(0,p),decay(1,o))){
+					if(JSON.showWarnings){
+						console.log('arrayCompare() returned true.');
+						return o;
+					}
+				}else{
+					if(JSON.showWarnings)
+						console.log(Array(70).join('-')+'\n'
+									+"ERROR!\n"
+									+"Configuration file does not match pattern.\n"
+									+"FILE:    "+fname+"\n"
+									+"PATTERN: "+pname+"\n"
+									+Array(70).join('-')+'\n'
+						);
+					throw new Error('configuration file does not match pattern');
+				}
 			}else
 				throw new Error(
 					(typeof(p)=='object')
@@ -45,7 +63,10 @@ module.exports=function(){
 		are both generated using the decayPattern() function which normalizes all values as
 		data types for samplePatterns and the templatePattern defines an identical structure.
  */
-function arrayCompare(a,b){return(a.sort().join('|')==b.sort().join('|'))?true:false;}
+function arrayCompare(a,b){
+	
+	return(a.sort().join('|')==b.sort().join('|'))?true:false;
+}
 /*
 	decayPattern(patternType,objPattern):
 		patternType (number)	: {0:templatePattern, 1:samplePattern} Determines how a pattern is decayed.

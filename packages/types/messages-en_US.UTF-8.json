@@ -16,12 +16,5 @@
 	
 */
 {
-	"success":{
-		"code":0,
-		"text":"Message"
-	},
-	"failure":{
-		"code":1,
-		"text":"General Message"
-	}
+
 }

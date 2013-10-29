@@ -85,18 +85,38 @@ function load_package(packageDirectory,packageName){
 		if(typeof(root.messages)=='undefined') root.messages={};
 		if(typeof(root.packages)=='undefined') root.packages={};
 		
-		if(root.config.debug) console.log('----CONFIG----');		
+		if(root.config.debug) console.log('----CONFIG----');	
 		root.config[packageName]=loadJSONfile(p+'/config.json',p+'/config.pattern.json');
+		if(typeof(root.config[packageName])=='undefined'){
+			console.log('root.config['+packageName+'] failed to load.');
+			throw new Error('root.config[packageName] failed to load.');
+		}
+		if(root.config.debug){
+			console.dir(root.config);
+			console.log('---------------');
+		}
 		
 		if(root.config.debug) console.log('----ERRORS----');
 		root.errors[packageName]=loadJSONfile(p+'/errors-'+process.env.LANG+'.json',p+'/errors.pattern.json');
-		
+		if(typeof(root.errors[packageName])=='undefined'){
+			console.log('root.errors['+packageName+'] failed to load.');
+			throw new Error('root.errors[packageName] failed to load.');
+		}
+				
 		if(root.config.debug) console.log('----MESSAGES----');
 		root.messages[packageName]=loadJSONfile(p+'/messages-'+process.env.LANG+'.json',p+'/messages.pattern.json');
+		if(typeof(root.messages[packageName])=='undefined'){
+			console.log('root.messages['+packageName+'] failed to load.');
+			throw new Error('root.messages[packageName] failed to load.');
+		}
 		
 		if(root.config.debug) console.log('----PKG_MAIN----');
 		root.packages[packageName]=require("../"+p+'/main.js');
-			
+		if(typeof(root.packages[packageName])=='undefined'){
+			console.log('root.packages['+packageName+'] failed to load.');
+			throw new Error('root.packages[packageName] failed to load.');
+		}
+	
 		if(root.config.debug){
 			console.log("+++++++++++++++++++++++++++++++++++++++");
 			console.log("content:\n"+root.packages[packageName].toString())

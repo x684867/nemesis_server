@@ -16,14 +16,5 @@
 	
 */
 {
-	"success":{
-		"code":0,
-		"type":0,
-		"text":"Success"
-	},
-	"failure":{
-		"code":1,
-		"type":1,
-		"text":"General Failure"
-	}
+	
 }

@@ -1,0 +1,16 @@
+{
+	"validate":{
+		"codes":{
+			"invalidConfig":{
+				"unknown"			:"number",
+				"syslog"			:"number",
+				"syslogIp"			:"number",
+				"syslogPort"		:"number",
+				"syslogTLS"			:"number",
+				"syslogTLSkey"		:"number",
+				"syslogTLScert"		:"number",
+				"syslogTLSca"		:"number"
+			}
+		}
+	}
+}
