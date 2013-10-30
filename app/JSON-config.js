@@ -15,7 +15,7 @@ module.exports=function(){
 
 	require('./JSON-commented.js')();
 	
- 	JSON.showWarnings=true;
+ 	JSON.showWarnings=false;
  	if(typeof(JSON.showWarnings)!='boolean') throw new Error('JSON.showWarnings must be a boolean value');
  	
  	if(typeof(root.JSON.config)=='undefined'){
@@ -46,16 +46,9 @@ module.exports=function(){
 					+Array(70).join('=')
 				);
 			}
-			
-			var oSig=decay(o,'config'); if(JSON.showWarnings) console.log('oSig:'+oSig);
-			var pSig=decay(p,'pattern'); if(JSON.showWarnings) console.log('pSig:'+pSig);
-			
-			if( oSig == pSig ){
-			
-				if(JSON.showWarnings) console.log('arrayCompare() returned true.');
+			if( decay(o,'config') == decay(p,'pattern') )
 				return o;
-				
-			}else{
+			else{
 				if(JSON.showWarnings) console.log(
 						Array(70).join('-')+'\n'
 						+"ERROR!\n"
@@ -77,6 +70,7 @@ module.exports=function(){
 		
 		o: JSON object to be decayed.
 		m: operating mode
+		n: current object name
 		
 		This function will decay a pattern using recursive calls to either an object or array handling
 		function and the result is returned as an array. 
@@ -90,16 +84,9 @@ function decay(o,m,n){
 			Object.keys(o).sort().forEach(function(e){r+=decay(o[e],m,e);});						
 			r='object('+r+')';
 			break;
-		case 'Array':
-			console.log("Array found.");
-			r=JSON.stringify({"n":n,"t":"Array()"});
-			break;
-		default:
-			r=JSON.stringify({"n":((typeof(n)=='undefined')?null:n),"t":((m!='pattern')?typeof(o):o)});
-			break;
+		case 'Array':r=JSON.stringify({"n":n,"t":"Array('"+typeof(o[0])+"')"});break;
+		default:r=JSON.stringify({"n":((typeof(n)=='undefined')?null:n),"t":((m!='pattern')?typeof(o):o)});break;
 	}
-	
-	if(JSON.showWarnings) console.log('m: '+m+' r:'+r);
 	return r;
 }
 
