@@ -18,27 +18,27 @@
 		"types",
 		"screen",
 		"error",
-		"logger"/*,
+		"logger",
 		"ipc",
 		"process",
-		"web"/*,
+		"web",
 		"worker",
 		"storeServer",
 		"storeClient",
 		"marco",
 		"polo",
 		"stats",
-		"watchdog"*/
+		"watchdog"
 	],
 	/*
 		The serverPackages are what this entire framework is built for.  They must be loaded in the second
 		stage after the corePackages and before the appPackages.
 	*/
 	"serverPackages":[
-		"audit"/*,
+		"audit",
 		"broker",
 		"cipherStore",
-		"keyStore"*/
+		"keyStore"
 	],
 	/*
 		The bootstrap.js file builds an application (root.app) object which will be initialized by a main()

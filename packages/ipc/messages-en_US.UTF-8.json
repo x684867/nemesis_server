@@ -15,13 +15,5 @@
 		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-IPC
 	
 */
-{
-	"success":{
-		"code":0,
-		"text":"Message"
-	},
-	"failure":{
-		"code":1,
-		"text":"General Message"
-	}
+{ 
 }
