@@ -16,19 +16,4 @@
 		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Screen
 	
 */
-{
-	"_name":"screen/messages-en_US.UTF-8.json",
-	"_desc":"Nemesis Global Screen Management Localization File",
-	
-	"_author":"Sam Caldwell <mail@samcaldwell.net>",
-	"_copyright":"(c) 2013 Sam Caldwell.  All Rights Reserved.",
-
-	"success":{
-		"code":0,
-		"text":"Message"
-	},
-	"failure":{
-		"code":1,
-		"text":"General Message"
-	}
-}
+{ }

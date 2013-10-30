@@ -1,10 +1,1 @@
-{
-	"success":{
-		"code":"number",
-		"text":"string"
-	},
-	"failure":{
-		"code":"number",
-		"text":"string"
-	}
-}
+{ }
