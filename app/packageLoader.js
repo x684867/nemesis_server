@@ -7,24 +7,28 @@
 		root.config.packages (defined by bootstrap.js).
  */
 module.exports=function(manifestFile,launchMode){
+	var manifestPatternFile=manifestFile.replace(/json/,'pattern.json');
 	var fs=require('fs');
 	if(typeof(root.config.debug)!='boolean') throw new Error('root.config.debug must be boolean');
 	if(root.config.debug) console.log('  packageLoader is starting....');
 	
 	/*Load the JSON manifest file.*/
 	if(root.config.debug) console.log("  verifying manifest before loading:"+manifestFile);
-	if(fs.lstatSync(manifestFile).isFile()){
-		if(root.config.debug) console.log("    loading...");
-		var manifest=JSON.commented.load(manifestFile);
-		if(root.config.debug){
-			console.log("    returning from manifest load.");
-			console.log("    manifest:"+typeof(manifest));
-			console.dir(manifest);
-			console.log("  ---------------------------");
-		}
-	}else
+	if(!fs.lstatSync(manifestFile).isFile()){
 		throw('    manifest file not found ['+manifestFile+'].');
-
+	}
+	if(!fs.lstatSync(manifestPatternFile).isFile()){
+		throw('    manifest pattern file not found ['+manifestFile+'].');
+	}
+	var manifest=JSON.config.loadValidJSON(manifestFile,manifestPatternFile);
+	if(root.config.debug) console.log("    loading...");
+	if(root.config.debug){
+		console.log(Array(process.stdout.columns).join('-')+'\n'+
+					"    returning from manifest load.\n"+
+					"    manifest:"+typeof(manifest)+"\n"+manifest+"\n"+
+					Array(process.stdout.columns).join('=')+'\n'
+		);
+	}
 	/*Make sure the launchMode has an associated serverPackage.*/
 	if(manifest.serverPackages.indexOf(launchMode)==-1){
 		console.log("ERROR! Invalid launch mode: "+launchMode);
