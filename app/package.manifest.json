@@ -35,10 +35,10 @@
 		stage after the corePackages and before the appPackages.
 	*/
 	"serverPackages":[
-		"audit",
+		"audit"/*,
 		"broker",
 		"cipherStore",
-		"keyStore"
+		"keyStore"*/
 	],
 	/*
 		The bootstrap.js file builds an application (root.app) object which will be initialized by a main()

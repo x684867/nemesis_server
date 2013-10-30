@@ -1,5 +1,9 @@
 {
-	/*
-		Not defined
-	*/
+	"serverType":"string",
+	
+	"heartbeat":{
+				"interval":"number",
+				"maxDelay":"number"
+	},
+	"workers":"Array('object')"
 }
