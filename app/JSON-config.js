@@ -49,12 +49,15 @@ module.exports=function(){
 			if( decay(o,'config') == decay(p,'pattern') )
 				return o;
 			else{
-				if(JSON.showWarnings) console.log(
+				console.log(
 						Array(70).join('-')+'\n'
 						+"ERROR!\n"
 						+"Configuration file does not match pattern.\n"
-						+"FILE:    "+fname+"\n"
+						+"FILE:    "+oname+"\n"
 						+"PATTERN: "+pname+"\n"
+						+Array(70).join('-')+'\n'
+						+"o:"+decay(o,'config')+"\n\n"
+						+"p:"+decay(p,'pattern')+"\n"
 						+Array(70).join('-')+'\n'
 				);
 				throw new Error('configuration file does not match pattern');
