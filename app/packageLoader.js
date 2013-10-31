@@ -88,11 +88,6 @@ function load(pkgDir,pName){
 
 		root.packages[pName]();	
 
-		if(typeof(root.packages[pName].init)=='function'){
-			if(root.config.debug) console.log('\tPackage ['+pName+'] has init(). Executing...');
-			root.packages[pName].init();
-		} else if(root.config.debug) console.log('\tPackage ['+pName+'] does NOT have an init()');
-
 	}else if(root.config.debug) console.log('pName type mismatch.  Expected string.');
 
 	if(root.config.debug) console.log('\nload completed.\n'+Array(process.stdout.columns).join('_'));

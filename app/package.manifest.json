@@ -18,7 +18,6 @@
 		"screen",
 		"types",
 		"error",
-		"logger",
 		"ipc",
 		"process",
 		"web",
