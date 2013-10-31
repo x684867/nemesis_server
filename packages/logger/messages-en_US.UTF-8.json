@@ -1,0 +1,19 @@
+/*
+	Nemesis Global Logger Management Package
+	/srv/nemesis/packages/logger/
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
+	
+	This package creates a global logger management package for writing output through
+	console.log() to the terminal.  The logger object extends the functionality of the
+	console object by adding a process.on('resize') event, line-drawing methods and other
+	pretty output features.
+		
+	USE:
+		root.logger
+		
+	DOCUMENTATION:
+	
+		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Logger
+	
+*/
+{ }
