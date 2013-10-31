@@ -9,6 +9,14 @@
 	
 	If the above line appears more than once, no harm will occur.  A simple notice will appear in 
 	console.log if the showWarning property is set.	
+
+	======
+	TO DO:
+	--------------
+		*Make this utility capable of handling Arrays better, looking at the syntax of the
+		 elements contained within an array.  We need to handle the nested objects or arrays
+		 within the array.
+
  */
 
 module.exports=function(){

@@ -15,16 +15,8 @@
 		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-IPC
 	
 */
-module.exports=init;
-/* */
-
-function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}
-/* */
-
-function init(){ }
-	/*
-		IPC Code values.
-	*/
+module.exports=function(){
+	/* IPC Code values. */
 	root.ipc={
 		code:{
 			startWorker:0,
@@ -227,3 +219,5 @@ function init(){ }
 		}
 	}	
 }
+
+function typeCheck(d,t,e){if(typeof(d)!=t) throw new Error(e);}

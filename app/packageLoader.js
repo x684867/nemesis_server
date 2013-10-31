@@ -6,154 +6,94 @@
 		This file exports an object used to load the packages defined in 
 		root.config.packages (defined by bootstrap.js).
  */
-module.exports=function(manifestFile,launchMode){
-	var manifestPatternFile=manifestFile.replace(/json/,'pattern.json');
-	var fs=require('fs');
-	if(typeof(root.config.debug)!='boolean') throw new Error('root.config.debug must be boolean');
-	if(root.config.debug) console.log('  packageLoader is starting....');
+module.exports=function( mFile , mode ){
+	var pFile=mFile.replace( /json/ , 'pattern.json' );
 	
-	/*Load the JSON manifest file.*/
-	if(root.config.debug) console.log("  verifying manifest before loading:"+manifestFile);
-	if(!fs.lstatSync(manifestFile).isFile()){
-		throw('    manifest file not found ['+manifestFile+'].');
-	}
-	if(!fs.lstatSync(manifestPatternFile).isFile()){
-		throw('    manifest pattern file not found ['+manifestFile+'].');
-	}
-	var manifest=JSON.config.loadValidJSON(manifestFile,manifestPatternFile);
-	if(root.config.debug) console.log("    loading...");
-	if(root.config.debug){
-		console.log(Array(process.stdout.columns).join('-')+'\n'+
-					"    returning from manifest load.\n"+
-					"    manifest:"+typeof(manifest)+"\n"+manifest+"\n"+
-					Array(process.stdout.columns).join('=')+'\n'
-		);
-	}
-	/*Make sure the launchMode has an associated serverPackage.*/
-	if(manifest.serverPackages.indexOf(launchMode)==-1){
-		console.log("ERROR! Invalid launch mode: "+launchMode);
-		throw new Error('Invalid Launch Mode');
-	}
-	console.log('launch_mode is valid.');
+	var fs=require('fs');
 	
 	root.package={};
 	
-	if(typeof(manifest.package_dir)=='string'){
+	if(typeof(root.config.debug)!='boolean') throw new Error('root.config.debug must be boolean');
+	if(root.config.debug) console.log('PackageLoader is starting....');
 	
-		if(root.config.debug)
-			console.log('manifest.package_dir ['+manifest.package_dir+'] is a valid (string) data type.');
+	/*Load the JSON manifest file.*/
+	if(root.config.debug) console.log("\tVerifying manifest before loading:" +mFile );
+	if(!fs.lstatSync(mFile).isFile()) throw('\t\tmanifest file not found [' + mFile + '].' );
+	if(!fs.lstatSync(pFile).isFile()) throw('\t\tmanifest pattern file not found [' + mFile + '].' );
 	
-		var pkgDir=manifest.package_dir;
+	var manifest=JSON.config.loadValidJSON( mFile , pFile );
 	
-		if(fs.lstatSync(manifest.package_dir).isDirectory()){
-			
-			if(root.config.debug) console.log("     package_dir exists!");
+	if(root.config.debug) console.log(
+			"\t\tloading...\n"+Array(process.stdout.columns).join('-')+'\n'+
+			"\t\tmanifest:("+typeof(manifest)+")\n\t\t\t{"+Object.keys(manifest).join(',')+"}\n"+
+			Array(process.stdout.columns).join('=')+'\n'
+	);
+	
+	/*Make sure the mode has an associated serverPackage.*/
+	if(manifest.serverPackages.indexOf(mode)==-1) throw new Error("ERROR! Bad launch: "+mode);
+	
+	if(typeof(manifest.package_dir)!='string') throw new Error('package_dir not a string');
+
+	if(root.config.debug) console.log('manifest.package_dir['+manifest.package_dir+']:valid string');
+
+	var pDir=manifest.package_dir;
+
+	if(!fs.lstatSync(manifest.package_dir).isDirectory()) throw new Error("pDir doesn't exist!");
 					
-			/*Load the application framework (core) packages*/
-			manifest.corePackages.forEach(function(pkgName,index,array){load_package(manifest.package_dir,pkgName);});
+	/*Load the application framework (core) packages*/
+	manifest.corePackages.forEach(function(pkgName){load(manifest.package_dir,pkgName);});
 			
-			/*Load the server package.*/
-			load_package(manifest.package_dir,launchMode);
+	/*Load the server package.*/
+	load(manifest.package_dir,mode);
 			
-			/*Load the appPackages*/
-			manifest.appPackages.forEach(function(pkgName){load_package(manifest.package_dir,pkgName);});
-			
-		}else
-			throw new Error('package_dir does not exist')
-	}else
-		throw new Error('package_dir is not expected data type (string)');
+	/*Load the appPackages*/
+	manifest.appPackages.forEach(function(pkgName){load(manifest.package_dir,pkgName);});
 }
 
-function load_package(packageDirectory,packageName){
+function load(pkgDir,pName){
 
 	var fs=require('fs');
+	if(typeof(pName)=='string'){
+		if(root.config.debug) console.log("LOADING PACKAGE! ["+pkgDir+","+pName+"]");
+		if(pkgDir[pkgDir.length-1] != '/') pkgDir+='/';
+				
+		var p=pkgDir+pName;
+		var pfile;
 
-	if(root.config.debug) console.log("LOADING PACKAGE! ["+packageDirectory+", "+packageName+"]");
-	if(typeof(packageName)=='string'){
-		if(root.config.debug) console.log('LOADING PACKAGE ['+packageName+']');
-
-		if(packageDirectory[packageDirectory.length-1] != '/'){
-			if(root.config.debug) console.log('     Appending a trailing slash(/) character');
-			packageDirectory+='/';
-		}else{
-			if(root.config.debug) console.log('     NOT Appending a trailing slash(/) character');
-		}
-		
-		var p=packageDirectory+packageName;
-		var pfile;/*reusable package filename*/
-		
-		if(root.config.debug) console.log('\nLOADING config ['+p+']');
-		
 		if(typeof(root.config)=='undefined') root.config={};
 		if(typeof(root.errors)=='undefined') root.errors={};
 		if(typeof(root.messages)=='undefined') root.messages={};
 		if(typeof(root.packages)=='undefined') root.packages={};
-		
-		if(root.config.debug) console.log('----CONFIG----');	
-		root.config[packageName]=loadJSONfile(p+'/config.json',p+'/config.pattern.json');
-		if(typeof(root.config[packageName])=='undefined'){
-			console.log('root.config['+packageName+'] failed to load.');
-			throw new Error('root.config[packageName] failed to load.');
-		}
-		if(root.config.debug){
-			console.dir(root.config);
-			console.log('---------------');
-		}
-		
-		if(root.config.debug) console.log('----ERRORS----');
-		root.errors[packageName]=loadJSONfile(p+'/errors-'+process.env.LANG+'.json',p+'/errors.pattern.json');
-		if(typeof(root.errors[packageName])=='undefined'){
-			console.log('root.errors['+packageName+'] failed to load.');
-			throw new Error('root.errors[packageName] failed to load.');
-		}
-				
-		if(root.config.debug) console.log('----MESSAGES----');
-		root.messages[packageName]=loadJSONfile(p+'/messages-'+process.env.LANG+'.json',p+'/messages.pattern.json');
-		if(typeof(root.messages[packageName])=='undefined'){
-			console.log('root.messages['+packageName+'] failed to load.');
-			throw new Error('root.messages[packageName] failed to load.');
-		}
-		
-		if(root.config.debug) console.log('----PKG_MAIN----');
-		root.packages[packageName]=require("../"+p+'/main.js');
-		if(typeof(root.packages[packageName])=='undefined'){
-			console.log('root.packages['+packageName+'] failed to load.');
-			throw new Error('root.packages[packageName] failed to load.');
-		}
-	
-		if(root.config.debug){
-			console.log("+++++++++++++++++++++++++++++++++++++++");
-			console.log("content:\n"+root.packages[packageName].toString())
-			console.log("+++++++++++++++++++++++++++++++++++++++\nExecuting this object");
-		}
-		
-		root.packages[packageName]();	
-		
-		if(typeof(root.packages[packageName].init)=='function'){
-			if(root.config.debug) console.log('***Package ['+packageName+'] has initializer.  Executing init()');
-			root.packages[packageName].init();
-		}else{
-			if(root.config.debug) console.log('***Package ['+packageName+'] does NOT have an initializer.');
-		}
-		
-		if(root.config.debug) console.log('----DONE----');
-	
-	}else{
-		if(root.config.debug) console.log('packageName type mismatch.  Expected string.');
-	}
-	if(root.config.debug) console.log('load_package() is completed.');
-}
 
-function loadJSONfile(jfile,pfile){
+		if(root.config.debug) console.log('\t-CONFIG');
+		root.config[pName]=JSON.config.loadValidJSON(p+'/config.json',p+'/config.pattern.json');
+		if(typeof(root.config[pName])=='undefined') throw new Error("root.config["+pName+"] failed");
 
-	var file_content='';
-	if(root.config.debug) console.log("package file ["+jfile+"] loading (load_file)....");
-	if(require('fs').lstatSync(jfile).isFile()){
-		file_content=JSON.config.loadValidJSON(jfile,pfile);
-		if(root.config.debug) console.log('\nFILE LOADED:['+jfile+']');
-	}else{
-		throw new Error('load_file ['+jfile+'] failed.  missing file: '+jfile);
-	}
-	return file_content;	
-	if(root.config.debug) console.log("package file load ["+jfile+"] finished (load_file).");
+		if(root.config.debug) console.log('\t\t-SUCCESS!\n\t-ERRORS');
+
+		root.errors[pName]=JSON.config.loadValidJSON(p+'/errors-'+process.env.LANG+'.json',p+'/errors.pattern.json');
+		if(typeof(root.errors[pName])=='undefined') throw new Error('root.errors['+pName+'] failed');
+
+		if(root.config.debug) console.log('\t\t-SUCCESS!\n\t-MESSAGES');
+
+		root.messages[pName]=JSON.config.loadValidJSON(p+'/messages-'+process.env.LANG+'.json',p+'/messages.pattern.json');
+		if(typeof(root.messages[pName])=='undefined') throw new Error('root.messages['+pName+'] failed');
+
+		if(root.config.debug) console.log('\t\t-SUCCESS!\n\t-PKG_MAIN');
+
+		root.packages[pName]=require("../"+p+'/main.js');
+		if(typeof(root.packages[pName])=='undefined') throw new Error('root.packages['+pName+'] failed to load.');
+
+		if(root.config.debug) console.log('\t\t-SUCCESS!\n');
+
+		root.packages[pName]();	
+
+		if(typeof(root.packages[pName].init)=='function'){
+			if(root.config.debug) console.log('\tPackage ['+pName+'] has init(). Executing...');
+			root.packages[pName].init();
+		} else if(root.config.debug) console.log('\tPackage ['+pName+'] does NOT have an init()');
+
+	}else if(root.config.debug) console.log('pName type mismatch.  Expected string.');
+
+	if(root.config.debug) console.log('\nload completed.\n'+Array(process.stdout.columns).join('_'));
 }

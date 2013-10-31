@@ -3,10 +3,8 @@
 	/srv/nemesis/packages/screen/
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
 	
-	This package creates a global screen management package for writing output through
-	console.log() to the terminal.  The screen object extends the functionality of the
-	console object by adding a process.on('resize') event, line-drawing methods and other
-	pretty output features.
+	This package overloads the console object [e.g. console.log() and console.error()]
+	to add functionality.
 		
 	USE:
 		root.screen
@@ -18,50 +16,29 @@
 */
 module.exports=function(){
 
-	if((typeof(root.config.screen.debug)=='boolean')&&(root.config.screen.debug)){
-		console.log("starting types constructor.");
-		console.log("----------------------------");
-		console.log("    SCREEN  CONFIG:");	
-		console.log("----------------------------");
-		console.dir(root.config.screen);	
-		console.log("----------------------------");
-	};
-	
-	/*
-		The screen is smart and knows our current dimensions.
-	 */
-	root.screen={};	
-	root.screen.width=process.stdout.columns;
-	root.screen.height=process.stdout.rows;
-	
-	/*
-		The screen features...
-	 */
-	root.screen.write=function(message){console.log(message);}
-	root.screen.log=function(message){root.screen.write(root.screen.now()+message);}
-		
-	root.screen.repeat=function(s,n){root.screen.write(Array(n).join(s));}
-	root.screen.drawSingleLine=function(){root.screen.repeat('-',root.screen.width);}
-	root.screen.drawDoubleLine=function(){root.screen.repeat('=',root.screen.width);}
-	root.screen.drawDottedLine=function(){root.screen.repeat('.',root.screen.width);}
-	root.screen.clear=function(){root.screen.repeat('\n',root.screen.width);}
-	
-	root.screen.now=function(){
+	console.now=function(){
 		var d=new Date;
 		return d.getFullYear()+'/'+d.getMonth()+'/'+d.getDate()+'@'
 			  +d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 	};
-	
-	/*
-		The resize event fires to ensure that our screen dimensions
-		are updated in real time.
-	*/
+	console.stdout=console.log;
+	console.stderr=console.error;	
+	console.width=process.stdout.columns;
+	console.height=process.stdout.rows;
 	process.on('resize',function(){
-		root.screen.width=process.stdout.columns;
-		root.screen.height=process.stdout.rows;
+		console.width=process.stdout.columns;
+		console.height=process.stdout.rows;
 	});
+	console.log=function(m){if(root.config.screen) console.stdout(console.now()+":"+m);}
+	console.error=function(m){if(root.config.screen) console.stderr(console.now()+":"+m);}
+	console.clear=function(){console.stdout(Array(console.height).join('\n'));}
 	
-	if((typeof(root.config.screen.debug)=='boolean')&&(root.config.screen.debug)){
-		
-	}
+	if(root.config.screen.debug){
+		console.error("Starting types constructor.");
+		console.error("----------------------------");
+		console.error("    SCREEN  CONFIG:");	
+		console.error("----------------------------");
+		console.dir(root.config.screen);	
+		console.error("----------------------------");
+	};
 }	
