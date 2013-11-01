@@ -17,6 +17,16 @@
 	
 */
 {
-	"debug":true
+	"debug":true,
+	"syslog":{
+		"enabled":true,
+		"server":"127.0.0.1",
+		"port":514,
+		"tls":{
+			"key":"path/file",
+			"cert":"path/file",
+			"cacert":"path/file"
+		}
+	}
 
 }

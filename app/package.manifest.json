@@ -15,10 +15,9 @@
 		they must be loaded to satisfy dependency chains.
 	*/	
 	"corePackages":[
-		"screen",
+		"logger",
 		"types",
 		"error",
-		"ipc",
 		"process",
 		"web",
 		"worker",

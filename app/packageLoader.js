@@ -69,17 +69,26 @@ function load(pkgDir,pName){
 		root.config[pName]=JSON.config.loadValidJSON(p+'/config.json',p+'/config.pattern.json');
 		if(typeof(root.config[pName])=='undefined') throw new Error("root.config["+pName+"] failed");
 
-		if(root.config.debug) console.log('\t\t-SUCCESS!\n\t-ERRORS');
-
+		if(root.config.debug){
+			console.log('\t\t-SUCCESS!');
+			console.log('\t-ERRORS');
+		}
+		
 		root.errors[pName]=JSON.config.loadValidJSON(p+'/errors-'+process.env.LANG+'.json',p+'/errors.pattern.json');
 		if(typeof(root.errors[pName])=='undefined') throw new Error('root.errors['+pName+'] failed');
-
-		if(root.config.debug) console.log('\t\t-SUCCESS!\n\t-MESSAGES');
+	
+		if(root.config.debug){
+			console.log('\t\t-SUCCESS!');
+			console.log('\t-MESSAGES');
+		}
 
 		root.messages[pName]=JSON.config.loadValidJSON(p+'/messages-'+process.env.LANG+'.json',p+'/messages.pattern.json');
 		if(typeof(root.messages[pName])=='undefined') throw new Error('root.messages['+pName+'] failed');
 
-		if(root.config.debug) console.log('\t\t-SUCCESS!\n\t-PKG_MAIN');
+		if(root.config.debug){
+			console.log('\t\t-SUCCESS!');
+			console.log('\t-PKG_MAIN');
+		}
 
 		root.packages[pName]=require("../"+p+'/main.js');
 		if(typeof(root.packages[pName])=='undefined') throw new Error('root.packages['+pName+'] failed to load.');

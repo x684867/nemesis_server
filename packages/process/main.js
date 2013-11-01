@@ -1,15 +1,25 @@
 /*
-	Nemesis Application Process Manager
-	/srv/nemesis/packages/process/main.js
+	Nemesis Process Management Package
+	/srv/nemesis/packages/process/
 	(c) 2013 Sam Caldwell.  All Rights Reserved.
- */
-module.exports=process_manager;
-
-function process_manager(){
+	
+	This package overloads the process object with additional functionality,
+	including standard process control messages used in the application 
+	framework to maintain an elastically scalable worker fabric.
+		
+	USE:
+		root.process
+		
+	DOCUMENTATION:
+	
+		See https://github.com/x684867/nemesis_server/wiki/Framework:-Packages:-Process
+	
+*/
+module.exports=function(){
 
 	process.on(
 		'uncaughtException',
-		function(err){root.app.log.error(root.error.unknown,err);}
+		function(err){error.raise(root.error.unknown,err);}
 	);
 
 	var log=new root.packages.core.logger(package.id);

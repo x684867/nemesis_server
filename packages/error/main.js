@@ -19,7 +19,7 @@
 */
 module.exports=function(){
 
-	if((typeof(root.config.error.debug)=='boolean')&&(root.config.error.debug)){
+	if((typeof(config.error.debug)=='boolean')&&(config.error.debug)){
 		console.log("starting error constructor.");
 		console.log("----------------------------");
 		console.log("    ERROR CONFIG:");	
@@ -30,26 +30,24 @@ module.exports=function(){
 
 		
 	root.error.warn=function(message){
-		screen.log("WARNING! "+message);
+		console.error("WARNING! "+message);
 	};
 		
 	root.error.raise=function(errorJSON,detail){ 
-		root.screen.drawDoubleLine();
+		console.drawDoubleLine();
 		if(isObject(errorJSON)){
-			root.screen.log("      CODE:"+errorJSON.code);
-			root.screen.log("   MESSAGE:"+errorJSON.text);
-			if(typeof(detail)=='string') root.screen.log("    DETAIL:"+detail);  
+			console.error("Error!\n\t\tCODE:"+errorJSON.code+", MESSAGE:'"+errorJSON.text+"'");
+			if(typeof(detail)=='string') root.screen.log("\tDETAIL:"+detail);  
 			if((typeof(errorJSON.code.fatal)=='boolean') && errorJSON.code.fatal ){
 				console.trace();
-				if(errorJSON.type=='fatal'){
+				if(errorJSON.type=='fatal')
 					process.exit(errorJSON.code);
-				}else{
-					root.screen.log("ERROR IS NON-FATAL!  Type:"+errorJSON.type);
-				}
+				else
+					console.error("ERROR IS NON-FATAL!  Type:"+errorJSON.type);
 			}
 		}else{
-			root.screen.log("   UNEXPECTED ERROR TYPE:"+typeof(e));
-			root.screen.log("   MESSAGE:"+errorJSON);
+			console.error("   UNEXPECTED ERROR TYPE:"+typeof(e));
+			console.error("   MESSAGE:"+errorJSON);
 		}
 	}
 	
