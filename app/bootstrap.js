@@ -24,22 +24,26 @@ require('./JSON-config.js')();
 /*
 	Validate the command-line inputs.
 */
-var launch_mode=process.argv[2]
-if(typeof(launch_mode)!='string') throw new Error('Invalid launch_mode passed to boostrap.js');
+var server_name=process.argv[2];
+if(typeof(server_name)!='string') throw new Error('Invalid server_name passed to boostrap.js');
+
+var launch_mode=process.argv[3];
+if( (typeof(launch_mode)!='string') && (['master','worker'].indexof(launch_mode)==-1))
+	throw new Error('Invalid launch_mode passed to bootstrap.js')
 
 console.log( Array(process.stdout.rows).join('\n')+Array(process.stdout.columns).join('=')+
-             '\nStarting ['+app.title+':v'+app.version+'] as '+launch_mode+' at '+
-             (new Date).toString()+'...\n\n'
+             '\nStart ['+app.title+':v'+app.version+'] '+
+             server_name+':'+launch_mode+'('+process.pid+') '+ (new Date).toString()+'\n\n'
 );
 /* 
 	Load application configuration data
 */
 if(require('fs').lstatSync(app_conf).isFile()){
-	console.log('LOADING app_conf');
+	console.log('LOAD app_conf');
 	root.config=JSON.config.loadValidJSON(app_conf,app_conf_pattern);
-	if(typeof(root.config.debug)!='boolean') throw new Error('root.config.debug must be boolean');
+	if(typeof(config.debug)!='boolean') throw new Error('root.config.debug must be boolean');
 
-	if(root.config.debug){
+	if(config.debug){
 		console.log('\n-----------------Application Config-----------------');
 		console.dir(root.config);
 		console.log('----------------------------------------------------\n');
@@ -51,14 +55,15 @@ if(require('fs').lstatSync(app_conf).isFile()){
 	Load all packages in the manifest.
 */
 root.packages={};
-root.packages.loader=require(root.config.packageLoader)(root.config.packageManifest,launch_mode);
+root.packages.loader=require(config.packageLoader)(config.packageManifest,server_name);
 /*
 	Define the application
 */
+if(config.debug) console.log("Define the application core (root.app)");
 root.app.main=root.packages.main.init();
 root.app.start=root.packages.start.init();
 root.app.monitor={};
 root.app.monitor.watchdog=root.packages.watchdog.init();
 root.app.monitor.stats=root.packages.stats.init();
 /*Initialize then launch the application with the specified service (using arg[2])*/
-root.app.main(launch_mode);
+root.app.main(server_name,launch_mode);

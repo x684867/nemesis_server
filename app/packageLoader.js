@@ -6,7 +6,7 @@
 		This file exports an object used to load the packages defined in 
 		root.config.packages (defined by bootstrap.js).
  */
-module.exports=function( mFile , mode ){
+module.exports=function( mFile , server_name ){
 	var pFile=mFile.replace( /json/ , 'pattern.json' );
 	
 	var fs=require('fs');
@@ -30,7 +30,7 @@ module.exports=function( mFile , mode ){
 	);
 	
 	/*Make sure the mode has an associated serverPackage.*/
-	if(manifest.serverPackages.indexOf(mode)==-1) throw new Error("ERROR! Bad launch: "+mode);
+	if(manifest.serverPackages.indexOf(server_name)==-1) throw new Error("ERROR! Bad launch: "+server_name);
 	
 	if(typeof(manifest.package_dir)!='string') throw new Error('package_dir not a string');
 
@@ -44,7 +44,7 @@ module.exports=function( mFile , mode ){
 	manifest.corePackages.forEach(function(pkgName){load(manifest.package_dir,pkgName);});
 			
 	/*Load the server package.*/
-	load(manifest.package_dir,mode);
+	load(manifest.package_dir,server_name);
 			
 	/*Load the appPackages*/
 	manifest.appPackages.forEach(function(pkgName){load(manifest.package_dir,pkgName);});

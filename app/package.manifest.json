@@ -15,18 +15,15 @@
 		they must be loaded to satisfy dependency chains.
 	*/	
 	"corePackages":[
-		"logger",
-		"types",
-		"error",
-		"process",
-		"web",
-		"worker",
-		"storeServer",
-		"storeClient",
-		"marco",
-		"polo",
-		"stats",
-		"watchdog"
+		"logger",		/*logger and console functionality*/
+		"types",		/*standard types and type checking*/
+		"error",		/*error handling*/
+		"process",		/*process management extensions*/
+		"store",		/*data store client*/
+		"marco",		/*data store replicator source*/
+		"polo",			/*data store replicator target*/
+		"stats",		/*statistics collector*/
+		"watchdog"		/*application monitor / manager*/
 	],
 	/*
 		The serverPackages are what this entire framework is built for.  They must be loaded in the second

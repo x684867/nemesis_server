@@ -9,7 +9,7 @@ module.exports=init;
 function init(){
 
 	console.log("Audit Server not implemented yet.");
-	console.log("see "+package.filename);
+	console.log("see "+module.filename);
 	process.exit(1);
 
 }
