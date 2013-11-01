@@ -17,13 +17,22 @@
 */
 module.exports=function(){
 
-	process.on(
-		'uncaughtException',
-		function(err){error.raise(root.error.unknown,err);}
-	);
-
-	var log=new root.packages.core.logger(package.id);
+	Object.keys(error).forEach(function(e){console.log(e);});
+	/*
+	process.on('uncaughtException',function(err){
+		console.log(
+			"\n\terror:{\n"+
+				"\t\tcode: "+ typeof(err) + ",\n" +
+				"\t\tmesssage: \""+err.toString()+"\"\n" +
+			"\t}"
+		);
+		error.raise(error.process.uncaughtException,err.toString());
+	});
+	*/
+	syslog=console.create('process',config.process.syslog);
 	
+	syslog.log("Process has a syslogger");
+		
 	root.process.pool=Array();
 	
 	root.process.pidlist=function(){
