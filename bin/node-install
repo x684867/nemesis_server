@@ -10,11 +10,11 @@ echo "Install development tools."
 echo " "
 delay 5 && \
 echo " done." && \
-cd /srv/nemesis/src/nodejs && \
+cd /srv/nemesis/src/node && \
 git pull nodejs master && \
 make clean && \
 ./configure && make && make install && \
-ln -sf /usr/local/bin/node /usr/bin/nodejs && \
+ln -sf /usr/local/bin/node /usr/bin/node && \
 echo "Node JS is installed." && \
 /usr/local/bin/node -v && \
 echo "done." && \
