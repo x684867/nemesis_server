@@ -1,0 +1,74 @@
+/*
+	Nemesis Application Configuration
+	/srv/nemesis/app/app.conf.json
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
+	
+	This is the main configuration for the Nemesis application which determines
+	how the application loads and configures itself.
+	
+	USE:
+		root.config
+		
+	DOCUMENTATION:
+	
+		See https://github.com/x684867/nemesis_server/wiki/Framework:-App:Config
+	
+*/
+{
+	"debug":true,	
+	"language"	:"en-US.UTF-8",
+	"packageLoader":"./packageLoader.js",
+	"packageManifest":"./app/package.manifest.json",
+	"packages":"./packages/",
+
+	"stores":{
+		"audit":{
+			"protocol":"mongodb",
+			"server":"127.0.0.1",
+			"port":27017,
+			"user":"audit_user",
+			"passwd":"k4Weke$wicf$ww$2DCG554@&3rrkq!3ls$55e#rffiRhARAee#&",
+			"tls":{
+				"key":"...",
+				"cert":"...",
+				"ca":"..."
+			}
+		},
+		"broker":{
+			"protocol":"mongodb",
+			"server":"127.0.0.1",
+			"port":27017,
+			"user":"audit_user",
+			"passwd":"k4Weke$wicf$ww$2DCG554@&3rrkq!3ls$55e#rffiRhARAee#&",
+			"tls":{
+				"key":"...",
+				"cert":"...",
+				"ca":"..."
+			}
+		},
+		"cipher":{
+			"protocol":"mongodb",
+			"server":"127.0.0.1",
+			"port":27017,
+			"user":"audit_user",
+			"passwd":"k4Weke$wicf$ww$2DCG554@&3rrkq!3ls$55e#rffiRhARAee#&",
+			"tls":{
+				"key":"...",
+				"cert":"...",
+				"ca":"..."
+			}
+		},
+		"key":{
+			"protocol":"mongodb",
+			"server":"127.0.0.1",
+			"port":27017,
+			"user":"audit_user",
+			"passwd":"k4Weke$wicf$ww$2DCG554@&3rrkq!3ls$55e#rffiRhARAee#&",
+			"tls":{
+				"key":"...",
+				"cert":"...",
+				"ca":"..."
+			}
+		}
+	}
+}

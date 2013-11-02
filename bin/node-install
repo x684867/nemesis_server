@@ -1,0 +1,28 @@
+#!/bin/bash +x
+#
+# Node Install Script for Nemesis
+# /srv/nemesis/bin/node-install
+# (c) 2013 Sam Caldwell.  All Rights Reserved.
+# 
+[ "$(whoami)" != "root" ] && echo "This script must run as root" && exit 1
+
+echo "Install development tools."
+echo " "
+delay 5 && \
+echo " done." && \
+cd /srv/nemesis/src/node && \
+git pull node master && \
+make clean && \
+./configure && make && make install && \
+ln -sf /usr/local/bin/node /usr/bin/node && \
+echo "Node JS is installed." && \
+/usr/local/bin/node -v && \
+echo "done." && \
+exit 0 
+
+echo " "
+echo "+---------------------+"
+echo "|Something went wrong.|"
+echo "+---------------------+"
+echo " "
+exit 1

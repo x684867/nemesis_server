@@ -1,0 +1,13 @@
+{
+	"debug":"boolean",
+	"syslog":{
+		"enabled":"boolean",
+		"server":"string",
+		"port":"number",
+		"tls":{
+			"key":"string",
+			"cert":"string",
+			"cacert":"string"
+		}
+	}
+}

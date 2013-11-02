@@ -1,0 +1,19 @@
+{
+	"serverType":"string",
+	"pidDirectory":"string",
+	"monitor":{
+		"heartbeat":{
+			"interval":"number",
+			"threshold":"number"
+		},
+		"statistics":{
+			"interval":"number"
+		}
+	},
+	"ssl":{
+			"private_key":"string",
+			"public_key":"string",
+			"ca_cert":"string"
+	},
+	"workers":"Array('object')"
+}

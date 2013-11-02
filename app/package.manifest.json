@@ -1,0 +1,47 @@
+/*
+	Application Manifest File
+	/srv/nemesis/app/package.manifest.json
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
+*/
+{
+	/*
+		The Package Directory is the directory where all packages are located.  This directory contains a single 
+		subdirectory for each package.  For example, the "types" package would consist of a subdirectory named
+		/srv/nemesis/packages/types/ which would contain all of the files making up the package.
+	*/
+	"package_dir":"./packages",
+	/*
+		Core Packages are packages shared by all of the serverPackages.  They are listed in the order in which
+		they must be loaded to satisfy dependency chains.
+	*/	
+	"corePackages":[
+		"logger",		/*logger and console functionality*/
+		"types",		/*standard types and type checking*/
+		"error",		/*error handling*/
+		"process",		/*process management extensions*/
+		"store",		/*data store client*/
+		"marco",		/*data store replicator source*/
+		"polo",			/*data store replicator target*/
+		"stats",		/*statistics collector*/
+		"watchdog"		/*application monitor / manager*/
+	],
+	/*
+		The serverPackages are what this entire framework is built for.  They must be loaded in the second
+		stage after the corePackages and before the appPackages.
+	*/
+	"serverPackages":[
+		"audit",
+		"broker",
+		"cipherStore",
+		"keyStore"
+	],
+	/*
+		The bootstrap.js file builds an application (root.app) object which will be initialized by a main()
+		method and launched with a start() method.  These methods are defined in two "appPackages" in this
+		next section.
+	*/
+	"appPackages":[
+		"main",
+		"start"
+	]
+}

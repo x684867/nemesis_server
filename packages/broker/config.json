@@ -1,0 +1,38 @@
+{
+	"serverType":"broker",
+
+	"pidDirectory":"/var/run/nemesis/broker",
+
+	"monitor":{
+		"heartbeat":{
+			"interval":3600,
+			"threshold":100
+		},
+		"statistics":{
+			"interval":3600
+		}
+	},
+	"ssl":{
+			"private_key":"/etc/ssl/private/broker.key",
+			"public_key":"/etc/ssl/certs/broker.crt",
+			"ca_cert":"/etc/ssl/certs/broker.crt"
+	},
+	"workers":[
+		{"enabled":true,"workerId":201,"ipAddress":"127.0.2.01","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":202,"ipAddress":"127.0.2.02","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":203,"ipAddress":"127.0.2.03","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":204,"ipAddress":"127.0.2.04","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":205,"ipAddress":"127.0.2.05","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":206,"ipAddress":"127.0.2.06","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":207,"ipAddress":"127.0.2.07","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":208,"ipAddress":"127.0.2.08","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":209,"ipAddress":"127.0.2.09","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":210,"ipAddress":"127.0.2.10","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":211,"ipAddress":"127.0.2.11","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":212,"ipAddress":"127.0.2.12","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":213,"ipAddress":"127.0.2.13","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":214,"ipAddress":"127.0.2.14","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":215,"ipAddress":"127.0.2.15","ipPort":80,"ssl":false },
+		{"enabled":false,"workerId":216,"ipAddress":"127.0.2.16","ipPort":80,"ssl":false }
+	]
+}

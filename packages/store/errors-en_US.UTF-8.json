@@ -1,0 +1,7 @@
+{
+	"UndefinedServerType":{
+		"code":101,
+		"type":"fatal",
+		"text":"server_type is undefined in store package initiator."
+	}
+}

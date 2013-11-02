@@ -1,0 +1,7 @@
+{
+	"uncaughtException":{
+		"code":"number",
+		"type":"string",
+		"text":"string"
+	}
+}

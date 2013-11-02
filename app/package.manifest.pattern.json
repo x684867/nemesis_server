@@ -1,0 +1,6 @@
+{
+	"package_dir":"string",
+	"corePackages":"Array('string')",
+	"serverPackages":"Array('string')",
+	"appPackages":"Array('string')"
+}

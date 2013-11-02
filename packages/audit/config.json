@@ -1,0 +1,29 @@
+{
+	"serverType":"audit",
+	"heartbeat":{
+				"interval":3600,
+				"maxDelay":100
+	},
+	"workers":[
+				{
+					"workerId":11,
+					"ipAddress":"127.0.1.1",
+					"ipPort":80
+				},
+				{
+					"workerId":12,
+					"ipAddress":"127.0.1.2",
+					"ipPort":80
+				},
+				{
+					"workerId":13,
+					"ipAddress":"127.0.1.3",
+					"ipPort":80
+				},
+				{
+					"workerId":14,
+					"ipAddress":"127.0.1.4",
+					"ipPort":80
+				}					
+	]
+}

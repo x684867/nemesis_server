@@ -1,0 +1,30 @@
+{
+	"serverType":"keyStore",
+	
+	"heartbeat":{
+				"interval":3600,
+				"maxDelay":100
+	},
+	"workers":[
+				{
+					"workerId":41,
+					"ipAddress":"127.0.4.1",
+					"ipPort":80
+				},
+				{
+					"workerId":42,
+					"ipAddress":"127.0.4.2",
+					"ipPort":80
+				},
+				{
+					"workerId":43,
+					"ipAddress":"127.0.4.3",
+					"ipPort":80
+				},
+				{
+					"workerId":44,
+					"ipAddress":"127.0.4.4",
+					"ipPort":80
+				}					
+	]
+}

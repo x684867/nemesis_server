@@ -44,8 +44,10 @@ export SERVER_BIN="/srv/nemesis/app/app.js"
 
 case "$2" in
 	start)
+		$0 $1 stop
+		delay 5
 		cd /srv/nemesis
-		git pull nemesis master
+		git pull nemesis $(git branch --list | egrep \\* | awk '{print $2}')
 		clear
 		/usr/bin/nodejs $SERVER_BIN $SERVER_CONF
 	;;

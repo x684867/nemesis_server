@@ -1,0 +1,73 @@
+/*
+	Nemesis Application Configuration
+	/srv/nemesis/app/app.conf.json
+	(c) 2013 Sam Caldwell.  All Rights Reserved.
+	
+	This is the main configuration for the Nemesis application which determines
+	how the application loads and configures itself.
+	
+	USE:
+		root.config
+		
+	DOCUMENTATION:
+	
+		See https://github.com/x684867/nemesis_server/wiki/Framework:-App:Config
+	
+*/
+{
+	"language"	:"string",
+	"packageLoader":"string",
+	"packageManifest":"string",
+	"packages":"string",
+	"debug":"boolean",
+	"stores":{
+		"audit":{
+			"protocol":"string",
+			"server":"string",
+			"port":"number",
+			"user":"string",
+			"passwd":"string",
+			"tls":{
+				"key":"string",
+				"cert":"string",
+				"ca":"string"
+			}
+		},
+		"broker":{
+			"protocol":"string",
+			"server":"string",
+			"port":"number",
+			"user":"string",
+			"passwd":"string",
+			"tls":{
+				"key":"string",
+				"cert":"string",
+				"ca":"string"
+			}
+		},
+		"cipher":{
+			"protocol":"string",
+			"server":"string",
+			"port":"number",
+			"user":"string",
+			"passwd":"string",
+			"tls":{
+				"key":"string",
+				"cert":"string",
+				"ca":"string"
+			}
+		},
+		"key":{
+			"protocol":"string",
+			"server":"string",
+			"port":"number",
+			"user":"string",
+			"passwd":"string",
+			"tls":{
+				"key":"string",
+				"cert":"string",
+				"ca":"string"
+			}
+		}
+	}
+}

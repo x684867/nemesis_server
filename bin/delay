@@ -1,9 +1,0 @@
-#!/bin/bash
-#
-# delay
-# /srv/nemesis/bin/delay
-# (c) 2013 Sam Caldwell.  All Rights Reserved.
-#
-[ -z "$1" ] && echo "missing timing parameter (seconds)" && exit 1
-echo " "
-for i in $(seq $1 -1 1); do echo -n "$i ";sleep 1;done;echo " "
