@@ -1,4 +1,6 @@
 nemesis_server
 ==============
 
-Nemesis servers (audit, broker, cipher, keys)
+To simplify the installation automation plans, this repo was moved to--
+
+https://github.com/x684867/nemesis
