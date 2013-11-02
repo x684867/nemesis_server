@@ -11,7 +11,7 @@ echo " "
 delay 5 && \
 echo " done." && \
 cd /srv/nemesis/src/node && \
-git pull nodejs master && \
+git pull node master && \
 make clean && \
 ./configure && make && make install && \
 ln -sf /usr/local/bin/node /usr/bin/node && \
