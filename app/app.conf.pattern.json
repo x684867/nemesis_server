@@ -19,5 +19,55 @@
 	"packageLoader":"string",
 	"packageManifest":"string",
 	"packages":"string",
-	"debug":"boolean"
+	"debug":"boolean",
+	"stores":{
+		"audit":{
+			"protocol":"string",
+			"server":"string",
+			"port":"number",
+			"user":"string",
+			"passwd":"string",
+			"tls":{
+				"key":"string",
+				"cert":"string",
+				"ca":"string"
+			}
+		},
+		"broker":{
+			"protocol":"string",
+			"server":"string",
+			"port":"number",
+			"user":"string",
+			"passwd":"string",
+			"tls":{
+				"key":"string",
+				"cert":"string",
+				"ca":"string"
+			}
+		},
+		"cipher":{
+			"protocol":"string",
+			"server":"string",
+			"port":"number",
+			"user":"string",
+			"passwd":"string",
+			"tls":{
+				"key":"string",
+				"cert":"string",
+				"ca":"string"
+			}
+		},
+		"key":{
+			"protocol":"string",
+			"server":"string",
+			"port":"number",
+			"user":"string",
+			"passwd":"string",
+			"tls":{
+				"key":"string",
+				"cert":"string",
+				"ca":"string"
+			}
+		}
+	}
 }

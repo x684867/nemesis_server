@@ -24,8 +24,8 @@ require('./JSON-config.js')();
 /*
 	Validate the command-line inputs.
 */
-var server_name=process.argv[2];
-if(typeof(server_name)!='string') throw new Error('Invalid server_name passed to boostrap.js');
+var server_type=process.argv[2];
+if(typeof(server_type)!='string') throw new Error('Invalid server_type passed to boostrap.js');
 
 var launch_mode=process.argv[3];
 if( (typeof(launch_mode)!='string') && (['master','worker'].indexof(launch_mode)==-1))
@@ -33,7 +33,7 @@ if( (typeof(launch_mode)!='string') && (['master','worker'].indexof(launch_mode)
 
 console.log( Array(process.stdout.rows).join('\n')+Array(process.stdout.columns).join('=')+
              '\nStart ['+app.title+':v'+app.version+'] '+
-             server_name+':'+launch_mode+'('+process.pid+') '+ (new Date).toString()+'\n\n'
+             server_type+':'+launch_mode+'('+process.pid+') '+ (new Date).toString()+'\n\n'
 );
 /* 
 	Load application configuration data
@@ -41,6 +41,7 @@ console.log( Array(process.stdout.rows).join('\n')+Array(process.stdout.columns)
 if(require('fs').lstatSync(app_conf).isFile()){
 	console.log('LOAD app_conf');
 	root.config=JSON.config.loadValidJSON(app_conf,app_conf_pattern);
+	root.config.server_type=server_type
 	if(typeof(config.debug)!='boolean') throw new Error('root.config.debug must be boolean');
 
 	if(config.debug){
@@ -55,7 +56,7 @@ if(require('fs').lstatSync(app_conf).isFile()){
 	Load all packages in the manifest.
 */
 root.packages={};
-root.packages.loader=require(config.packageLoader)(config.packageManifest,server_name);
+root.packages.loader=require(config.packageLoader)(config.packageManifest,server_type);
 /*
 	Define the application
 */
@@ -66,4 +67,4 @@ root.app.monitor={};
 root.app.monitor.watchdog=root.packages.watchdog.init();
 root.app.monitor.stats=root.packages.stats.init();
 /*Initialize then launch the application with the specified service (using arg[2])*/
-root.app.main(server_name,launch_mode);
+root.app.main(server_type,launch_mode);
